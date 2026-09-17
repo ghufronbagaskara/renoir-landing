@@ -1,0 +1,15 @@
+---
+export const prerender = true;
+import BaseLayout from "~/layouts/BaseLayout.astro";
+---
+<BaseLayout title="Page Not Found" breadcrumb={{ title: "404 Error" }} noindex>
+  <section class="si-contact-area pt-127 pb-130">
+    <div class="container container-1617">
+      <div class="si-section-title text-center">
+        <h2>This page doesn't exist.</h2>
+        <p>The link may be broken, or the page may have moved.</p>
+        <a class="si-btn-one mt-30" href="/"> <span class="btn-text"> <span>Back to Home</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
