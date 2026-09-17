@@ -1,0 +1,37 @@
+---
+export const prerender = true;
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import { getPortfolio } from "~/lib/content";
+
+const projects = await getPortfolio();
+// Template rhythm: two half-width cards, one full-width card, repeat.
+const colFor = (i: number) => (i % 3 === 2 ? "col-lg-12" : "col-lg-6");
+---
+<BaseLayout title="Our Portfolio" breadcrumb={{ title: "Our Portfolio" }}>
+  <div class="si-project-3-bg2 pt-75 pb-124">
+    <div class="container container-1617">
+      <div class="row">
+        {
+          projects.map((p, i) => (
+            <div class={colFor(i)}>
+              <article class="si-project-3-box">
+                <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 si_fade_anim fix not-hide-cursor" data-cursor="View<br>Demo">
+                  <a class="cursor-hide img-cover" href={`/portfolio/${p.id}/`} tabindex="-1" aria-hidden="true">
+                    <Img data-speed=".8" src={p.data.image} alt="" loading={i < 2 ? "eager" : "lazy"} />
+                  </a>
+                </div>
+                <div class="si-project-3-text">
+                  <h3>
+                    <a class="underline-black" href={`/portfolio/${p.id}/`}>{p.data.title}</a>
+                  </h3>
+                  {p.data.tags.map((t) => <span>{t}</span>)}
+                </div>
+              </article>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>
