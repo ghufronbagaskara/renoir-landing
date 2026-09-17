@@ -1,0 +1,129 @@
+---
+// One contact form, three template skins (contact page, team details, service details).
+// Posts to /api/contact (D1 + Resend + Turnstile). Works without JS via a 303 redirect.
+import Img from "~/components/ui/Img.astro";
+
+interface Props {
+  variant: "contact" | "team" | "service";
+  /** Where the message came from, stored with the submission. */
+  source: string;
+}
+const { variant, source } = Astro.props;
+const id = `cf-${variant}`;
+const subjects = ["General enquiry", "New project", "Support"];
+---
+<form class="si-contact-form" method="post" action="/api/contact" data-contact-form>
+  <input type="hidden" name="source" value={source} />
+  <div class="visually-hidden" aria-hidden="true">
+    <label for={`${id}-website`}>Leave this field empty</label>
+    <input id={`${id}-website`} type="text" name="company_website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  {
+    variant === "contact" && (
+      <>
+        <div class="si-team-details-from pb-27">
+          <label class="visually-hidden" for={`${id}-name`}>Your name</label>
+          <input id={`${id}-name`} class="contact-border" type="text" name="name" placeholder="Your Name" autocomplete="name" required maxlength="120" />
+          <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-1.svg" alt="" /></a></div>
+        </div>
+        <div class="si-team-details-from pb-27">
+          <label class="visually-hidden" for={`${id}-email`}>Your email</label>
+          <input id={`${id}-email`} class="contact-border" type="email" name="email" placeholder="Your Email" autocomplete="email" required maxlength="254" />
+          <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-2.svg" alt="" /></a></div>
+        </div>
+        <div class="si-team-details-from pb-27">
+          <label class="visually-hidden" for={`${id}-subject`}>Subject</label>
+          <select id={`${id}-subject`} class="select-items contact-border select-pt" name="subject">
+            <option class="select-items2" value="">Select Subject</option>
+            {subjects.map((s) => <option class="select-items2" value={s}>{s}</option>)}
+          </select>
+        </div>
+        <div class="si-team-details-from pb-27">
+          <label class="visually-hidden" for={`${id}-message`}>Message</label>
+          <textarea id={`${id}-message`} class="contact-border" name="message" placeholder="Write Message" required minlength="10" maxlength="5000"></textarea>
+          <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-4.svg" alt="" /></a></div>
+          <div class="cf-turnstile-slot" data-turnstile></div>
+          <button class="si-team-details-btn" type="submit">Appointment Now</button>
+        </div>
+      </>
+    )
+  }
+
+  {
+    variant === "team" && (
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-name`}>Your name</label>
+            <input id={`${id}-name`} type="text" name="name" placeholder="Your Name" autocomplete="name" required maxlength="120" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-1.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-email`}>Your email</label>
+            <input id={`${id}-email`} type="email" name="email" placeholder="Your Email" autocomplete="email" required maxlength="254" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-2.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-phone`}>Phone number</label>
+            <input id={`${id}-phone`} type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" maxlength="40" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-3.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-subject`}>Subject</label>
+            <select id={`${id}-subject`} class="select-items" name="subject">
+              <option class="select-items2" value="">Select Subject</option>
+              {subjects.map((s) => <option class="select-items2" value={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-message`}>Message</label>
+            <textarea id={`${id}-message`} name="message" placeholder="Write Message" required minlength="10" maxlength="5000"></textarea>
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-4.svg" alt="" /></a></div>
+            <div class="cf-turnstile-slot" data-turnstile></div>
+            <button class="si-team-details-btn" type="submit">Appointment Now</button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    variant === "service" && (
+      <>
+        <div class="si-service-details-from-inner">
+          <label class="visually-hidden" for={`${id}-name`}>Your name</label>
+          <input id={`${id}-name`} type="text" name="name" placeholder="Your Name" autocomplete="name" required maxlength="120" />
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon2.svg" alt="" /></a></div>
+        </div>
+        <div class="si-service-details-from-inner2">
+          <label class="visually-hidden" for={`${id}-email`}>Your email</label>
+          <input id={`${id}-email`} type="email" name="email" placeholder="Your Email" autocomplete="email" required maxlength="254" />
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon3.svg" alt="" /></a></div>
+        </div>
+        <div class="si-service-details-from-inner3">
+          <label class="visually-hidden" for={`${id}-message`}>Message</label>
+          <textarea id={`${id}-message`} name="message" placeholder="Write Message" required minlength="10" maxlength="5000"></textarea>
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon4.svg" alt="" /></a></div>
+        </div>
+        <div class="cf-turnstile-slot" data-turnstile></div>
+        <div class="si-service-details-btn">
+          <button class="si-btn-one" type="submit"> <span class="btn-text"> <span>Send Message</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></button>
+        </div>
+      </>
+    )
+  }
+
+  <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+</form>
+<script>
+  import "~/scripts/contact-form";
+</script>
