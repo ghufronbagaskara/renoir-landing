@@ -1,0 +1,48 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { formatDate, getPosts } from "~/lib/content";
+
+const posts = (await getPosts()).slice(0, 2);
+---
+<section class="si-blog-area pt-120 pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-5 p-0">
+        <div class="si-blog-left">
+          <div class="si-section-title">
+            <span>Our Blog</span>
+            <h2 class="si-text-revel-anim">Our Experts Team <br class="d-none d-xxl-block" /> Is Always Ready To <br class="d-none d-xxl-block" /> Help You</h2>
+            <p>We are digital agency that help businesses of develop <br class="d-none d-xxl-block" /> immersive and engaging user experience.</p>
+          </div>
+          <div class="si-blog-btn">
+            <a class="si-btn-one" href="/blog/"> <span class="btn-text"> <span>See All Blogs</span> </span> <span class="btn-icon"><Img src="header/right.svg" alt="" /></span></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 p-0">
+        <div class="si-blog-main">
+          {
+            posts.map((post, i) => (
+              <article class:list={["si-blog-box", { "mr-45": i === 0 }]}>
+                <div class="si-blog-img">
+                  <Img src={post.data.cardImage} alt={post.data.title} />
+                </div>
+                <div class="si-blog-text">
+                  <h3>
+                    <span class="project-dot2">{post.data.category}</span> <span>{formatDate(post.data.date, "card")}</span>
+                  </h3>
+                  <h4>
+                    <a class="underline-black" href={`/blog/${post.id}/`}>{post.data.title}</a>
+                  </h4>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="si-blog-shape-text" aria-hidden="true">
+    <h5>Our Blog</h5>
+  </div>
+</section>
