@@ -1,0 +1,36 @@
+---
+import { nav, isActive } from "~/data/nav";
+
+interface Props {
+  mobile?: boolean;
+}
+const { mobile = false } = Astro.props;
+const path = Astro.url.pathname;
+---
+<ul>
+  {
+    nav.map((item) =>
+      item.children ? (
+        <li class:list={[{ active: item.children.some((c) => isActive(c.href, path)) && !mobile }]}>
+          <a class="no-href" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">{item.label}</a>
+          <ul class="si-submenu submenu">
+            {item.children.map((c) => (
+              <li>
+                <a href={c.href} aria-current={isActive(c.href, path) ? "page" : undefined}>{c.label}</a>
+              </li>
+            ))}
+          </ul>
+          {mobile && (
+            <button class="si-menu-close" type="button" aria-label={`Toggle ${item.label} submenu`}>
+              <i class="fa-solid fa-plus" />
+            </button>
+          )}
+        </li>
+      ) : (
+        <li>
+          <a href={item.href} aria-current={isActive(item.href!, path) ? "page" : undefined}>{item.label}</a>
+        </li>
+      ),
+    )
+  }
+</ul>
