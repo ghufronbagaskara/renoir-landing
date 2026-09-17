@@ -1,0 +1,90 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import BlogSidebar from "~/components/sections/blog/BlogSidebar.astro";
+import { formatDate, getPosts } from "~/lib/content";
+
+export const getStaticPaths = (async () =>
+  (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }))) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const p = post.data;
+const url = encodeURIComponent(new URL(Astro.url.pathname, Astro.site).href);
+const title = encodeURIComponent(p.title);
+const share = [
+  ["blog-details/icon2.svg", `https://www.facebook.com/sharer/sharer.php?u=${url}`, "Share on Facebook"],
+  ["blog-details/icon3.svg", `https://x.com/intent/post?url=${url}&text=${title}`, "Share on X"],
+  ["blog-details/icon4.svg", `https://www.linkedin.com/sharing/share-offsite/?url=${url}`, "Share on LinkedIn"],
+  ["blog-details/icon5.svg", `https://pinterest.com/pin/create/button/?url=${url}&description=${title}`, "Share on Pinterest"],
+];
+---
+<BaseLayout title={p.title} description={p.lead.slice(0, 155)} breadcrumb={{ title: "Blog Details", parent: { label: "Our Blog", href: "/blog/" } }}>
+  <section class="si-blog-details-area pt-127 pb-127">
+    <div class="container container-1617">
+      <div class="row">
+        <article class="col-lg-8">
+          <div class="si-blog-details-thumb">
+            <Img src={p.image} alt={p.title} loading="eager" />
+          </div>
+          <div class="si-blog-details-text">
+            <span>{p.category}</span>
+            <span><time datetime={p.date.toISOString().slice(0, 10)}>{formatDate(p.date)}</time></span>
+            <span>by {p.author}</span>
+            <h2 class="h3">{p.title}</h2>
+          </div>
+          <div class="si-blog-details-text2">
+            <p>{p.lead}</p>
+            <span>{p.leadNote}</span>
+          </div>
+          <figure class="si-blog-details-main m-0">
+            <div class="si-blog-details-shape">
+              <Img src="blog-details/icon.svg" alt="" />
+            </div>
+            <blockquote class="si-blog-details-text3 m-0">
+              <h4>{p.quote.text}</h4>
+              <span>{p.quote.author}</span>
+            </blockquote>
+          </figure>
+          <div class="si-blog-details-text4">
+            {p.paragraphs.map((t) => <p>{t}</p>)}
+          </div>
+          <div class="si-blog-details-thumb2">
+            {
+              p.gallery.map((src) => (
+                <div class="si-blog-details-img">
+                  <Img src={src} alt="" />
+                </div>
+              ))
+            }
+          </div>
+          <div class="si-blog-details-text4">
+            {p.closing.map((t) => <p>{t}</p>)}
+          </div>
+          <div class="si-blog-details-list-main">
+            <div class="si-blog-details-list">
+              {p.tags.map((t) => <span>{t}</span>)}
+            </div>
+            <div class="si-blog-details-list2">
+              <ul>
+                {
+                  share.map(([icon, href, label]) => (
+                    <li>
+                      <a href={href} aria-label={label} rel="noopener" target="_blank">
+                        <Img src={icon} alt="" />
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </article>
+        <div class="col-lg-4">
+          <BlogSidebar />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
