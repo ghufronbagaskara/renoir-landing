@@ -1,0 +1,66 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { getServices } from "~/lib/content";
+import { imageUrl } from "~/lib/images";
+
+const services = await getServices();
+const bg = await imageUrl("service/bg.jpg");
+---
+<section class="si-service-area pt-124 pb-130 position-relative z-1 animated-bg" style={`background-image:url(${bg})`}>
+  <div class="container container-1617">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-lg-12">
+        <div class="si-service-right">
+          <div class="si-section-title pb-60 si-white">
+            <span>Our Service</span>
+            <h2 class="si-text-revel-anim">We Build Your Digital <br class="d-none d-xxl-block" /> Business.</h2>
+            <p>When selecting a web design agency, it's essential to consider its reputation, experience, and the specific needs of your project.</p>
+          </div>
+          <div class="si-service-btn">
+            <a class="si-btn-one black-bg-btn" href="/portfolio/"> <span class="btn-text"> <span> View Our Work</span> </span> <span class="btn-icon btn-icon2"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-center">
+      <div class="col-xl-5 col-lg-5">
+        <div class="si-service-list-thumb-wrap position-relative">
+          <div id="si-service-thumb" class="si-service-list-thumb-1">
+            {services.map((s, i) => <Img class={`si-service-list-thumb-${i + 1}`} src={s.data.thumb} alt={s.data.title} />)}
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-7 col-lg-7">
+        <div class="si-service-list-wrap">
+          {
+            services.map((s, i) => (
+              <div
+                class:list={["si-service-list-item d-flex align-items-center justify-content-between cursor-pointer position-relative", { active: i === 0 }]}
+                data-thumb={`si-service-list-thumb-${i + 1}`}
+              >
+                <div class="si-service-list-left">
+                  <h3 class="si-service-list-title fw-semibold">
+                    <a class="text--white" href={`/services/${s.id}/`}>{s.data.title}</a>
+                  </h3>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // Template main.js #23: swap the thumbnail on hover/focus.
+  const thumb = document.getElementById("si-service-thumb");
+  for (const item of document.querySelectorAll<HTMLElement>(".si-service-list-item")) {
+    const activate = () => {
+      if (thumb) thumb.className = item.dataset.thumb!;
+      item.parentElement?.querySelectorAll(".active").forEach((el) => el.classList.remove("active"));
+      item.classList.add("active");
+    };
+    item.addEventListener("mouseenter", activate);
+    item.addEventListener("focusin", activate);
+  }
+</script>
