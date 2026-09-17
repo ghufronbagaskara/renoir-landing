@@ -1,0 +1,70 @@
+---
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fontsource-variable/inter/wght.css";
+import "~/styles/global.scss";
+import HeaderHome from "~/components/layout/HeaderHome.astro";
+import HeaderInner from "~/components/layout/HeaderInner.astro";
+import Offcanvas from "~/components/layout/Offcanvas.astro";
+import SearchOverlay from "~/components/layout/SearchOverlay.astro";
+import Footer from "~/components/layout/Footer.astro";
+import Breadcrumb from "~/components/layout/Breadcrumb.astro";
+import { site } from "~/data/site";
+// Preloaded so the hero heading doesn't reflow when the web font swaps in (CLS). Body text (Inter)
+// uses a metric-matched fallback instead (see utils/_typography.scss), so it needs no preload.
+import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
+
+interface Props {
+  /** Exclude the page from the site search index. */
+  noindex?: boolean;
+  title: string;
+  description?: string;
+  /** Home uses the transparent header + home footer variant; every other page the inner ones. */
+  home?: boolean;
+  /** Renders the template breadcrumb hero; omit on home. */
+  breadcrumb?: { title: string; parent?: { label: string; href: string } };
+}
+const { title, description = site.description, home = false, breadcrumb, noindex = false } = Astro.props;
+const pageTitle = home ? `${site.name} - ${title}` : `${title} - ${site.name}`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </head>
+  <body>
+    <div id="magic-cursor" class="cursor-black-bg" aria-hidden="true">
+      <div id="ball"></div>
+    </div>
+
+    <div class="back-to-top-wrapper">
+      <button id="back_to_top" type="button" class="back-to-top-btn" aria-label="Back to top">
+        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+
+    {home ? <HeaderHome /> : <HeaderInner />}
+    <Offcanvas />
+    {!home && <SearchOverlay />}
+
+    <main id="main" data-pagefind-body={noindex ? undefined : ""}>
+      {breadcrumb && <Breadcrumb {...breadcrumb} />}
+      <slot />
+    </main>
+
+    <Footer home={home} />
+
+    <script>
+      import "~/scripts/site";
+      import "~/scripts/anim";
+      import "~/scripts/cursor";
+    </script>
+  </body>
+</html>
