@@ -1,0 +1,32 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { imageUrl } from "~/lib/images";
+
+const bg = await imageUrl("video/bg.jpg");
+const videoId = "MLpWrANjFbI";
+---
+<div class="si-video-area" style={`background-image:url(${bg})`}>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-video-icon">
+          <div class="si-video-icon-inner">
+            <a class="popup-video si-about-playbtn" href={`https://www.youtube.com/watch?v=${videoId}`} data-video={videoId} aria-label="Play video"><i class="fa-solid fa-play"></i></a>
+            <div class="si-video-shape">
+              <Img class="rotate2" src="video/shape.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  import { lightbox } from "~/scripts/site";
+  // Template magnific video popup → <dialog> with a privacy-enhanced embed injected on demand.
+  document.querySelector<HTMLAnchorElement>(".popup-video[data-video]")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const id = (e.currentTarget as HTMLElement).dataset.video;
+    lightbox(`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" title="Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`);
+  });
+</script>
