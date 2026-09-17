@@ -1,0 +1,64 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import ContactForm from "~/components/ui/ContactForm.astro";
+import { getTeam } from "~/lib/content";
+
+export const getStaticPaths = (async () =>
+  (await getTeam()).map((member) => ({ params: { slug: member.id }, props: { member } }))) satisfies GetStaticPaths;
+
+const { member } = Astro.props;
+const m = member.data;
+const X_ICON = "M453.2 112L523.8 112L369.6 288.2L551 528L409 528L297.7 382.6L170.5 528L99.8 528L264.7 339.5L90.8 112L236.4 112L336.9 244.9L453.2 112zM428.4 485.8L467.5 485.8L215.1 152L173.1 152L428.4 485.8z";
+---
+<BaseLayout title={m.name} description={`${m.name}, ${m.role}`} breadcrumb={{ title: m.name, parent: { label: "Our Team", href: "/team/" } }}>
+  <section class="si-team-details-area pt-130 pb-124">
+    <div class="container container-1617">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="si-team-details-thumb">
+            <Img src={m.detailImage} alt={m.name} loading="eager" />
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="si-team-details-title">
+            <p class="h1">{m.name}</p>
+            <h2>{m.role}</h2>
+            <p>{m.bio}</p>
+            <span>{m.quote}</span>
+          </div>
+          <div class="si-team-details-main">
+            <div class="si-team-details-text">
+              <strong>Email:</strong>
+              <h3 class="team-dot"><a href={`mailto:${m.email}`}>{m.email}</a></h3>
+            </div>
+            <div class="si-team-details-text">
+              <strong>Phone Call:</strong>
+              <h3><a href={`tel:${m.phone.replace(/[^\d+]/g, "")}`}>{m.phone}</a></h3>
+            </div>
+          </div>
+          <div class="si-team-details-icon">
+            <span>Social</span>
+            <ul>
+              <li><a href={m.socials.x} aria-label="X" rel="noopener" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d={X_ICON} /></svg></a></li>
+              <li><a href={m.socials.instagram} aria-label="Instagram" rel="noopener" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+              <li><a href={m.socials.linkedin} aria-label="LinkedIn" rel="noopener" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a></li>
+              <li><a href={m.socials.dribbble} aria-label="Dribbble" rel="noopener" target="_blank"><i class="fa-brands fa-dribbble"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="si-team-details-box">
+            <div class="si-section-title text-center pb-40">
+              <span>contact me</span>
+              <h2>Contact Me Now</h2>
+            </div>
+            <ContactForm variant="team" source={`team:${member.id}`} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
