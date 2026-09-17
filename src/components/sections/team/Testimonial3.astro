@@ -1,0 +1,110 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { imageUrls } from "~/lib/images";
+const img = await imageUrls(["testimonial/bg2.jpg","testimonial/bg3.jpg"]);
+---
+<section class="si-testimonial-3-area pt-124 pb-124" style={`background-image:url(${img["testimonial/bg2.jpg"]})`}>
+   <div class="container container-1617">
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="si-testimonial-3-main">
+                   <div class="si-section-title pb-38">
+                       <span>our success case study</span>
+                       <h2 class="si-text-revel-anim">Testimonials From <br class="d-none d-xxl-block"> Our Customers</h2>
+                   </div>
+                   <div class="si-testimonial-3-navigation">
+                       <div class="si-button-next navigation-icon2" aria-label="Previous testimonial">
+                           <a class="no-href" role="button" tabindex="0"><Img src="testimonial/left.svg" alt="" /></a>
+                       </div>
+                       <div class="si-button-prev navigation-icon2" aria-label="Next testimonial">
+                           <a class="no-href" role="button" tabindex="0"><Img src="testimonial/right.svg" alt="" /></a>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div class="col-lg-4">
+               <div class="si-testimonial-3-box" style={`background-image:url(${img["testimonial/bg3.jpg"]})`}>
+                   <h3>4.8</h3>
+                   <ul>
+                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                   </ul>
+                   <span>(25+ reviews)</span>
+                   <p>Enhancing top-tier companies with <br> innovative top-tier companies with <br> with UI design solutions!</p>
+               </div>
+           </div>
+           <div class="col-lg-8">
+               <div class="si-testimonial-3-main2">
+               <div class="swiper-testimonial-3 swiper">
+                   <div class="swiper-wrapper">
+                       <div class="swiper-slide">
+                           <div class="si-testimonial-3-box2">
+                               <div class="si-testimonial-3-icon">
+                                   <Img src="testimonial/Icon2.png" alt="" />
+                                   <p>“Ovanta team quickly understo business <br> requirements and proactive and flexible <br> with our ongoing support and complex <br> developments. You can definitely trust <br> them complex project requirements as <br> they are can only recommend it.”</p>
+                                   <ul>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                   </ul>
+                               </div>
+                               <div class="si-testimonial-3-title">
+                                   <h4>Saad Alam</h4>
+                                   <span>Senior Marketing Manager</span>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="swiper-slide">
+                           <div class="si-testimonial-3-box2">
+                               <div class="si-testimonial-3-icon">
+                                   <Img src="testimonial/Icon2.png" alt="" />
+                                   <p>“Ovanta team quickly understo business <br> requirements and proactive and flexible <br> with our ongoing support and complex <br> developments. You can definitely trust <br> them complex project requirements as <br> they are can only recommend it.”</p>
+                                   <ul>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                   </ul>
+                               </div>
+                               <div class="si-testimonial-3-title">
+                                   <h4>Abu Talha</h4>
+                                   <span>Senior Marketing Manager</span>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="swiper-slide">
+                           <div class="si-testimonial-3-box2">
+                               <div class="si-testimonial-3-icon">
+                                   <Img src="testimonial/Icon2.png" alt="" />
+                                   <p>“Ovanta team quickly understo business <br> requirements and proactive and flexible <br> with our ongoing support and complex <br> developments. You can definitely trust <br> them complex project requirements as <br> they are can only recommend it.”</p>
+                                   <ul>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                       <li><Img src="testimonial/star.svg" alt="" /></li>
+                                   </ul>
+                               </div>
+                               <div class="si-testimonial-3-title">
+                                   <h4>Abu Talha</h4>
+                                   <span>Senior Marketing Manager</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</section>
+<script>
+  import { initSliders } from "~/scripts/sliders";
+  initSliders();
+</script>
