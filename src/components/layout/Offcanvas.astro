@@ -1,0 +1,69 @@
+---
+import Img from "~/components/ui/Img.astro";
+import NavMenu from "./NavMenu.astro";
+import SocialIcons from "./SocialIcons.astro";
+import { site } from "~/data/site";
+import { imageUrls } from "~/lib/images";
+
+const gallery = ["offcanvas/offcanvas-1.jpg", "offcanvas/offcanvas-2.jpg", "offcanvas/offcanvas-3.jpg", "offcanvas/offcanvas-4.jpg"];
+const full = await imageUrls(gallery);
+---
+<div class="si-offcanvas-area" id="offcanvas" role="dialog" aria-modal="true" aria-label="Menu" inert>
+  <div class="si-offcanvas-wrapper">
+    <div class="si-offcanvas-top d-flex align-items-center justify-content-between">
+      <div class="si-offcanvas-logo">
+        <a href="/" aria-label="Averix home">
+          <Img class="logo-1" style="width:120px" src="logo/logo-black.png" alt="Averix" />
+          <Img class="logo-2" style="width:120px" src="logo/logo-white.png" alt="" />
+        </a>
+      </div>
+      <div class="si-offcanvas-close">
+        <button class="si-offcanvas-close-btn" type="button" aria-label="Close menu">
+          <svg width="37" height="38" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9.19141 9.80762L27.5762 28.1924" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M9.19141 28.1924L27.5762 9.80761" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="si-offcanvas-main">
+      <div class="si-offcanvas-content d-none d-xl-block">
+        <h3 class="si-offcanvas-title">About Us</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <div class="si-offcanvas-menu d-xl-none">
+        <nav aria-label="Mobile">
+          <NavMenu mobile />
+        </nav>
+      </div>
+      <div class="si-offcanvas-gallery d-none d-xl-block">
+        <div class="row gx-2">
+          {
+            gallery.map((src) => (
+              <div class="col-md-3 col-3">
+                <div class="si-offcanvas-gallery-img fix">
+                  <a class="popup-image" href={full[src]} aria-label="View image">
+                    <Img src={src} alt="" />
+                  </a>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="si-offcanvas-contact">
+        <h3 class="si-offcanvas-title sm">Information</h3>
+        <ul>
+          <li><a href={site.phone.href}>{site.phone.label}</a></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><address class="m-0">{site.address}</address></li>
+        </ul>
+      </div>
+      <div class="si-offcanvas-social">
+        <h3 class="si-offcanvas-title sm">Follow Us</h3>
+        <SocialIcons variant="offcanvas" />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="body-overlay"></div>
