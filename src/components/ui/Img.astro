@@ -1,0 +1,11 @@
+---
+// Plain <img> with intrinsic dimensions (no CLS). Images are pre-optimised WebP files, so Astro's
+// image service isn't needed (Alchemy's Cloudflare adapter forces `passthrough` anyway).
+import type { HTMLAttributes } from "astro/types";
+import { imageMeta } from "~/lib/images";
+
+type Props = Omit<HTMLAttributes<"img">, "src"> & { src: string; alt?: string };
+const { src, alt = "", loading = "lazy", ...rest } = Astro.props;
+const meta = imageMeta(src);
+---
+<img src={meta.src} width={meta.width} height={meta.height} alt={alt} loading={loading} decoding="async" {...rest} />
