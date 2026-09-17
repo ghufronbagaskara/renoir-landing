@@ -1,0 +1,39 @@
+---
+// Template accordion markup (Bootstrap collapse classes kept for styling), driven by ~/scripts/accordion.ts.
+interface Props {
+  id: string;
+  items: { question: string; answer: string }[];
+}
+const { id, items } = Astro.props;
+---
+<div class="accordion" id={id} data-accordion>
+  {
+    items.map((item, i) => {
+      const open = i === 0;
+      const Heading = i === 0 ? "h2" : "h3";
+      return (
+        <div class:list={["accordion-items", { "accordion-border": i === items.length - 1 }]}>
+          <Heading class="accordion-header">
+            <button
+              class:list={["accordion-buttons", { collapsed: !open }]}
+              type="button"
+              aria-expanded={open ? "true" : "false"}
+              aria-controls={`${id}-${i}`}
+            >
+              {item.question}
+              <span class="accordion-icon" />
+            </button>
+          </Heading>
+          <div id={`${id}-${i}`} class:list={["accordion-collapse collapse", { show: open }]}>
+            <div class="accordion-body">
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>
+<script>
+  import "~/scripts/accordion";
+</script>
