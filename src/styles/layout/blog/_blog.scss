@@ -1,0 +1,254 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/*  1.0 Blog css
+/*----------------------------------------*/
+
+.si-blog{
+    &-area{
+        position: relative;
+    }
+    &-left{
+        margin-left: 14px;
+    }
+    &-btn{
+        margin-top: 43px;
+    }
+    &-main{
+        margin-left: 41px;
+        @media #{$x3l}{
+            margin-left: 15px;
+        }
+        @media #{$xxl,$xl}{
+            margin-left: 0px;
+            display: flex;
+            gap: 20px;
+            margin-right: 14px;
+        }
+        @media #{$lg2}{
+            margin-left: 14px;
+            margin-right: 14px;
+            margin-top: 25px;
+            display: block;
+        }
+    }
+    &-box{
+        display: inline-block;
+        border: 1px solid var(--si-border-5);
+        border-radius: 16px;
+        @media #{$lg2}{
+            width: 100%;
+        }
+    }
+    &-box:hover &-img img{
+        transform: scale(1.1);
+    }
+    &-img{
+        overflow: hidden;
+        border-radius: 16px;
+        img{
+            border-radius: 16px;
+            transition: 0.6s;
+            @media #{$lg,$lg2}{
+                width: 100%;
+            }
+        }
+    }
+    &-text{
+        text-align: center;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        h3{
+            border: 1px solid #EEEEEE;
+            display: inline-block;
+            padding: 4px 24px 12px 24px;
+            border-radius: 100px;
+            line-height: 11px;
+            span{
+                font-family: var(--si-ff-body);
+                font-weight: 400;
+                font-size: 16px;
+                color: var(--si-common-text-body);
+            }
+        }
+        h4{
+            margin-top: 12px;
+            @media #{$xl}{
+                font-size: 22px;
+            }
+            br{
+                @media #{$lg2}{
+                    display: none;
+                }
+            }
+        }
+    }
+    &-shape-text{
+        position: absolute;
+        top: -35px;
+        left: 8.2%;
+        z-index: -1;
+        @media (max-width:1399px){
+            display: none;
+        }
+        h5{
+            font-size: 300px;
+            font-weight: 700;
+            line-height: 300px;
+            background: linear-gradient(180deg, #0F0F0F 0%, rgba(15, 15, 15, 0.1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: var(--si-common-black);
+            background-clip: text;
+            opacity: 0.1;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+    }
+}
+.project-dot2{
+    position: relative;
+    margin-right: 27px;
+    &::before{
+        position: absolute;
+        content: "";
+        right: -22px;
+        top: 7px;
+        width: 8px;
+        height: 8px;
+        background: var(--si-common-text-body);
+        border-radius: 50%;
+    }
+}
+.mr-45{
+    @media #{$xxl,$xl,$lg2}{
+        margin-right: 0;
+    }
+    @media #{$lg,$lg2}{
+        margin-right: 0;
+        margin-bottom: 25px;
+    }
+}
+// SI BLOG 2 AREA
+.si-blog-2{
+    &-main{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--si-border-1);
+    }
+    &-box{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 40px;
+        border-bottom: 1px solid var(--si-border-1);
+        padding-bottom: 39px;
+        @media #{$xl,$lg,$lg2}{
+            display: block;
+        }
+    }
+    &-box:hover &-thumb img{
+        transform: scale(1.1);
+    }
+    &-text{
+        h3{
+            margin-top: 20px;
+            margin-bottom: 17px;
+            @media #{$xxl,$xl}{
+                font-size: 33px;
+            }
+            @media #{$lg2}{
+                font-size: 25px;
+            }
+        }
+    }
+    &-thumb{
+        overflow: hidden;
+        border-radius: 12px;
+        display: inline-block;
+        @media (max-width:1400px){
+            margin-top: 25px;
+        }
+        img{
+            border-radius: 12px;
+            transition: 0.6s;
+        }
+    }
+    &-p{
+        @media (max-width:1400px){
+            margin-top: 25px;
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            font-weight: 400;
+            text-align: end;
+            @media (max-width:1400px){
+                text-align: left;
+            }
+        }
+    }
+}
+.blog-2-border {
+	border: 1px solid #000;
+	padding: 2px 15px 2px 15px;
+	border-radius: 30px;
+    margin-right: 20px;
+}
+// SI BLOG 3 AREA
+.si-blog-3{
+    &-box{
+        background: var(--si-common-gray);
+        border-radius: 18px;
+        @media #{$lg2}{
+            margin-top: 25px;
+        }
+    }
+    &-thumb{
+        img{
+            margin-bottom: 23px;
+            border-radius: 18px 18px 0px 0px;
+            @media #{$lg2}{
+                width: 100%;
+            }
+        }
+    }
+    &-text{
+        padding: 0px 0px 30px 29px;
+        @media #{$lg}{
+            padding: 0px 9px 30px 19px;
+        }
+        @media #{$lg2}{
+            padding: 0px 19px 30px 19px;
+        }
+        h3{
+            font-size: 24px;
+            line-height: 34px;
+            margin-top: 5px;
+            @media #{$xxl,$xl,$lg}{
+                font-size: 21px;
+            }
+            @media #{$lg2}{
+                font-size: 21px;
+            }
+        }
+        span a{
+            font-weight: 600;
+            border-bottom: 1px solid var(--si-common-black);
+            color: var(--si-common-black);
+            padding-bottom: 2px;
+            display: inline-block;
+            margin-top: 25px;
+            i{
+                margin-left: 7px;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+}
+.blog-3-box2{
+    margin-top: 40px !important;
+}
+.blog-3-text2{
+    padding: 0px 0px 30px 0px !important;
+}

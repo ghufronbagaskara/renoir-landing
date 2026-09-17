@@ -1,0 +1,111 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  1.9 Blog css
+/*----------------------------------------*/
+
+.si-blog-standard{
+    &-area{
+        padding-top: 130px;
+        padding-bottom: 130px;
+    }
+    &-box {
+        background: var(--si-common-gray);
+        padding: 30px 30px 50px 30px;
+        border-radius: 18px;
+        margin-bottom: 60px;
+    }
+    &-thumb{
+        img{
+            height: 540px;
+            object-fit: cover;
+            border-radius: 12px;
+            @media #{$xs}{
+                height: 375px;
+            }
+        }
+    }
+    &-text{
+        margin-top: 35px;
+        @media #{$lg,$lg2}{
+            margin-top: 20px;
+        }
+        h3, .h3{
+            margin-bottom: 13px;
+            font-size: 60px;
+            line-height: 70px;
+            margin-top: 9px;
+            @media #{$xxl}{
+                font-size: 50px;
+            }
+            @media #{$xl,$lg}{
+                font-size: 40px;
+                line-height: 50px;
+            }
+            @media #{$lg2}{
+                font-size: 38px;
+                line-height: 50px;
+            }
+            @media #{$lg2}{
+                font-size: 25px;
+                line-height: 35px;
+            }
+        }
+        span{
+            position: relative;
+            margin-right: 28px;
+            @media #{$lg,$lg2}{
+                margin-right: 0;
+                margin-top: 9px;
+                display: block;
+            }
+            &::before{
+                position: absolute;
+                content: "";
+                right: -21px;
+                top: 8px;
+                width: 8px;
+                height: 8px;
+                background: var(--si-common-text-body);
+                border-radius: 50%;
+                @media #{$lg,$lg2}{
+                    display: none;
+                }
+            }
+            &:last-child::before{
+                display: none;
+            }
+        }       
+    }
+    &-number{
+        ul{
+            li{
+                display: inline;
+                margin-right: 8px;
+                a{
+                    display: inline-block;
+                    width: 60px;
+                    height: 60px;
+                    line-height: 60px;
+                    background: var(--si-common-gray);
+                    text-align: center;
+                    border-radius: 50%;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(--si-common-black);
+                    transition: 0.6s;
+                    &:hover{
+                        background: var(--si-common-black);
+                        color: var(--si-common-white);
+                    }
+                }
+            }
+        }
+    }
+    &-btn {
+        margin-top: 44px;
+        @media #{$lg,$lg2}{
+            margin-top: 20px;
+        }
+    }
+}

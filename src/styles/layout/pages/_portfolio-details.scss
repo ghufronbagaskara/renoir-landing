@@ -1,0 +1,267 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.4 Portfolio Details css
+/*----------------------------------------*/
+
+.si-portfolio-details{
+    &-area{
+        padding-top: 130px;
+        padding-bottom: 150px;
+        @media #{$lg2}{
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+    }
+    &-thumb{
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-main{
+        margin-left: 15px;
+    }
+    &-text{
+        margin-top: 64px;
+        h1, .h1{
+            font-size: 70px;
+            line-height: 80px;
+            @media #{$sm2}{
+            font-size: 39px;
+            line-height: 49px;
+        }
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 20px;
+            br{
+                @media #{$xxl,$xl,$lg,$lg2}{
+                    display: none;
+                }
+            }
+        }
+    }
+    &-img{
+        margin-top: 35px;
+        @media #{$lg,$xxl,$xl}{
+            margin-top: 0;
+        }
+        ul{
+            li{
+                display: inline;
+                margin-right: 23px;
+                @media #{$x3l}{
+                    margin-right: 18px;
+                }
+                img{
+                    border-radius: 18px;
+                }
+            }
+        }
+    }
+    &-mt {
+        @media (max-width:1600px){
+            margin-top: 25px;
+            display: inline-block !important;
+        }
+    }
+    &-text2{
+        margin-top: 32px;
+        h2{
+            font-size: 36px;
+            line-height: 46px;
+            @media #{$sm2}{
+                font-size: 33px;
+            }
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 19px;
+            br{
+                @media #{$xxl,$xl,$lg,$lg2}{
+                    display: none;
+                }
+            }
+        }
+    }
+    &-main2 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid var(--si-border-9);
+        padding: 25px 25px 28px 25px;
+        border-radius: 10px;
+        margin-top: 71px;
+        width: 90%;
+        @media #{$lg2}{
+            margin-top: 25px;
+        }
+    }
+    &-prev{
+        a{
+            font-weight: 600;
+            color: var(--si-common-black);
+            border-bottom: 2px solid var(--si-common-black);
+            padding-bottom: 3px;
+            i{
+                margin-right: 7px;
+                transform: rotate(45deg);
+            }
+        }
+    }
+    &-next{
+        a{
+            font-weight: 600;
+            color: var(--si-common-black);
+            padding-bottom: 3px;
+            border-bottom: 2px solid var(--si-common-black);
+            i{
+                margin-left: 7px;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+    &-box{
+        background: var(--si-common-gray);
+        padding: 24px 0 41px 36px;
+        border-top: 6px solid var(--si-common-black);
+        border-radius: 18px;
+        margin-top: 80px;
+        margin-left: 25px;
+        @media #{$xl,$lg}{
+            padding: 24px 0 41px 25px;
+            margin-left: 0;
+        }
+        @media #{$lg2}{
+            margin-left: 0;
+        }
+    }
+    &-right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &-title{
+        h3{
+            font-size: 36px;
+            line-height: 46px;
+            @media #{$xl}{
+                font-size: 33px;
+            }
+            @media #{$xl,$lg}{
+                font-size: 30px;
+            }
+        }
+    }
+    &-list{
+        ul{
+            li{
+                margin-top: 19px;
+                list-style: none;
+                a{
+                    font-weight: 600;
+                    color: var(--si-common-black);
+                }
+                span{
+                    font-weight: 400;
+                    color: #333333 !important;
+                    margin-left: 47px;
+                }
+            }
+        }
+    }
+    &-text3{
+        margin-right: 226px;
+        @media #{$xxl,$xl}{
+            margin-right: 145px;
+        }
+        @media #{$xl}{
+            margin-right: 125px;
+        }
+        @media #{$lg}{
+            margin-right: 20px;
+        }
+        @media #{$lg2}{
+            margin-right: 20px;
+        }
+        span{
+            display: block;
+            margin-top: 19px;
+        }
+    }
+    &-icon{
+        margin-top: 38px;
+        a{
+            display: inline-block;
+            width: 52px;
+            height: 52px;
+            line-height: 52px;
+            background: var(--si-common-black);
+            border-radius: 50%;
+            text-align: center;
+            margin-right: 3px;
+        }
+    }
+    &-box2{
+        background: var(--si-common-gray);
+        padding: 24px 0 41px 36px;
+        border-radius: 18px;
+        margin-top: 41px;
+        margin-left: 25px;
+        @media #{$xl,$lg}{
+            padding: 24px 0 41px 20px;
+            margin-left: 0;
+        }
+        @media #{$lg2}{
+            margin-left: 0;
+        }
+    }
+    &-right2{
+        display: flex;
+        gap: 25px;
+        margin-top: 23px;
+    }
+    &-icon2{
+        a{
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            background: var(--si-common-black);
+            border-radius: 50%;
+            text-align: center;
+            @media #{$lg}{
+                width: 55px;
+                height: 55px;
+                line-height: 55px;
+            }
+        }
+    }
+    &-text4{
+        position: relative;
+        top: 7px;
+        h4{
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 26px;
+        }
+    }
+}
+.portfolio-details-text{
+    margin-top: 41px;
+    @media #{$lg2}{
+        margin-top: 20px;
+    }
+}
+.next a{
+    padding: 14px 0px 14px 74px;
+    i{
+        margin-right: 9px;
+        margin-left: 15px;
+    }
+}
+.si-portfolio-details-mt2 {
+    margin-right: 0px !important;
+}

@@ -1,0 +1,177 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.7 Choose Us css
+/*----------------------------------------*/
+
+.si-choose{
+    &-bg{
+        background: var(--si-common-gray);
+        padding: 0px 35px 0px 35px;
+        border-radius: 20px;
+    }
+    &-one{
+        text-align: right;
+        margin-right: 18px;
+        margin-bottom: 26px;
+        @media #{$lg2}{
+            display: none;
+        }
+        span{
+            display: inline-block;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--si-common-white);
+            background: var(--si-common-black);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+        }
+    }
+    &-two{
+        text-align: left;
+        margin-left: 18px;
+        margin-bottom: 26px;
+        @media #{$lg2}{
+            display: none;
+        }
+        span{
+            display: inline-block;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--si-common-white);
+            background: var(--si-common-black);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+        }
+    }
+    &-three{
+        text-align: right;
+        margin-top: 26px;
+        margin-right: 18px;
+        @media #{$lg2}{
+            display: none;
+        }
+        span{
+            display: inline-block;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--si-common-white);
+            background: var(--si-common-black);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+        }
+    }
+    &-four{
+        text-align: left;
+        margin-top: 25px;
+        margin-left: 18px;
+        @media #{$lg2}{
+            display: none;
+        }
+        span{
+            display: inline-block;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--si-common-white);
+            background: var(--si-common-black);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+        }
+    }
+    &-box{
+        background: var(--si-common-white);
+        padding: 12px 0 7px 24px;
+        border-radius: 12px;
+        @media #{$lg}{
+            padding: 17px 7px 4px 14px;
+        }
+        @media #{$lg2}{
+            padding: 17px 20px 4px 14px;
+        }
+        h3{
+            color: var(--si-common-black);
+            font-size: 20px;
+            @media #{$lg2}{
+                margin-bottom: 18px;
+            }
+        }
+        p{
+            margin-top: -10px;
+            br{
+                @media #{$lg,$lg2}{
+                    display: none;
+                }
+       
+            }
+        }
+    }
+    &-thumb{
+        text-align: center;
+        margin-top: -5px;
+        @media #{$lg2}{
+            margin-top: 25px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        img{
+            border-radius: 50%;
+            border: 10px solid var(--si-common-white);
+            width: 300px;
+        }
+    }
+    &-shape {
+        position: relative;
+        right: -125px;
+        display: flex;
+        justify-content: right;
+        top: 90px;
+        @media (max-width: 1200px) {
+            display: none;
+        }
+    }
+    &-shape2 {
+        position: relative;
+        left: -125px;
+        display: flex;
+        justify-content: left;
+        top: 90px;
+        @media (max-width: 1200px) {
+            display: none;
+        }
+    }
+    &-shape3 {
+        position: relative;
+        left: 125px;
+        display: flex;
+        justify-content: right;
+        top: -87px;
+        @media (max-width: 1200px) {
+            display: none;
+        }
+    }
+    &-shape4 {
+        position: relative;
+        left: -125px;
+        display: flex;
+        justify-content: left;
+        top: -86px;
+        @media (max-width: 1200px) {
+            display: none;
+        }
+    }
+}
+.choose-top{
+    margin-top: 28px;
+}

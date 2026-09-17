@@ -1,0 +1,284 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/*   3.1 Header Style
+/*----------------------------------------*/
+
+.header-fixed{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 55;
+}
+.header-transparent {
+	position: absolute;
+	top: 30px;
+	left: 0;
+	right: 0;
+	z-index: 9;
+	width: 100%;
+}
+
+.si-header{
+    &-ptb{
+        @media #{$lg,$md,$xs}{
+            padding: 10px 0;
+        }
+    }
+    &-menu{
+        & > nav{
+            & > ul{
+                & > li{
+                    margin: 0 22px;
+                    list-style-type: none;
+                    display: inline-block;
+                    @media #{$xxl}{
+                        margin: 0 17px;
+                    }
+                    @media #{$xl}{
+                        margin: 0 11px;
+                    }
+                    & > a{
+                        padding: 50px 0;
+                        font-weight: 600;
+                        font-size: 18px;
+                        color: var(--si-common-black);
+                    }
+                }
+            }
+        }
+    }
+    &-lang{
+        & a{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1;
+            display: inline-block;
+            &.active{
+                color: var(--si-theme-primary);
+            }
+            &:not(:first-child){
+                margin-left: 10px;
+            }
+            &:hover{
+                color: var(--si-theme-primary);
+            }
+        }
+    }
+    &-box{  
+        @media #{$x3l,$xxl}{
+            padding-right: 30px;
+        }
+        @media #{$xl}{
+            padding-right: 0px;
+        }
+    }
+    &-logo{
+        & img {
+            width: 190px !important;
+        }
+        @media #{$x3l}{
+            padding-left: 30px;
+        }
+        @media #{$xl}{
+            padding-right: 25px;
+        }
+        @media #{$lg,$md,$xs}{
+            padding: 10px 0;
+        }
+    }
+    &-main {
+        display: flex;
+        justify-content: end;
+    }
+    &-main2 {
+        background: var(--si-common-white);
+        border: 1px solid var(--si-border-9);
+        border-radius: 100px;
+        padding: 17px 13px 16px 7px;
+    }
+    &-right{
+        display: flex;
+        align-items: center;
+        @media #{$lg,$md,$sm}{
+            justify-content: right;
+            gap: 20px;
+        }
+        @media #{$xs}{
+            display: block;
+            text-align: right;
+        }
+    }
+    &-bar{
+        & button{
+            color: var(--si-common-white);
+            border: 2px solid var(--si-common-text-body);
+            border-radius: 50px;
+            width: 44px;
+            height: 44px;
+            place-content: center;
+            &:hover{
+                & span {
+                    animation: bar_anim 0.8s cubic-bezier(0.44, 1.1, 0.53, 0.99) 1 forwards;
+                }
+            }
+        }
+    }
+    &-social{
+        @media #{$xl,$lg}{
+            display: none !important;
+        }
+        a{
+            margin-right: 15px;
+        }
+    }
+}
+.si-header-bar {
+	margin-left: 59px;
+    @media #{$xxl}{
+        margin-left: 0;
+    }
+}
+.si-header-white{
+    & .si-header-menu > nav > ul > li > a{
+        color: var(--si-common-white);
+    }
+    & .si-header-dropdown nav ul li.has-dropdown::after{
+        color: var(--si-common-white);
+    }
+    & .si-header-search-title{
+        color: var(--si-common-white);
+    }
+    & .si-header-bar button{
+        border: 1px solid var(--si-border-3);
+    }
+    &.header-sticky{
+        background: var(--si-common-black);
+    }
+}
+.si-offcanvas-open-btn span a {
+	color: var(--si-common-black);
+}
+.si-header-btn {
+	margin-left: 20px;
+    @media (max-width:1330px){
+        display: none;
+    }
+}
+// SI HEADER 2 AREA
+.si-header-2{
+    &-bg{
+        background: var(--si-common-white);
+        padding: 23px 22px;
+        border-radius: 100px;
+    }
+    &-right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: -13px;
+        margin-left: 73px;
+        @media #{$xxl}{
+            margin-left: 50px;
+        }
+    }
+    &-main{
+        justify-content: center !important;
+        margin-left: 27px;
+    }
+    &-btn-main{
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 24px;
+    }
+    &-bar{
+        width: 52px !important;
+        height: 52px !important;
+        line-height: 50px;
+        border: 1px solid var(--si-common-text-body);
+        border-radius: 50%;
+        &-inner{
+            position: relative;
+            left: 12px;
+            top: 12px;
+        }
+    }
+    &-bar:hover .line-one{
+        width: 25px;
+    }
+    &-bar:hover .line-three{
+        width: 25px;
+    }
+}
+.line-one {
+	display: block;
+	width: 19px;
+	height: 2px;
+	margin-bottom: 7px;
+	background: var(--si-common-text-body);
+	transition: 0.6s;
+}
+.line-two {
+	display: block;
+	width: 25px;
+	height: 2px;
+	margin-bottom: 7px;
+	background: var(--si-common-text-body);
+	transition: 0.6s;
+}
+.line-three {
+	display: block;
+	width: 14px;
+	height: 2px;
+	margin-bottom: 7px;
+	background: var(--si-common-text-body);
+	transition: 0.6s;
+}
+.header-2-sticky .si-header-2-bg {
+	padding: 15px 0;
+}
+// SI HEADER 3 AREA
+.si-header-3{
+    &-area{
+        border-bottom: 1px solid var(--si-border-3);
+        padding-bottom: 27px;
+    }
+    &-bg{
+        padding: 15px 22px;
+    }
+    &-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &-menu{
+        & > nav{
+            & > ul{
+                & > li{
+                    & > a{
+                        color: var(--si-common-white);
+                    }
+                }
+            }
+        }
+    }
+    &-bar{
+        border: 2px solid var(--si-common-white);
+        width: 56px !important;
+        height: 56px !important;
+        line-height: 56px !important;
+        span{
+            background: var(--si-common-white);
+            width: 25px !important;
+        }
+        &-inner{
+            left: 14px;
+            top: 9px;
+        }
+    }
+    &-left{
+        margin-left: 0px;
+    }
+}
+

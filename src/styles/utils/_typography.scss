@@ -1,0 +1,67 @@
+
+
+
+// Metric-matched Arial fallback for Inter: text keeps its layout when Inter swaps in (no CLS).
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  ascent-override: 90.49%;
+  descent-override: 22.56%;
+  line-gap-override: 0%;
+  size-adjust: 107.06%;
+}
+
+// General Font
+@font-face {
+  font-family: 'GeneralSans';
+  src: url("/src/assets/fonts/GeneralSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans';
+  src: url("/src/assets/fonts/GeneralSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans';
+  src: url("/src/assets/fonts/GeneralSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans';
+  src: url("/src/assets/fonts/GeneralSans-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans';
+  src: url("/src/assets/fonts/GeneralSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+
+// font family
+$font-family: (
+    'ff': (
+        'body': '"Inter Variable", "Inter Fallback", system-ui, sans-serif',
+        'heading': "GeneralSans",
+        'fontawesome': '"Font Awesome 6 Pro"',
+    )
+);
+
+// font size
+$font-size: (
+    'fz': (
+        'body': 14px,
+        'p': 16px,
+    )
+);

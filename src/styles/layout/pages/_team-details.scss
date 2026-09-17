@@ -1,0 +1,223 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.3 Team Details css
+/*----------------------------------------*/
+
+.si-team-details{
+    &-thumb{
+        img{
+            border-radius: 18px;
+            @media #{$lg2}{
+                width: 100%;
+            }
+        }
+    }
+    &-title{
+        @media #{$lg2}{
+            margin-top: 25px;
+        }
+        h1, .h1{
+            font-size: 70px;
+            line-height: 80px;
+            @media #{$xl,$lg}{
+                font-size: 50px;
+                line-height: 60px;
+            }
+            @media #{$xs}{
+                font-size: 40px;
+                line-height: 50px;
+            }
+        }
+        h2{
+            font-weight: 400;
+            font-size: 36px;
+            line-height: 46px;
+            @media #{$xs}{
+                font-size: 26px;
+                line-height: 36px;
+            }
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 24px;
+            br{
+                @media (max-width:1600px){
+                    display: none;
+                }
+            }
+        }
+        span{
+            display: inline-block;
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 5px;
+            br{
+                @media (max-width:1600px){
+                    display: none;
+                }
+            }
+        }
+    }
+    &-main {
+        display: flex;
+        gap: 61px;
+        margin-top: 25px;
+        @media #{$xs}{
+            display: block;
+        }
+    }
+    &-text{
+        @media #{$xs}{
+            margin-bottom: 15px;
+        }
+        strong{
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--si-common-black);
+            display: block;
+        }
+        h3{
+            font-size: 24px;
+            line-height: 34px;
+            margin-top: 6px;
+        }
+    }
+    &-icon{
+        margin-top: 22px;
+        span{
+            color: var(--si-common-black);
+            font-size: 18px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 19px;
+        }
+        ul{
+            li{
+                list-style: none;
+                display: inline;
+                margin-right: 4px;
+                a{
+                    width: 60px;
+                    height: 60px;
+                    line-height: 60px;
+                    border: 1px solid var(--si-border-1);
+                    text-align: center;
+                    display: inline-block;
+                    border-radius: 50%;
+                    transition: 0.6s;
+                    &:hover{
+                        background: var(--si-common-black);
+                    }
+                    &:hover i{
+                        color: var(--si-common-white);
+                    }
+                    &:hover svg{
+                        fill: var(--si-common-white);
+                    }
+                    i{
+                        font-size: 20px;
+                        transition: 0.6s;
+                    }
+                    svg{
+                        width: 25px;
+                        margin-top: -4px;
+                        transition: 0.6s;
+                    }
+                }
+            }
+        }
+    }
+    &-box{
+        background: var(--si-common-gray);
+        padding: 94px 135px 73px 135px;
+        border-radius: 30px;
+        margin-top: 130px;
+        @media #{$lg2}{
+            padding: 50px 35px 40px 35px;
+            margin-top: 45px;
+        }
+    }
+    &-from{
+        position: relative;
+        input{
+            border: 1px solid var(--si-border-1);
+            font-size: 18px;
+            width: 100%;
+            padding-left: 19px !important;
+            border-radius: 10px;
+            background: var(--si-common-white);
+        }
+        input::placeholder{
+            color: var(--si-common-text-body);
+            font-size: 18px;
+        }
+        input:focus{
+            border: 1px solid var(--si-border-1);
+        }
+        textarea{
+            border: 1px solid var(--si-border-1);
+            font-size: 18px;
+            width: 100%;
+            height: 178px;
+            padding-left: 19px !important;
+            border-radius: 10px;
+            background: var(--si-common-white);
+        }
+        textarea::placeholder{
+            color: var(--si-common-text-body);
+            font-size: 18px;
+        }
+        textarea:focus{
+            border: 1px solid var(--si-border-1);
+        }
+    }
+    &-icon2 {
+        position: absolute;
+        top: 17px;
+        right: 23px;
+    }
+    &-btn{
+        background: var(--si-common-black);
+        color: var(--si-common-white);
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        padding: 18px 0px;
+        border-radius: 10px;
+        margin-top: 39px;
+        &:hover{
+            color: var(--si-common-white);
+        }
+    }
+}
+.team-dot{
+    position: relative;
+    &::before{
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 4px;
+        height: 2px;
+        width: 192px;
+        background: var(--si-common-black);
+    }
+}
+.select-items {
+	border: 1px solid var(--si-border-1);
+	font-size: 18px;
+	width: 100%;
+	padding-left: 19px !important;
+	border-radius: 10px;
+	color: var(--si-common-text-body);
+	background: var(--si-common-white);
+	padding: 18px 0px;
+}
+.select-items2{
+    color: var(--si-common-text-body);
+    font-size: 18px;
+}
+.select-items:focus{
+    border: 1px solid var(--si-border-1);
+}

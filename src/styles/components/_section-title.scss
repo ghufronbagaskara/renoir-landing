@@ -1,0 +1,51 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.1 Section Title
+/*----------------------------------------*/
+
+.si-section-title{
+    span{
+        display: inline-block;
+        font-size: 18px;
+        line-height: 18px;
+        font-weight: 600;
+        color: var(--si-common-black);
+        position: relative;
+        text-transform: uppercase;
+        font-family: var(--si-ff-body);
+        margin-left: 67px;
+        @media #{$lg2}{
+            font-size: 16px;
+        }
+        &::before{
+            position: absolute;
+            content: "";
+            top: 8px;
+            left: -67px;
+            width: 50px;
+            height: 2px;
+            background: var(--si-common-black);
+        }
+    }
+    h2{
+        margin-top: 12px;
+    }
+    p{
+        margin-top: 21px;
+    }
+}
+.si-white{
+    span{
+        color: var(--si-common-white);
+        &::before{
+            background: var(--si-common-white);
+        }
+    }
+    h2{
+        color: var(--si-common-white);
+    }
+    p{
+        color: var(--si-common-white);
+    }
+}

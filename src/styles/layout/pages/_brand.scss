@@ -1,0 +1,48 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  1.2 Banner Css
+/*----------------------------------------*/
+
+.si-brand{
+    &-wrappere {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        border-top: 1px solid var(--si-border-1);
+        border-inline-start: 1px solid var(--si-border-1);
+        @media #{$lg2}{
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @media #{$lg2}{
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    &-box {
+        height: 237px;
+        padding: 20px;
+        border-inline-end: 1px solid var(--si-border-1);
+        border-bottom: 1px solid var(--si-border-1);
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.6s;
+        @media #{$lg}{
+            height: 200px;
+        }
+        @media #{$lg2}{
+            height: 120px;
+        }
+        img{
+            transition: 0.6s;
+        }
+    }
+    &-box:hover img{
+        transform: scale(1.1);
+    }
+}
+// BRAND 2 AREA
+.si-brand-2{
+    &-area{
+        background: var(--si-common-black);
+    }
+}

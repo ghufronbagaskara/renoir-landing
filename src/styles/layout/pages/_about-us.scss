@@ -1,0 +1,301 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  1.3 About css
+/*----------------------------------------*/
+
+.si-about{
+    &-text{
+        h2{
+            margin-top: -14px;
+            @media #{$lg}{
+                margin-top: -9px;
+            }
+            @media #{$lg2}{
+                margin-top: 0px;
+            }
+        }
+    }
+    &-text2{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+        @media #{$xxl,$xl,$lg}{
+            display: block;
+        }
+        h1{
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 46px;
+            margin-bottom: -9px;
+            @media #{$xxl,$xl,$lg}{
+                margin-top: 19px;
+            }
+            @media #{$lg}{
+                font-size: 25px;
+                line-height: 35px;
+            }
+            @media #{$md}{
+                font-size: 22px;
+                line-height: 32px;
+            }
+            @media #{$xs}{
+                font-size: 20px;
+                line-height: 30px;
+            }
+        }
+    }
+    &-shape {
+        margin-top: -93px;
+        position: relative;
+        display: inline-block;
+        @media #{$lg,$lg2}{
+            display: none;
+        }
+    }
+    &-text3{
+        position: absolute;
+        top: 157px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        @media #{$xl}{
+            margin-top: -18px;
+        }
+        h3{
+            font-size: 50px;
+            line-height: 50px;
+        }
+        span{
+            font-size: 14px;
+            line-height: 14px;
+            display: block;
+            margin-top: 12px;
+        }
+    }
+    &-box{
+        margin-top: 39px;
+        display: flex;
+        align-items: center;
+        gap: 39px;
+        @media #{$x3l}{
+            gap: 25px;
+        }
+        @media #{$xxl,$xl,$lg,$lg2}{
+            display: block;
+            margin-top: 30px;
+        }
+    }
+    &-img{
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-img2{
+        margin-left: 23px;
+        @media #{$x3l}{
+            margin-left: 7px;
+        }
+        @media #{$lg,$lg2}{
+            margin-left: 0px;
+            margin-top: 15px;
+        }
+    }
+    &-main{
+        @media #{$xxl,$xl,$lg}{
+            margin-top: 30px;
+        }
+        @media #{$lg,$lg2}{
+            margin-top: 15px;
+        }
+        h1{
+            font-size: 16px;
+            background: var(--si-common-gray);
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            border-radius: 50%;
+            margin-left: -35px;
+            margin-bottom: 16px;
+        }
+        h2{
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 34px;
+        }
+    }
+}
+// ABOUT 2 AREA
+.si-about-2{
+    &-area{
+        background: var(--si-common-black);
+    }
+    &-box{
+        background: var(--si-common-gray-2);
+        padding: 101px 0 40px 39px;
+        border-radius: 18px;
+        position: relative;
+        margin-top: 30%;
+        @media #{$xxl}{
+            padding: 101px 0 40px 30px;
+        }
+        @media #{$lg2}{
+            margin-top: 15%;
+        }
+    }
+    &-text{
+        p{
+            font-size: 28px;
+            line-height: 40px;
+            color: var(--si-common-white);
+            @media #{$xxl}{
+                font-size: 26px;
+            }
+            @media #{$lg,$lg2}{
+                font-size: 22px;
+            }
+        }
+    }
+    &-btn {
+        margin-top: 44px;
+    }
+    &-img{
+        position: absolute;
+        top: -56px;
+        left: 40px;
+        img{
+            border: 3px solid var(--si-common-white);
+            border-radius: 50%;
+        }
+    }
+    &-text2{
+        h2{
+            font-size: 50px;
+            line-height: 60px;
+            color: var(--si-common-white);
+            margin-top: -8px;
+            @media #{$xxl,$xl}{
+                font-size: 43px;
+                line-height: 51px;
+                margin-top: -7px;
+            }
+            @media #{$lg}{
+                font-size: 37px;
+                line-height: 51px;
+                margin-top: -7px;
+            }
+            @media #{$lg2}{
+                font-size: 40px;
+                margin-top: 35px;
+            }
+        }
+    }
+    &-thumb{
+        margin-top:47px;
+        position: relative;
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-counter{
+        background: var(--si-common-white);
+        display: inline-block;
+        padding: 14px 22px 39px 25px;
+        border-radius: 10px 10px 0px 0px;
+        position: absolute;
+        bottom: 0;
+        right: 42px;
+        @media #{$xxl,$lg}{
+            padding: 14px 22px 15px 25px;
+        }
+        @media #{$lg2}{
+            position: inherit;
+            margin-top: 25px;
+            right: 0;
+            border-radius: 10px;
+        }
+        h3{
+            font-size: 60px;
+            line-height: 70px;
+            display: inline-block;
+            @media #{$lg}{
+                font-size: 45px;
+                line-height: 45px;
+            }
+        }
+        span{
+           display: block;
+           font-size: 16px;
+           font-weight: 600;
+           margin-top: 26px;
+           @media #{$xl,$lg}{
+                margin-top: 0;
+            }
+        }
+    }
+}
+// SI ABOUT 3 AREA
+.si-about-3{
+    &-main{
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        @media #{$xxl}{
+            gap: 20px;
+        }
+        @media #{$xl,$lg,$lg2}{
+            display: block;
+        }
+    }
+    &-thumb{
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-text{
+        @media #{$xl,$lg,$lg2}{
+            margin-top: 25px;
+        } 
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            font-weight: 400;
+            @media #{$xxl,$lg2}{
+                font-size: 19px;
+            }
+        }
+    }
+    &-btn {
+        margin-top: 42px;
+        @media #{$lg,$lg2}{
+            margin-top: 25px;
+        }
+    }
+    &-img{
+        margin-top: 9px;
+        @media #{$xl}{
+            margin-top: 6px;
+        }
+        @media #{$lg2}{
+            margin-top: 25px;
+        }
+        img{
+            border-radius: 18px;
+            max-width: inherit;
+            @media (max-width: 1700px){
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.section-title-3{
+    margin-bottom: 111px;
+    @media #{$xl,$lg,$lg2}{
+        margin-bottom: 60px;
+    }
+}

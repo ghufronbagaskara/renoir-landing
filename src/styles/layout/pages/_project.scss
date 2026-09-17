@@ -1,0 +1,290 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.8 Pricing CSS
+/*----------------------------------------*/
+
+.si-project{
+    &-main{
+        display: flex;
+        justify-content: space-between;       
+    }
+    &-box{
+        background: var(--si-common-gray);
+        border-radius: 18px;
+        padding: 30px 30px 35px 30px;
+    }
+    &-img{
+        img{
+            border-radius: 18px;
+            width: 100%;
+        }
+    }
+    &-right{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 29px;
+    }
+    &-right-inner {
+        display: flex;
+        gap: 61px;
+        @media #{$xl,$lg,$sm,$sm2}{
+            gap: 40px;
+        }
+    }
+    &-number{
+        margin-top: 12px;
+        span{
+            font-size: 20px;
+            color: var(--si-common-black);
+            @media #{$lg}{
+                font-size: 18px;
+            }
+        }
+    }
+    &-text{
+        h3{
+            margin-bottom: 13px;
+            @media #{$xl,$lg2}{
+                font-size: 34px;
+            }
+            @media #{$lg}{
+                font-size: 23px;
+            }
+            @media #{$sm2}{
+                font-size: 25px;
+            }
+        }
+    }
+    &-year{
+        transform: rotate(-45deg);
+        @media #{$sm2}{
+            display: none;
+        }
+        span{
+            border: 1px solid #0F0F0F;
+            border-radius: 30px;
+            padding: 5px 29px;
+            position: relative;
+            &::before{
+                position: absolute;
+                content: "";
+                top: 13px;
+                left: 18px;
+                width: 6px;
+                height: 6px;
+                background: var(--si-common-text-body);
+                border-radius: 50%;
+            }
+        }
+    }
+}
+.relative-tag{
+    position: relative;
+}
+.project-dot{
+    position: relative;
+    margin-right: 29px;
+    &::before{
+        position: absolute;
+        content: "";
+        right: -21px;
+        top: 8px;
+        width: 8px;
+        height: 8px;
+        background: var(--si-common-text-body);
+        border-radius: 50%;
+    }
+}
+.navigation-icon {
+	@media #{$xs}{
+        display: none;
+    }
+}
+.si-button-next.navigation-icon {
+	position: absolute;
+	left: 0;
+	top: 13px;
+}
+.si-button-prev.navigation-icon {
+	position: absolute;
+	right: 0;
+	top: 13px;
+}
+// SI PROJECT 2 AREA
+.si-project-2{
+    &-area{
+        background: var(--si-common-gray);
+    }
+    &-title-box h1 {
+        font-size: 150px;
+        line-height: 100px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    &-box{
+        background: var(--si-common-white);
+        padding: 24px 24px 35px 24px;
+        border-radius: 18px;
+        position: relative;
+        z-index: 1;
+    }
+    &-thumb{
+        border-radius: 18px;
+        height: 640px;
+        @media #{$xl,$xxl}{
+            height: 450px;
+        }
+        @media #{$lg}{
+            height: 240px;
+        }
+        @media #{$sm}{
+            height: 440px;
+        }
+        @media #{$sm2}{
+            height: 230px;
+        }
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-text{
+        margin-top: 19px;
+        h2{
+            margin-bottom: 13px;
+            font-size: 36px;
+            line-height: 46px;
+            @media #{$xl}{
+                font-size: 33px;
+            }
+        }
+        span{
+            position: relative;
+            margin-right: 28px;
+            @media #{$lg,$lg2}{
+                margin-right: 0;
+                margin-top: 9px;
+                display: block;
+            }
+            &::before{
+                position: absolute;
+                content: "";
+                right: -21px;
+                top: 8px;
+                width: 8px;
+                height: 8px;
+                background: var(--si-common-text-body);
+                border-radius: 50%;
+                @media #{$lg,$lg2}{
+                    display: none;
+                }
+            }
+            &:last-child::before{
+                display: none;
+            }
+        }       
+    }
+    &-btn {
+        text-align: center;
+        margin-top: 61px;
+    }
+}
+.project-2-top{
+    margin-top: 400px;
+}
+.hide{
+    @media #{$lg2}{
+        margin-top: 30px;
+    }
+}
+// SI PROJECT 3 AREA
+.si-project-3{
+    &-bg{
+        padding-bottom: 367px;
+    }
+    &-main{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @media #{$lg2}{
+            display: block;
+        }
+    }
+    &-btn{
+        margin-top: 116px;
+        @media #{$xl,$lg}{
+            margin-top: 0px;
+        }
+        @media #{$lg2}{
+            margin-top: 20px;
+        }
+        a{
+            display: inline-block;
+            font-weight: 600;
+            color: var(--si-common-white);
+            border-bottom: 1px solid var(--si-common-white);
+            padding-bottom: 3px;
+            i{
+                transform: rotate(-49deg);
+                margin-left: 7px;
+            }
+        }
+    }
+    &-box{
+        margin-top: 57px;
+    }
+    &-thumb{
+        border-radius: 15px;
+        height: 700px;
+        @media #{$xl,$xxl}{
+            height: 450px;
+        }
+        @media #{$lg}{
+            height: 240px;
+        }
+        @media #{$lg2}{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+        img{
+            border-radius: 15px;
+        }
+    }
+    &-text{
+        margin-top: 19px;
+        h3{
+            margin-bottom: 13px;
+            margin-top: 29px;
+            @media #{$xl}{
+                font-size: 33px;
+            }
+        }
+        span{
+            position: relative;
+            margin-right: 28px;
+            @media #{$lg,$lg2}{
+                margin-right: 0;
+                margin-top: 9px;
+                display: block;
+            }
+            &::before{
+                position: absolute;
+                content: "";
+                right: -21px;
+                top: 8px;
+                width: 8px;
+                height: 8px;
+                background: var(--si-common-text-body);
+                border-radius: 50%;
+                @media #{$lg,$lg2}{
+                    display: none;
+                }
+            }
+            &:last-child::before{
+                display: none;
+            }
+        }       
+    }
+}

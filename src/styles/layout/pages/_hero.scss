@@ -1,0 +1,275 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  1.1 Hero css
+/*----------------------------------------*/
+
+.si-hero{
+    &-area{
+        position: relative;
+        background: var(--si-common-gray);
+        padding-top: 210px;
+        overflow: hidden;
+    }
+    &-text{
+        h1{
+            position: relative;
+            z-index: 1;
+        }
+    }
+    &-shape{
+        position: absolute;
+        top: 202px;
+        right: 123px;
+        z-index: 1;
+        @media (max-width: 1400px){
+            display: none;
+        }
+    }
+    &-shape2{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    &-thumb{
+        height: 851px;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    &-text2{
+        display: flex;
+        justify-content: right;
+        margin-top: -82px;
+        margin-right: 47px;
+        padding-bottom: 55px;
+        @media (max-width: 1400px){
+            display: block;
+            margin-top: 20px;
+            margin-right: 0;
+            position: relative;
+            z-index: 1;
+        }
+        p{
+            font-size: 24px;
+            line-height: 38px;
+            z-index: 1;
+            @media #{$lg2}{
+                font-size: 20px;
+                line-height: 30px;
+            }
+            br{
+                @media #{$lg2}{
+                    display: none;
+                }
+            }
+        }
+    }
+}
+// SI HERO 2 AREA
+.si-hero-2{
+    &-area{
+        position: relative;
+        z-index: 1;
+        padding-top: 727px;
+        padding-bottom: 167px;
+        @media #{$xxl,$xl}{
+            padding-top: 500px;
+        }
+        @media #{$lg,$lg2}{
+            padding-top: 400px;
+        }
+        &::before{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(15, 15, 15, 0) 0%, #0F0F0F 90.8%);
+            z-index: -1;
+        }
+        &::after{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--si-common-black);
+            opacity: 0.1;
+            z-index: -1;
+        }
+    }
+    &-main{
+        display: flex;
+        align-items: center;
+        gap: 10%;
+        @media #{$lg,$lg2}{
+            display: block;
+        }
+    }
+    &-text{
+        h1{
+            font-size: 110px;
+            line-height: 120px;
+            color: var(--si-common-white);
+            @media #{$xxl}{
+                font-size: 93px;
+                line-height: 115px;
+            }
+            @media #{$xl}{
+                font-size: 50px;
+                line-height: 70px;
+            }
+            @media #{$lg}{
+                font-size: 75px;
+                line-height: 90px;
+                margin-bottom: 25px;
+            }           
+            @media #{$lg2}{
+                font-size: 64px;
+                line-height: 85px;
+                margin-bottom: 25px;
+            }           
+            @media #{$sm2}{
+                font-size: 37px;
+                line-height: 50px;
+            }           
+            br{
+               @media #{$xl,$lg2}{
+                    display: none;
+                } 
+            }
+        }
+    }
+    &-text2{
+        p{
+            color: var(--si-common-white);
+            margin-top: -11.3%;
+            @media #{$xl,$lg,$lg2}{
+                margin-top: 0;
+            }
+        }
+    }
+    &-btn {
+        position: relative;
+        top: 29px;
+    }
+}
+// SI HERO 3 AREA
+.si-hero-3{
+    &-area{
+        padding-top: 242px;
+        padding-bottom: 93px;
+    }
+    &-text{
+        h1{
+            color: var(--si-common-white);
+            font-size: 160px;
+            line-height: 170px;
+            margin-left: 72px;
+            @media #{$xxl}{
+                font-size: 130px;
+                line-height: 140px;
+            }
+            @media #{$xl}{
+                font-size: 100px;
+                line-height: 120px;
+                margin-left: 0;
+            }
+            @media #{$lg}{
+                font-size: 90px;
+                line-height: 110px;
+                margin-left: 0;
+            }
+            @media #{$lg2}{
+                font-size: 70px;
+                line-height: 90px;
+                margin-left: 0;
+            }
+            @media #{$sm2}{
+                font-size: 41px;
+                line-height: 55px;
+            }
+            span{
+                margin-left: 300px;
+                display: flex;
+                align-items: center;
+                gap: 41px;
+                font-weight: 500;
+                @media #{$xl}{
+                    margin-left: 100px;
+                }
+                @media #{$lg}{
+                    margin-left: 50px;
+                }
+                @media #{$lg2}{
+                    margin-left: 0px;
+                }
+                img{
+                    margin-top: 10px;
+                    @media #{$lg2}{
+                        display: none;
+                    }
+                }
+            }
+        }        
+    }
+    &-p{
+        display: flex;
+        justify-content: end;
+        margin-right: 150px;
+        margin-top: 25px;
+        @media #{$lg,$xl}{
+            justify-content: left;
+        }
+        p{
+            color: var(--si-common-white);
+            font-size: 20px;
+            line-height: 32px;
+            font-weight: 400;
+            @media #{$sm2}{
+                font-size: 18px;
+            }
+            br{
+                @media #{$lg2}{
+                    display: none;
+                }
+            }
+        }
+    }
+    &-btn {
+        text-align: center;
+        margin-left: 262px;
+        margin-top: 36px;
+        @media #{$lg,$xl,$lg2}{
+            margin-left: 0;
+            text-align: left;
+        }
+        @media #{$sm2}{
+            margin-top: 10px;
+        }
+    }
+    &-shape{
+        margin-top: 66px;
+        @media #{$sm2}{
+            margin-top: 25px;
+        }
+        h2{
+            font-size: 18px;
+            background: var(--si-common-black);
+            color: var(--si-common-white);
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 52px;
+            text-align: center;
+            border-radius: 50%;
+            margin-left: -30px;
+            border: 3px solid var(--si-common-white);
+        }
+    }
+}

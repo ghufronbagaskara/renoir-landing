@@ -1,0 +1,56 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.1 Marquee css
+/*----------------------------------------*/
+
+.si-marquee{
+    &-item {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+        span{
+            color: var(--si-common-white);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            font-size: 160px;
+            line-height: 175px;
+            font-weight: 600;
+            @media #{$md}{
+                font-size: 90px;
+                line-height: 1.2;
+            }  
+            @media #{$xs}{
+                font-size: 50px;
+                line-height: 1.2;
+            }
+        }
+        img{
+            @media #{$md}{
+                width: 95px;
+            }
+            @media #{$xs}{
+                width: 75px;
+            }
+        }
+    }
+    &-textstoke{
+        color: transparent !important;
+        -webkit-text-stroke: 1px var(--si-common-white) !important;
+    }
+    &-colortext{
+        color: var(--si-theme-primary) !important;
+        -webkit-text-stroke: 1px #fff !important;       
+    }
+    &-active .swiper-slide {
+        width: auto;
+        margin: 0 -135px;
+    }
+    &-active .swiper-wrapper {
+        -webkit-transition-timing-function: linear;
+        transition-timing-function: linear;
+    }
+}
+.marquee-black{
+    color: var(--si-common-black) !important; 
+}

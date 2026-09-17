@@ -1,0 +1,120 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  1.0 Accordion
+/*----------------------------------------*/
+.si-faq{
+    &-accordion-wrap{
+        & .accordion-items{
+            padding-bottom: 15px;
+            border-top: 1px solid var(--si-border-7);
+            position: relative;
+            background: var(--si-common-white);
+        }
+        & .si-faq-number{
+            font-weight: 600;
+            font-size: 100px;
+            line-height: 136px;
+            color: #E7E8E9;
+            letter-spacing: -0.05em;
+            @media #{$md,$xs}{
+                font-size: 50px;
+            }
+        }
+        & .accordion-header{
+            margin-bottom: 0;
+            & .accordion-buttons{
+                padding-top: 24px;
+                padding-bottom: 6px;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 41px;
+                width: 100%;
+                letter-spacing: -0.02em;
+                color: var(--si-common-black);
+                display: flex;
+                align-items: center;
+                gap: 10px;                
+                @media #{$lg}{
+                    font-size: 20px;
+                }
+                @media #{$md}{
+                    font-size: 22px;
+                }
+                @media #{$xs}{
+                    font-size: 20px;
+                    line-height: 32px;
+                    padding-top: 24px;
+                }
+                &:not(.collapsed) .accordion-icon::before {
+                    transform: translate(-50%, -50%) rotate(90deg);
+                }
+                & .accordion-icon{
+                    position: absolute;
+                    top: 43px;
+                    right: 23px;
+                    @media #{$xs}{
+                        top: -41px;
+                    }
+                    &::before {
+                        position: absolute;
+                        content: "";
+                        width: 1.5px;
+                        height: 18px;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        background-color: var(--si-common-black);
+                        border-radius: 2px;
+                        transition: 0.4s;
+                    }
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        width: 18px;
+                        height: 1.5px;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        background-color: var(--si-common-black);
+                        border-radius: 2px;
+                    }
+                }
+            }
+            & span{
+                margin-right: 20px;
+                @media #{$xs}{
+                    margin-right: 10px;
+                }
+            }
+        }
+        & .accordion-body{
+            padding-bottom: 5px;
+            @media #{$xl,$lg,$md,$xs}{
+                padding-right: 0;
+            }
+            @media #{$md,$xs}{
+                padding-right: 30px;
+            }
+            & p{
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 34px;
+                color: var(--si-text-body);
+                margin-bottom: 0;
+                @media #{$md}{
+                    font-size: 18px;
+                }
+                @media #{$xs}{
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
+.accordion-body {
+	padding: 0;
+}
+.accordion-border {
+    border-bottom: 1px solid var(--si-border-7);
+}

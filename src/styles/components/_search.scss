@@ -1,0 +1,152 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.0 Search
+/*----------------------------------------*/
+
+.#{$theme-prifix}-search{
+    &-area{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        opacity: 0;
+        height: 300px;
+        visibility: hidden;
+        background: var(--si-common-white);
+        @include si-transform(translateY(calc(-100% + -80px)));
+        transition: all .5s ease-in-out 0s, visibility .5s ease-in-out;
+        animation: 0.95s ease 0s normal forwards 1 running headerSlideDown;
+        z-index: 99999;
+        overflow-y: scroll;
+        overscroll-behavior-y: contain;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
+        &.opened{
+            @include si-transform(translateY(0));
+            visibility: visible;
+            opacity: 1;
+        }
+        &.search-black{
+            background: rgba(38, 37, 40, 1);
+            & .si-search-content {
+                & .search{
+                    &::before{
+                        background-color: var(--si-common-white);
+                    }
+                }
+                & input{
+                    border-color: #4F4F4F;
+                    background-color: transparent;
+                    color: var(--si-common-white);
+                    @include si-placeholder{
+                        color: var(--si-common-white);
+                    }
+                }
+                & .si-search-icon{
+                    color: var(--si-common-white);
+                }
+            }
+            & .si-search-close-btn{
+                border-color: #4F4F4F;
+                color: var(--si-common-white);
+            }
+        }
+    }
+    &-wrapper{
+        position: relative;
+        display: flex;
+        padding-top: 80px;
+        justify-content: center;
+        @media #{$md} {
+          padding-top: 115px;
+        }
+    }
+    &-close{
+        position: absolute;
+        top: 35px;
+        right: 35px;
+        @media #{$xs}{
+            right: 20px;
+            top: 20px;
+        }
+        &-btn{
+            position: relative;
+            height: 50px;
+            width: 50px;
+            z-index: 2;
+            line-height: 1;
+            border-radius: 50%;
+            @include si-transition();
+            background-color: transparent;
+            color: var(--si-common-black);
+            border:1px solid rgba($color: #161613, $alpha: 0.1);
+            & svg{
+                height: 12px;
+                width: 12px;
+                @include si-transition();
+                @include si-transform(translateY(-1px));
+            }
+            &:hover{
+                & svg{
+                    @include si-transform(rotate(90deg));
+                }
+            }
+        }
+    }
+    &-content{
+      & .search {
+          margin-bottom: 40px;
+          position: relative;
+          &:has(input:focus)::before {
+            width: 100%;
+          }
+          &::before{
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 0;
+            transition: .4s;
+            background-color: var(--si-common-black);
+          }
+      }
+      & input{
+          height: 80px;
+          border: none;
+          font-size: 30px;
+          font-weight: 400;
+          padding: 0 60px 0 10px;
+          @include si-transition();
+          border-bottom: 1px solid #E6E8F0;
+          color: var(--si-common-black);
+          background: var(--si-common-white);
+          &:focus{
+              &:hover{
+                  background: transparent;
+              }
+          }
+          @include si-placeholder{
+              font-size: 30px;
+              font-weight: 400;
+              color: var(--si-common-black);
+          }
+      }
+    }
+    &-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      line-height: 1;
+      transform: translateY(-50%);
+    }
+}
+.si-header-search-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 3px;
+    color: var(--si-common-white);
+}

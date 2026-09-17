@@ -1,0 +1,181 @@
+@use '../utils' as *;
+/*---------------------------------
+    1.2 Common Classes
+---------------------------------*/
+.w-img{
+	& img{
+		width: 100%;
+	}
+}
+.m-img{
+	& img{
+		max-width: 100%;
+	}
+}
+.fix {
+    overflow:hidden
+}
+.clear{
+    clear: both;
+}
+
+.z-index-1{
+	position: relative;
+	z-index: 1;
+}
+.z-index-2{
+	position: relative;
+	z-index: 2;
+}
+.z-index-3{
+	position: relative;
+	z-index: 3;
+}
+.z-index-4{
+	position: relative;
+	z-index: 4;
+}
+.z-index-5{
+	position: relative;
+	z-index: 5;
+}
+.z-index-6{
+	position: relative;
+	z-index: 6;
+}
+.z-index-7{
+	position: relative;
+	z-index: 7;
+}
+.z-index-8{
+	position: relative;
+	z-index: 8;
+}
+.z-index-9{
+	position: relative;
+	z-index: 9;
+}
+.z-index-10{
+	position: relative;
+	z-index: 10;
+}
+.gx-7{
+	--bs-gutter-x: 7px;
+}
+.gx-10{
+	--bs-gutter-x: 10px;
+}
+.gx-12{
+	--bs-gutter-x: 12px;
+}
+.gx-15{
+	--bs-gutter-x: 15px;
+}
+.gx-20{
+	--bs-gutter-x: 20px;
+}
+.gx-24{
+	--bs-gutter-x: 24px;
+}
+.gx-30{
+	--bs-gutter-x: 30px;
+}
+.gx-40{
+	--bs-gutter-x: 40px;
+}
+.gx-45{
+	--bs-gutter-x: 45px;
+}
+.gx-50{
+	--bs-gutter-x: 50px;
+}
+.gx-55{
+	--bs-gutter-x: 55px;
+}
+.gx-60{
+	--bs-gutter-x: 60px;
+}
+.gx-70{
+	--bs-gutter-x: 70px;
+}
+.gx-80{
+	--bs-gutter-x: 80px;
+}
+.gx-90{
+	--bs-gutter-x: 90px;
+}
+.gx-100{
+	--bs-gutter-x: 100px;
+}
+.gx-135{
+	--bs-gutter-x: 135px;
+	@media #{$md}{
+		--bs-gutter-x: 30px;
+	}
+}
+.overflow-y-visible{
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+.text-capitalize{
+	text-transform: capitalize;
+}
+.text-uppercase{
+	text-transform: uppercase;
+}
+.p-relative{
+	position: relative;
+}
+.p-absolute{
+	position: absolute;
+}
+.underline-black:hover {
+    background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+    background-size: 0 2px, 100% 2px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s linear;
+    -webkit-transition: all 0.4s ease 0.3s 0s ease-out;
+    -moz-transition: all 0.4s ease 0.3s 0s ease-out;
+    -ms-transition: all 0.4s ease 0.3s 0s ease-out;
+    -o-transition: all 0.4s ease 0.3s 0s ease-out;
+    transition: all 0.4s ease 0.3s 0s ease-out;
+}
+.underline-black {
+    background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+    background-size: 0 1px, 0 1px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s linear;
+    -webkit-transition: all 0.4s ease 0.3s 0s ease-out;
+    -moz-transition: all 0.4s ease 0.3s 0s ease-out;
+    -ms-transition: all 0.4s ease 0.3s 0s ease-out;
+    -o-transition: all 0.4s ease 0.3s 0s ease-out;
+    transition: all 0.4s ease 0.3s 0s ease-out;
+}
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ml-71{
+	margin-left: 71px;
+}
+.navigation-icon a {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	border: 2px solid #868686;
+	line-height: 75px;
+	text-align: center;
+	border-radius: 50%;
+}
+.navigation-icon2 a {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+	border: 2px solid #868686;
+	line-height: 51px;
+	text-align: center;
+	border-radius: 50%;
+}

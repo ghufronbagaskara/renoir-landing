@@ -1,0 +1,288 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  2.2 Service Details css
+/*----------------------------------------*/
+
+.si-service-details{
+    &-area{
+        padding-top: 130px;
+        padding-bottom: 140px;
+        @media #{$lg2}{
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+    }
+    &-thumb{
+        img{
+            border-radius: 18px;
+        }
+    }
+    &-text{
+        margin-top: 55px;
+        span{
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--si-common-black);
+            text-transform: uppercase;
+        }
+        h1, .h1{
+            font-weight: 600;
+            font-size: 70px;
+            line-height: 80px;
+            margin-top: 8px;
+            @media #{$xl}{
+                font-size: 60px;
+            }
+            @media #{$lg}{
+                font-size: 49px;
+            }
+            @media #{$lg2}{
+                font-size: 40px;
+                line-height: 50px;
+            }
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 23px;
+            br{
+                @media (max-width:1599px){
+                    display: none;
+                }
+            }
+            @media #{$lg2}{
+                font-size: 18px;
+            }
+        }
+    }
+    &-thumb-main{
+        display: flex;
+        gap: 28px;
+        margin-top: 54px;
+        @media #{$lg2}{
+            display: block;
+        }
+    }
+    &-thumb2{
+        img{
+            border-radius: 18px;
+            @media #{$lg2}{
+                width: 100%;
+            }
+        }
+    }
+    &-thumb3{
+        img{
+            border-radius: 18px;
+            @media #{$lg2}{
+                width: 100%;
+                margin-top: 25px;
+            }
+        }
+    }
+    &-p{
+        margin-top: 55px;
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            br{
+                @media (max-width:1599px){
+                    display: none;
+                }
+            }
+            @media #{$lg2}{
+                font-size: 18px;
+            }
+        }
+    }
+    &-main{
+        display: flex;
+        justify-content: space-between;
+        @media (max-width:1399px){
+            display: block;
+        }
+    }
+    &-text2{
+        margin-top: 41px;
+        h2{
+            font-size: 36px;
+            line-height: 46px;
+            @media #{$xs}{
+                font-size: 29px;
+            }
+        }
+        p{
+            font-size: 20px;
+            line-height: 32px;
+            margin-top: 22px;
+            @media #{$xxl,$lg2}{
+                font-size: 18px;
+            }
+            br{
+                @media (max-width:1399px){
+                    display: none;
+                }
+            }
+        }
+    }
+    &-list-main{
+        display: flex;
+        gap: 111px;
+        margin-top: 31px;
+        @media (max-width:1399px){
+            margin-top: 25px;
+        }
+        @media #{$lg2}{
+            display: block;
+        }
+    }
+    &-list{
+        ul{
+            li{
+                list-style: none;
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--si-common-black);
+                margin-bottom: 19px;
+                img{
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    &-list2{
+        ul{
+            li{
+                list-style: none;
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--si-common-black);
+                margin-bottom: 19px;
+                img{
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    &-from{
+        width: 30.5%;
+        background: var(--si-common-gray);
+        padding: 30px 36px 40px 36px;
+        border-radius: 18px;
+        @media (max-width:1399px){
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+        @media #{$xl}{
+            width: 35%;
+        }
+        @media #{$lg}{
+            width: 40%;
+        }
+        @media #{$lg2}{
+            width: 100%;
+        }
+        h3{
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        &-inner{
+            input{
+                border: 1px solid var(--si-border-1);
+                font-size: 18px;
+                width: 100%;
+                padding-left: 19px !important;
+                border-radius: 10px;
+                background: var(--si-common-white);
+            }
+            input::placeholder{
+                color: var(--si-common-text-body);
+                font-size: 18px;
+            }
+            input:focus{
+                border: 1px solid var(--si-border-1);
+            }
+        }
+        &-inner{
+            position: relative;
+            input{
+                border: 1px solid var(--si-border-1);
+                font-size: 18px;
+                width: 100%;
+                padding-left: 19px !important;
+                border-radius: 10px;
+                background: var(--si-common-white);
+            }
+            input::placeholder{
+                color: var(--si-common-text-body);
+                font-size: 18px;
+            }
+            input:focus{
+                border: 1px solid var(--si-border-1);
+            }
+        }
+        &-inner2{
+            margin-top: 20px;
+            position: relative;
+            input{
+                border: 1px solid var(--si-border-1);
+                font-size: 18px;
+                width: 100%;
+                padding-left: 19px !important;
+                border-radius: 10px;
+                background: var(--si-common-white);
+            }
+            input::placeholder{
+                color: var(--si-common-text-body);
+                font-size: 18px;
+            }
+            input:focus{
+                border: 1px solid var(--si-border-1);
+            }
+        }
+        &-inner3{
+            position: relative;
+            margin-top: 20px;
+            textarea{
+                border: 1px solid var(--si-border-1);
+                font-size: 18px;
+                width: 100%;
+                height: 137px;
+                padding-left: 19px !important;
+                border-radius: 10px;
+                background: var(--si-common-white);
+            }
+            textarea::placeholder{
+                color: var(--si-common-text-body);
+                font-size: 18px;
+            }
+            textarea:focus{
+                border: 1px solid var(--si-border-1);
+            }
+        }
+    }
+    &-icon {
+        position: absolute;
+        top: 15px;
+        right: 23px;
+    }
+    &-btn {
+        margin-top: 39px;
+    }
+}
+.si-mt {
+	margin-top: 30px !important;
+}
+
+.si-faq-accordion-wrap .accordion-header .accordion-buttons .accordion-icon2 {
+	position: absolute;
+	top: 43px;
+	right: -33px;
+}
+.service-details-box{
+    width: 66%;
+    @media #{$lg2}{
+        width: 100%;
+    }
+}
