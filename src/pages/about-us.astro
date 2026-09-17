@@ -1,0 +1,20 @@
+---
+export const prerender = true;
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import About from "~/components/sections/about/About.astro";
+import Brand from "~/components/sections/shared/Brand.astro";
+import Video from "~/components/sections/about/Video.astro";
+import Counter3 from "~/components/sections/about/Counter3.astro";
+import Testimonial from "~/components/sections/shared/Testimonial.astro";
+import Award from "~/components/sections/shared/Award.astro";
+import TeamGrid from "~/components/sections/shared/TeamGrid.astro";
+---
+<BaseLayout title="About Us" breadcrumb={{ title: "About Us" }}>
+  <About />
+  <Brand />
+  <Video />
+  <Counter3 />
+  <Testimonial />
+  <Award />
+  <TeamGrid limit={4} />
+</BaseLayout>
