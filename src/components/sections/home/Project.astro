@@ -1,0 +1,66 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { getPortfolio } from "~/lib/content";
+
+const projects = (await getPortfolio())
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.featured! - b.data.featured!);
+---
+<section class="si-project-area pt-124 pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-section-title pb-60 text-center relative-tag">
+          <span>Our project</span>
+          <h2 class="si-text-revel-anim">See Our Works in Action</h2>
+          <div class="si-project-navigation">
+            <div class="si-button-next navigation-icon">
+              <a class="no-href" role="button" tabindex="0" aria-label="Previous project"><Img src="project/left.svg" alt="" /></a>
+            </div>
+            <div class="si-button-prev navigation-icon">
+              <a class="no-href" role="button" tabindex="0" aria-label="Next project"><Img src="project/right.svg" alt="" /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="si-project swiper">
+          <div class="swiper-wrapper">
+            {
+              projects.map((p, i) => (
+                <div class="swiper-slide">
+                  <div class="si-project-box">
+                    <div class="si-project-img">
+                      <Img src={p.data.featuredImage!} alt={p.data.title} />
+                    </div>
+                    <div class="si-project-right">
+                      <div class="si-project-right-inner">
+                        <div class="si-project-number">
+                          <span>{String(i + 1).padStart(2, "0")}</span>
+                        </div>
+                        <div class="si-project-text">
+                          <h3>
+                            <a class="underline-black" href={`/portfolio/${p.id}/`}>{p.data.title}</a>
+                          </h3>
+                          <span class="project-dot">{p.data.category}</span>
+                          <span>{p.data.subtitle}</span>
+                        </div>
+                      </div>
+                      <div class="si-project-year">
+                        <span>{p.data.year}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import { initSliders } from "~/scripts/sliders";
+  initSliders();
+</script>
