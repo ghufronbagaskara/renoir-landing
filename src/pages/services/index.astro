@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Service2 from "~/components/sections/services/Service2.astro";
+import Pricing from "~/components/sections/services/Pricing.astro";
+---
+<BaseLayout title="Our Services" breadcrumb={{ title: "Our Services" }}>
+  <Service2 />
+  <Pricing />
+</BaseLayout>
