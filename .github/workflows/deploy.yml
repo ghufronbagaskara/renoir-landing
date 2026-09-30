@@ -31,15 +31,18 @@ jobs:
         run: bun test
       - name: Type check
         run: bun run check
+      - name: Build and guard links/copy
+        run: bun run build && bun run check:links && bun run check:copy
       - name: Deploy
         run: bun alchemy deploy --stage ${{ env.STAGE }} --yes
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WORKERS_DEV_SUBDOMAIN: ${{ secrets.WORKERS_DEV_SUBDOMAIN }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          CONTACT_TO_EMAIL: ${{ secrets.CONTACT_TO_EMAIL }}
-          CONTACT_FROM_EMAIL: ${{ secrets.CONTACT_FROM_EMAIL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
+          LEADS_WEBHOOK_SECRET: ${{ secrets.LEADS_WEBHOOK_SECRET }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           GITHUB_REPO: ${{ github.event.repository.name }}
           PULL_REQUEST: ${{ github.event.number }}
