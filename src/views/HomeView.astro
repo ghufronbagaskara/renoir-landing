@@ -1,0 +1,38 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Hero from "~/components/sections/home/Hero.astro";
+import Problem from "~/components/sections/home/Problem.astro";
+import Service from "~/components/sections/home/Service.astro";
+import Project from "~/components/sections/home/Project.astro";
+import Process from "~/components/sections/shared/Process.astro";
+import Engagements from "~/components/sections/shared/Engagements.astro";
+import Rows from "~/components/sections/shared/Rows.astro";
+import Faq from "~/components/sections/shared/Faq.astro";
+import Notes from "~/components/sections/home/Notes.astro";
+import { path, routeAlternates, t, type Locale } from "~/i18n";
+import { faqNode } from "~/lib/seo";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const h = t(locale).home;
+---
+<BaseLayout
+  locale={locale}
+  title={h.metaTitle}
+  description={h.metaDescription}
+  alternates={routeAlternates("home")}
+  home
+  schema={[faqNode(path("home", locale), h.faq.items)]}
+>
+  <Hero locale={locale} />
+  <Problem locale={locale} />
+  <Service locale={locale} />
+  <Project locale={locale} />
+  <Process label={h.process.label} title={h.process.title} steps={h.process.steps} />
+  <Engagements locale={locale} />
+  <Rows title={h.why.title} rows={h.why.rows} />
+  <Faq id="home-faq" label={h.faq.label} title={h.faq.title} items={h.faq.items} />
+  <Notes locale={locale} />
+</BaseLayout>

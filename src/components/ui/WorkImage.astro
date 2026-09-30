@@ -1,0 +1,19 @@
+---
+import { imageMeta } from "~/lib/images";
+
+interface Props {
+  desktop: string;
+  mobile: string;
+  alt: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const { desktop, mobile, alt, loading = "lazy", fetchpriority } = Astro.props;
+const wide = imageMeta(desktop);
+const narrow = imageMeta(mobile);
+---
+<picture>
+  <source media="(max-width: 575px)" srcset={narrow.src} width={narrow.width} height={narrow.height} />
+  <img src={wide.src} width={wide.width} height={wide.height} alt={alt} loading={loading} fetchpriority={fetchpriority} decoding="async" />
+</picture>

@@ -1,0 +1,126 @@
+---
+// Project intake form (brief §12 fields), in three template skins: contact page, team details, service
+// details. Posts to /api/contact (Turnstile, then Telegram + Sheet sinks); works without JS via a 303 redirect.
+import Img from "~/components/ui/Img.astro";
+import { t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+  variant: "contact" | "service";
+  /** Where the message came from, stored with the submission. */
+  source: string;
+  /** Preselected "what to build" (service pages). */
+  build?: "marketing" | "internal" | "design" | "both" | "unsure";
+}
+const { locale, variant, source, build } = Astro.props;
+const f = t(locale).form;
+const id = `cf-${variant}`;
+const buildOptions = Object.entries(f.buildTypes);
+const timelineOptions = Object.entries(f.timelines);
+const budgetOptions = Object.entries(f.budgets);
+const messages = JSON.stringify(f.messages);
+---
+<form class="si-contact-form" method="post" action="/api/contact" data-contact-form data-messages={messages}>
+  <input type="hidden" name="source" value={source} />
+  <input type="hidden" name="locale" value={locale} />
+  <div class="visually-hidden" aria-hidden="true">
+    <label for={`${id}-website`}>{f.honeypot}</label>
+    <input id={`${id}-website`} type="text" name="company_website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  {
+    variant === "service" ? (
+      <>
+        <input type="hidden" name="build_type" value={build ?? "unsure"} />
+        <div class="si-service-details-from-inner">
+          <label class="visually-hidden" for={`${id}-name`}>{f.name}</label>
+          <input id={`${id}-name`} type="text" name="name" placeholder={f.name} autocomplete="name" required maxlength="120" />
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon2.svg" alt="" /></a></div>
+        </div>
+        <div class="si-service-details-from-inner2">
+          <label class="visually-hidden" for={`${id}-email`}>{f.email}</label>
+          <input id={`${id}-email`} type="email" name="email" placeholder={f.email} autocomplete="email" required maxlength="254" />
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon3.svg" alt="" /></a></div>
+        </div>
+        <div class="si-service-details-from-inner3">
+          <label class="visually-hidden" for={`${id}-message`}>{f.problem}</label>
+          <textarea id={`${id}-message`} name="message" placeholder={f.problem} required minlength="10" maxlength="5000"></textarea>
+          <div class="si-service-details-icon" aria-hidden="true"><a class="no-href"><Img src="service-details/icon4.svg" alt="" /></a></div>
+        </div>
+        <div class="cf-turnstile-slot" data-turnstile></div>
+        <div class="si-service-details-btn">
+          <button class="si-btn-one" type="submit"> <span class="btn-text"> <span>{f.submit}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></button>
+        </div>
+        <p class="form-reply">{f.reply}</p>
+      </>
+    ) : (
+      <div class="row">
+        <div class="col-md-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-name`}>{f.name}</label>
+            <input id={`${id}-name`} class="contact-border" type="text" name="name" placeholder={f.name} autocomplete="name" required maxlength="120" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-1.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-company`}>{f.company}</label>
+            <input id={`${id}-company`} class="contact-border" type="text" name="company" placeholder={f.company} autocomplete="organization" maxlength="120" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-3.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-email`}>{f.email}</label>
+            <input id={`${id}-email`} class="contact-border" type="email" name="email" placeholder={f.email} autocomplete="email" required maxlength="254" />
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-2.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-build`}>{f.buildType}</label>
+            <select id={`${id}-build`} class="select-items contact-border select-pt si-select-native" name="build_type" required data-prefill="build">
+              <option class="select-items2" value="" selected={!build} disabled>{f.buildType}</option>
+              {buildOptions.map(([value, label]) => <option class="select-items2" value={value} selected={build === value}>{label}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-message`}>{f.problem}</label>
+            <textarea id={`${id}-message`} class="contact-border" name="message" placeholder={f.problem} required minlength="10" maxlength="5000"></textarea>
+            <div class="si-team-details-icon2" aria-hidden="true"><a class="no-href"><Img src="team-details/team-d-4.svg" alt="" /></a></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-timeline`}>{f.timeline}</label>
+            <select id={`${id}-timeline`} class="select-items contact-border select-pt si-select-native" name="timeline">
+              <option class="select-items2" value="">{f.timeline}</option>
+              {timelineOptions.map(([value, label]) => <option class="select-items2" value={value}>{label}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="si-team-details-from pb-27">
+            <label class="visually-hidden" for={`${id}-budget`}>{f.budget}</label>
+            <select id={`${id}-budget`} class="select-items contact-border select-pt si-select-native" name="budget">
+              <option class="select-items2" value="">{f.budget}</option>
+              {budgetOptions.map(([value, label]) => <option class="select-items2" value={value}>{label}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="cf-turnstile-slot" data-turnstile></div>
+          <button class="si-team-details-btn" type="submit">{f.submit}</button>
+          <p class="form-reply">{f.reply}</p>
+        </div>
+      </div>
+    )
+  }
+
+  <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+</form>
+<script>
+  import "~/scripts/contact-form";
+</script>

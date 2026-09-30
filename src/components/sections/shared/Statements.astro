@@ -1,0 +1,58 @@
+---
+// Quote slider (was customer testimonials). Holds statements Renoir can stand behind — the problems it
+// solves (home) or what it believes (about) — never invented reviews.
+import Img from "~/components/ui/Img.astro";
+import CircleText from "~/components/ui/CircleText.astro";
+
+interface Props {
+  circle: string;
+  name: string;
+  slides: { label: string; quote: string }[];
+}
+const { circle, name, slides } = Astro.props;
+---
+<section class="si-testimonial-area pt-124">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="si-testimonial-shape">
+          <CircleText class="rotate2 statement-circle" text={circle} size={440} variant="ring" />
+          <div class="si-testimonial-icon">
+            <Img src="testimonial/Icon.svg" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 position-relative">
+        <div class="swiper si-testimonial card-testimonial">
+          <div class="swiper-wrapper">
+            {
+              slides.map((slide) => (
+                <div class="swiper-slide">
+                  <div class="si-testimonial-box">
+                    <div class="si-testimonial-text">
+                      <p class="h2">“{slide.quote}”</p>
+                    </div>
+                    <div class="si-testimonial-main">
+                      <div class="si-testimonial-thumb">
+                        <span class="statement-mark" aria-hidden="true">{name.charAt(0)}</span>
+                      </div>
+                      <div class="si-testimonial-address">
+                        <p class="h3">{name}</p>
+                        <span>{slide.label}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="si-swiper-scrollbar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import { initSliders } from "~/scripts/sliders";
+  initSliders();
+</script>

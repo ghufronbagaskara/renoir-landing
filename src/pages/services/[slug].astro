@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import ServiceView from "~/views/ServiceView.astro";
+import { getServices } from "~/lib/content";
+
+export const getStaticPaths = (async () =>
+  (await getServices()).map((entry) => ({ params: { slug: entry.data.en.slug }, props: { entry } }))) satisfies GetStaticPaths;
+---
+<ServiceView locale="en" entry={Astro.props.entry} />

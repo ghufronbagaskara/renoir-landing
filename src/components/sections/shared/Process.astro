@@ -1,0 +1,44 @@
+---
+import Img from "~/components/ui/Img.astro";
+import ProcessJoint from "~/components/ui/ProcessJoint.astro";
+
+interface Props {
+  label: string;
+  title: string;
+  steps: { title: string; body: string }[];
+  pt?: boolean;
+}
+const { label, title, steps, pt = true } = Astro.props;
+const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
+---
+<section class:list={["si-process-area pb-124", { "pt-124": pt }]}>
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="si-section-title">
+          <span>{label}</span>
+          <h2 class="si-text-revel-anim">{title}</h2>
+        </div>
+        <div class="si-process-box">
+          <div class="si-process-border">
+            <Img src="process/line.svg" alt="" />
+          </div>
+          {
+            steps.map((step, i) => (
+              <div class:list={["si-process-right si_fade_anim", { "pb-70": i < steps.length - 1 }]} data-fade-offset="18" data-duration="0.55" data-delay={String(i * 0.07)}>
+                <div class="si-process-icon">
+                  <span aria-hidden="true"><i class={`fa-sharp fa-regular ${icons[i % icons.length]}`}></i></span>
+                </div>
+                <div class="si-process-text">
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="si-process-thumb si_fade_anim" data-fade-offset="16" data-duration="0.7"><ProcessJoint /></div>
+</section>

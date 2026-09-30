@@ -1,0 +1,49 @@
+---
+// Rotating circular label (replaces the template's text-in-image PNGs so the text can be localised).
+// `textLength` stretches any phrase evenly around the full circle.
+interface Props {
+  text: string;
+  size: number;
+  /** "disc": dark filled circle, white text, asterisk centre (footer). "ring": text only, currentColor. */
+  variant: "disc" | "ring";
+  class?: string;
+}
+const { text, size, variant, class: className } = Astro.props;
+const id = `circle-${Math.abs([...text, variant].join("").split("").reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7))}`;
+const r = variant === "disc" ? 74 : 93;
+// Repeat short phrases so the ring is evenly filled (the template artwork repeats its label too).
+const label = variant === "ring" ? text.repeat(Math.max(1, Math.round(64 / text.length))) : text;
+const circumference = 2 * Math.PI * r;
+---
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 200 200"
+  role="img"
+  aria-label={text.split("·")[0].trim()}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <path id={id} d={`M100,100 m-${r},0 a${r},${r} 0 1,1 ${r * 2},0 a${r},${r} 0 1,1 -${r * 2},0`} />
+  </defs>
+  {variant === "disc" && <circle cx="100" cy="100" r="100" fill="#0F0F0F" />}
+  <text
+    fill={variant === "disc" ? "#fff" : "currentColor"}
+    font-size={variant === "disc" ? 12.5 : 9.5}
+    font-weight="500"
+    letter-spacing="1"
+    style="font-family: var(--si-ff-body)"
+  >
+    <textPath href={`#${id}`} textLength={circumference.toFixed(1)} lengthAdjust="spacing">{label}</textPath>
+  </text>
+  {
+    variant === "disc" && (
+      <g stroke="#fff" stroke-width="3" stroke-linecap="round">
+        {[0, 45, 90, 135].map((a) => (
+          <line x1="100" y1="76" x2="100" y2="124" transform={`rotate(${a} 100 100)`} />
+        ))}
+      </g>
+    )
+  }
+</svg>

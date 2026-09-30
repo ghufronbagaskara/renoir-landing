@@ -1,0 +1,4 @@
+// Site-wide stylesheet: the template's own SCSS + small replacements for removed plugins.
+// Stock Bootstrap 5.2.3 CSS is imported in BaseLayout. Unused selectors are purged at build.
+@use "main";
+@use "site";

@@ -1,0 +1,20 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  1.8 FAQ css
+/*----------------------------------------*/
+
+.si-faq{
+    &-area{
+        padding-bottom: 120px;
+        @media #{$md,$xs}{
+            margin-top: 0;
+            padding-top: 80px;
+            padding-bottom: 80px;
+        }
+    }
+}
+.faq-more{
+    margin-top: 0 !important;
+    padding-top: 150px !important;
+}

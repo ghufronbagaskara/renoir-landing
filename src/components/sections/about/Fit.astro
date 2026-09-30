@@ -1,0 +1,41 @@
+---
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Locale } from "~/i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const f = t(locale).about.fit;
+const groups = [
+  { label: f.goodTag, rows: f.rows.filter((row) => row.good), good: true },
+  { label: f.badTag, rows: f.rows.filter((row) => !row.good), good: false },
+];
+---
+<section class="si-award-area about-fit pb-95" aria-labelledby="about-fit-title">
+  <div class="container container-1617">
+    <div class="about-fit-head">
+      <div>
+        <span class="about-fit-kicker">{f.label}</span>
+        <h2 id="about-fit-title">{f.title}</h2>
+      </div>
+      <p>{f.intro}</p>
+    </div>
+    <div class="about-fit-groups">
+      {groups.map((group) => (
+        <div class:list={["about-fit-group", { "about-fit-group-muted": !group.good }]}>
+          <h3>{group.label}</h3>
+          {group.rows.map((row, index) => (
+            <div class="about-fit-row" data-line-reveal>
+              <span class="about-fit-index">{String(index + 1).padStart(2, "0")}</span>
+              <p>{row.text}</p>
+              {group.good && <BrandMark class="about-fit-row-mark" />}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+    <a class="about-fit-cta" href={path("contact", locale)}>{f.cta}<i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i></a>
+  </div>
+</section>
+<script>
+  import "~/scripts/reveal-lines";
+</script>

@@ -1,0 +1,30 @@
+---
+import Accordion from "~/components/ui/Accordion.astro";
+
+interface Props {
+  id: string;
+  label: string;
+  title: string;
+  items: { question: string; answer: string }[];
+}
+const { id, label, title, items } = Astro.props;
+---
+<section class="si-faq-area pt-124">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="si-section-title pb-78">
+          <span>{label}</span>
+          <h2 class="si-text-revel-anim">{title}</h2>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="si-faq-box">
+          <div class="si-faq-accordion-wrap">
+            <Accordion id={id} items={items} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

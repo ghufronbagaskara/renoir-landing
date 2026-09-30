@@ -1,0 +1,10 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import NoteView from "~/views/NoteView.astro";
+import { getNotes, noteSlug } from "~/lib/content";
+
+export const getStaticPaths = (async () =>
+  (await getNotes("id")).map((entry) => ({ params: { slug: noteSlug(entry) }, props: { entry } }))) satisfies GetStaticPaths;
+---
+<NoteView locale="id" entry={Astro.props.entry} />

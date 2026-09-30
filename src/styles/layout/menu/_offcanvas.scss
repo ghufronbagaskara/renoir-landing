@@ -1,0 +1,237 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/*  4.3 offcanvas Menu
+/*----------------------------------------*/
+
+// -------- si-overlay --------//
+.body-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.45s ease-in-out;
+    background: rgba(24, 24, 24, 0.4);
+    &.opened {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+// -------- si-overlay -------//
+
+
+// -------- si-offcanvas-1 -------//
+.si-offcanvas {
+    &-wrapper {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 450px;
+        height: 100vh;
+        z-index: 999;
+        padding: 50px 50px;
+        overflow-y: scroll;
+        transition: all .3s;
+        background: #FFF;
+        overscroll-behavior-y: contain;
+        @include si-transform(translateX(calc(100% + 80px)));
+        @media #{$xs} {
+            width: 100%;
+        }
+        @media #{$sm} {
+            width: 450px;
+        }
+        & .logo-2{
+            display: none;
+        }
+        &.offcanvas-black-bg{
+            background: var(--si-common-black);
+            & .logo-1{
+                display: none;
+            }
+            & .logo-2{
+                display: block !important;
+            }
+            & .si-offcanvas-close-btn {
+                color: var(--si-common-white);
+            }
+            & .si-offcanvas-menu ul li {
+                & > a {
+                color: var(--si-common-white);
+            }
+            &.active{
+                & > a{
+                    color: var(--si-theme-primary);
+                }
+            }
+            }
+            & .si-offcanvas-menu .si-submenu li a:hover {
+                background-color: #2c2b2e;
+                color: var(--si-common-white);
+            }
+            & .si-menu-close {
+                & i{
+                    color: var(--si-common-white)
+                }
+            }
+            & .si-megamenu-wrapper.megamenu-black-bg {
+                backdrop-filter: initial;
+                background: transparent;
+                box-shadow: none;
+            }
+            & .si-offcanvas-title.sm {
+                color: var(--si-common-white);
+            }
+            & .si-offcanvas-contact ul li a {
+                color: rgba(255, 255, 255, 0.8);
+                &:hover{
+                    color: var(--si-common-white);
+                }
+            }
+            & .si-offcanvas-contact ul li a::after {
+                background-color: var(--si-common-white);
+            }
+            & .si-offcanvas-social ul li a {
+                color: var(--si-common-white);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                &:hover{
+                    color: var(--si-common-black);
+                    border-color: var(--si-common-white);
+                    background-color: var(--si-common-white)
+                }
+            }
+            & .si-offcanvas-title {
+                color: var(--si-common-white);
+            }
+            & .si-offcanvas-content p {
+                color: rgba(255, 255, 255, 0.8);
+            }
+        }
+    }
+    &-area{
+        &.opened {
+            & .si-offcanvas-wrapper{
+                @include si-transform(translateX(0));
+            }
+        }
+    }
+    &-top {
+        margin-bottom: 90px;
+    }
+    &-close {
+        &-btn {
+            color: rgba($color: #000, $alpha: 1);
+            &:hover {
+                opacity: 1;
+                @include si-transform(rotate(90deg));
+            }
+        }
+    }
+    &-content {
+        margin-bottom: 45px;
+        & p {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--si-common-black);
+        }
+    }
+    &-title {
+        font-size: 40px;
+        line-height: 1;
+        letter-spacing: -0.8px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--si-common-black);
+        &.sm {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            color: var(--si-common-black);
+        }
+    }
+    &-gallery {
+        margin-bottom: 65px;
+        &-img{
+            & img{
+                transition: .9s;
+            }
+            &:hover{
+                & img{
+                    transform: scale(1.2) rotate(-2deg);
+                }
+            }
+        }
+    }
+    &-contact {
+        margin-bottom: 55px;
+        & ul {
+            & li {
+                list-style: none;
+                &:not(:last-child) {
+                    margin-bottom: 2px;
+                }
+                & a {
+                    display: inline-block;
+                    color: var(--si-common-black);
+                    font-size: 16px;
+                    position: relative;
+                    &::after{
+                        position: absolute;
+                        bottom: 2px;
+                        right: 0;
+                        width: 0;
+                        height: 1px;
+                        content: '';
+                        transition: .4s;
+                        background-color: #1e1e1e;
+                    }
+                    &:hover{
+                        color: var(--si-common-black);
+                        &::after{
+                            width: 100%;
+                            right: auto;
+                            left: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &-social {
+        & ul {
+            @include si-flexbox();
+            align-items: center;
+            & li {
+                list-style: none;
+                &:not(:last-child) {
+                    margin-right: 8px;
+                }
+                & a {
+                    display: inline-block;
+                    text-align: center;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 38px;
+                    border-radius: 40px;
+                    transition: all .3s;
+                    color: var(--si-common-black);
+                    border: 1px solid rgba(2, 11, 24, 0.10);
+                    &:hover {
+                        background-color: var(--si-theme-primary);
+                        border-color: var(--si-theme-primary);
+                        color: var(--si-common-white);
+                    }
+                    & svg {
+                        @include si-transform(translateY(-1px));
+                    }
+                }
+            }
+        }
+    }
+}
+// -------- si-offcanvas-1 -------//
+

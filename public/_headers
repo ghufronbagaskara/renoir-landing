@@ -1,0 +1,13 @@
+# Workers static-asset headers (not applied to /api/* Worker responses).
+# workers.dev hosts (every stage until the custom domain exists, and PR previews) stay out of search indexes.
+https://:worker.:account.workers.dev/*
+  X-Robots-Tag: noindex
+
+# Hashed build output never changes under the same URL.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000

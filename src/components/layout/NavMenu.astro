@@ -1,0 +1,39 @@
+---
+import { nav, isActive } from "~/data/nav";
+import { path, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+  mobile?: boolean;
+}
+const { locale, mobile = false } = Astro.props;
+const current = Astro.url.pathname;
+const home = path("home", locale);
+---
+<ul>
+  {
+    nav(locale).map((item) =>
+      item.children ? (
+        <li class:list={[{ active: !mobile && item.children.some((c) => isActive(c.href, current, home)) }]}>
+          <a class="no-href" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">{item.label}</a>
+          <ul class="si-submenu submenu">
+            {item.children.map((c) => (
+              <li>
+                <a href={c.href} aria-current={isActive(c.href, current, home) ? "page" : undefined}>{c.label}</a>
+              </li>
+            ))}
+          </ul>
+          {mobile && (
+            <button class="si-menu-close" type="button" aria-label={item.label}>
+              <i class="fa-solid fa-plus" />
+            </button>
+          )}
+        </li>
+      ) : (
+        <li>
+          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>{item.label}</a>
+        </li>
+      ),
+    )
+  }
+</ul>

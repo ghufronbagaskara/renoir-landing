@@ -1,0 +1,22 @@
+---
+export const prerender = true;
+import type { GetStaticPaths } from "astro";
+import WorkDetailView from "~/views/WorkDetailView.astro";
+import { getPortfolio } from "~/lib/content";
+
+export const getStaticPaths = (async () => {
+  const all = await getPortfolio();
+  return all.map((project, index) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prev: all[(index - 1 + all.length) % all.length],
+      next: all[(index + 1) % all.length],
+      related: all.filter((candidate) => candidate.id !== project.id && candidate.data.serviceIds.some((id) => project.data.serviceIds.includes(id))).slice(0, 2),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project, prev, next, related } = Astro.props;
+---
+<WorkDetailView locale="en" project={project} prev={prev} next={next} related={related} />

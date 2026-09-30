@@ -1,0 +1,36 @@
+---
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Locale } from "~/i18n";
+
+export interface Crumb {
+  title: string;
+  parent?: { label: string; href: string };
+}
+interface Props extends Crumb {
+  locale: Locale;
+}
+const { title, parent, locale } = Astro.props;
+---
+<section class="si-breadcumb-area">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-breadcumb-box">
+          <div class="si-breadcumb-text">
+            <h1>{title}</h1>
+            <nav aria-label="Breadcrumb">
+              <span>
+                <a href={path("home", locale)}>{t(locale).nav.home}</a>
+                {parent && (<><i class="fa-sharp fa-regular fa-angles-right" aria-hidden="true"></i> <a href={parent.href}>{parent.label}</a> </>)}
+                <strong aria-current="page"><i class="fa-sharp fa-regular fa-angles-right" aria-hidden="true"></i> {title}</strong>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="si-breadcumb-shape">
+    <BrandMark />
+  </div>
+</section>

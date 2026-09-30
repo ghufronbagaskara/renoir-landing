@@ -1,0 +1,101 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { child, t, type Locale } from "~/i18n";
+import { getPortfolio, portfolioCopy } from "~/lib/content";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const w = t(locale).work;
+const projects = await getPortfolio();
+const featured = projects.filter((project) => project.data.featuredRank).sort((a, b) => a.data.featuredRank! - b.data.featuredRank!);
+const services = Object.entries(w.services) as Array<[keyof typeof w.services, string]>;
+const text = (project: (typeof projects)[number]) => {
+  const copy = portfolioCopy(project, locale);
+  return [copy.title, copy.subtitle, copy.overview, ...copy.tags, ...project.data.serviceIds.map((id) => w.services[id])].join(" ").toLocaleLowerCase(locale);
+};
+---
+<section class="work-featured pt-124" aria-labelledby="featured-work-title">
+  <div class="container container-1617">
+    <div class="si-section-title work-section-heading">
+      <span>{w.featuredLabel}</span>
+      <h2 id="featured-work-title">{w.featuredTitle}</h2>
+    </div>
+    <div class="work-featured-grid">
+      {featured.map((project) => {
+        const copy = portfolioCopy(project, locale);
+        const href = child("work", locale, project.id);
+        return (
+          <article class="work-featured-card">
+            <a class="work-featured-image fix" href={href} tabindex="-1" aria-hidden="true">
+              <Img src={project.data.pairImage} alt="" loading="eager" />
+            </a>
+            <div class="work-featured-copy">
+              <span class="work-service-badge">{w.services[project.data.primaryService]}</span>
+              <h3><a class="underline-black" href={href}>{copy.title}</a></h3>
+              <p>{copy.overview}</p>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section class="si-project-3-bg2 work-catalog pt-124 pb-124" aria-labelledby="all-work-title" data-work-catalog data-results-template={w.results}>
+  <div class="container container-1617">
+    <div class="work-catalog-head">
+      <div class="si-section-title work-section-heading">
+        <span>{w.allLabel}</span>
+        <h2 id="all-work-title">{w.allTitle}</h2>
+      </div>
+      <form class="work-search" role="search" data-work-search>
+        <label for="work-search-input">{w.searchLabel}</label>
+        <div class="work-search-field">
+          <input id="work-search-input" type="search" name="q" placeholder={w.searchPlaceholder} autocomplete="off" />
+          <button type="submit" aria-label={w.searchLabel}><i class="fa-sharp fa-regular fa-magnifying-glass" aria-hidden="true"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <div class="work-filter-row">
+      <div class="work-filters" role="group" aria-label={w.filtersLabel}>
+        <button type="button" class="is-active" data-work-service="" aria-pressed="true">{w.allServices}</button>
+        {services.map(([id, label]) => <button type="button" data-work-service={id} aria-pressed="false">{label}</button>)}
+      </div>
+      <p class="work-results-count" data-work-count aria-live="polite">{w.results.replace("{count}", String(projects.length))}</p>
+    </div>
+
+    <div class="work-catalog-list" data-work-list>
+      {projects.map((project, index) => {
+        const copy = portfolioCopy(project, locale);
+        const href = child("work", locale, project.id);
+        return (
+          <div class="work-card-shell" data-work-card data-services={project.data.serviceIds.join(" ")} data-search={text(project)}>
+            <article class="si-project-3-box">
+              <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 si_fade_anim fix not-hide-cursor" data-cursor={w.view}>
+                <a class="cursor-hide img-cover" href={href} tabindex="-1" aria-hidden="true">
+                  <Img src={project.data.pairImage} alt="" loading={index < 2 ? "eager" : "lazy"} />
+                </a>
+                <span class="work-service-badge work-service-badge-overlay">{w.services[project.data.primaryService]}</span>
+              </div>
+              <div class="si-project-3-text">
+                <h3><a class="underline-black" href={href}>{copy.title}</a></h3>
+                <p>{copy.subtitle}</p>
+                <div class="work-tags">{copy.tags.map((tag) => <span>{tag}</span>)}</div>
+              </div>
+            </article>
+          </div>
+        );
+      })}
+    </div>
+
+    <div class="work-empty" data-work-empty hidden>
+      <h3>{w.emptyTitle}</h3>
+      <p>{w.emptyBody}</p>
+      <button type="button" data-work-clear>{w.clear}</button>
+    </div>
+  </div>
+</section>
+<script>
+  import "~/scripts/work-filter";
+</script>

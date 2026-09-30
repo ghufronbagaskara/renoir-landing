@@ -1,0 +1,54 @@
+---
+import NavMenu from "./NavMenu.astro";
+import LangSwitch from "./LangSwitch.astro";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Alternates, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+  alternates: Alternates;
+}
+const { locale, alternates } = Astro.props;
+const c = t(locale);
+---
+<div class="si-offcanvas-area" id="offcanvas" role="dialog" aria-modal="true" aria-label="Menu" inert>
+  <div class="si-offcanvas-wrapper">
+    <div class="si-offcanvas-top d-flex align-items-center justify-content-between">
+      <div class="si-offcanvas-logo">
+        <a class="renoir-brand" href={path("home", locale)} aria-label={`${c.site.name} — ${c.nav.home}`}>
+          <BrandMark class="renoir-brand-mark" />
+          <span class="renoir-wordmark">{c.site.name}</span>
+        </a>
+      </div>
+      <div class="si-offcanvas-close">
+        <button class="si-offcanvas-close-btn" type="button" aria-label={c.nav.closeMenu}>
+          <svg width="37" height="38" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9.19141 9.80762L27.5762 28.1924" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M9.19141 28.1924L27.5762 9.80761" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="si-offcanvas-main">
+      <div class="si-offcanvas-content d-none d-xl-block">
+        <p class="si-offcanvas-title">{c.site.name} <span class="offcanvas-pronunciation">· {c.site.pronunciation}</span></p>
+        <p>{c.offcanvas.about}</p>
+      </div>
+      <div class="si-offcanvas-menu d-xl-none">
+        <nav aria-label="Mobile">
+          <NavMenu locale={locale} mobile />
+        </nav>
+        <a class="si-btn-one offcanvas-cta" href={path("contact", locale)}> <span class="btn-text"> <span>{c.nav.cta}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+        <LangSwitch locale={locale} alternates={alternates} class="offcanvas-lang" />
+      </div>
+      <div class="si-offcanvas-contact">
+        <p class="si-offcanvas-title sm">{c.offcanvas.contactTitle}</p>
+        <ul>
+          <li><a href={path("contact", locale)}>{c.nav.cta}</a></li>
+          <li><span>{c.footer.location}</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="body-overlay"></div>

@@ -1,0 +1,17 @@
+---
+// One-button language toggle: shows the other language and links to the counterpart page
+// (or that language's home page when the page has no translation).
+import { otherLocale, path, type Alternates, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+  alternates: Alternates;
+  class?: string;
+}
+const { locale, alternates, class: className } = Astro.props;
+const other = otherLocale(locale);
+const names = { en: "English", id: "Bahasa Indonesia" } as const;
+---
+<a class:list={["lang-switch", className]} href={alternates[other] ?? path("home", other)} hreflang={other} lang={other} aria-label={names[other]} title={names[other]}>
+  {other.toUpperCase()}
+</a>

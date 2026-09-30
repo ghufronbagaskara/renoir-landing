@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import Accordion from "~/components/ui/Accordion.astro";
+import ContactForm from "~/components/ui/ContactForm.astro";
+import { child, path, t, type Locale } from "~/i18n";
+import { serviceCopy } from "~/lib/content";
+import { faqNode, serviceNode } from "~/lib/seo";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"services">;
+}
+const { locale, entry } = Astro.props;
+const c = t(locale);
+const s = serviceCopy(entry, locale);
+const url = child("services", locale, s.slug);
+const alternates = { en: child("services", "en", entry.data.en.slug), id: child("services", "id", entry.data.id_.slug) };
+---
+<BaseLayout
+  locale={locale}
+  title={s.metaTitle}
+  description={s.metaDescription}
+  alternates={alternates}
+  breadcrumb={{ title: s.title, parent: { label: c.services.breadcrumb, href: path("services", locale) } }}
+  schema={[serviceNode({ name: s.title, description: s.metaDescription, url, locale }), faqNode(url, s.faq)]}
+>
+  <section class="si-service-details-area">
+    <div class="container container-1617">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="si-service-details-box">
+            <div class="si-service-details-thumb">
+              <Img src={entry.data.images[0].src} alt="" loading="eager" />
+            </div>
+            <div class="si-service-details-text">
+              <span>{s.tagline}</span>
+              <h2 class="h1">{s.heading}</h2>
+              {s.intro.map((p, i) => <p class:list={{ "si-mt": i > 0 }}>{p}</p>)}
+            </div>
+            <div class="si-service-details-thumb-main service-proof-grid">
+              {entry.data.images.slice(1).map((media) => (
+                <figure class="service-proof">
+                  <Img src={media.src} alt={media.alt[locale]} />
+                  <figcaption>{media.caption[locale]}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <div class="si-service-details-p">
+              <p>{s.summary}</p>
+            </div>
+            <div class="si-service-details-main">
+              <div class="si-service-details-right">
+                <div class="si-service-details-text2">
+                  <h2>{c.services.includedTitle}</h2>
+                </div>
+                <div class="si-service-details-list-main">
+                  {
+                    s.lists.map((list, i) => (
+                      <div class={i === 0 ? "si-service-details-list" : "si-service-details-list2"}>
+                        <ul>
+                          {list.map((item) => (
+                            <li>
+                              <Img src="service-details/icon.svg" alt="" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <div class="si-service-details-from">
+                <h2 class="h3">{s.formTitle}</h2>
+                <ContactForm locale={locale} variant="service" source={`service:${entry.id}`} build={entry.data.build} />
+              </div>
+            </div>
+            <div class="si-faq-box service-details-box">
+              <div class="si-section-title pb-40">
+                <h2 class="h3">{c.services.faqTitle}</h2>
+              </div>
+              <div class="si-faq-accordion-wrap">
+                <Accordion id="service-faq" items={s.faq} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

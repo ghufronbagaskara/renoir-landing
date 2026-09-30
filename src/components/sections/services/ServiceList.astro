@@ -1,0 +1,48 @@
+---
+import { getServices, serviceCopy } from "~/lib/content";
+import { child, path, t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = t(locale).services;
+const services = await getServices();
+---
+<section class="si-service-2-area pb-70 pt-124">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-service-2-main pb-20">
+          <div class="si-section-title">
+            <span>{s.label}</span>
+            <h2 class="si-text-revel-anim">{s.title}</h2>
+          </div>
+          <div class="si-service-2-btn">
+            <a class="si-btn-one black-bg-btn border-btn" href={path("contact", locale)}> <span class="btn-text"><span>{s.button}</span> </span> <span class="btn-icon btn-icon2"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+          </div>
+        </div>
+        {
+          services.map((entry, i) => {
+            const copy = serviceCopy(entry, locale);
+            const number = String(i + 1).padStart(3, "0");
+            const title = (
+              <div class:list={["si-service-2-text", { "service-2-right": i % 2 === 1 }]}>
+                <span>{number}</span>
+                <h3>
+                  <a href={child("services", locale, copy.slug)}>{copy.title}<i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i></a>
+                </h3>
+              </div>
+            );
+            const text = (
+              <div class:list={["si-service-2-p", { "service-2-left": i % 2 === 1 }]}>
+                <p>{copy.excerpt}</p>
+              </div>
+            );
+            return <div class="si-service-2-box">{i % 2 === 1 ? [text, title] : [title, text]}</div>;
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+$colors: (
+    'common': (
+        'white': #ffffff,
+        'black': #0F0F0F,
+        'black-2': #1E1E1E,
+        'black-3': #272727,
+        'text-body': #545454,
+        'gray': #f5f5f5,
+        'gray-2': #272727,
+        'gray-3': #1e1e1e,
+        'gray-4': #0f0f0f,
+        'surface': #F9F9F9,
+    ),
+    'theme': (
+        'primary': #0F0F0F,
+        'secondary':#d82221,
+    ),
+    'border': (
+        '1': rgba(84, 84, 84, 0.3),
+        '2': rgba(255, 255, 255, 0.2),
+        '3': rgba(255, 255, 255, 0.1),
+        '4': rgba(84, 84, 84, 0.1),
+        '5': #EEEEEE,
+        '6': #313131,
+        '7': #D9D9D9,
+        '8': rgba(255, 255, 255, 0.5),
+        '9': rgba(84, 84, 84, 0.2),
+        '10': rgba(84, 84, 84, 0.5),
+    )
+);

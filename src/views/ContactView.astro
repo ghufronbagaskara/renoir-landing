@@ -1,0 +1,54 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import ContactForm from "~/components/ui/ContactForm.astro";
+import { site } from "~/data/site";
+import { routeAlternates, t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const k = t(locale).contact;
+---
+<BaseLayout
+  locale={locale}
+  title={k.metaTitle}
+  description={k.metaDescription}
+  alternates={routeAlternates("contact")}
+  breadcrumb={{ title: k.breadcrumb }}
+  pageType="ContactPage"
+>
+  <div class="si-contact-area pt-127 pb-130">
+    <div class="container container-1617">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="si-section-title">
+            <h2>{k.title}</h2>
+            <p>{k.body}</p>
+          </div>
+          <div class="si-contact-box">
+            <div class="si-contact-shape">
+              <Img src="contact/icon.svg" alt="" />
+            </div>
+            <div class="si-contact-text">
+              <h3>{k.locationLabel}</h3>
+              <span>{k.location}</span>
+            </div>
+          </div>
+          {site.whatsapp && (
+            <a class="contact-whatsapp" href={`https://wa.me/${site.whatsapp}`} rel="noopener" target="_blank">
+              WhatsApp
+            </a>
+          )}
+        </div>
+        <div class="col-lg-6">
+          <div class="si-contact-main" id="project-form">
+            <h2 class="h4">{k.formTitle}</h2>
+            <ContactForm locale={locale} variant="contact" source="contact" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

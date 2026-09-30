@@ -7,3 +7,4 @@ dist/
 !.env.example
 averix-modern-creative-agency-html-template-*/
 .tmp*
+.work-capture/

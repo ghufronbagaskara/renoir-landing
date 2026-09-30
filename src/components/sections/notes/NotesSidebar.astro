@@ -1,0 +1,66 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { child, path, t, type Locale } from "~/i18n";
+import { formatDate, getNotes, noteSlug } from "~/lib/content";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const n = t(locale).notes;
+const notes = await getNotes(locale);
+const categories = Object.entries(
+  notes.reduce<Record<string, number>>((acc, note) => ((acc[note.data.category] = (acc[note.data.category] ?? 0) + 1), acc), {}),
+);
+---
+<aside class="si-blolg-standard-main" aria-label={n.breadcrumb}>
+  <div class="si-blog-sidebar-search">
+    <form class="si-blog-sidebar-searchtwo" role="search" action={path("notes", locale)} data-sidebar-search>
+      <label class="visually-hidden" for="notes-search">{n.searchLabel}</label>
+      <input id="notes-search" type="search" name="q" placeholder={n.searchPlaceholder} autocomplete="off" data-notes-search-input />
+      <div class="si-blog-sidebar-icontwo">
+        <button type="submit" aria-label={n.searchLabel}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-width="2" stroke-linecap="square" />
+            <path d="M20.9984 20.9984L16.6484 16.6484" stroke="white" stroke-width="2" stroke-linecap="square" />
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="si-blog-sidebar-text">
+    <h2 class="sidebar-heading"><a class="no-href">{n.categories}</a></h2>
+    {
+      categories.map(([name, count]) => (
+        <div class="si-blog-sidebar-main">
+          <div class="si-blog-sidebar-text2">
+            <a href={`?category=${encodeURIComponent(name)}`} data-notes-category={name}>{name}</a>
+          </div>
+          <div class="si-blog-sidebar-number">
+            <ul>
+              <li>({count})</li>
+            </ul>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <div class="si-blog-sidebar-post">
+    <h2><a class="no-href">{n.recent}</a></h2>
+    {
+      notes.slice(0, 4).map((note) => (
+        <div class="si-blog-sidebar-right">
+          <div class="si-blog-sidebar-imgtwo">
+            <Img src={note.data.thumb} alt="" />
+          </div>
+          <div class="si-blog-sidebar-texttwo">
+            <h3>
+              <a href={child("notes", locale, noteSlug(note))}>{note.data.title}</a>
+            </h3>
+            <span>{formatDate(note.data.date, locale)}</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</aside>

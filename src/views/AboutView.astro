@@ -1,0 +1,28 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Name from "~/components/sections/about/Name.astro";
+import StatementBand from "~/components/sections/about/StatementBand.astro";
+import Facts from "~/components/sections/about/Facts.astro";
+import Fit from "~/components/sections/about/Fit.astro";
+import { path, routeAlternates, t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const a = c.about;
+---
+<BaseLayout
+  locale={locale}
+  title={a.metaTitle}
+  description={a.metaDescription}
+  alternates={routeAlternates("about")}
+  breadcrumb={{ title: a.breadcrumb }}
+  pageType="AboutPage"
+>
+  <Name locale={locale} />
+  <StatementBand circle={a.band} label={c.nav.cta} href={path("contact", locale)} />
+  <Facts facts={a.facts} />
+  <Fit locale={locale} />
+</BaseLayout>
