@@ -1,0 +1,13 @@
+{
+  "order-sales": {
+    "order-detail": [
+      { "left": 985, "top": 49, "width": 370, "height": 44 },
+      { "left": 774, "top": 242, "width": 533, "height": 57 },
+      { "left": 783, "top": 332, "width": 214, "height": 45 },
+      { "left": 1968, "top": 1278, "width": 247, "height": 51 },
+      { "left": 1968, "top": 1390, "width": 155, "height": 55 },
+      { "left": 2383, "top": 1390, "width": 165, "height": 55 },
+      { "left": 1968, "top": 1506, "width": 705, "height": 57 }
+    ]
+  }
+}
