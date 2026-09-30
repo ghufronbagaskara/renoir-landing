@@ -2,6 +2,17 @@
 
 **Version 1.0 · September 2026 · Internal + agent-facing master document**
 
+## Update keputusan produk · 28 September 2026
+
+Bagian ini mengesampingkan ketentuan lama yang bertentangan di bawah sampai brief direvisi penuh:
+
+- Renoir menawarkan empat jalur kerja: marketing sites, internal systems, UI/UX dan identitas visual (dapat dipesan terpisah oleh Rafly), serta deployment & care. Design tidak selalu harus dibundel dengan development.
+- English dan Bahasa Indonesia harus ditulis ulang secara alami dengan maksud yang selaras, bukan terjemahan harfiah. Headline pendek tidak memakai titik penutup. Copy yang sudah dipasang di `src/i18n/` dan `src/content/services.ts` adalah implementasi saat ini; `docs/copy/copy-deck.md` masih arsip draf, bukan teks final.
+- Work menampilkan delapan proyek nyata karya pendiri Renoir dengan kredit peran yang sesuai. Nama organisasi dapat muncul bila diperlukan untuk konteks, tanpa menyiratkan kontrak Renoir historis. Screenshot aplikasi internal memakai data simulasi; jangan menampilkan hostname, detail akses, atau hasil bisnis yang tidak terverifikasi. Marquee logo klien dan testimoni tetap menunggu aset serta izin.
+- WhatsApp contact center masih menunggu nomor resmi. Tombol hanya muncul setelah nomor diverifikasi dan diisi di `src/data/site.ts`.
+- Arah visual: editorial-industrial dengan near-black, cool paper, dan satu aksen cobalt (`#1d4ed8`), tipografi sans tegas, serta gerak seperlunya. Wordmark teks adalah sementara. Eksplorasi logo non-huruf “The Joint” harus dipilih dan digambar ulang sebagai SVG sebelum dipasang.
+- Fokus saat ini pengembangan lokal dan tampilan; deployment tetap memerlukan persetujuan terpisah.
+
 ---
 
 ## 0. How to use this document
@@ -14,7 +25,7 @@ Rules for anyone — human or agent — writing on behalf of Renoir:
 2. Do not use any word from the **Banned vocabulary** list in section 10.
 3. When a number is not known, omit it. Never approximate a result into a claim.
 4. Never reference the internal tooling, software, or methods used to produce work. Renoir sells outcomes; methods are its own business.
-5. Default language is English. Indonesian copy is a translation of the English master, never written independently.
+5. Default language is English. For current web copy, follow the 21 September update above: Indonesian copy is transcreated, not translated literally.
 
 ---
 
@@ -69,7 +80,7 @@ These are the positions behind every decision. Use them to keep copy consistent;
 
 ## 4. What Renoir does
 
-Three services. Everything offered falls into one of these; anything that does not is declined or referred.
+Four services. The fourth, UI/UX & visual identity, is described in the current product update above and in `src/content/services.ts`.
 
 ### 4.1 Marketing & Landing Sites
 
