@@ -38,7 +38,7 @@
     &-text-inner{
         padding-top: 150px;
         transition: 0.6s;
-        h3{
+        h3, .h3{
             color: var(--si-common-white);
             @media #{$xl,$lg2}{
                 font-size: 32px;
