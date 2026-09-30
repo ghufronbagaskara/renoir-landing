@@ -1,0 +1,116 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import { imageUrl } from "~/lib/images";
+import { child, path, t, type Locale } from "~/i18n";
+import { portfolioCopy } from "~/lib/content";
+
+interface Props {
+  locale: Locale;
+  project: CollectionEntry<"portfolio">;
+  prev: CollectionEntry<"portfolio">;
+  next: CollectionEntry<"portfolio">;
+  related: CollectionEntry<"portfolio">[];
+}
+const { locale, project, prev, next, related } = Astro.props;
+const w = t(locale).work;
+const copy = portfolioCopy(project, locale);
+const href = (entry: CollectionEntry<"portfolio">) => child("work", locale, entry.id);
+const cta = project.data.primaryService === "marketing" ? w.details.websiteCta : w.details.systemCta;
+---
+<BaseLayout
+  locale={locale}
+  title={`${copy.title} — ${locale === "id" ? "Studi Proyek Renoir" : "Renoir Project Study"}`}
+  description={copy.overview}
+  alternates={{ en: child("work", "en", project.id), id: child("work", "id", project.id) }}
+  ogImage={`/og/work/${project.id}.jpg`}
+  solidHeader
+  searchable
+>
+  <article class="work-case container container-1617">
+    <nav class="work-case-breadcrumb" aria-label={w.details.breadcrumb}>
+      <a href={path("work", locale)}>{w.breadcrumb}</a><span aria-hidden="true">/</span><span aria-current="page">{copy.title}</span>
+    </nav>
+    <header class="work-case-head">
+      <div>
+        <span class="work-service-badge">{w.services[project.data.primaryService]}</span>
+        <h1>{copy.title}</h1>
+      </div>
+      <p>{copy.overview}</p>
+    </header>
+
+    <figure class="work-case-hero">
+      <div class="work-case-pair">
+        <a class="work-case-screen work-case-screen-desktop" href={imageUrl(project.data.desktopImage)} target="_blank" rel="noopener" aria-label={locale === "id" ? `Buka tampilan desktop ${copy.title} ukuran penuh` : `Open full-size desktop screen for ${copy.title}`}>
+          <Img src={project.data.desktopImage} alt={locale === "id" ? `Tampilan desktop ${copy.title}` : `Desktop screen for ${copy.title}`} loading="eager" fetchpriority="high" />
+        </a>
+        <a class="work-case-screen work-case-screen-mobile" href={imageUrl(project.data.mobileImage)} target="_blank" rel="noopener" aria-label={locale === "id" ? `Buka tampilan ponsel ${copy.title} ukuran penuh` : `Open full-size mobile screen for ${copy.title}`}>
+          <Img src={project.data.mobileImage} alt={locale === "id" ? `Tampilan ponsel ${copy.title}` : `Mobile screen for ${copy.title}`} loading="eager" />
+        </a>
+      </div>
+      <figcaption>
+        <span>{project.data.imageNote ? project.data.imageNote[locale === "en" ? "en" : "id_"] : project.data.primaryService === "internal" ? w.details.demoScreen : w.details.mainScreen}</span>
+        <span class="work-case-image-links"><a href={imageUrl(project.data.desktopImage)} target="_blank" rel="noopener">{w.details.openDesktop}</a><a href={imageUrl(project.data.mobileImage)} target="_blank" rel="noopener">{w.details.openMobile}</a></span>
+      </figcaption>
+    </figure>
+
+    <section class="work-case-context" aria-labelledby="work-context-title">
+      <h2 id="work-context-title">{w.details.challenge}</h2>
+      <div><p>{copy.challenge}</p><p>{copy.approach}</p></div>
+    </section>
+
+    <section class="work-case-features" aria-label={w.details.screens}>
+      {project.data.features.map((feature, index) => {
+        const content = feature[locale === "en" ? "en" : "id_"];
+        return <article class:list={["work-case-feature", { "work-case-feature-portrait": feature.image?.endsWith("-mobile.webp") }]}>
+          <div class="work-case-feature-copy">
+            <span class="work-case-feature-number">{String(index + 1).padStart(2, "0")}</span>
+            <h2>{content.title}</h2>
+            <p>{content.body}</p>
+          </div>
+          {feature.image && <figure>
+            <a href={imageUrl(feature.image)} target="_blank" rel="noopener" aria-label={locale === "id" ? `Buka gambar ${content.title} ukuran penuh` : `Open full-size image: ${content.title}`}>
+              <Img src={feature.image} alt={content.caption} />
+            </a>
+            <figcaption>{content.caption} <a href={imageUrl(feature.image)} target="_blank" rel="noopener">{w.details.openImage}</a></figcaption>
+          </figure>}
+        </article>;
+      })}
+    </section>
+
+    <div class="work-case-close">
+      <section class="work-case-role"><h2>{w.details.role}</h2><p>{copy.role}</p></section>
+      <aside class="work-case-facts">
+        <h2>{w.details.information}</h2>
+        <dl><div><dt>{w.details.services}</dt><dd><ul class="work-service-list">{project.data.serviceIds.map((id) => <li>{w.services[id]}</li>)}</ul></dd></div>{project.data.year && <div><dt>{w.details.year}</dt><dd>{project.data.year}</dd></div>}</dl>
+        <div class="work-tags">{copy.tags.map((tag) => <span>{tag}</span>)}</div>
+        <a class="work-case-cta" href={path("contact", locale)}>{cta}<i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i></a>
+      </aside>
+    </div>
+
+    <nav class="work-case-neighbours" aria-label={w.details.navigation}>
+      <a href={href(prev)} rel="prev"><span>{w.details.previous}</span><strong>{portfolioCopy(prev, locale).title}</strong></a>
+      <a href={href(next)} rel="next"><span>{w.details.next}</span><strong>{portfolioCopy(next, locale).title}</strong></a>
+    </nav>
+  </article>
+
+  <section class="work-related pb-130" aria-labelledby="related-work-title">
+    <div class="container container-1617">
+      <div class="si-section-title work-section-heading"><span>{w.details.relatedLabel}</span><h2 id="related-work-title">{w.details.relatedTitle}</h2></div>
+      <div class="work-related-grid">
+        {related.map((entry) => {
+          const item = portfolioCopy(entry, locale);
+          return <article><a class="fix" href={href(entry)} tabindex="-1" aria-hidden="true"><Img src={entry.data.pairImage} alt="" /></a><span class="work-service-badge">{w.services[entry.data.primaryService]}</span><h3><a class="underline-black" href={href(entry)}>{item.title}</a></h3><p>{item.subtitle}</p></article>;
+        })}
+      </div>
+    </div>
+  </section>
+  <script>
+    const consultation = document.querySelector(".work-case-cta");
+    const floating = document.querySelector<HTMLElement>(".floating-contact");
+    if (consultation && floating) {
+      new IntersectionObserver(([entry]) => floating.toggleAttribute("hidden", entry.isIntersecting), { threshold: 0.1 }).observe(consultation);
+    }
+  </script>
+</BaseLayout>
