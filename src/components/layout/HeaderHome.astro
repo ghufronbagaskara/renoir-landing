@@ -1,14 +1,24 @@
 ---
-import Img from "~/components/ui/Img.astro";
 import NavMenu from "./NavMenu.astro";
+import LangSwitch from "./LangSwitch.astro";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Alternates, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+  alternates: Alternates;
+}
+const { locale, alternates } = Astro.props;
+const c = t(locale);
 ---
 <header id="header-sticky" class="si-header-area header-transparent" data-sticky-class="header-sticky">
   <div class="container container-1748">
     <div class="row align-items-center">
       <div class="col-xl-2 col-lg-6 col-6">
         <div class="si-header-logo">
-          <a href="/" aria-label="Averix home">
-            <Img class="logo-black" style="width:167px" src="logo/logo-black.png" alt="Averix" loading="eager" />
+          <a class="renoir-brand" href={path("home", locale)} aria-label={`${c.site.name} — ${c.nav.home}`}>
+            <BrandMark class="renoir-brand-mark" />
+            <span class="renoir-wordmark">{c.site.name}</span>
           </a>
         </div>
       </div>
@@ -19,19 +29,23 @@ import NavMenu from "./NavMenu.astro";
               <div class="si-header-box d-none d-xl-block">
                 <div class="si-header-menu si-header-dropdown dropdown-white-bg">
                   <nav class="si-mobile-menu-active" aria-label="Main">
-                    <NavMenu />
+                    <NavMenu locale={locale} />
                   </nav>
                 </div>
               </div>
+              <LangSwitch locale={locale} alternates={alternates} class="d-none d-md-flex" />
+              <div class="si-header-search-box home-search-trigger">
+                <button class="si-header-search si-search-open-btn" type="button" aria-label={c.search.button} aria-controls="site-search" aria-expanded="false">
+                  <i class="fa-sharp fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+                </button>
+              </div>
               <div class="si-header-bar">
-                <button class="si-offcanvas-open-btn" type="button" aria-label="Open menu" aria-controls="offcanvas" aria-expanded="false">
-                  <span>
-                    <Img src="header/close.svg" alt="" />
-                  </span>
+                <button class="si-offcanvas-open-btn" type="button" aria-label={c.nav.openMenu} aria-controls="offcanvas" aria-expanded="false">
+                  <span aria-hidden="true">&#9776;</span>
                 </button>
               </div>
               <div class="si-header-btn">
-                <a class="si-btn-one" href="/contact/"> <span class="btn-text"> <span>Let's Talk</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+                <a class="si-btn-one" href={path("contact", locale)}> <span class="btn-text"> <span>{c.nav.cta}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
               </div>
             </div>
           </div>
