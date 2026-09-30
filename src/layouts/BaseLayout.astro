@@ -7,34 +7,91 @@ import HeaderInner from "~/components/layout/HeaderInner.astro";
 import Offcanvas from "~/components/layout/Offcanvas.astro";
 import SearchOverlay from "~/components/layout/SearchOverlay.astro";
 import Footer from "~/components/layout/Footer.astro";
-import Breadcrumb from "~/components/layout/Breadcrumb.astro";
-import { site } from "~/data/site";
+import Breadcrumb, { type Crumb } from "~/components/layout/Breadcrumb.astro";
+import { langTag, ogLocale, path, t, type Alternates, type Locale } from "~/i18n";
+import { abs, graph, organization, webPage, website, type JsonLd, type PageMeta } from "~/lib/seo";
 // Preloaded so the hero heading doesn't reflow when the web font swaps in (CLS). Body text (Inter)
 // uses a metric-matched fallback instead (see utils/_typography.scss), so it needs no preload.
 import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
 
 interface Props {
-  /** Exclude the page from the site search index. */
-  noindex?: boolean;
+  locale: Locale;
+  /** Full <title> text (already includes "Renoir"). */
   title: string;
-  description?: string;
+  description: string;
+  /** URLs of this page in each language that has it (drives hreflang + the language switch). */
+  alternates: Alternates;
   /** Home uses the transparent header + home footer variant; every other page the inner ones. */
   home?: boolean;
+  /** Give pages without a dark breadcrumb hero a readable dark header. */
+  solidHeader?: boolean;
   /** Renders the template breadcrumb hero; omit on home. */
-  breadcrumb?: { title: string; parent?: { label: string; href: string } };
+  breadcrumb?: Crumb;
+  /** Keeps the page out of search engines and the site search index (404). */
+  noindex?: boolean;
+  /** Include a noindex page in Pagefind when a preview needs internal search. */
+  searchable?: boolean;
+  /** Project-specific Open Graph image path. */
+  ogImage?: string;
+  /** schema.org WebPage subtype. */
+  pageType?: PageMeta["type"];
+  /** Extra JSON-LD nodes (Service, FAQPage, Article…). */
+  schema?: JsonLd[];
+  ogType?: "website" | "article";
 }
-const { title, description = site.description, home = false, breadcrumb, noindex = false } = Astro.props;
-const pageTitle = home ? `${site.name} - ${title}` : `${title} - ${site.name}`;
+const { locale, title, description, alternates, home = false, solidHeader = false, breadcrumb, noindex = false, searchable = !noindex, pageType, schema = [], ogType = "website", ogImage: ogImagePath = `/og/renoir-${locale}.jpg` } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const canonical = abs(pathname);
+const ogImage = abs(ogImagePath);
+const crumbs = breadcrumb
+  ? [...(breadcrumb.parent ? [{ name: breadcrumb.parent.label, url: breadcrumb.parent.href }] : []), { name: breadcrumb.title, url: pathname }]
+  : undefined;
+const jsonLd = graph([
+  organization(locale),
+  website(),
+  ...webPage({ locale, url: pathname, title, description, breadcrumb: crumbs, type: pageType }),
+  ...schema,
+]);
+const c = t(locale);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={langTag[locale]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, follow" />
+      ) : (
+        <>
+          <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+          <link rel="canonical" href={canonical} />
+          {Object.entries(alternates).map(([l, href]) => (
+            <link rel="alternate" hreflang={langTag[l as Locale]} href={abs(href!)} />
+          ))}
+          {alternates.en && <link rel="alternate" hreflang="x-default" href={abs(alternates.en)} />}
+        </>
+      )
+    }
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={c.site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[locale]} />
+    {Object.keys(alternates).filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={ogLocale[l as Locale]} />)}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>
   <body>
@@ -42,24 +99,20 @@ const pageTitle = home ? `${site.name} - ${title}` : `${title} - ${site.name}`;
       <div id="ball"></div>
     </div>
 
-    <div class="back-to-top-wrapper">
-      <button id="back_to_top" type="button" class="back-to-top-btn" aria-label="Back to top">
-        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M11 6L6 1L1 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-    </div>
+    <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+      <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
+    </a>
 
-    {home ? <HeaderHome /> : <HeaderInner />}
-    <Offcanvas />
-    {!home && <SearchOverlay />}
+    {home ? <HeaderHome locale={locale} alternates={alternates} /> : <HeaderInner locale={locale} alternates={alternates} solid={solidHeader} />}
+    <Offcanvas locale={locale} alternates={alternates} />
+    <SearchOverlay locale={locale} />
 
-    <main id="main" data-pagefind-body={noindex ? undefined : ""}>
-      {breadcrumb && <Breadcrumb {...breadcrumb} />}
+    <main id="main" data-pagefind-body={searchable ? "" : undefined} data-pagefind-ignore={searchable ? undefined : ""}>
+      {breadcrumb && <Breadcrumb {...breadcrumb} locale={locale} />}
       <slot />
     </main>
 
-    <Footer home={home} />
+    <Footer locale={locale} home={home} />
 
     <script>
       import "~/scripts/site";
