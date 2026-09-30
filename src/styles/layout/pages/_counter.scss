@@ -44,7 +44,7 @@
     }
     &-text{
         text-align: center;
-        h1{
+        h1, .h1{
             font-size: 90px;
             line-height: 90px;
             display: inline-block;
@@ -57,7 +57,7 @@
                 line-height: 55px !important;
             }
         }
-        h2{
+        h2, .h2{
             font-size: 90px;
             line-height: 90px;
             display: inline-block;
@@ -70,7 +70,7 @@
                 line-height: 55px !important;
             }
         }
-        h1{
+        h1, .h1{
             font-size: 90px;
             line-height: 90px;
             display: inline-block;
