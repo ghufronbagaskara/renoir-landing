@@ -1,8 +1,7 @@
 import type { ImageMetadata } from "astro";
 
-// Every template image lives under src/assets/img (mirrored from the demo, pre-converted to WebP by
-// scripts/optimize-images.ts). Components reference them by the template's own file name,
-// e.g. "banner/banner-1.jpg"; raster names resolve to the .webp file.
+// Final editorial assets, founder project screenshots, and the remaining small template icons live here.
+// Older .jpg/.png references resolve to their pre-optimised WebP equivalents.
 const modules = import.meta.glob<{ default: ImageMetadata }>("/src/assets/img/**/*.{webp,svg,gif}", { eager: true });
 
 export function imageMeta(path: string): ImageMetadata {
