@@ -24,7 +24,7 @@
         display: flex;
     }
     &-text{
-        h1{
+        h1, .h1{
             font-weight: 600;
             font-size: 160px;
             line-height: 170px;
@@ -126,7 +126,7 @@
         }
     }
     &-list{
-        h2{
+        h2, .h2{
             font-size: 24px;
             color: var(--si-common-white);
             line-height: 48px;
@@ -292,7 +292,7 @@
             margin-top: 60px;
             border-radius: 18px 18px 18px 18px;
         }
-        h1{
+        h1, .h1{
             font-size: 70px;
             line-height: 80px;
             @media #{$x4l}{
@@ -383,7 +383,7 @@
             margin-left: 0;
             margin-top: 25px;
         }
-        h2{
+        h2, .h2{
             font-size: 120px;
             line-height: 120px;
             color: var(--si-common-white);
@@ -404,7 +404,7 @@
                 line-height: 50px !important;
             }            
         }
-        h3{
+        h3, .h3{
             font-size: 70px;
             line-height: 80px;
             color: var(--si-common-white);
