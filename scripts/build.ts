@@ -21,3 +21,5 @@ const program = Effect.gen(function* () {
 });
 
 await Effect.runPromise(program.pipe(Effect.provide(NodeServices.layer)));
+// Alchemy/workerd can leave an idle handle open on Windows after build() resolves.
+process.exit(0);
