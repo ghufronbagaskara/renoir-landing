@@ -2,7 +2,7 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import * as Effect from "effect/Effect";
-import { handleContact, sendResendEmail, toResponse, verifyTurnstileToken } from "~/server/contact";
+import { handleContact, postLeadWebhook, sendTelegram, toResponse, verifyTurnstileToken } from "~/server/contact";
 
 export const prerender = false;
 
@@ -24,27 +24,16 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       handleContact(raw, { ip, userAgent: request.headers.get("user-agent")?.slice(0, 300) ?? null }, {
         rateLimit: async (key) => (await env.THROTTLE.limit({ key })).success,
         verifyTurnstile: (token, remoteIp) => verifyTurnstileToken(env.TURNSTILE_SECRET, token, remoteIp),
-        save: async (s) => {
-          const row = await env.DB.prepare(
-            `INSERT INTO contact_submissions (source, name, email, phone, subject, message, ip, user_agent)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
-          )
-            .bind(s.source, s.name, s.email, s.phone ?? null, s.subject ?? null, s.message, s.ip, s.userAgent)
-            .first<{ id: number }>();
-          return row!.id;
-        },
-        notify: (s) =>
-          sendResendEmail({ apiKey: env.RESEND_API_KEY || undefined, from: env.CONTACT_FROM_EMAIL, to: env.CONTACT_TO_EMAIL || undefined }, s),
-        markEmail: async (id, sent, error) => {
-          await env.DB.prepare("UPDATE contact_submissions SET email_sent = ?, email_error = ? WHERE id = ?")
-            .bind(sent ? 1 : 0, error, id)
-            .run();
-        },
+        sinks: [
+          (s) => sendTelegram(env.TELEGRAM_BOT_TOKEN, env.TELEGRAM_CHAT_ID, s),
+          (s) => postLeadWebhook(env.LEADS_WEBHOOK_URL, env.LEADS_WEBHOOK_SECRET, s),
+        ],
       }),
     ),
   );
 
   if (wantsJson(request)) return Response.json({ status: result.status }, { status: result.http });
-  // No-JS fallback: send the visitor back to the contact page with the outcome.
-  return redirect(result.http === 200 ? "/contact/?sent=1" : `/contact/?error=${result.status}`, 303);
+  // No-JS fallback: back to the contact page in the visitor's language, with the outcome.
+  const contact = raw.locale === "id" ? "/id/kontak/" : "/contact/";
+  return redirect(result.http === 200 ? `${contact}?sent=1` : `${contact}?error=${result.status}`, 303);
 };
