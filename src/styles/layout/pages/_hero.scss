@@ -12,7 +12,7 @@
         overflow: hidden;
     }
     &-text{
-        h1{
+        h1, .h1{
             position: relative;
             z-index: 1;
         }
@@ -112,7 +112,7 @@
         }
     }
     &-text{
-        h1{
+        h1, .h1{
             font-size: 110px;
             line-height: 120px;
             color: var(--si-common-white);
@@ -166,7 +166,7 @@
         padding-bottom: 93px;
     }
     &-text{
-        h1{
+        h1, .h1{
             color: var(--si-common-white);
             font-size: 160px;
             line-height: 170px;
@@ -258,7 +258,7 @@
         @media #{$sm2}{
             margin-top: 25px;
         }
-        h2{
+        h2, .h2{
             font-size: 18px;
             background: var(--si-common-black);
             color: var(--si-common-white);
