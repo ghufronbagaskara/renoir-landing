@@ -1,133 +1,22 @@
 ---
 export const prerender = true;
 import type { GetStaticPaths } from "astro";
-import BaseLayout from "~/layouts/BaseLayout.astro";
-import Img from "~/components/ui/Img.astro";
+import WorkDetailView from "~/views/WorkDetailView.astro";
 import { getPortfolio } from "~/lib/content";
-import { site } from "~/data/site";
 
 export const getStaticPaths = (async () => {
   const all = await getPortfolio();
-  return all.map((project, i) => ({
+  return all.map((project, index) => ({
     params: { slug: project.id },
-    props: { project, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length] },
+    props: {
+      project,
+      prev: all[(index - 1 + all.length) % all.length],
+      next: all[(index + 1) % all.length],
+      related: all.filter((candidate) => candidate.id !== project.id && candidate.data.serviceIds.some((id) => project.data.serviceIds.includes(id))).slice(0, 2),
+    },
   }));
 }) satisfies GetStaticPaths;
 
-const { project, prev, next } = Astro.props;
-const p = project.data;
-const info = [
-  ["Category:", p.info.category],
-  ["Software:", p.info.software],
-  ["Service:", p.info.service],
-  ["Client:", p.info.client],
-  ["Date:", p.info.date],
-];
-const socials = [
-  ["portfolio-details/portfolio-d-5.svg", site.socials.facebook, "Facebook"],
-  ["portfolio-details/portfolio-d-6.svg", site.socials.x, "X"],
-  ["portfolio-details/portfolio-d-7.svg", site.socials.linkedin, "LinkedIn"],
-  ["portfolio-details/portfolio-d-8.svg", site.socials.instagram, "Instagram"],
-];
+const { project, prev, next, related } = Astro.props;
 ---
-<BaseLayout title={p.title} breadcrumb={{ title: p.title, parent: { label: "Our Portfolio", href: "/portfolio/" } }}>
-  <section class="si-portfolio-details-area">
-    <div class="container container-1617">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="si-portfolio-details-thumb">
-            <Img src={p.heroImage} alt={p.title} loading="eager" />
-          </div>
-        </div>
-        <div class="col-lg-8 p-0">
-          <div class="si-portfolio-details-main">
-            <div class="si-portfolio-details-text">
-              <h2 class="h1">Projects Overview</h2>
-              <p>{p.overview}</p>
-            </div>
-            <div class="si-portfolio-details-img">
-              <ul>
-                <li><Img src={p.gallery[0]} alt="" /></li>
-                <li class="si-portfolio-details-mt"><Img src={p.gallery[1]} alt="" /></li>
-                <li class="si-portfolio-details-mt2"><Img src={p.gallery[2]} alt="" /></li>
-              </ul>
-            </div>
-            <div class="si-portfolio-details-text2">
-              <h2>Challenge & Solution</h2>
-              <p>{p.challenge}</p>
-            </div>
-            <div class="si-portfolio-details-text2 portfolio-details-text">
-              <h2>Final Result</h2>
-              <p>{p.result}</p>
-            </div>
-            <nav class="si-portfolio-details-main2" aria-label="More work">
-              <div class="si-portfolio-details-prev">
-                <a href={`/portfolio/${prev.id}/`} rel="prev"><i class="fa-sharp fa-regular fa-arrow-left"></i> Prev Work</a>
-              </div>
-              <div class="si-portfolio-details-next">
-                <a href={`/portfolio/${next.id}/`} rel="next">Next Work <i class="fa-sharp fa-regular fa-arrow-right"></i></a>
-              </div>
-            </nav>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="si-portfolio-details-box">
-            <div class="si-portfolio-details-title">
-              <h3>Project Information</h3>
-            </div>
-            <div class="si-portfolio-details-right">
-              <div class="si-portfolio-details-list">
-                <ul>{info.map(([label]) => <li><a class="no-href">{label}</a></li>)}</ul>
-              </div>
-              <div class="si-portfolio-details-text3">
-                {info.map(([, value]) => <span>{value}</span>)}
-              </div>
-            </div>
-            <div class="si-portfolio-details-icon">
-              {
-                socials.map(([icon, href, label]) => (
-                  <a href={href} aria-label={label} rel="noopener" target="_blank">
-                    <Img src={icon} alt="" />
-                  </a>
-                ))
-              }
-            </div>
-          </div>
-          <div class="si-portfolio-details-box2">
-            <div class="si-portfolio-details-title2">
-              <h3>Need Helps</h3>
-              <p>Feel free to ask something we are here</p>
-            </div>
-            <div class="si-portfolio-details-right2">
-              <div class="si-portfolio-details-icon2">
-                <a href="/contact/" aria-label="Contact"><Img src="portfolio-details/portfolio-d-9.svg" alt="" /></a>
-              </div>
-              <div class="si-portfolio-details-text4">
-                <h4>Office Address</h4>
-                <p>629 Elgin St.Celina,2202</p>
-              </div>
-            </div>
-            <div class="si-portfolio-details-right2">
-              <div class="si-portfolio-details-icon2">
-                <a href="tel:+480045678900" aria-label="Call"><Img src="portfolio-details/portfolio-d-10.svg" alt="" /></a>
-              </div>
-              <div class="si-portfolio-details-text4">
-                <h4>Call Us For Support:</h4>
-                <p>+4800 45 678 900</p>
-              </div>
-            </div>
-            <div class="si-portfolio-details-right2">
-              <div class="si-portfolio-details-icon2">
-                <a href="mailto:contact@example.com" aria-label="Email"><Img src="portfolio-details/portfolio-d-11.svg" alt="" /></a>
-              </div>
-              <div class="si-portfolio-details-text4">
-                <h4>Email Us Anytime:</h4>
-                <p>contact@example.com</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<WorkDetailView locale="en" project={project} prev={prev} next={next} related={related} />
