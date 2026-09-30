@@ -8,10 +8,11 @@ import "swiper/css/scrollbar";
 const configs = {
   ".si-project": (section: Element) => ({
     slidesPerView: 1,
-    spaceBetween: 30,
+    spaceBetween: 22,
+    speed: 550,
     loop: true,
     navigation: { prevEl: section.querySelector<HTMLElement>(".si-button-next"), nextEl: section.querySelector<HTMLElement>(".si-button-prev") },
-    breakpoints: { 992: { slidesPerView: 2 } },
+    breakpoints: { 768: { slidesPerView: 2 }, 1280: { slidesPerView: 3 } },
   }),
   ".card-testimonial": (section: Element) => ({
     slidesPerView: 1,
@@ -42,12 +43,47 @@ export async function initSliders() {
     async (entries) => {
       const visible = entries.filter((e) => e.isIntersecting);
       if (!visible.length) return;
-      const { Swiper, Navigation, Scrollbar, A11y } = await import("./swiper-bundle");
+      const { Swiper, Navigation, Scrollbar, A11y, Autoplay } = await import("./swiper-bundle");
       for (const { target } of visible) {
         io.unobserve(target);
         const { el, config } = targets.find((t) => t.el === target)!;
         const section = el.closest("section") ?? document.body;
-        new Swiper(el, { modules: [Navigation, Scrollbar, A11y], ...config(section) });
+        const project = el.matches(".si-project");
+        const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const swiper = new Swiper(el, {
+          modules: [Navigation, Scrollbar, A11y, Autoplay],
+          ...config(section),
+          ...(project && !reducedMotion && { autoplay: { delay: 5000, disableOnInteraction: false } }),
+        });
+        if (project && !reducedMotion) {
+          const rotation = section.querySelector<HTMLButtonElement>("[data-work-rotation]");
+          if (!rotation) continue;
+          let inView = false;
+          let hovered = false;
+          let manuallyPaused = false;
+          let focusStopped = false;
+          const icon = rotation.querySelector("span");
+          const sync = () => {
+            const playing = inView && !hovered && !manuallyPaused && !focusStopped && document.visibilityState === "visible";
+            if (playing) swiper.autoplay.start();
+            else swiper.autoplay.stop();
+            const stoppedByUser = manuallyPaused || focusStopped;
+            rotation.setAttribute("aria-label", stoppedByUser ? rotation.dataset.resumeLabel! : rotation.dataset.pauseLabel!);
+            if (icon) icon.textContent = stoppedByUser ? "▶" : "Ⅱ";
+          };
+          swiper.autoplay.stop();
+          new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); }, { threshold: 0.2 }).observe(el);
+          section.addEventListener("mouseenter", () => { hovered = true; sync(); });
+          section.addEventListener("mouseleave", () => { hovered = false; sync(); });
+          section.addEventListener("focusin", () => { focusStopped = true; sync(); });
+          rotation.addEventListener("click", () => {
+            const stoppedByUser = manuallyPaused || focusStopped;
+            manuallyPaused = !stoppedByUser;
+            focusStopped = false;
+            sync();
+          });
+          document.addEventListener("visibilitychange", sync);
+        }
       }
     },
     { rootMargin: "100% 0px" },
