@@ -1,85 +1,92 @@
 import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { services } from "./content/services";
-import { team } from "./content/team";
-import { portfolio } from "./content/portfolio";
-import { blog } from "./content/blog";
+import { portfolio, workServiceIds } from "./content/portfolio";
 
 // Image fields are paths relative to src/assets/img (resolved by ~/lib/images).
 const img = z.string().regex(/\.(jpe?g|png|webp|svg)$/);
+const qa = z.object({ question: z.string(), answer: z.string() });
+
+// SERP-friendly bounds (title 30–65, description 70–200) — see AGENTS.md "SEO".
+const metaTitle = z.string().min(30).max(65);
+const metaDescription = z.string().min(70).max(200);
+
+const serviceCopy = z.object({
+  slug: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string(),
+  metaTitle,
+  metaDescription,
+  excerpt: z.string(),
+  tagline: z.string(),
+  heading: z.string(),
+  intro: z.array(z.string()).length(2),
+  summary: z.string(),
+  lists: z.array(z.array(z.string())).length(2),
+  formTitle: z.string(),
+  faq: z.array(qa),
+});
+
+const workCopy = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  overview: z.string(),
+  challenge: z.string(),
+  approach: z.string(),
+  role: z.string(),
+  tags: z.array(z.string()).min(1),
+});
+
+const featureCopy = z.object({ title: z.string(), body: z.string(), caption: z.string() });
 
 export const collections = {
   services: defineCollection({
     loader: () => services,
     schema: z.object({
       order: z.number(),
-      title: z.string(),
-      excerpt: z.string(),
+      build: z.enum(["marketing", "internal", "design", "both", "unsure"]),
       thumb: img,
-      tagline: z.string(),
-      heading: z.string(),
-      intro: z.array(z.string()),
-      summary: z.string(),
-      benefitsTitle: z.string(),
-      benefitsIntro: z.string(),
-      benefits: z.array(z.array(z.string())).length(2),
-      images: z.array(img).length(3),
-      faq: z.array(z.object({ question: z.string(), answer: z.string() })),
+      images: z.array(z.object({
+        src: img,
+        kind: z.enum(["editorial", "proof"]),
+        alt: z.object({ en: z.string(), id: z.string() }),
+        caption: z.object({ en: z.string(), id: z.string() }),
+      })).min(1).max(3),
+      en: serviceCopy,
+      id_: serviceCopy,
     }),
   }),
-  team: defineCollection({
-    loader: () => team,
+  // Notes: src/content/notes/<locale>/<slug>.md. Entry id = "<locale>/<slug>".
+  notes: defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "src/content/notes" }),
     schema: z.object({
-      order: z.number(),
-      name: z.string(),
-      role: z.string(),
+      title: metaTitle,
+      description: metaDescription,
+      date: z.coerce.date(),
+      category: z.string(),
+      translationKey: z.string(),
       image: img,
-      detailImage: img,
-      bio: z.string(),
-      quote: z.string(),
-      email: z.email(),
-      phone: z.string(),
-      socials: z.record(z.string(), z.url()),
+      listImage: img,
+      cardImage: img,
+      thumb: img,
     }),
   }),
   portfolio: defineCollection({
     loader: () => portfolio,
     schema: z.object({
       order: z.number(),
-      title: z.string(),
-      image: img,
-      featured: z.number().optional(),
-      featuredImage: img.optional(),
-      heroImage: img,
-      gallery: z.array(img).length(3),
-      overview: z.string(),
-      challenge: z.string(),
-      result: z.string(),
-      info: z.object({ category: z.string(), software: z.string(), service: z.string(), client: z.string(), date: z.string() }),
-      tags: z.array(z.string()),
-      category: z.string(),
-      subtitle: z.string(),
-      year: z.string(),
-    }),
-  }),
-  blog: defineCollection({
-    loader: () => blog,
-    schema: z.object({
-      title: z.string(),
-      date: z.coerce.date(),
-      category: z.string(),
-      author: z.string(),
-      listImage: img,
-      cardImage: img,
-      thumb: img,
-      image: img,
-      lead: z.string(),
-      leadNote: z.string(),
-      quote: z.object({ text: z.string(), author: z.string() }),
-      paragraphs: z.array(z.string()),
-      gallery: z.array(img).length(2),
-      closing: z.array(z.string()),
-      tags: z.array(z.string()),
+      primaryService: z.enum(workServiceIds),
+      serviceIds: z.array(z.enum(workServiceIds)).min(1),
+      featuredRank: z.number().int().positive().optional(),
+        homeRank: z.number().int().positive().optional(),
+      desktopImage: img,
+      mobileImage: img,
+      pairImage: img,
+      features: z.array(z.object({ image: img.optional(), en: featureCopy, id_: featureCopy })).min(1),
+      imageNote: z.object({ en: z.string(), id_: z.string() }).optional(),
+      year: z.string().optional(),
+      en: workCopy,
+      id_: workCopy,
     }),
   }),
 };
