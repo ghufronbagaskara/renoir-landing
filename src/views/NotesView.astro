@@ -1,0 +1,71 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import NotesSidebar from "~/components/sections/notes/NotesSidebar.astro";
+import { child, routeAlternates, t, type Locale } from "~/i18n";
+import { formatDate, getNotes, noteSlug } from "~/lib/content";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const n = c.notes;
+const notes = await getNotes(locale);
+---
+<BaseLayout
+  locale={locale}
+  title={n.metaTitle}
+  description={n.metaDescription}
+  alternates={routeAlternates("notes")}
+  breadcrumb={{ title: n.breadcrumb }}
+  pageType="CollectionPage"
+>
+  <section class="si-blog-standard-area">
+    <div class="container container-1617" data-notes-catalog data-results-template={n.results}>
+      <div class="notes-layout">
+        <div>
+          <div class="notes-active-filter" data-notes-summary aria-live="polite">{n.results.replace("{count}", String(notes.length))}</div>
+          <div class="notes-grid" data-notes-list>
+          {
+            notes.map((note, i) => {
+              const href = child("notes", locale, noteSlug(note));
+              return (
+                <article class="si-blog-standard-box" data-note-card data-category={note.data.category} data-search={`${note.data.title} ${note.data.description} ${note.data.category}`.toLocaleLowerCase(locale)}>
+                  <div class="si-blog-standard-thumb">
+                    <Img src={note.data.listImage} alt="" loading={i === 0 ? "eager" : "lazy"} />
+                  </div>
+                  <div class="si-blog-standard-text">
+                    <span>{note.data.category}</span>
+                    <span>
+                      <time datetime={note.data.date.toISOString().slice(0, 10)}>{formatDate(note.data.date, locale)}</time>
+                    </span>
+                    <span>
+                      {n.by} {c.site.name}
+                    </span>
+                    <h2 class="h3">
+                      <a class="underline-black" href={href}>{note.data.title}</a>
+                    </h2>
+                    <p class="note-excerpt">{note.data.description}</p>
+                  </div>
+                  <div class="si-blog-standard-btn">
+                    <a class="si-btn-one" href={href} aria-label={`${n.readMore}: ${note.data.title}`}>
+                      <span class="btn-text"> <span>{n.readMore}</span> </span>
+                      <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span>
+                    </a>
+                  </div>
+                </article>
+              );
+            })
+          }
+          </div>
+          <div class="notes-empty" data-notes-empty hidden><h2>{n.emptyTitle}</h2><p>{n.emptyBody}</p><button type="button" data-notes-clear>{n.clear}</button></div>
+        </div>
+        <NotesSidebar locale={locale} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import "~/scripts/notes-filter";
+</script>
