@@ -3,8 +3,8 @@
 //   bun alchemy profile create admin
 //   bun alchemy profile edit --profile admin --add Cloudflare
 //   bun alchemy deploy --config stacks/github.ts --profile admin
-// The remaining secrets (WORKERS_DEV_SUBDOMAIN, RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL)
-// are added by hand in the repository settings.
+// The remaining secrets (WORKERS_DEV_SUBDOMAIN, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, LEADS_WEBHOOK_URL,
+// LEADS_WEBHOOK_SECRET) are added by hand in the repository settings.
 import * as Alchemy from "alchemy";
 import * as Cloudflare from "alchemy/Cloudflare";
 import * as GitHub from "alchemy/GitHub";
@@ -33,10 +33,14 @@ export default Alchemy.Stack(
             "Workers Scripts Write",
             "Workers KV Storage Write",
             "Workers R2 Storage Write",
-            "D1 Write",
             "Turnstile Sites Write",
             "Account Settings Write",
             "Workers Tail Read",
+            // Custom domain (renoir.run): DNS record, edge certificate, www redirect rule.
+            "Zone Read",
+            "DNS Write",
+            "Workers Routes Write",
+            "Zone Settings Write",
           ],
           resources: { [`com.cloudflare.api.account.${accountId}`]: "*" },
         },
