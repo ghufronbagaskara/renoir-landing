@@ -1,0 +1,31 @@
+---
+// "How we're set up" — the template counters, with facts about how Renoir works (no invented results).
+interface Props {
+  facts: { value: number; suffix: string; label: string }[];
+}
+const { facts } = Astro.props;
+---
+<section class="si-counter-area pt-130 pb-124">
+  <div class="container container-1617">
+    <div class="si-counter-wrapper">
+      <div class="si-counter-wrapper-box">
+        {
+          facts.map((fact, i) => (
+            <div class:list={["si-counter-box", { "counter-mt": i > 0 }]}>
+              <div class="si-counter-text">
+                <p class="h1 purecounter" data-purecounter-duration="1" data-purecounter-end={fact.value}>
+                  {fact.value}
+                </p>
+                {fact.suffix && <p class="h2">{fact.suffix}</p>}
+                <span>{fact.label}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import "~/scripts/counter";
+</script>
