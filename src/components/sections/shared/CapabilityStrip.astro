@@ -1,0 +1,18 @@
+---
+// "What we build": template client-logo grid, capability labels instead of logos (no client names).
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+<div class="si-brand-area pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-brand-wrappere">
+          {items.map((item) => <div class="si-brand-box"><span>{item}</span></div>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
