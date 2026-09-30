@@ -10,20 +10,6 @@ if (header) {
   new IntersectionObserver(([e]) => header.classList.toggle(cls, !e.isIntersecting)).observe(sentinel);
 }
 
-// Back to top
-const backWrap = document.querySelector(".back-to-top-wrapper");
-if (backWrap) {
-  const probe = document.createElement("div");
-  probe.style.cssText = "position:absolute;top:300px;height:1px;width:1px;pointer-events:none";
-  document.body.prepend(probe);
-  new IntersectionObserver(([e]) =>
-    backWrap.classList.toggle("back-to-top-btn-show", !e.isIntersecting && e.boundingClientRect.top < 0),
-  ).observe(probe);
-  document.getElementById("back_to_top")?.addEventListener("click", () =>
-    window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }),
-  );
-}
-
 // Offcanvas + search overlay (template classes: .opened on panel + .body-overlay)
 const main = document.getElementById("main");
 const overlays = document.querySelectorAll<HTMLElement>(".body-overlay");
@@ -32,19 +18,27 @@ let lastTrigger: HTMLElement | null = null;
 function open(panel: HTMLElement | null, trigger: HTMLElement) {
   if (!panel) return;
   lastTrigger = trigger;
-  panel.inert = false;
   panel.classList.add("opened");
-  overlays.forEach((o) => o.classList.add("opened"));
+  if (panel instanceof HTMLDialogElement) {
+    if (!panel.open) panel.showModal();
+  } else {
+    panel.inert = false;
+    overlays.forEach((o) => o.classList.add("opened"));
+  }
   trigger.setAttribute("aria-expanded", "true");
   if (main) main.inert = true;
-  panel.querySelector<HTMLElement>("input, button, a")?.focus({ preventScroll: true });
+  panel.querySelector<HTMLElement>(panel instanceof HTMLDialogElement ? "input" : "input, button, a")?.focus({ preventScroll: true });
   panel.dispatchEvent(new CustomEvent("panel:open"));
 }
 
 function closeAll() {
   document.querySelectorAll<HTMLElement>(".si-offcanvas-area.opened, .si-search-area.opened").forEach((p) => {
     p.classList.remove("opened");
-    p.inert = true;
+    if (p instanceof HTMLDialogElement) {
+      if (p.open) p.close();
+    } else {
+      p.inert = true;
+    }
   });
   overlays.forEach((o) => o.classList.remove("opened"));
   document.querySelectorAll("[aria-expanded='true'][aria-controls]").forEach((b) => b.setAttribute("aria-expanded", "false"));
@@ -61,6 +55,7 @@ document.addEventListener("click", (e) => {
     return;
   }
   if (t.closest(".si-offcanvas-close-btn, .si-search-close-btn, .body-overlay")) closeAll();
+  if (t.matches("dialog.si-search-area")) closeAll();
 
   // Offcanvas submenu toggles
   const toggle = t.closest<HTMLElement>(".si-offcanvas-menu .si-menu-close, .si-offcanvas-menu li:has(> .submenu) > a:not([href])");
