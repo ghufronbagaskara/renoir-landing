@@ -1,14 +1,24 @@
 ---
 export const prerender = true;
+// One 404 for both languages (the asset layer serves a single /404.html).
 import BaseLayout from "~/layouts/BaseLayout.astro";
+import { path, t } from "~/i18n";
+
+const en = t("en").notFound;
+const id = t("id").notFound;
 ---
-<BaseLayout title="Page Not Found" breadcrumb={{ title: "404 Error" }} noindex>
+<BaseLayout locale="en" title={en.metaTitle} description={en.metaDescription} alternates={{}} breadcrumb={{ title: en.breadcrumb }} noindex>
   <section class="si-contact-area pt-127 pb-130">
     <div class="container container-1617">
       <div class="si-section-title text-center">
-        <h2>This page doesn't exist.</h2>
-        <p>The link may be broken, or the page may have moved.</p>
-        <a class="si-btn-one mt-30" href="/"> <span class="btn-text"> <span>Back to Home</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+        <h2>{en.title}</h2>
+        <p>{en.body}</p>
+        <a class="si-btn-one mt-30" href={path("home", "en")}> <span class="btn-text"> <span>{en.button}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
+        <div lang="id" class="mt-60">
+          <p class="h4">{id.title}</p>
+          <p>{id.body}</p>
+          <a class="hero-link" href={path("home", "id")}>{id.button} <i class="fa-sharp fa-regular fa-arrow-right"></i></a>
+        </div>
       </div>
     </div>
   </section>
