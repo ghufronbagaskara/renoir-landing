@@ -1,15 +1,17 @@
 ---
-import Img from "~/components/ui/Img.astro";
-import { imageUrl } from "~/lib/images";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Locale } from "~/i18n";
 
-interface Props {
+export interface Crumb {
   title: string;
   parent?: { label: string; href: string };
 }
-const { title, parent } = Astro.props;
-const bg = await imageUrl("breadcumb/bg.jpg");
+interface Props extends Crumb {
+  locale: Locale;
+}
+const { title, parent, locale } = Astro.props;
 ---
-<section class="si-breadcumb-area" style={`background: url(${bg});`}>
+<section class="si-breadcumb-area">
   <div class="container container-1617">
     <div class="row">
       <div class="col-lg-12">
@@ -18,7 +20,7 @@ const bg = await imageUrl("breadcumb/bg.jpg");
             <h1>{title}</h1>
             <nav aria-label="Breadcrumb">
               <span>
-                <a href="/">Home</a>
+                <a href={path("home", locale)}>{t(locale).nav.home}</a>
                 {parent && (<><i class="fa-sharp fa-regular fa-angles-right" aria-hidden="true"></i> <a href={parent.href}>{parent.label}</a> </>)}
                 <strong aria-current="page"><i class="fa-sharp fa-regular fa-angles-right" aria-hidden="true"></i> {title}</strong>
               </span>
@@ -29,6 +31,6 @@ const bg = await imageUrl("breadcumb/bg.jpg");
     </div>
   </div>
   <div class="si-breadcumb-shape">
-    <Img src="breadcumb/shape.png" alt="" />
+    <BrandMark />
   </div>
 </section>
