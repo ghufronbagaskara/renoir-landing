@@ -1,0 +1,51 @@
+---
+// About → the name (was: "Full-Service Digital Agency", 20+ years, 3.2M, 300+ clients).
+import Img from "~/components/ui/Img.astro";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const n = c.about.name;
+---
+<section class="si-about-area pt-124 pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="si-section-title">
+          <span>{n.label}</span>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="si-about-text">
+          <h2>{n.title}</h2>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="si-about-shape">
+          <Img src="about/porcelain-editorial.webp" alt="" />
+          <div class="si-about-text3">
+            <p class="h3 pronunciation">{c.site.pronunciation}</p>
+            <span>{n.pronunciationLabel}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="si-about-box">
+          <div class="si-about-img">
+            <Img src="editorial/about-process.webp" alt="" />
+            <Img class="si-about-img2" src="editorial/about-result.webp" alt="" />
+          </div>
+          <div class="si-about-main">
+            <span class="about-maker-mark"><BrandMark /></span>
+            <h3 class="h2">{n.cardTitle}</h3>
+            <p>{n.cardBody}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
