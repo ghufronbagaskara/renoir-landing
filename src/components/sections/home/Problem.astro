@@ -1,0 +1,44 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const p = t(locale).home.problem;
+---
+<section class="si-about-area pt-124 pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="si-section-title">
+          <span>{p.label}</span>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="si-about-text">
+          <h2 class="si-text-revel-anim">{p.title}</h2>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="si-about-text2">
+          <p class="h1">{p.side}</p>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="si-about-box">
+          <div class="si-about-img">
+            <Img src="editorial/home-proof-website.webp" alt={locale === "id" ? "Tampilan situs MAXY AI pada desktop" : "MAXY AI website on desktop"} />
+            <Img class="si-about-img2" src="editorial/home-proof-system.webp" alt={locale === "id" ? "Dashboard sistem pesanan dan sales lapangan" : "Order and field sales system dashboard"} />
+          </div>
+          <div class="si-about-main">
+            <span class="about-eyebrow">{p.stat}</span>
+            <h3 class="h2">{p.cardTitle}</h3>
+            <p>{p.cardBody}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
