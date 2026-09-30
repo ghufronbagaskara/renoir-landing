@@ -1,36 +1,58 @@
 ---
+import { child, t, type Locale } from "~/i18n";
+import { getNotes, getServices, noteSlug, serviceCopy } from "~/lib/content";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const s = t(locale).search;
+const notes = (await getNotes(locale)).slice(0, 3);
+const services = await getServices();
 ---
-<div class="si-search-area p-relative" id="site-search" role="dialog" aria-modal="true" aria-label="Search" inert>
-  <div class="si-search-close">
-    <button class="si-search-close-btn" type="button" aria-label="Close search">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="path-1" d="M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        <path class="path-2" d="M1 1L11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </button>
-  </div>
-  <div class="container container-1230">
-    <div class="row">
-      <div class="si-search-wrapper">
-        <div class="col-lg-8">
-          <div class="si-search-content">
-            <form class="search p-relative" role="search" action="/blog/" data-search-form>
-              <label for="site-search-input" class="visually-hidden">Search the site</label>
-              <input id="site-search-input" type="search" name="q" class="search-input" placeholder="Search" autocomplete="off" />
-              <button class="si-search-icon" type="submit" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M18.0508 18.05L23.0009 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M20.8004 10.9C20.8004 5.43237 16.3679 1 10.9002 1C5.43246 1 1 5.43237 1 10.9C1 16.3676 5.43246 20.7999 10.9002 20.7999C16.3679 20.7999 20.8004 16.3676 20.8004 10.9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
-                </svg>
-              </button>
-            </form>
-            <ul class="si-search-results" data-search-results aria-live="polite"></ul>
-          </div>
+<dialog
+  class="si-search-area"
+  id="site-search"
+  aria-labelledby="site-search-title"
+  data-no-results={s.noResults}
+  data-unavailable={s.unavailable}
+  data-loading={s.loading}
+  data-locale={locale}
+  data-groups={JSON.stringify(s.groups)}
+>
+  <div class="search-command-shell">
+    <header class="search-command-head">
+      <div><span class="search-command-kicker">Renoir</span><h2 id="site-search-title">{s.label}</h2></div>
+      <button class="si-search-close-btn" type="button" aria-label={s.close}>
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 1L1 11M1 1L11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+      </button>
+    </header>
+    <form class="search-command-form" role="search" data-search-form>
+      <label for="site-search-input" class="visually-hidden">{s.label}</label>
+      <i class="fa-sharp fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+      <input id="site-search-input" type="search" name="q" placeholder={s.placeholder} autocomplete="off" aria-describedby="site-search-hint" />
+      <kbd>Esc</kbd>
+    </form>
+    <p id="site-search-hint" class="search-command-hint">{s.hint}</p>
+
+    <div class="search-command-default" data-search-default>
+      <section aria-labelledby="search-paths-title">
+        <h3 id="search-paths-title">{s.explore}</h3>
+        <div class="search-command-paths">
+          {services.map((service, index) => {
+            const copy = serviceCopy(service, locale);
+            return <a href={child("services", locale, copy.slug)}><span>{String(index + 1).padStart(2, "0")}</span>{copy.title}<i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i></a>;
+          })}
         </div>
-      </div>
+      </section>
+      <section aria-labelledby="search-recent-title">
+        <h3 id="search-recent-title">{s.recent}</h3>
+        <div class="search-command-recent">
+          {notes.map((note) => <a href={child("notes", locale, noteSlug(note))}><span>{note.data.category}</span>{note.data.title}</a>)}
+        </div>
+      </section>
     </div>
+    <ul class="si-search-results" data-search-results aria-live="polite" aria-label={s.label} hidden></ul>
   </div>
-</div>
+</dialog>
 <script>
   import "~/scripts/search";
 </script>
