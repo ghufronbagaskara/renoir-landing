@@ -1,0 +1,27 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import WorkCatalog from "~/components/sections/work/WorkCatalog.astro";
+import { routeAlternates, t, type Locale } from "~/i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = t(locale);
+---
+<BaseLayout
+  locale={locale}
+  title={c.work.metaTitle}
+  description={c.work.metaDescription}
+  alternates={routeAlternates("work")}
+  breadcrumb={{ title: c.work.breadcrumb }}
+  searchable
+>
+  <section class="work-intro pt-124">
+    <div class="container container-1617">
+      <div class="work-intro-grid">
+        <div class="si-section-title"><span>{c.work.label}</span><h2>{c.work.title}</h2></div>
+        <p>{c.work.intro}</p>
+      </div>
+    </div>
+  </section>
+  <WorkCatalog locale={locale} />
+</BaseLayout>
