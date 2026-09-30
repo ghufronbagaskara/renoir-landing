@@ -40,6 +40,25 @@ if (parallax.length && !reducedMotion) {
 async function init() {
   if (reducedMotion || !document.querySelector(SELECTOR)) return;
 
+  // On phones, a single compositor animation communicates the reveal without loading GSAP/SplitText.
+  if (matchMedia("(max-width: 767px)").matches) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer.unobserve(entry.target);
+        (entry.target as HTMLElement).animate(
+          [
+            { opacity: 0.72, transform: "translateY(14px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ],
+          { duration: 480, easing: "cubic-bezier(.16, 1, .3, 1)" },
+        );
+      }
+    }, { rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(SELECTOR).forEach((element) => observer.observe(element));
+    return;
+  }
+
   const [{ gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
     import("gsap"),
     import("gsap/ScrollTrigger"),
