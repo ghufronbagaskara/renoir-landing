@@ -1,79 +1,10 @@
 ---
 export const prerender = true;
 import type { GetStaticPaths } from "astro";
-import BaseLayout from "~/layouts/BaseLayout.astro";
-import Img from "~/components/ui/Img.astro";
-import Accordion from "~/components/ui/Accordion.astro";
-import ContactForm from "~/components/ui/ContactForm.astro";
+import ServiceView from "~/views/ServiceView.astro";
 import { getServices } from "~/lib/content";
 
 export const getStaticPaths = (async () =>
-  (await getServices()).map((service) => ({ params: { slug: service.id }, props: { service } }))) satisfies GetStaticPaths;
-
-const { service } = Astro.props;
-const s = service.data;
+  (await getServices()).map((entry) => ({ params: { slug: entry.data.en.slug }, props: { entry } }))) satisfies GetStaticPaths;
 ---
-<BaseLayout title={s.title} description={s.excerpt} breadcrumb={{ title: s.title, parent: { label: "Our Services", href: "/services/" } }}>
-  <section class="si-service-details-area">
-    <div class="container container-1617">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="si-service-details-box">
-            <div class="si-service-details-thumb">
-              <Img src={s.images[0]} alt={s.title} loading="eager" />
-            </div>
-            <div class="si-service-details-text">
-              <span>{s.tagline}</span>
-              <h2 class="h1">{s.heading}</h2>
-              {s.intro.map((p, i) => <p class:list={{ "si-mt": i > 0 }}>{p}</p>)}
-            </div>
-            <div class="si-service-details-thumb-main">
-              <div class="si-service-details-thumb2">
-                <Img src={s.images[1]} alt="" />
-              </div>
-              <div class="si-service-details-thumb3">
-                <Img src={s.images[2]} alt="" />
-              </div>
-            </div>
-            <div class="si-service-details-p">
-              <p>{s.summary}</p>
-            </div>
-            <div class="si-service-details-main">
-              <div class="si-service-details-right">
-                <div class="si-service-details-text2">
-                  <h2>{s.benefitsTitle}</h2>
-                  <p>{s.benefitsIntro}</p>
-                </div>
-                <div class="si-service-details-list-main">
-                  {
-                    s.benefits.map((list, i) => (
-                      <div class={i === 0 ? "si-service-details-list" : "si-service-details-list2"}>
-                        <ul>
-                          {list.map((item) => (
-                            <li>
-                              <Img src="service-details/icon.svg" alt="" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))
-                  }
-                </div>
-              </div>
-              <div class="si-service-details-from">
-                <h3>Contact Us</h3>
-                <ContactForm variant="service" source={`service:${service.id}`} />
-              </div>
-            </div>
-            <div class="si-faq-box service-details-box">
-              <div class="si-faq-accordion-wrap">
-                <Accordion id="service-faq" items={s.faq} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<ServiceView locale="en" entry={Astro.props.entry} />
