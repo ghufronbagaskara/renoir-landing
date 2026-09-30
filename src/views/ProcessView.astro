@@ -1,0 +1,27 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Process from "~/components/sections/shared/Process.astro";
+import Engagements from "~/components/sections/shared/Engagements.astro";
+import Faq from "~/components/sections/shared/Faq.astro";
+import { path, routeAlternates, t, type Locale } from "~/i18n";
+import { faqNode } from "~/lib/seo";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const p = c.process;
+---
+<BaseLayout
+  locale={locale}
+  title={p.metaTitle}
+  description={p.metaDescription}
+  alternates={routeAlternates("process")}
+  breadcrumb={{ title: p.breadcrumb }}
+  schema={[faqNode(path("process", locale), c.home.faq.items)]}
+>
+  <Process label={p.label} title={p.title} steps={p.steps} />
+  <Engagements locale={locale} />
+  <Faq id="process-faq" label={c.home.faq.label} title={c.home.faq.title} items={c.home.faq.items} />
+</BaseLayout>
