@@ -1,61 +1,57 @@
 ---
 import Img from "~/components/ui/Img.astro";
-import { getPortfolio } from "~/lib/content";
+import { child, path, t, type Locale } from "~/i18n";
+import { getPortfolio, portfolioCopy } from "~/lib/content";
 
-const projects = (await getPortfolio())
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.featured! - b.data.featured!);
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = t(locale);
+const projects = (await getPortfolio()).filter((project) => project.data.homeRank).sort((a, b) => a.data.homeRank! - b.data.homeRank!);
 ---
 <section class="si-project-area pt-124 pb-130">
   <div class="container container-1617">
     <div class="row">
       <div class="col-lg-12">
-        <div class="si-section-title pb-60 text-center relative-tag">
-          <span>Our project</span>
-          <h2 class="si-text-revel-anim">See Our Works in Action</h2>
+        <div class="si-section-title pb-60 relative-tag home-work-heading">
+          <span>{c.home.work.label}</span>
+          <h2 class="si-text-revel-anim">{c.home.work.title}</h2>
+          <p>{c.home.work.body}</p>
           <div class="si-project-navigation">
-            <div class="si-button-next navigation-icon">
-              <a class="no-href" role="button" tabindex="0" aria-label="Previous project"><Img src="project/left.svg" alt="" /></a>
-            </div>
-            <div class="si-button-prev navigation-icon">
-              <a class="no-href" role="button" tabindex="0" aria-label="Next project"><Img src="project/right.svg" alt="" /></a>
-            </div>
+            <div class="si-button-next navigation-icon"><button type="button" aria-label={c.home.work.previous}><Img src="project/left.svg" alt="" /></button></div>
+            <button class="home-work-rotation" type="button" aria-label={c.home.work.pause} data-work-rotation data-pause-label={c.home.work.pause} data-resume-label={c.home.work.resume}><span aria-hidden="true">Ⅱ</span></button>
+            <div class="si-button-prev navigation-icon"><button type="button" aria-label={c.home.work.next}><Img src="project/right.svg" alt="" /></button></div>
           </div>
         </div>
       </div>
       <div class="col-lg-12">
         <div class="si-project swiper">
           <div class="swiper-wrapper">
-            {
-              projects.map((p, i) => (
+            {projects.map((project, index) => {
+              const copy = portfolioCopy(project, locale);
+              return (
                 <div class="swiper-slide">
-                  <div class="si-project-box">
-                    <div class="si-project-img">
-                      <Img src={p.data.featuredImage!} alt={p.data.title} />
-                    </div>
+                  <article class="si-project-box">
+                    <a class="si-project-img" href={child("work", locale, project.id)} tabindex="-1" aria-hidden="true">
+                      <Img src={project.data.pairImage} alt="" />
+                    </a>
                     <div class="si-project-right">
                       <div class="si-project-right-inner">
-                        <div class="si-project-number">
-                          <span>{String(i + 1).padStart(2, "0")}</span>
-                        </div>
+                        <div class="si-project-number"><span>{String(index + 1).padStart(2, "0")}</span></div>
                         <div class="si-project-text">
-                          <h3>
-                            <a class="underline-black" href={`/portfolio/${p.id}/`}>{p.data.title}</a>
-                          </h3>
-                          <span class="project-dot">{p.data.category}</span>
-                          <span>{p.data.subtitle}</span>
+                          <span class="work-service-badge">{c.work.services[project.data.primaryService]}</span>
+                          <h3><a class="underline-black" href={child("work", locale, project.id)}>{copy.title}</a></h3>
+                          <p>{copy.subtitle}</p>
                         </div>
                       </div>
-                      <div class="si-project-year">
-                        <span>{p.data.year}</span>
-                      </div>
+                      {project.data.year && <div class="si-project-year"><span>{project.data.year}</span></div>}
                     </div>
-                  </div>
+                  </article>
                 </div>
-              ))
-            }
+              );
+            })}
           </div>
         </div>
+        <div class="home-work-link"><a href={path("work", locale)}>{c.work.allTitle} <i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></a></div>
       </div>
     </div>
   </div>
