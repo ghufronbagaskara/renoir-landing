@@ -1,39 +1,39 @@
-// Single source of truth for navigation. Only routes that exist in src/pages may appear here.
+import { path, t, type Locale } from "~/i18n";
+
 export interface NavItem {
   label: string;
   href?: string;
   children?: { label: string; href: string }[];
 }
 
-export const nav: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about-us/" },
-  {
-    label: "Pages",
-    children: [
-      { label: "Our Services", href: "/services/" },
-      { label: "Our Team", href: "/team/" },
-      { label: "Pricing Plan", href: "/pricing/" },
+// Single source of truth for the header and offcanvas menus.
+export function nav(locale: Locale): NavItem[] {
+  const n = t(locale).nav;
+  return [
+    { label: n.home, href: path("home", locale) },
+    { label: n.services, href: path("services", locale) },
+    { label: n.process, href: path("process", locale) },
+    { label: n.work, href: path("work", locale) },
+    { label: n.about, href: path("about", locale) },
+    { label: n.notes, href: path("notes", locale) },
+  ];
+}
+
+export function footerLinks(locale: Locale) {
+  const n = t(locale).nav;
+  return {
+    studio: [
+      { label: n.services, href: path("services", locale) },
+      { label: n.process, href: path("process", locale) },
+      { label: n.work, href: path("work", locale) },
+      { label: n.aboutRenoir, href: path("about", locale) },
     ],
-  },
-  { label: "Portfolio", href: "/portfolio/" },
-  { label: "Blog", href: "/blog/" },
-  { label: "Contact", href: "/contact/" },
-];
+    more: [
+      { label: n.notes, href: path("notes", locale) },
+      { label: n.cta, href: path("contact", locale) },
+    ],
+  };
+}
 
-export const footerLinks = [
-  { label: "About Us", href: "/about-us/" },
-  { label: "Service", href: "/services/" },
-  { label: "Portfolio", href: "/portfolio/" },
-  { label: "Contact", href: "/contact/" },
-];
-
-export const footerSupport = [
-  { label: "Our Team", href: "/team/" },
-  { label: "Pricing", href: "/pricing/" },
-  { label: "Blog", href: "/blog/" },
-  { label: "Home", href: "/" },
-];
-
-export const isActive = (href: string, path: string) =>
-  href === "/" ? path === "/" : path.startsWith(href);
+export const isActive = (href: string, current: string, homeHref: string) =>
+  href === homeHref ? current === homeHref : current.startsWith(href);
