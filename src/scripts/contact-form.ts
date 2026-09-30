@@ -23,19 +23,14 @@ function loadTurnstile(): Promise<Turnstile | null> {
   return turnstileReady;
 }
 
-const messages: Record<string, string> = {
-  sent: "Thanks — your message is on its way. We will reply soon.",
-  invalid: "Please check the highlighted fields and try again.",
-  captcha: "Verification failed. Please try again.",
-  rate_limited: "Too many messages from this connection. Please wait a minute.",
-  error: "Something went wrong. Please try again or email us directly.",
-};
 
 for (const form of document.querySelectorAll<HTMLFormElement>("[data-contact-form]")) {
   const status = form.querySelector<HTMLElement>("[data-form-status]")!;
   const slot = form.querySelector<HTMLElement>("[data-turnstile]");
   let widgetId: string | undefined;
 
+  // Localised messages are rendered by ContactForm.astro into data-messages.
+  const messages = JSON.parse(form.dataset.messages ?? "{}") as Record<string, string>;
   const show = (key: string) => {
     status.textContent = messages[key] ?? messages.error;
     status.dataset.state = key === "sent" ? "ok" : "error";
@@ -70,8 +65,11 @@ for (const form of document.querySelectorAll<HTMLFormElement>("[data-contact-for
     }
   });
 
-  // No-JS round trip result (e.g. /contact/?sent=1)
+  // No-JS round trip result (e.g. /contact/?sent=1) and CTA prefill (e.g. /contact/?build=internal)
   const params = new URLSearchParams(location.search);
+  const buildSelect = form.querySelector<HTMLSelectElement>("[data-prefill=build]");
+  const build = params.get("build");
+  if (buildSelect && build && [...buildSelect.options].some((o) => o.value === build)) buildSelect.value = build;
   if (params.has("sent")) show("sent");
   else if (params.has("error")) show(params.get("error")!);
 }
