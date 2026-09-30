@@ -1,26 +1,33 @@
 ---
 import Img from "~/components/ui/Img.astro";
+import { imageUrl } from "~/lib/images";
+import { t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const h = t(locale).home.hero;
 ---
 <section class="si-hero-area">
-    <div class="container container-1617">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="si-hero-text">
-                    <h1 class="si-text-revel-anim">Bold Brands <br class="d-none d-xxl-block"> Creative Design <br class="d-none d-xxl-block"> Studio.</h1>
-                </div>
-                <div class="si-hero-text2">
-                    <p>Identify the key barriers that prevent your business from <br> reaching its full potential. Addressing these issues can <br> transform your path to success.</p>
-                </div>
-            </div>
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="si-hero-text">
+          <h1 class="si-text-revel-anim">
+            {h.title.map((line, i) => (i === 0 ? line : <><br class="d-none d-xxl-block" /> {line}</>))}
+          </h1>
         </div>
+        <div class="si-hero-text2">
+          <p>{h.body}</p>
+        </div>
+      </div>
     </div>
-    <div class="si-hero-thumb fix z-index-1">
-        <Img class="w-100" data-speed=".4" src="banner/banner-1.jpg" alt="Creative team collaborating in the studio" loading="eager" fetchpriority="low" />
-    </div>
-    <div class="si-hero-shape">
-        <Img src="hero/shape.png" alt="" loading="eager" />
-    </div>
-    <div class="si-hero-shape2">
-        <Img src="hero/shape2.png" alt="" loading="eager" fetchpriority="high" />
-    </div>                        
+  </div>
+  <div class="si-hero-thumb fix z-index-1">
+    <picture>
+      <source media="(max-width: 767px)" srcset={imageUrl("editorial/hero-mobile.webp")} width="900" height="1125" />
+      <Img class="w-100" src="editorial/hero-desktop.webp" alt="" loading="eager" fetchpriority="high" />
+    </picture>
+  </div>
 </section>
