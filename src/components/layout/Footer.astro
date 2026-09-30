@@ -1,81 +1,72 @@
 ---
-import Img from "~/components/ui/Img.astro";
-import SocialIcons from "./SocialIcons.astro";
-import { footerLinks, footerSupport } from "~/data/nav";
-import { site } from "~/data/site";
-import { imageUrl } from "~/lib/images";
+// Footer = closing call to action on every page + links + contact.
+import { footerLinks } from "~/data/nav";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import { path, t, type Locale } from "~/i18n";
 
 interface Props {
+  locale: Locale;
   home?: boolean;
 }
-const { home = false } = Astro.props;
-const bg = await imageUrl("footer/bg.jpg");
+const { locale, home = false } = Astro.props;
+const c = t(locale);
+const links = footerLinks(locale);
 ---
-<footer class:list={["si-footer-area si-background", { "pt-127": !home }]} style={`background-image:url(${bg})`}>
+<footer class:list={["si-footer-area si-background", { "pt-127": !home }]}>
+  <BrandMark class="footer-watermark" />
   <div class="container container-1588">
     <div class="row">
       <div class="col-lg-7">
         <div class="si-footer-text">
-          <h1 class:list={{ "si-text-revel-anim": home }}>Let's Work <span>Together</span></h1>
+          <h2 class="h1 si-text-revel-anim">{c.footer.headline} <span>{c.footer.headlineEm}</span></h2>
         </div>
       </div>
       <div class="col-lg-5">
         <div class="si-footer-p">
-          <p>Avanta team quickly understood our business requirements <br class="d-none d-xxl-block" /> and were proactive and flexible with our ongoing support <br class="d-none d-xxl-block" /> and developments. You can definitely.</p>
+          <p>{c.footer.body}</p>
         </div>
       </div>
     </div>
     <div class="row border-line">
       <div class="col-lg-5 p-0">
         <div class="si-footer-logo">
-          <Img src="logo/logo-white.png" alt="Averix" />
-          <p>Creative design agency specializes <br class="d-none d-xxl-block" /> In Innovative visual solutions</p>
-          <a href={`mailto:${site.footerEmail}`}>{site.footerEmail}</a>
+          <a class="renoir-brand" href={path("home", locale)}><BrandMark class="renoir-brand-mark" /><span class="renoir-wordmark">{c.site.name}</span></a>
+          <p>{c.footer.tagline}</p>
         </div>
       </div>
       <div class="col-lg-2">
-        <nav class="si-footer-list footer-left" aria-label="Quick links">
-          <h2>Quick Links</h2>
+        <nav class="si-footer-list footer-left" aria-label={c.footer.studio}>
+          <h2>{c.footer.studio}</h2>
           <ul>
-            {footerLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            {links.studio.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
           </ul>
         </nav>
       </div>
       <div class="col-lg-3">
-        <nav class="si-footer-list footer-right" aria-label="Support">
-          <h2>Support</h2>
+        <nav class="si-footer-list footer-right" aria-label={c.footer.more}>
+          <h2>{c.footer.more}</h2>
           <ul>
-            {footerSupport.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            {links.more.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
           </ul>
         </nav>
       </div>
       <div class="col-lg-2">
         <div class:list={["si-footer-list footer-list", { "footer-list2": home }]}>
-          <h2>Contact Us</h2>
+          <h2>{c.footer.contact}</h2>
           <ul>
-            <li class="footer-color"><a href={site.footerPhone.href}>Call Us Directly</a></li>
-            <li><a href={site.footerPhone.href}>{site.footerPhone.label}</a></li>
-            <li class="footer-color"><a href="/contact/">Location</a></li>
-            <li><a href="/contact/">410 Sandtown, <br class="d-none d-xxl-block" /> California 94001, USA</a></li>
+            <li class="footer-color"><a href={path("contact", locale)}>{c.nav.cta}</a></li>
+            <li><a href={path("contact", locale)}>{c.footer.location}</a></li>
           </ul>
         </div>
       </div>
     </div>
-  </div>
-  <div class="si-footer-shape">
-    <Img class="rotate2" src="footer/shape.png" alt="" />
   </div>
   <div class="si-copyright-area p-0">
     <div class="container container-1588">
       <div class="row align-items-center copyright-line">
         <div class="col-lg-6 p-0">
           <div class="si-copyright-title">
-            <p>All rights reserved — {new Date().getFullYear()} © <a href="/">Averix</a></p>
-          </div>
-        </div>
-        <div class="col-lg-6 p-0">
-          <div class="si-copyright-icon">
-            <SocialIcons variant="footer" />
+            <p>© {new Date().getFullYear()} <a href={path("home", locale)}>{c.site.name}</a>. {c.footer.rights}</p>
           </div>
         </div>
       </div>
