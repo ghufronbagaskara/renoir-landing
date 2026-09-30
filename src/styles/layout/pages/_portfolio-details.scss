@@ -68,7 +68,7 @@
     }
     &-text2{
         margin-top: 32px;
-        h2{
+        h2, .h2{
             font-size: 36px;
             line-height: 46px;
             @media #{$sm2}{
@@ -144,7 +144,7 @@
         justify-content: space-between;
     }
     &-title{
-        h3{
+        h3, .h3{
             font-size: 36px;
             line-height: 46px;
             @media #{$xl}{
@@ -242,7 +242,7 @@
     &-text4{
         position: relative;
         top: 7px;
-        h4{
+        h4, .h4{
             font-size: 18px;
             font-weight: 600;
             line-height: 26px;
