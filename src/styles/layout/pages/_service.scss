@@ -194,7 +194,7 @@
                 font-size: 22px;
             }
         }
-        h3{
+        h3, .h3{
             font-size: 120px;
             line-height: 130px;
             text-transform: uppercase;
@@ -272,7 +272,7 @@
             height: 0;
             left: 0;
             bottom: 0;
-            background: url(/src/assets/img/service/shape.webp);
+            background: var(--renoir-accent);
             background-position: center !important;
             background-repeat: no-repeat !important;
             background-size: cover !important;
@@ -323,7 +323,7 @@
     &-text{
         position: relative;
         top: 3px;
-        h3{
+        h3, .h3{
             font-size: 24px;
             transition: 0.6s;
             @media #{$lg,$lg2}{
