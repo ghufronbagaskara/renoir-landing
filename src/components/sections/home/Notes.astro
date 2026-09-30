@@ -1,0 +1,86 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { child, path, t, type Locale } from "~/i18n";
+import { formatDate, getNotes, noteSlug } from "~/lib/content";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const n = t(locale).home.notes;
+const notes = (await getNotes(locale)).slice(0, 5);
+---
+<section class="si-blog-area pt-120 pb-130">
+  <div class="container container-1617">
+    <div class="row">
+      <div class="col-lg-12 p-0">
+        <div class="si-blog-left">
+          <div class="si-section-title">
+            <span>{n.label}</span>
+            <h2 class="si-text-revel-anim">{n.title}</h2>
+            <p>{n.body}</p>
+          </div>
+          <div class="si-blog-btn">
+            <a class="si-btn-one" href={path("notes", locale)}> <span class="btn-text"> <span>{n.button}</span> </span> <span class="btn-icon"><Img src="header/right.svg" alt="" /></span></a>
+          </div>
+          <div class="notes-controls" aria-label={n.title}>
+            <button type="button" data-notes-prev aria-label={locale === "id" ? "Artikel sebelumnya" : "Previous article"}><i class="fa-sharp fa-regular fa-arrow-left" aria-hidden="true"></i></button>
+            <button type="button" data-notes-next aria-label={locale === "id" ? "Artikel berikutnya" : "Next article"}><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 p-0">
+        <div class="si-blog-main notes-track" tabindex="0" role="region" aria-label={n.title} data-notes-track>
+          {
+            notes.map((note) => (
+              <article class="si-blog-box">
+                <div class="si-blog-img">
+                  <Img src={note.data.cardImage} alt="" />
+                </div>
+                <div class="si-blog-text">
+                  <p class="h3">
+                    <span class="project-dot2">{note.data.category}</span> <span>{formatDate(note.data.date, locale)}</span>
+                  </p>
+                  <h3 class="h4">
+                    <a class="underline-black" href={child("notes", locale, noteSlug(note))}>{note.data.title}</a>
+                  </h3>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="si-blog-shape-text" aria-hidden="true">
+    <p class="h5">{n.label}</p>
+  </div>
+</section>
+<script>
+  const track = document.querySelector<HTMLElement>("[data-notes-track]");
+  const section = track?.closest(".si-blog-area");
+  if (track && section && track.children.length > 1) {
+    const advance = (direction: number) => {
+      const item = track.querySelector<HTMLElement>(".si-blog-box");
+      if (!item) return;
+      const step = item.getBoundingClientRect().width + 24;
+      const end = track.scrollWidth - track.clientWidth - 2;
+      const next = direction > 0 && track.scrollLeft >= end ? 0 : Math.max(0, track.scrollLeft + direction * step);
+      track.scrollTo({ left: next, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    };
+    section.querySelector("[data-notes-prev]")?.addEventListener("click", () => advance(-1));
+    section.querySelector("[data-notes-next]")?.addEventListener("click", () => advance(1));
+    let active = false;
+    const observer = new IntersectionObserver(([entry]) => { active = entry.isIntersecting; }, { threshold: 0.25 });
+    observer.observe(section);
+    let paused = false;
+    section.addEventListener("pointerenter", () => { paused = true; });
+    section.addEventListener("pointerleave", () => { paused = false; });
+    section.addEventListener("focusin", () => { paused = true; });
+    section.addEventListener("focusout", (event) => { if (!section.contains((event as FocusEvent).relatedTarget as Node)) paused = false; });
+    track.addEventListener("pointerdown", () => { paused = true; }, { passive: true });
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setInterval(() => { if (active && !paused && !document.hidden) advance(1); }, 6000);
+    }
+  }
+</script>
