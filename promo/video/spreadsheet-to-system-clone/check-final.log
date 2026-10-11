@@ -1,0 +1,205 @@
+◆  Checking spreadsheet-to-system-clone
+
+Lint
+  ⚠ nested_structure_needs_subcomposition: <section id="c-bg"> is a timeline element that contains nested <div id="grid">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-bg t=0s
+    Fix: Move <section id="c-bg"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-chaos"> is a timeline element that contains nested <div id="cam1">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-chaos t=0s
+    Fix: Move <section id="c-chaos"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-turn"> is a timeline element that contains nested <div id="pl-a">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-turn t=0s
+    Fix: Move <section id="c-turn"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-svc"> is a timeline element that contains nested <div id="svc-lines">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-svc t=0s
+    Fix: Move <section id="c-svc"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-logo"> is a timeline element that contains nested <div id="ink">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-logo t=0s
+    Fix: Move <section id="c-logo"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-site"> is a timeline element that contains nested <svg id="site-wm">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-site t=0s
+    Fix: Move <section id="c-site"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-cta"> is a timeline element that contains nested <div id="cta-ink">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-cta t=0s
+    Fix: Move <section id="c-cta"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="c-top"> is a timeline element that contains nested <div id="edge-l">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\kowlej\programming\project\business\renoir-landing\promo\video\spreadsheet-to-system-clone\index.html #c-top t=0s
+    Fix: Move <section id="c-top"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 8 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ℹ t=1.583s text_occluded div.fx > span:nth-of-type(1) inside div.tbar "=SUM(H2:H14)+'rekap (3)'!H9" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.gh > span:nth-of-type(3) inside #n2 "Barang" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.gh > span:nth-of-type(4) inside #n2 "Gudang" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.gh > span:nth-of-type(5) inside #n2 "Tahap" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(1) > span:nth-of-type(3) inside div.gh "60x Heat Resistant Alu 600C" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(1) > span:nth-of-type(4) inside #n2 "Cirebon" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(1) > span:nth-of-type(5) inside #n2 "Gudang ??" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(2) > span:nth-of-type(3) inside #n1 "15x Thinner Khusus" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(2) > span:nth-of-type(4) inside #n2 "Cirebon" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(2) > span:nth-of-type(5) inside #n2 "sdh kirim?" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(2) > span:nth-of-type(6) inside #n2 "Candra?" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(2) > span:nth-of-type(7) inside #n2 "—" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(3) > span:nth-of-type(3) inside #n1 "40x Epoxy Primer" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(3) > span:nth-of-type(4) inside #n1 "Bekasi" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(3) > span:nth-of-type(5) inside #n1 "Admin Pengiriman" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(3) > span:nth-of-type(6) inside #n1 "cek WA" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(3) > span:nth-of-type(7) inside #n2 "30/9 ??" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(4) > span:nth-of-type(3) inside #n1 "25x Floor Coating" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(4) > span:nth-of-type(4) inside #n1 "Cirebon" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(4) > span:nth-of-type(5) inside #n1 "KEUANGAN CEK" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(4) > span:nth-of-type(6) inside #n1 "?" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(4) > span:nth-of-type(7) inside #n1 "lewat" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.rw.dup > span:nth-of-type(6) inside #n1 "Candra" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.rw.dup > span:nth-of-type(7) inside #n1 "—" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(8) > span:nth-of-type(6) inside #sticky "Admin Penjualan" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(9) > span:nth-of-type(6) inside #sticky "cek lagi" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(9) > span:nth-of-type(7) inside #sticky "1 Okt" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(10) > span:nth-of-type(6) inside #sticky "Keuangan" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(10) > span:nth-of-type(7) inside #sticky "—" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(11) > span:nth-of-type(7) inside #sticky "?" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(12) > span:nth-of-type(3) inside #slab "15x Protective Coating" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded #rows > div:nth-of-type(12) > span:nth-of-type(4) inside #slab "Bekasi" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded span.on inside #slab "Order_FINAL_v2" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.tabs > span:nth-of-type(3) inside #slab "rekap (3)" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.tabs > span:nth-of-type(4) inside #slab "JANGAN DIEDIT" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_occluded div.tabs > span:nth-of-type(5) inside #slab "Sheet7" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s text_box_overflow #hook-lines > span:nth-of-type(1) > span:nth-of-type(1) inside #hook-lines > span:nth-of-type(1) overflowed bottom 30.68px "Where's" — Text extends outside its nearest visual/container box.
+        Fix: Text is 563px x 148px inside 980px x 150px and overflows by up to 31px; increase the container height to at least ~181px, or allow wrapping with max-width/fitTextFontSize.
+  ℹ t=1.583s text_box_overflow #hook-lines > span:nth-of-type(2) > span:nth-of-type(1) inside #hook-lines > span:nth-of-type(2) overflowed bottom 105.52px "the answer?" — Text extends outside its nearest visual/container box.
+        Fix: Text is 823px x 148px inside 980px x 150px and overflows by up to 106px; increase the container height to at least ~256px, or allow wrapping with max-width/fitTextFontSize.
+  ℹ t=1.583s text_occluded #hook-lines > span:nth-of-type(2) > span:nth-of-type(1) inside #slab "the answer?" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=1.583s container_overflow #hook-lines > span:nth-of-type(1) > span:nth-of-type(1) inside #hook-lines > span:nth-of-type(1) overflowed bottom 31.27px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=1.583s container_overflow #hook-lines > span:nth-of-type(2) > span:nth-of-type(1) inside #hook-lines > span:nth-of-type(2) overflowed bottom 106.11px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=1.583s panel_out_of_canvas #slab inside #root overflowed bottom 63.74px — Painted panel extends outside the composition canvas.
+        Fix: Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.
+  ℹ t=3.125s content_overlap #n1 > div:nth-of-type(2) > p:nth-of-type(1) inside span.li.big "PO-0292 sudah sampai mana?" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.25s content_overlap #n1 > div:nth-of-type(2) > small:nth-of-type(1) > em:nth-of-type(1) inside #turn-lines > span:nth-of-type(1) > span:nth-of-type(1) "baru saja" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n2 > div:nth-of-type(1) inside #n4 > div:nth-of-type(1) "K" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n2 > div:nth-of-type(2) > small:nth-of-type(1) inside #n4 > div:nth-of-type(2) > p:nth-of-type(1) "Keuanganbaru saja" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n2 > div:nth-of-type(2) > small:nth-of-type(1) > em:nth-of-type(1) inside #n4 > div:nth-of-type(2) > p:nth-of-type(1) "baru saja" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n2 > div:nth-of-type(2) > p:nth-of-type(1) inside #n3 > div:nth-of-type(2) > small:nth-of-type(1) "Piutang jatuh tempo berapa?" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n3 > div:nth-of-type(2) > small:nth-of-type(1) inside #n4 > div:nth-of-type(2) > p:nth-of-type(1) "Manajerbaru saja" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=3.375s content_overlap #n3 > div:nth-of-type(2) > small:nth-of-type(1) > em:nth-of-type(1) inside #n4 > div:nth-of-type(2) > p:nth-of-type(1) "baru saja" — Two text blocks overlap and may render unreadable.
+        Fix: Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.
+  ℹ t=4.75s escaped_container #pl-a inside #c-turn — Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).
+        Fix: Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.
+  ℹ t=4.75s escaped_container #pl-b inside #c-turn — Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).
+        Fix: Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.
+  ℹ t=4.75s escaped_container #pl-c inside #c-turn — Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).
+        Fix: Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.
+  ℹ t=7.917s container_overflow #b1 > div:nth-of-type(1) > img:nth-of-type(1) inside #b1 > div:nth-of-type(1) overflowed top 22.61px, bottom 94.89px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=11.083s container_overflow #b2 > div:nth-of-type(1) > img:nth-of-type(1) inside #b2 > div:nth-of-type(1) overflowed top 23.3px, bottom 94.2px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  ℹ t=14.25s container_overflow #b3 > div:nth-of-type(1) > img:nth-of-type(1) inside #b3 > div:nth-of-type(1) overflowed top 23.76px, bottom 93.74px — Element extends outside a clipping layout container.
+        Fix: Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.
+  0 error(s), 0 warning(s), 56 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > span:nth-of-type(3) 1.69:1 (need 4.5:1, t=1.583s)
+    Try rgb(160,164,169); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > span:nth-of-type(4) 1.74:1 (need 4.5:1, t=1.583s)
+    Try rgb(158,161,167); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(3) 1.6:1 (need 3:1, t=1.583s)
+    Try rgb(133,134,136); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(4) 1.5:1 (need 3:1, t=1.583s)
+    Try rgb(128,129,130); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > span:nth-of-type(5) 2.22:1 (need 3:1, t=1.583s)
+    Try rgb(122,128,136); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(3) 1.39:1 (need 3:1, t=1.583s)
+    Try rgb(123,124,126); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(4) 1.46:1 (need 3:1, t=1.583s)
+    Try rgb(126,127,129); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(5) 2.19:1 (need 3:1, t=1.583s)
+    Try rgb(124,129,137); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(6) 2.22:1 (need 3:1, t=1.583s)
+    Try rgb(122,127,136); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(7) 1.52:1 (need 3:1, t=1.583s)
+    Try rgb(129,130,131); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(8) 1.29:1 (need 3:1, t=1.583s)
+    Try rgb(129,129,129); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(3) 1.26:1 (need 3:1, t=1.583s)
+    Try rgb(116,117,119); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(4) 1.22:1 (need 3:1, t=1.583s)
+    Try rgb(114,115,117); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(5) 1.29:1 (need 3:1, t=1.583s)
+    Try rgb(118,119,121); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(6) 1.42:1 (need 3:1, t=1.583s)
+    Try rgb(124,125,127); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(3) > span:nth-of-type(7) 2.09:1 (need 3:1, t=1.583s)
+    Try rgb(127,132,140); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(4) 1.29:1 (need 3:1, t=1.583s)
+    Try rgb(118,119,121); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(5) 1.22:1 (need 3:1, t=1.583s)
+    Try rgb(114,115,117); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(6) 2.64:1 (need 3:1, t=1.583s)
+    Try rgb(109,115,124); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(4) > span:nth-of-type(7) 2.81:1 (need 3:1, t=1.583s)
+    Try rgb(112,118,128); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(5) > span:nth-of-type(6) 1.31:1 (need 3:1, t=1.583s)
+    Try rgb(118,119,121); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(5) > span:nth-of-type(7) 1.29:1 (need 3:1, t=1.583s)
+    Try rgb(118,119,121); source index.html
+  ✗ div > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(7) > span:nth-of-type(8) 2.72:1 (need 3:1, t=1.583s)
+    Try rgb(79,79,79); source index.html
+  ✗ #outline 1.49:1 (need 3:1, t=20.583s)
+    Try rgb(104,105,107); source index.html
+  0 error(s), 24 warning(s), 0 info(s)
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed
