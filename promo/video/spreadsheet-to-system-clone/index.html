@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Renoir | Four services | Clone</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Variable.woff2") format("woff2"); font-weight: 100 900; }
+
+      :root { --paper: #f5f7fb; --ink: #17191c; --cobalt: #1d4ed8; --tint: #e6ecfb; --stone: #565c66; --line: #d5dae3; --white: #ffffff; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); background: var(--paper); }
+      .clip { position: absolute; inset: 0; }
+
+      /* Mask-revealed display lines */
+      .lines { position: absolute; left: 60px; right: 40px; }
+      .ln { display: block; overflow: hidden; padding: 0.04em 0 0.1em; margin-bottom: -0.12em; }
+      .li { display: block; font-family: "General Sans", sans-serif; font-weight: 600; letter-spacing: -0.045em; line-height: 0.95; white-space: nowrap; }
+      .sub { position: absolute; left: 60px; right: 60px; font-size: 38px; line-height: 1.3; font-weight: 450; color: var(--stone); }
+      .label { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 24px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+      /* Global layers */
+      #grid { position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(23, 25, 28, 0.055) 1px, transparent 1px); background-size: 240px 100%; background-position: 60px 0; }
+      #grain { position: absolute; inset: 0; background-image: url("assets/img/grain.png"); background-size: 256px 256px; opacity: 0.06; pointer-events: none; }
+      .edge { position: absolute; top: 960px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 19px; letter-spacing: 0.32em; color: #666c76; white-space: nowrap; }
+      #edge-l { left: 34px; transform-origin: 0 0; }
+      #edge-r { right: 34px; transform-origin: 100% 0; }
+
+      /* Scene 1 — the spreadsheet */
+      #cam1 { position: absolute; inset: 0; }
+      #sheet { position: absolute; left: -230px; top: 60px; width: 1540px; background: var(--white); border: 2px solid var(--line); border-radius: 26px; overflow: hidden; }
+      .tbar { height: 70px; display: flex; align-items: center; gap: 18px; padding: 0 28px; border-bottom: 2px solid var(--line); background: #fafbfd; font-size: 26px; color: var(--stone); }
+      .tbar .dots { display: flex; gap: 10px; } .tbar .dots i { display: block; width: 15px; height: 15px; border-radius: 50%; background: var(--line); }
+      .fx { height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 22px; border-bottom: 2px solid var(--line); font-size: 24px; color: var(--stone); }
+      .fx b { font-weight: 600; color: var(--ink); width: 70px; } .fx span { font-family: "General Sans", sans-serif; }
+      .gh, .rw { display: grid; grid-template-columns: 54px 150px 330px 140px 230px 220px 150px 266px; }
+      .gh { height: 54px; background: #eef1f6; border-bottom: 2px solid var(--line); font-size: 22px; font-weight: 600; color: var(--stone); }
+      .gh span, .rw > span { display: flex; align-items: center; padding: 0 14px; border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+      .gh span:first-child, .rw > span:first-child { justify-content: center; padding: 0; color: #6b717b; font-size: 20px; }
+      .rw { height: 70px; border-bottom: 1px solid var(--line); font-size: 27px; }
+      .rw .q { font-style: italic; color: #646a74; }
+      .rw .x { text-decoration: line-through; color: #6b717b; }
+      .rw .caps { font-weight: 700; letter-spacing: 0.02em; }
+      .rw .err { background: repeating-linear-gradient(-45deg, #17191c 0 7px, #2b2e34 7px 14px); color: var(--white); font-family: "General Sans", sans-serif; font-weight: 700; justify-content: center; }
+      .rw.dup { background: #f1f2f4; }
+      .rw .note { position: relative; }
+      .rw .note::after { content: ""; position: absolute; right: 0; top: 0; border-left: 14px solid transparent; border-top: 14px solid var(--ink); }
+      .tabs { height: 66px; display: flex; align-items: flex-end; gap: 6px; padding: 0 20px; background: #eef1f6; border-top: 2px solid var(--line); }
+      .tabs span { padding: 12px 22px; font-size: 22px; font-weight: 600; color: var(--stone); background: #e2e6ed; border-radius: 10px 10px 0 0; white-space: nowrap; }
+      .tabs span.on { background: var(--white); color: var(--ink); }
+      #caret { position: absolute; width: 4px; background: var(--white); }
+      .sticky { position: absolute; width: 300px; padding: 26px 26px 30px; background: #fbfaf6; border: 2px solid #e4e2da; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 34px; line-height: 1.1; color: var(--ink); }
+
+      .notif { position: absolute; left: 60px; top: 0; width: 960px; height: 132px; border-radius: 32px; background: rgba(23, 25, 28, 0.95); color: var(--white); display: flex; align-items: center; gap: 24px; padding: 0 30px; }
+      .notif .av { flex: none; width: 74px; height: 74px; border-radius: 22px; background: #2d3036; display: flex; align-items: center; justify-content: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 34px; color: var(--white); }
+      .notif small { display: block; font-size: 23px; font-weight: 600; color: rgba(255, 255, 255, 0.78); margin-bottom: 4px; }
+      .notif small em { font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.62); margin-left: 10px; }
+      .notif p { font-size: 35px; font-weight: 500; line-height: 1.15; white-space: nowrap; }
+
+      #slab { position: absolute; left: 0; right: 0; top: 1060px; height: 900px; background: var(--paper); border-top: 2px solid var(--ink); }
+      #hook-lines { top: 1100px; } #hook-lines .li { font-size: 156px; }
+      #hook-sub { top: 1440px; }
+
+      /* Scene 2 — turn */
+      .plane { position: absolute; left: -700px; top: -400px; width: 2600px; height: 2800px; }
+      #pl-a { background: var(--cobalt); } #pl-b { background: var(--ink); } #pl-c { background: var(--paper); }
+      #wm { position: absolute; right: -120px; top: 520px; width: 760px; height: 737px; opacity: 0.05; }
+      #turn-lines { top: 560px; } #turn-lines .li { font-size: 148px; } #turn-lines .big { font-size: 262px; color: var(--cobalt); }
+      #turn-sub { top: 1230px; }
+
+      /* Scene 3 — answers */
+      #q-card { top: 270px; }
+      #win { position: absolute; left: 60px; top: 448px; width: 960px; height: 846px; border-radius: 28px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
+      #win .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 22px; background: #eef1f6; border-bottom: 2px solid var(--line); }
+      #win .bar i { display: block; width: 13px; height: 13px; border-radius: 50%; background: var(--line); }
+      #vp { position: absolute; left: 0; top: 46px; width: 960px; height: 800px; overflow: hidden; background: #f3f4f6; }
+      .shot { position: absolute; left: 0; top: 0; width: 1280px; height: 800px; transform-origin: 0 0; }
+      .shot img { display: block; width: 1280px; height: 800px; }
+      .ring { position: absolute; left: 0; top: 0; border: 5px solid var(--cobalt); border-radius: 18px; box-shadow: 0 0 0 9999px rgba(23, 25, 28, 0.32); }
+      #ans-phone { position: absolute; left: 340px; top: 448px; width: 400px; background: var(--ink); border-radius: 58px; padding: 14px; }
+      #ans-phone .screen { position: relative; height: 805px; overflow: hidden; border-radius: 46px; background: var(--white); }
+      #ans-phone img { display: block; width: 372px; }
+      #ring3 { left: 10px; top: 362px; width: 352px; height: 300px; box-shadow: none; }
+      .answer { position: absolute; left: 60px; right: 60px; top: 1326px; }
+      .answer .label { color: var(--cobalt); }
+      .answer h3 { margin-top: 10px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 62px; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
+      .answer p { margin-top: 14px; font-size: 32px; color: var(--stone); line-height: 1.3; }
+
+      /* Scene 4 — bento */
+      #svc-lines { top: 262px; } #svc-lines .li { font-size: 104px; }
+      #svc-sub { top: 500px; font-size: 34px; }
+      .bento { position: absolute; width: 468px; height: 448px; border-radius: 28px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
+      .bento .m { height: 246px; overflow: hidden; border-bottom: 2px solid var(--line); }
+      .bento .m img { display: block; width: 468px; height: 246px; object-fit: cover; object-position: top left; }
+      .bento .t { padding: 20px 26px; }
+      .bento .n { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 24px; color: var(--cobalt); letter-spacing: 0.06em; }
+      .bento h4 { margin-top: 6px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 46px; letter-spacing: -0.03em; line-height: 1; }
+      .bento p { margin-top: 10px; font-size: 27px; color: var(--stone); line-height: 1.25; }
+      .bento.dark { background: var(--ink); border-color: var(--ink); color: var(--white); }
+      .bento.dark .m { background: #202328; border-color: #2d3036; padding: 26px 26px 0; }
+      .bento.dark p { color: rgba(255, 255, 255, 0.7); } .bento.dark .n { color: #9db4ff; }
+      .st { display: flex; justify-content: space-between; align-items: center; height: 60px; border-top: 1px solid rgba(255, 255, 255, 0.14); font-size: 27px; font-weight: 500; }
+      .st span { display: flex; align-items: center; gap: 10px; font-size: 24px; color: rgba(255, 255, 255, 0.7); }
+      .st svg { width: 26px; height: 26px; }
+      #b1 { left: 60px; top: 600px; } #b2 { left: 552px; top: 600px; } #b3 { left: 60px; top: 1072px; } #b4 { left: 552px; top: 1072px; }
+      #guide { position: absolute; left: 54px; top: 594px; width: 480px; height: 460px; border: 5px solid var(--cobalt); border-radius: 32px; }
+
+      /* Scene 5 — brand */
+      #ink { position: absolute; inset: 0; background: var(--ink); }
+      #outline { position: absolute; left: 0; top: 1180px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 560px; letter-spacing: -0.05em; line-height: 1; color: var(--ink); -webkit-text-stroke: 2px rgba(255, 255, 255, 0.13); white-space: nowrap; }
+      #joint { position: absolute; left: 375px; top: 430px; width: 330px; height: 320px; overflow: visible; }
+      .plane-label { position: absolute; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 36px; color: rgba(255, 255, 255, 0.75); }
+      #wordmark { position: absolute; left: 0; right: 0; top: 820px; text-align: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 176px; letter-spacing: -0.045em; color: var(--white); line-height: 1; }
+      #tagline { position: absolute; left: 60px; right: 60px; top: 1080px; text-align: center; color: var(--white); }
+      #tagline .t span { display: block; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 60px; line-height: 1.08; letter-spacing: -0.025em; }
+      #tagline .s { margin-top: 26px; font-size: 36px; color: rgba(255, 255, 255, 0.7); }
+
+      /* Scene 6 — website */
+      #site-lines { top: 262px; } #site-lines .li { font-size: 112px; }
+      #site-sub { top: 520px; font-size: 34px; }
+      #site-wm { position: absolute; left: -160px; top: 820px; width: 900px; height: 873px; opacity: 0.045; }
+      #site-phone { position: absolute; left: 315px; top: 600px; width: 450px; background: var(--ink); border-radius: 58px; padding: 15px; }
+      #site-phone .screen { position: relative; height: 909px; overflow: hidden; border-radius: 45px; background: var(--white); }
+      #site-img { display: block; width: 420px; }
+      .fab { position: absolute; right: 14px; bottom: 22px; display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px; border-radius: 999px; background: var(--cobalt); color: var(--white); font-size: 17px; font-weight: 600; }
+      .fab svg { width: 16px; height: 16px; }
+      .tap { position: absolute; width: 96px; height: 96px; border-radius: 50%; border: 5px solid var(--cobalt); left: 608px; top: 1414px; }
+
+      /* Scene 7 — CTA */
+      #cta-ink { position: absolute; inset: 0; background: var(--ink); }
+      #cta-outline { position: absolute; left: -40px; top: 1560px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 300px; letter-spacing: -0.05em; color: var(--ink); -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1); white-space: nowrap; }
+      #cta-lines { top: 300px; } #cta-lines .li { font-size: 150px; color: var(--white); }
+      #cta-sub { top: 650px; color: rgba(255, 255, 255, 0.74); font-size: 40px; }
+      #cta-btn { position: absolute; left: 60px; top: 1010px; width: 960px; height: 136px; border-radius: 999px; background: var(--cobalt); color: var(--white); display: flex; align-items: center; justify-content: center; gap: 22px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 54px; letter-spacing: -0.015em; }
+      #cta-btn svg { width: 48px; height: 48px; }
+      #cta-bio { position: absolute; left: 0; right: 0; top: 1186px; text-align: center; color: rgba(255, 255, 255, 0.8); font-size: 38px; font-weight: 500; }
+      #cta-sign { position: absolute; left: 0; right: 0; top: 1380px; display: flex; align-items: center; justify-content: center; gap: 20px; color: var(--white); }
+      #cta-sign svg { width: 62px; height: 60px; }
+      #cta-sign b { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 64px; letter-spacing: -0.03em; }
+      /* Clone: each service gets one readable proof frame. */
+      #turn-lines .big { font-size: 240px; }
+      #turn-lines .li { font-size: 132px; }
+      #svc-lines { top: 290px; }
+      #svc-lines .li { font-size: 130px; }
+      #svc-sub { top: 610px; font-size: 36px; }
+      .bento { left: 60px !important; top: 740px !important; width: 960px; height: 740px; border-radius: 22px; }
+      .bento .m { height: 480px; padding: 0; overflow: hidden; }
+      .bento .m img { width: 100%; height: auto; object-fit: contain; object-position: top; }
+      .bento .t { padding: 32px; }
+      .bento h4 { font-size: 68px; line-height: 1.12; }
+      .bento .t p { margin-top: 16px; font-size: 33px; line-height: 1.28; }
+      .bento .n { font-size: 30px; }
+      #b4 .m { padding: 35px 40px; }
+      #b4 .m .label { font-size: 26px !important; color: #ccd1db !important; }
+      #b4 .st { font-size: 43px; padding: 20px 0; }
+      #b4 .st span { font-size: 28px; color: #ccd1db; }
+      #guide { left: 60px; top: 1540px; width: 960px; height: 6px; border: 0; border-radius: 0; background: var(--cobalt); transform-origin: 0 50%; }
+      #studio-label { position: absolute; left: 60px; top: 260px; font-size: 28px; color: var(--stone); }
+      #service-proof { position: absolute; left: 60px; top: 1494px; font-size: 20px; color: var(--stone); }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-bfhe" id="root" data-composition-id="main" data-start="0" data-duration="28.5" data-fps="60" data-width="1080" data-height="1920">
+
+      <section data-hf-id="hf-8184" id="c-bg" class="clip" data-start="0" data-duration="28.5" data-track-index="0"><div data-hf-id="hf-gs5t" id="grid"></div></section>
+
+      <!-- 1 · Hook + chaos (0–3.9) -->
+      <section data-hf-id="hf-tg5z" id="c-chaos" class="clip" data-start="0" data-duration="3.9" data-track-index="1">
+        <div data-hf-id="hf-1xkn" id="cam1">
+          <div data-hf-id="hf-vju3" id="sheet" data-layout-allow-overlap="" data-layout-allow-overflow="">
+            <div data-hf-id="hf-m3zs" class="tbar"><div data-hf-id="hf-zx1w" class="dots"><i data-hf-id="hf-wt6k"></i><i data-hf-id="hf-zeb8"></i><i data-hf-id="hf-y7e5"></i></div>Order_FINAL_v2 (3).xlsx — terakhir diubah oleh 4 orang</div>
+            <div data-hf-id="hf-qecq" class="fx"><b data-hf-id="hf-i164">H3</b><span data-hf-id="hf-4udz">=SUM(H2:H14)+'rekap (3)'!H9</span></div>
+            <div data-hf-id="hf-a7fp" class="gh"><span data-hf-id="hf-uckh"></span><span data-hf-id="hf-aq34">No. Pesanan</span><span data-hf-id="hf-egru">Barang</span><span data-hf-id="hf-ip8d">Gudang</span><span data-hf-id="hf-ks7j">Tahap</span><span data-hf-id="hf-u6zr">PIC</span><span data-hf-id="hf-rxg4">Batas</span><span data-hf-id="hf-jz5t">Piutang</span></div>
+            <div data-hf-id="hf-q9ue" id="rows"></div>
+            <div data-hf-id="hf-5rmk" class="tabs"><span data-hf-id="hf-ftuk">Order_FINAL</span><span data-hf-id="hf-7jsy" class="on">Order_FINAL_v2</span><span data-hf-id="hf-nodw">rekap (3)</span><span data-hf-id="hf-61v3">JANGAN DIEDIT</span><span data-hf-id="hf-iezt">Sheet7</span></div>
+          </div>
+          <div data-hf-id="hf-g24e" class="sticky" id="sticky" data-layout-allow-overlap="" style="left: 690px; top: 720px">Cek ulang semua angka sebelum laporan</div>
+          <div data-hf-id="hf-8b3u" id="caret"></div>
+        </div>
+        <div data-hf-id="hf-81t1" class="notif" id="n1" data-layout-allow-overlap=""><div data-hf-id="hf-erwq" class="av">S</div><div data-hf-id="hf-yeow"><small data-hf-id="hf-2ofo">Sales<em data-hf-id="hf-9mig">baru saja</em></small><p data-hf-id="hf-9wds">PO-0292 sudah sampai mana?</p></div></div>
+        <div data-hf-id="hf-bzx2" class="notif" id="n2" data-layout-allow-overlap=""><div data-hf-id="hf-blgi" class="av">K</div><div data-hf-id="hf-y7yw"><small data-hf-id="hf-2zdu">Keuangan<em data-hf-id="hf-w1zk">baru saja</em></small><p data-hf-id="hf-j5we">Piutang jatuh tempo berapa?</p></div></div>
+        <div data-hf-id="hf-fy13" class="notif" id="n3" data-layout-allow-overlap=""><div data-hf-id="hf-dzao" class="av">M</div><div data-hf-id="hf-x11t"><small data-hf-id="hf-9n0o">Manajer<em data-hf-id="hf-uv2h">baru saja</em></small><p data-hf-id="hf-vyiy">Agenda sales hari ini apa?</p></div></div>
+        <div data-hf-id="hf-jw54" class="notif" id="n4" data-layout-allow-overlap=""><div data-hf-id="hf-d6om" class="av">O</div><div data-hf-id="hf-xfcu"><small data-hf-id="hf-zr8j">Owner<em data-hf-id="hf-v9di">baru saja</em></small><p data-hf-id="hf-mio0">Kok angkanya beda lagi?</p></div></div>
+        <div data-hf-id="hf-j3p1" id="slab" data-layout-allow-overlap=""></div>
+        <div data-hf-id="hf-rjgo" class="lines" id="hook-lines"><span data-hf-id="hf-smev" class="ln"><span data-hf-id="hf-f43x" class="li">Where's</span></span><span data-hf-id="hf-oupj" class="ln"><span data-hf-id="hf-7hd8" class="li">the answer?</span></span></div>
+        <p data-hf-id="hf-5uzu" class="sub" id="hook-sub">Data di spreadsheet. Pertanyaan di chat.</p>
+      </section>
+
+      <!-- 2 · Turn (3.1–5.2) -->
+      <section data-hf-id="hf-3gxm" id="c-turn" class="clip" data-start="3.1" data-duration="2.1" data-track-index="2">
+        <div data-hf-id="hf-a5ji" class="plane" id="pl-a"></div><div data-hf-id="hf-zxul" class="plane" id="pl-b"></div><div data-hf-id="hf-385w" class="plane" id="pl-c"></div>
+        <svg data-hf-id="hf-w6qm" id="wm" viewBox="0 0 66 64" fill="#17191c"><path data-hf-id="hf-n2v8" d="M27 11 43 2v36L27 47V11Z" /><path data-hf-id="hf-36tf" d="M3 45 24 33 42 44 21 56 3 45Z" /><path data-hf-id="hf-wce4" d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div data-hf-id="hf-tash" id="studio-label">RENOIR · DESIGN / BUILD / RUN</div><div data-hf-id="hf-kmy0" class="lines" id="turn-lines"><span data-hf-id="hf-ogei" class="ln"><span data-hf-id="hf-txbz" class="li">Meet</span></span><span data-hf-id="hf-o23h" class="ln"><span data-hf-id="hf-vow3" class="li big">Renoir.</span></span><span data-hf-id="hf-qu8o" class="ln"><span data-hf-id="hf-qp8w" class="li">Digital studio.</span></span></div>
+        <p data-hf-id="hf-epue" class="sub" id="turn-sub">Desain, build, dan perawatan. Satu studio.</p>
+      </section>
+
+      <!-- 4 · Services bento (12.7–18.0) -->
+      <section data-hf-id="hf-m11n" id="c-svc" class="clip" data-start="5.0" data-duration="13.0" data-track-index="4">
+        <div data-hf-id="hf-lo31" class="lines" id="svc-lines"><span data-hf-id="hf-qfxn" class="ln"><span data-hf-id="hf-o3n6" class="li">One studio,</span></span><span data-hf-id="hf-q1mm" class="ln"><span data-hf-id="hf-12ck" class="li">four <span data-hf-id="hf-4wdo" style="color: var(--cobalt)">services.</span></span></span></div>
+        <p data-hf-id="hf-l2ma" class="sub" id="svc-sub">Mulai dari desain saja, atau lanjut sampai peluncuran.</p>
+        <article data-hf-id="hf-ivuu" class="bento" id="b1"><div data-hf-id="hf-6h7h" class="m"><img data-hf-id="hf-c6f4" src="assets/img/maxy-desktop.webp" alt=""></div><div data-hf-id="hf-i7y4" class="t"><div data-hf-id="hf-7h2p" class="n">01</div><h4 data-hf-id="hf-f4r3">Websites</h4><p data-hf-id="hf-u0yy">Website untuk memperkenalkan bisnis Anda.</p></div></article>
+        <article data-hf-id="hf-exqt" class="bento" id="b2"><div data-hf-id="hf-dj8x" class="m"><img data-hf-id="hf-vdod" src="assets/img/field-desktop.webp" alt=""></div><div data-hf-id="hf-9yr8" class="t"><div data-hf-id="hf-8nzs" class="n">02</div><h4 data-hf-id="hf-xu8h">Systems</h4><p data-hf-id="hf-ue96">Sistem yang mengikuti cara kerja tim Anda.</p></div></article>
+        <article data-hf-id="hf-byh8" class="bento" id="b3"><div data-hf-id="hf-eq60" class="m"><img data-hf-id="hf-ea5j" src="assets/img/coatings-desktop.webp" alt=""></div><div data-hf-id="hf-8ru5" class="t"><div data-hf-id="hf-89or" class="n">03</div><h4 data-hf-id="hf-1ozr">UI/UX &amp; identity</h4><p data-hf-id="hf-iso8">Antarmuka yang jelas. Identitas yang khas.</p></div></article>
+        <article data-hf-id="hf-1em5" class="bento dark" id="b4">
+          <div data-hf-id="hf-ebuz" class="m">
+            <div data-hf-id="hf-4snk" class="label" style="font-size: 20px; color: rgba(255, 255, 255, 0.7); margin-bottom: 12px">Cakupan layanan</div>
+            <div data-hf-id="hf-dhha" class="st">Deployment<span data-hf-id="hf-ugib">konfigurasi <svg data-hf-id="hf-g2bg" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path data-hf-id="hf-b7eu" d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+            <div data-hf-id="hf-obnr" class="st">Monitoring<span data-hf-id="hf-jntr">pemantauan <svg data-hf-id="hf-hd10" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path data-hf-id="hf-9a2y" d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+            <div data-hf-id="hf-6s2n" class="st">Backup<span data-hf-id="hf-osud">perencanaan <svg data-hf-id="hf-g63x" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path data-hf-id="hf-9odz" d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+          </div>
+          <div data-hf-id="hf-9656" class="t"><div data-hf-id="hf-6a5m" class="n">04</div><h4 data-hf-id="hf-fh29">Deploy &amp; care</h4><p data-hf-id="hf-m9rw">Peluncuran dan perawatan setelah build.</p></div>
+        </article>
+        <div data-hf-id="hf-xktr" id="guide"></div><p data-hf-id="hf-dc5f" id="service-proof">Design · Build · Run</p>
+      </section>
+
+      <!-- 5 · Brand (17.6–21.1) -->
+      <section data-hf-id="hf-3bfo" id="c-logo" class="clip" data-start="17.6" data-duration="3.5" data-track-index="5">
+        <div data-hf-id="hf-5lnr" id="ink"></div>
+        <div data-hf-id="hf-e2ka" id="outline" data-layout-allow-overflow="" data-layout-allow-overlap="">Renoir Renoir</div>
+        <svg data-hf-id="hf-68zq" id="joint" viewBox="0 0 66 64" fill="#ffffff"><path data-hf-id="hf-ee9v" id="p1" d="M27 11 43 2v36L27 47V11Z" /><path data-hf-id="hf-bwhb" id="p2" d="M3 45 24 33 42 44 21 56 3 45Z" /><path data-hf-id="hf-7jih" id="p3" d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div data-hf-id="hf-adoi" class="plane-label" id="l1" style="left: 470px; top: 356px">Design</div>
+        <div data-hf-id="hf-w4qc" class="plane-label" id="l2" style="left: 240px; top: 752px">Build</div>
+        <div data-hf-id="hf-8vbj" class="plane-label" id="l3" style="left: 730px; top: 742px">Run</div>
+        <div data-hf-id="hf-1de7" id="wordmark">Renoir</div>
+        <div data-hf-id="hf-vin9" id="tagline"><div data-hf-id="hf-b5ob" class="t"><span data-hf-id="hf-sa4x">Make a stronger impression.</span><span data-hf-id="hf-4kxy">Run a better operation.</span></div><div data-hf-id="hf-tqno" class="s">Tampil meyakinkan. Bekerja lebih rapi.</div></div>
+      </section>
+
+      <!-- 6 · Website (20.8–24.9) -->
+      <section data-hf-id="hf-6nom" id="c-site" class="clip" data-start="20.8" data-duration="4.1" data-track-index="6">
+        <svg data-hf-id="hf-rviy" id="site-wm" viewBox="0 0 66 64" fill="#17191c"><path data-hf-id="hf-iqv0" d="M27 11 43 2v36L27 47V11Z" /><path data-hf-id="hf-zjcz" d="M3 45 24 33 42 44 21 56 3 45Z" /><path data-hf-id="hf-exx0" d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div data-hf-id="hf-cl8c" class="lines" id="site-lines"><span data-hf-id="hf-pnbl" class="ln"><span data-hf-id="hf-qs9p" class="li">See the work</span></span><span data-hf-id="hf-sfgs" class="ln"><span data-hf-id="hf-pe83" class="li">on our <span data-hf-id="hf-pn5t" style="color: var(--cobalt)">site.</span></span></span></div>
+        <p data-hf-id="hf-2a6o" class="sub" id="site-sub">Layanan, karya, dan proses kami ada di website.</p>
+        <div data-hf-id="hf-93ir" id="site-phone">
+          <div data-hf-id="hf-cdmk" class="screen">
+            <img data-hf-id="hf-3xmg" data-layout-allow-overflow="" id="site-img" src="assets/img/site-home.jpg" alt="">
+            <div data-hf-id="hf-5jlm" class="fab" id="fab">Apa masalahnya? <svg data-hf-id="hf-yh65" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path data-hf-id="hf-kfpa" d="M7 17 17 7M9 7h8v8" /></svg></div>
+          </div>
+        </div>
+        <div data-hf-id="hf-2lf0" class="tap" id="tap"></div>
+      </section>
+
+      <!-- 7 · CTA (24.4–28.5) -->
+      <section data-hf-id="hf-qtz0" id="c-cta" class="clip" data-start="24.4" data-duration="4.1" data-track-index="7">
+        <div data-hf-id="hf-nz2e" id="cta-ink"><div data-hf-id="hf-oz70" id="cta-outline" data-layout-allow-overflow="" data-layout-allow-overlap="">Renoir</div></div>
+        <div data-hf-id="hf-thix" class="lines" id="cta-lines"><span data-hf-id="hf-s15r" class="ln"><span data-hf-id="hf-a85r" class="li">Tell us what's</span></span><span data-hf-id="hf-f8at" class="ln"><span data-hf-id="hf-hxax" class="li">broken.</span></span></div>
+        <p data-hf-id="hf-bvea" class="sub" id="cta-sub">Website, sistem, atau desain. Mulai dari kebutuhan bisnis Anda.</p>
+        <div data-hf-id="hf-aljz" id="cta-btn">Ceritakan masalahnya <svg data-hf-id="hf-10c7" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path data-hf-id="hf-pjs2" d="M7 17 17 7M9 7h8v8" /></svg></div>
+        <div data-hf-id="hf-fugd" id="cta-bio">Link di bio</div>
+        <div data-hf-id="hf-1b79" id="cta-sign"><svg data-hf-id="hf-1l6u" viewBox="0 0 66 64" fill="#ffffff"><path data-hf-id="hf-hjxx" d="M27 11 43 2v36L27 47V11Z" /><path data-hf-id="hf-z51y" d="M3 45 24 33 42 44 21 56 3 45Z" /><path data-hf-id="hf-dqzx" d="M47 31 63 40v20L46 50V31Z" /></svg><b data-hf-id="hf-5a9s">Renoir</b></div>
+      </section>
+
+      <!-- Always on top: edge labels and grain -->
+      <section data-hf-id="hf-ww3h" id="c-top" class="clip" data-start="0" data-duration="28.5" data-track-index="9">
+        <div data-hf-id="hf-a5rm" class="edge" id="edge-l">RENOIR — DIGITAL STUDIO</div>
+        <div data-hf-id="hf-oris" class="edge" id="edge-r">DESIGN · BUILD · RUN</div>
+        <div data-hf-id="hf-f6d6" id="grain"></div>
+      </section>
+
+      <!-- Audio -->
+      <audio data-hf-id="hf-9mp8" id="a-music" src="assets/audio/music-rising-forest-v2.mp3" data-start="0" data-duration="28.5" data-track-index="20" data-volume="0.85"></audio>
+      <audio data-hf-id="hf-1m4j" id="a-pull" src="assets/audio/sfx-air-woosh.mp3" data-start="0" data-duration="2.32" data-track-index="21" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-zc3s" id="a-typing" src="assets/audio/sfx-typing.mp3" data-start="0.6" data-duration="2.7" data-track-index="22" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-i2h2" id="a-n1" src="assets/audio/sfx-message-pop.mp3" data-start="1.0" data-duration="1.06" data-track-index="23" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-pc24" id="a-n2" src="assets/audio/sfx-message-pop.mp3" data-start="1.42" data-duration="1.06" data-track-index="24" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-tpsa" id="a-n3" src="assets/audio/sfx-message-pop.mp3" data-start="1.84" data-duration="1.06" data-track-index="25" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-yb3t" id="a-n4" src="assets/audio/sfx-message-pop.mp3" data-start="2.26" data-duration="1.06" data-track-index="26" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-ky6w" id="a-whoosh" src="assets/audio/sfx-whoosh-fast.mp3" data-start="2.73" data-duration="1.76" data-track-index="27" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-p2q9" id="clone-service-1" src="assets/audio/sfx-sweep.mp3" data-start="5.4" data-duration="0.78" data-track-index="28" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-suiz" id="clone-service-2" src="assets/audio/sfx-sweep.mp3" data-start="8.45" data-duration="0.78" data-track-index="30" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-cjio" id="clone-service-3" src="assets/audio/sfx-sweep.mp3" data-start="11.5" data-duration="0.78" data-track-index="32" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-elhp" id="clone-service-4" src="assets/audio/sfx-sweep.mp3" data-start="14.55" data-duration="0.78" data-track-index="34" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-jj75" id="a-ink" src="assets/audio/sfx-sweep.mp3" data-start="17.35" data-duration="0.78" data-track-index="39" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-vqxb" id="a-air" src="assets/audio/sfx-air-woosh.mp3" data-start="18.15" data-duration="2.32" data-track-index="40" data-volume="0.55"></audio>
+      <audio data-hf-id="hf-kxu4" id="a-lock" src="assets/audio/sfx-pop-whoosh.mp3" data-start="18.85" data-duration="0.18" data-track-index="41" data-volume="0.7"></audio>
+      <audio data-hf-id="hf-c1xj" id="a-lock2" src="assets/audio/sfx-select.mp3" data-start="18.87" data-duration="1.1" data-track-index="42" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-n2pi" id="a-site" src="assets/audio/sfx-sweep.mp3" data-start="20.5" data-duration="0.78" data-track-index="43" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-pgdd" id="a-tap" src="assets/audio/sfx-select.mp3" data-start="24.35" data-duration="1.1" data-track-index="44" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-miwd" id="a-confirm" src="assets/audio/sfx-confirm.mp3" data-start="24.6" data-duration="1.04" data-track-index="45" data-volume="0.45"></audio>
+    </div>
+
+    <script>
+      // ---------- Spreadsheet content: the same order vocabulary the real system uses ----------
+      // Cell markers: q = unsure (italic grey), x = struck through, caps = shouting, err = hatched error, note = comment flag.
+      const ROWS = [
+        ["PO-0291", "60x Heat Resistant Alu 600C", "Cirebon", "Gudang ??|q", "|", "28 Sep", "Rp 12,5 jt"],
+        ["PO-0292", "15x Thinner Khusus", "Cirebon", "sdh kirim?|q", "Candra?|q", "—", "#REF!|err"],
+        ["PO-0293", "40x Epoxy Primer", "Bekasi", "Admin Pengiriman", "cek WA|note", "30/9 ??|q", "Rp 8,0 jt"],
+        ["PO-0294", "25x Floor Coating", "Cirebon", "KEUANGAN CEK|caps", "?|q", "lewat|x", "Rp 6,4 jt?|q"],
+        ["PO-0292", "15x Thinner Khusus", "Cirebon", "Driver", "Candra", "—", "Rp 4,1 jt", "dup"],
+        ["PO-02??|q", "10x Waterproofing", "??|q", "Gudang", "Gudang Cirebon 2", "28 Sep", "#VALUE!|err"],
+        ["PO-0297", "60x Heat Resistant Alu 600C", "Bekasi", "???|q", "—", "—", "??|err"],
+        ["PO-0298", "12x Protective Coating", "Cirebon", "Pajak?|q", "Admin Penjualan", "2 Okt", "Rp 3,3 jt"],
+        ["PO-0299", "30x Epoxy Primer", "Bekasi", "Gudang|x", "cek lagi|note", "1 Okt", "Rp 9,9 jt"],
+        ["PO-0300", "8x Thinner Khusus", "Cirebon", "Verifikasi bayar", "Keuangan", "—", "Rp 2,7 jt"],
+        ["PO-0301", "20x Floor Coating", "Cirebon", "?|q", "?|q", "?|q", "#N/A|err"],
+        ["PO-0302", "15x Protective Coating", "Bekasi", "Admin Penjualan", "lihat grup|note", "3 Okt", "Rp 5,2 jt"],
+        ["TOTAL|caps", "", "", "", "", "", "#REF!|err"],
+        ["", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", ""],
+      ];
+      const rowsEl = document.getElementById("rows");
+      ROWS.forEach((r, i) => {
+        const row = document.createElement("div");
+        row.className = "rw" + (r[7] === "dup" ? " dup" : "");
+        row.setAttribute("data-layout-allow-overlap", "");
+        const cells = r.slice(0, 7).map((c) => { const [t, k] = c.split("|"); return `<span data-layout-allow-overlap class="${k || ""}">${t}</span>`; });
+        row.innerHTML = `<span>${i + 2}</span>` + cells.join("");
+        rowsEl.appendChild(row);
+      });
+      // The hook's macro target: PO-0292's receivable.
+      const target = rowsEl.children[1].children[7];
+      // The slab and notifications cover the sheet on purpose.
+      document.querySelectorAll("#sheet *, #hook-lines *, #hook-sub, #site-lines *, #cta-lines *").forEach((el) => el.setAttribute("data-layout-allow-overlap", ""));
+
+      const tl = gsap.timeline({ paused: true });
+      const E = "expo.out";
+      const lines = (sel) => document.querySelectorAll(sel + " .li");
+      const reveal = (sel, at, step = 0.09) => tl.fromTo(lines(sel), { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: E, stagger: step }, at);
+      const conceal = (sel, at) => tl.to(lines(sel), { yPercent: -115, duration: 0.45, ease: "power3.in", stagger: 0.05 }, at);
+      const rise = (sel, at, d = 0.6) => tl.fromTo(sel, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: d, ease: E }, at);
+
+      // Edge labels (rotated, static).
+      gsap.set("#edge-l", { rotation: -90, y: 200 });
+      gsap.set("#edge-r", { rotation: 90, y: -170 });
+      // Edge labels follow the ground: dark on paper, light on ink.
+      [[17.75, "rgba(255,255,255,0.62)"], [20.7, "#666c76"], [24.7, "rgba(255,255,255,0.62)"]].forEach(([at, c]) => tl.to(".edge", { color: c, duration: 0.2 }, at));
+
+      // ---------- 1 · Hook: macro on #REF!, then pull back ----------
+      gsap.set("#sheet", { rotationX: 20, rotationY: -12, rotationZ: -7, transformPerspective: 1900, transformOrigin: "50% 40%" });
+      // Where the target cell lands after the 3D tilt, relative to the camera layer (measured once at build).
+      const cam = document.getElementById("cam1").getBoundingClientRect();
+      const tr = target.getBoundingClientRect();
+      const cx = tr.left + tr.width / 2 - cam.left, cy = tr.top + tr.height / 2 - cam.top;
+      const caret = document.getElementById("caret");
+      caret.style.left = tr.right - cam.left - 30 + "px"; caret.style.top = tr.top - cam.top + 14 + "px"; caret.style.height = Math.max(20, tr.height - 28) + "px";
+      tl.fromTo("#cam1", { scale: 7.5, x: 540 - cx, y: 760 - cy, transformOrigin: `${cx}px ${cy}px` }, { scale: 1, x: 0, y: 0, duration: 1.05, ease: "power4.inOut" }, 0.1);
+      tl.to("#cam1", { scale: 1.06, duration: 2.6, ease: "none" }, 1.16);
+      tl.fromTo("#caret", { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "steps(1)", repeat: 5, yoyo: true }, 0);
+      document.querySelectorAll(".rw .err").forEach((el, i) => tl.fromTo(el, { opacity: 1 }, { opacity: 0.45, duration: 0.1, ease: "steps(1)", yoyo: true, repeat: 5 }, 1.25 + i * 0.13));
+      tl.fromTo("#sticky", { rotation: 14, scale: 0.6, opacity: 0 }, { rotation: 7, scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 1.05);
+      // Notifications stack from the top, newest first.
+      const nIds = ["#n1", "#n2", "#n3", "#n4"];
+      nIds.forEach((n, i) => {
+        const at = 1.0 + i * 0.42;
+        tl.fromTo(n, { y: 120, scale: 0.92, opacity: 0 }, { y: 270, scale: 1, opacity: 1, duration: 0.42, ease: "back.out(1.4)" }, at);
+        nIds.slice(0, i).forEach((prev, k) => tl.to(prev, { y: 270 + (i - k) * 148, duration: 0.38, ease: E }, at));
+      });
+      tl.fromTo("#slab", { y: 900 }, { y: 0, duration: 0.65, ease: E }, 1.25);
+      reveal("#hook-lines", 1.4, 0.12);
+      rise("#hook-sub", 1.85);
+      // Out: the questions collapse upward, headline masks out.
+      nIds.forEach((n, i) => tl.to(n, { y: -260, opacity: 0, duration: 0.35, ease: "power3.in" }, 3.05 + i * 0.03));
+      conceal("#hook-lines", 3.05);
+      tl.to("#hook-sub", { opacity: 0, duration: 0.2 }, 3.05);
+
+      // ---------- 2 · Turn: The Joint planes sweep on the drop ----------
+      [["#pl-a", 3.12], ["#pl-b", 3.2], ["#pl-c", 3.28]].forEach(([p, at]) => {
+        tl.fromTo(p, { rotation: -32, x: 1500, y: 1500 }, { rotation: -32, x: 0, y: 0, duration: 0.5, ease: "power3.inOut" }, at);
+      });
+      tl.fromTo("#wm", { x: 120, rotation: 8 }, { x: 0, rotation: 0, duration: 1.6, ease: E }, 3.55);
+      reveal("#turn-lines", 3.6, 0.1);
+      rise("#turn-sub", 3.8);
+      rise("#studio-label", 3.6);
+      conceal("#turn-lines", 4.75);
+      tl.to("#turn-sub, #wm", { opacity: 0, duration: 0.25 }, 4.75);
+
+      // Four service chapters, with separate entrance, reading hold and exit.
+      reveal("#svc-lines", 5.05, 0.1);
+      rise("#svc-sub", 5.25);
+      rise("#service-proof", 5.5);
+      ["#b1", "#b2", "#b3", "#b4"].forEach((b, i) => {
+        const at = 5.4 + i * 3.05;
+        tl.fromTo(b, { x: 140, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.5, ease: "expo.out" }, at);
+        tl.to(b, { x: -100, autoAlpha: 0, duration: 0.28, ease: "power3.in" }, at + 2.75);
+        if (i < 3) tl.fromTo(b + " .m img", { y: 0 }, { y: -24, duration: 2.35, ease: "power1.inOut" }, at + 0.55);
+      });
+      tl.fromTo("#guide", { scaleX: 0 }, { scaleX: 1, duration: 12.2, ease: "none" }, 5.4);
+      conceal("#svc-lines", 17.4);
+      tl.to("#svc-sub, #service-proof, #guide", { opacity: 0, duration: 0.25 }, 17.4);
+      // ---------- 5 · Brand ----------
+      tl.fromTo("#ink", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.inOut" }, 17.6);
+      tl.fromTo("#outline", { x: -60 }, { x: -760, duration: 3.5, ease: "none" }, 17.6);
+      tl.fromTo("#p1", { x: 6, y: -70, rotation: -32, opacity: 0, svgOrigin: "35 25" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.15);
+      tl.fromTo("#p2", { x: -70, y: 26, rotation: 26, opacity: 0, svgOrigin: "22 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.22);
+      tl.fromTo("#p3", { x: 70, y: 22, rotation: -26, opacity: 0, svgOrigin: "55 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.29);
+      [["#l1", 18.17], ["#l2", 18.24], ["#l3", 18.31]].forEach(([l, at]) => { tl.fromTo(l, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: E }, at); tl.to(l, { opacity: 0, duration: 0.25 }, 18.85); });
+      tl.fromTo("#joint", { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 18.85);
+      tl.to("#joint path", { fill: "#1d4ed8", duration: 0.25 }, 18.87);
+      tl.fromTo("#wordmark", { y: 70, scale: 1.06, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.7, ease: E }, 18.95);
+      tl.fromTo("#tagline .t span", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: E, stagger: 0.15 }, 19.3);
+      tl.fromTo("#tagline .s", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 19.75);
+      tl.to("#ink, #outline, #joint, #wordmark, #tagline", { y: -1920, duration: 0.55, ease: "power3.inOut" }, 20.55);
+
+      // ---------- 6 · Website ----------
+      tl.fromTo("#site-wm", { y: 300, rotation: -6 }, { y: -120, rotation: 0, duration: 4.1, ease: "none" }, 20.8);
+      reveal("#site-lines", 20.95, 0.1);
+      rise("#site-sub", 21.3);
+      tl.fromTo("#site-phone", { y: 1300, rotationY: -22, rotationX: 12, transformPerspective: 1700 }, { y: 0, rotationY: -12, rotationX: 6, duration: 0.8, ease: E }, 20.75);
+      tl.to("#site-phone", { rotationY: 0, rotationX: 0, duration: 2.8, ease: "power1.inOut" }, 21.55);
+      tl.fromTo("#fab", { scale: 0, transformOrigin: "100% 50%" }, { scale: 1, duration: 0.4, ease: "back.out(2)" }, 21.6);
+      tl.fromTo("#site-img", { y: 0 }, { y: -2962, duration: 2.6, ease: "power2.inOut" }, 21.55);
+      tl.fromTo("#tap", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "power2.out" }, 24.3);
+      tl.to("#tap", { scale: 1.5, opacity: 0, duration: 0.35, ease: "power2.out" }, 24.55);
+      tl.to("#fab", { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 }, 24.35);
+
+      // ---------- 7 · CTA ----------
+      tl.fromTo("#cta-ink", { clipPath: "circle(0% at 60% 77%)" }, { clipPath: "circle(150% at 60% 77%)", duration: 0.6, ease: "power3.in" }, 24.45);
+      tl.fromTo("#cta-btn", { x: 120, y: 460, scale: 0.21, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.7, ease: "expo.inOut" }, 24.55);
+      tl.fromTo("#cta-outline", { x: 0 }, { x: -380, duration: 4.1, ease: "none" }, 24.4);
+      reveal("#cta-lines", 24.95, 0.12);
+      rise("#cta-sub", 25.35);
+      rise("#cta-bio", 25.5, 0.45);
+      rise("#cta-sign", 25.7, 0.5);
+      tl.to("#cta-btn", { scale: 1.035, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 3 }, 26.2);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
+
