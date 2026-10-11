@@ -51,6 +51,7 @@ bun run images:mirror  # one-off: download demo images (already done; output com
 bun run images:optimize# convert new jpg/png in src/assets/img to WebP (deletes originals)
 bun run images:editorial # ignored editorial masters → final WebP crops, proof composites, locale OG
 bun run icons:subset   # regenerate Font Awesome subset after adding/removing fa-* icons
+cd promo/video/<name> && bunx hyperframes@0.8.145 check   # promo videos (HyperFrames); render: ... render --quality high --output renders/<name>.mp4
 node --experimental-strip-types scripts/capture-work-sources.ts <slug> <url> [desktop-path] [mobile-path]
 bun scripts/compose-work-images.ts <slug>  # ignored raw PNG → full-size desktop/mobile + supporting WebP, 9:5 pair WebP, OG JPEG
 ```
@@ -72,6 +73,8 @@ astro.config.mjs            site/trailingSlash/prefetch + integrations: purge-un
 scripts/                    build, serve, check-links, mirror/optimize images, subset icons, leads-apps-script.gs (Sheet sink, installed by hand)
 public/_headers             noindex on *.workers.dev, immutable /_astro/*, security headers
 docs/renoir-run.md          brand brief (phase 2 input)
+docs/design/inner-pages/    research: 12 reference screenshots, inner-page audit, four service storyboards and isolated EN/ID prototype; `node docs/design/inner-pages/serve.mjs` on :4391. Internal Systems pilot integrated into ServiceView; remaining designs await implementation
+promo/video/<name>/         social videos: HyperFrames projects (HTML+GSAP → MP4; BRIEF.md, CREDITS.md) and studio-overview (Claude Design export + render-60fps.mjs). Skills in .claude/skills/hyperframes*
 averix-modern-...-utc/      original template (git-ignored, licensed). Source of truth for phase-1 markup
 src/
   assets/img/**             final editorial WebP, real Work screenshots, and remaining icon SVGs
@@ -121,8 +124,14 @@ Team, pricing, and other unused template pages are not public routes. English an
   `<Image>`/`getImage` — Alchemy's adapter forces the passthrough image service, so nothing would be optimised.
 - Editorial masters live in ignored `.work-capture/renoir-visual/`; `scripts/compose-editorial-images.ts` makes
   the shipped WebP variants and locale OG JPEGs. Prompts and crop roles are in `docs/brand/editorial-image-system.md`.
-  Service detail heroes are material illustrations; supporting images use actual Work screenshots with localized
-  alt text and captions. The process diagram is SVG, and shared page bands use CSS and The Joint geometry.
+  Campaign photographs receive the exact Joint SVG and site typography through Sharp/Playwright, rather than generated lettering.
+  Service heroes and supporting images use actual Work screenshots with localized alt text and captions.
+  Internal Systems additionally opens with `sections/services/InternalFlow.astro`: a labeled conceptual order
+  scene under `assets/img/services/internal-flow/`, scoped SCSS and native TypeScript playback (finite 8s,
+  selectable stages, pause/replay, viewport/visibility pause and reduced-motion/no-JS/image-error fallbacks).
+  Work screenshots remain separate proof. Other services and homepage retain their existing presentation.
+  Notes use explanatory diagrams with EN/ID labels and four WebP sizes. Process scenes are SVG with HTML labels;
+  shared page bands use CSS and The Joint geometry. `images:editorial` runs through Node TypeScript stripping.
 - Work screenshots: raw PNGs live in ignored `.work-capture/<slug>/`. `scripts/compose-work-images.ts` keeps
   desktop/mobile and curated supporting screens at source resolution as high-quality WebP under
   `src/assets/img/work/<slug>/`; it also makes a 1800×1000 desktop-and-mobile `pair.webp` for cards and an OG JPEG.
@@ -161,8 +170,9 @@ Team, pricing, and other unused template pages are not public routes. English an
   heading) appear early. No ScrollSmoother, no smooth/lag scroll, no pinning, no scroll-jacking, no preloader.
 - Image parallax = the template's `data-speed` (portfolio cards `.8`) using ScrollSmoother's
   exact formula `y = (1 - speed) * (scrollY + innerHeight/2 - frameCenterY)` inside the `.fix`
-  (overflow-hidden) frame — measured identical to the live demo. The editorial hero has separate desktop and
-  mobile compositions and no parallax. Implemented without GSAP at the top of `anim.ts` (runs immediately, passive
+  (overflow-hidden) frame — measured identical to the live demo. The campaign hero has separate desktop and
+  mobile compositions; its `.4` parallax runs only at >=1024px, capped at available overscan, 7% of frame width,
+  and 120px. Smaller screens and reduced motion remain static. Implemented without GSAP at the top of `anim.ts` (runs immediately, passive
   rAF-throttled scroll listener, remeasures on body resize), so there is no jump when GSAP loads.
 - **Never enable `scroll-behavior: smooth`** (template and Bootstrap both did; overridden in `_site.scss`):
   ScrollTrigger.refresh() jumps the scroll position and a smooth behavior turns that into broken trigger
@@ -235,7 +245,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 
 ## 9. Known gaps / TODO
 
-- Public-page stock photography has been replaced with editorial material, real founder-project screenshots, and
+- Public-page stock photography has been replaced with Renoir campaign artwork, real founder-project screenshots, and
   SVG/CSS geometry. `docs/brand/editorial-image-system.md` records the generation brief. Final approval of all
   public assets and Work permissions is still required before launch.
 - The Joint SVG now accompanies the Renoir wordmark and replaces the favicon. The owner should review this
@@ -252,9 +262,29 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   priority hint; a second run varied substantially (69 / 0 / 1000 ms). Both identified ScrollTrigger as a long task.
   After native mobile reveals, the local result was 87 / 0 / 270 ms. ScrollTrigger no longer loads on phones;
   style/layout work from the template remains above the TBT budget and needs a separate performance pass.
+- Campaign image review on 2026-10-01 checked 66 EN/ID route/viewport combinations without broken images or
+  horizontal overflow. Three local mobile Lighthouse runs measured 94/93/94 performance, CLS 0 throughout,
+  and TBT 104/0/0 ms. The performance >=95 gate is still unmet; the final run's LCP was 2.78 seconds.
+  Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
 
+- 2026-10-11 — Integrated the approved Internal Systems concept into its existing EN/ID service pages after the owner's three-minute timer: native four-stage playback, mobile focus crops and accessible static/error states; original proof, metadata and contact flow preserved. No deployment.
+
+- 2026-10-11 — Added inner-page visual research and isolated Internal Systems concept review: 12 attributed references, component audit, four EN/ID storyboards, AI-generated 3D concept artwork and an interactive review prototype. Logo/palette/fonts preserved; production integration awaits design review.
+
+- 2026-10-11 — Rendered the owner-approved `spreadsheet-to-system-clone` MP4 at 1080×1920, 60 fps, 28.5s with music/SFX; verified H.264/AAC metadata and full-file decoding. Original video project remains unchanged.
+
+- 2026-10-11 — Added independent `promo/video/spreadsheet-to-system-clone` draft: earlier Renoir introduction, four sequential service showcases, larger Work imagery, clearer service-scope panel and CTA. Original project remains unchanged; clone storyboard and preview await owner review before export.
+
+- 2026-10-11 — Added `promo/video/delivered-running`: third IG Story (27s, 60 fps, consideration stage) contrasting a vendor zip handover with a Renoir handover receipt and running system; spec in its `STORYBOARD.md`, Mixkit "Motivating Mornings" in `CREDITS.md`.
+
+- 2026-10-11 — Rebuilt `promo/video/spreadsheet-to-system` as v2 "Where's the answer?" (28.5s, 60 fps, spec in its `STORYBOARD-v2.md`): `#REF!` macro hook, spreadsheet data matching the Order & Field Sales system, real screens answering the hook's questions, bento services, grain/edge labels. v1 kept in its `archive/`.
+
+- 2026-10-11 — Added `promo/video/studio-overview`: the Claude Design promo export plus `render-60fps.mjs`, which re-renders it at 60 fps with its music via the design's seek event, Playwright and FFmpeg.
+- 2026-10-11 — Added `promo/video/spreadsheet-to-system`: first 22s 1080×1920 Instagram Story promo built with HyperFrames (run via `bunx`), real Work screens, a mobile capture of `/id/`, Mixkit music/SFX (licences in its `CREDITS.md`).
+
+- 2026-10-01 — Replaced abstract imagery with a photographic Renoir identity campaign, publication/print About images, authentic service screenshots, and localized Notes diagrams; restored bounded desktop hero parallax, added responsive hero sources, and removed retired raster assets.
 - 2026-09-29 — Replaced public stock photography with material editorial WebP, a responsive hero, real Work proof on Home and service details, a process SVG, and locale OG artwork; curated Notes crops and removed unused template raster/SVG assets. Added the Sharp composition workflow and image brief.
 - 2026-09-29 — Switched phone reveal animations to native IntersectionObserver/Web Animations so mobile pages do not download GSAP, SplitText, or ScrollTrigger for decorative motion.
 - 2026-09-29 — Dropped D1 and Resend: leads now go to Telegram + Google Sheet/email (Apps Script) in parallel, IP no longer stored. Turnstile widget on prod only (test keys elsewhere), Workers Logs on, `public/_headers` (workers.dev noindex, immutable `/_astro/*`), CI runs build + link/copy guards, CI token gains custom-domain permissions.
