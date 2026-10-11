@@ -1,6 +1,6 @@
 ---
 import Img from "~/components/ui/Img.astro";
-import { t, type Locale } from "~/i18n";
+import { t, path, type Locale } from "~/i18n";
 
 interface Props {
   locale: Locale;
@@ -29,8 +29,8 @@ const p = t(locale).home.problem;
       <div class="col-lg-8">
         <div class="si-about-box">
           <div class="si-about-img">
-            <Img src="editorial/home-proof-website.webp" alt={locale === "id" ? "Tampilan situs MAXY AI pada desktop" : "MAXY AI website on desktop"} />
-            <Img class="si-about-img2" src="editorial/home-proof-system.webp" alt={locale === "id" ? "Dashboard sistem pesanan dan sales lapangan" : "Order and field sales system dashboard"} />
+            <figure><a href={`${path("work", locale)}maxy-ai/`}><Img src="editorial/home-proof-website.webp" alt={locale === "id" ? "Tampilan situs MAXY AI pada desktop" : "MAXY AI website on desktop"} /></a><figcaption><a href={`${path("work", locale)}maxy-ai/`}>MAXY AI ↗</a></figcaption></figure>
+            <figure class="si-about-img2"><a href={`${path("work", locale)}order-sales/`}><Img src="editorial/home-proof-system.webp" alt={locale === "id" ? "Dashboard sistem pesanan dan sales lapangan" : "Order and field sales system dashboard"} /></a><figcaption><a href={`${path("work", locale)}order-sales/`}>{locale === "id" ? "Pesanan & sales lapangan" : "Order & field sales"} ↗</a></figcaption></figure>
           </div>
           <div class="si-about-main">
             <span class="about-eyebrow">{p.stat}</span>
