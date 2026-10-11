@@ -4,10 +4,10 @@ description: A theme with your logo on it is quick to buy and expensive to live 
 date: 2026-09-10
 category: Websites
 translationKey: bought-not-built
-image: editorial/note-bought-article.webp
-listImage: editorial/note-bought-list.webp
-cardImage: editorial/note-bought-card.webp
-thumb: editorial/note-bought-thumb.webp
+image: editorial/note-bought-article-en.webp
+listImage: editorial/note-bought-list-en.webp
+cardImage: editorial/note-bought-card-en.webp
+thumb: editorial/note-bought-thumb-en.webp
 ---
 
 A theme is a finished website that someone else designed for nobody in particular. You add a logo, swap the photos, rewrite the headings, and launch. It looks fine. It also looks like every other business that bought the same theme — and prospects notice, even when they can't say why.
