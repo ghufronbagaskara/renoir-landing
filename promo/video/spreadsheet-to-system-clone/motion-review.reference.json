@@ -1,0 +1,10 @@
+{
+  "duration": 28.5,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#b1", "bySec": 6.1 },
+    { "kind": "appearsBy", "selector": "#b2", "bySec": 9.15 },
+    { "kind": "appearsBy", "selector": "#b3", "bySec": 12.2 },
+    { "kind": "appearsBy", "selector": "#b4", "bySec": 15.25 },
+    { "kind": "appearsBy", "selector": "#cta-btn", "bySec": 25.5 }
+  ]
+}
