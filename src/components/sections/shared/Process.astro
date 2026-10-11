@@ -1,6 +1,6 @@
 ---
 import Img from "~/components/ui/Img.astro";
-import ProcessJoint from "~/components/ui/ProcessJoint.astro";
+import ProcessStoryboard from "~/components/ui/ProcessStoryboard.astro";
 
 interface Props {
   label: string;
@@ -40,5 +40,5 @@ const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
       </div>
     </div>
   </div>
-  <div class="si-process-thumb si_fade_anim" data-fade-offset="16" data-duration="0.7"><ProcessJoint /></div>
+  <div class="si-process-thumb si_fade_anim" data-fade-offset="16" data-duration="0.7"><ProcessStoryboard steps={steps} /></div>
 </section>
