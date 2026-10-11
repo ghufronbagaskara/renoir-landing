@@ -4,10 +4,10 @@ description: A site that loads in four seconds isn't finished. How to set perfor
 date: 2026-08-27
 category: Performance
 translationKey: speed-specification
-image: editorial/note-speed-article.webp
-listImage: editorial/note-speed-list.webp
-cardImage: editorial/note-speed-card.webp
-thumb: editorial/note-speed-thumb.webp
+image: editorial/note-speed-article-en.webp
+listImage: editorial/note-speed-list-en.webp
+cardImage: editorial/note-speed-card-en.webp
+thumb: editorial/note-speed-thumb-en.webp
 ---
 
 Performance is often treated as polish: build the site first, make it fast later. Later rarely arrives. By the time anyone measures, the site is live, the budget is spent, and speeding it up means undoing decisions made months earlier.
