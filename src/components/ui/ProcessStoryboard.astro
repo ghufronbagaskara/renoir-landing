@@ -1,0 +1,39 @@
+---
+import BrandMark from "~/components/ui/BrandMark.astro";
+interface Props { steps: { title: string; body: string }[] }
+const { steps } = Astro.props;
+---
+<div class="process-storyboard">
+  <span class="process-maker"><BrandMark /></span>
+  {steps.map((step, index) => (
+    <div class="process-art-stage">
+      <span class="process-art-label"><span aria-hidden="true">0{index + 1}</span> {step.title}</span>
+      <svg viewBox="0 0 300 180" aria-hidden="true" focusable="false">
+        {index === 0 && <>
+          <rect x="55" y="15" width="190" height="150" rx="3" fill="#fff" stroke="#17191c" stroke-width="2" />
+          {[50,90,130].map(y => <><path d={`M78 ${y}l7 7 13-16`} fill="none" stroke="#1d4ed8" stroke-width="3" /><path d={`M115 ${y}h100`} stroke="#17191c" stroke-width="2" /></>)}
+        </>}
+        {index === 1 && <>
+          <rect x="35" y="20" width="230" height="140" rx="3" fill="#fff" stroke="#17191c" stroke-width="2" />
+          <path d="M35 43h230M48 33h3m8 0h3m8 0h3" stroke="#17191c" stroke-width="2" />
+          <rect x="50" y="59" width="105" height="58" fill="#e9edf5" /><path d="M168 65h78m-78 15h55m-55 15h70M50 136h190" stroke="#17191c" stroke-width="2" /><rect x="168" y="110" width="63" height="16" fill="#1d4ed8" />
+        </>}
+        {index === 2 && <>
+          <rect x="35" y="20" width="230" height="140" rx="3" fill="#17191c" />
+          <path d="m106 61-26 29 26 29m88-58 26 29-26 29m-29-64-30 72" fill="none" stroke="#f5f7fb" stroke-width="4" /><path d="M50 142h200" stroke="#1d4ed8" stroke-width="3" />
+        </>}
+        {index === 3 && <>
+          <rect x="35" y="20" width="230" height="140" rx="3" fill="#fff" stroke="#17191c" stroke-width="2" />
+          <path d="M35 43h230" stroke="#17191c" stroke-width="2" /><circle cx="150" cy="96" r="29" fill="#1d4ed8" /><path d="m134 96 11 11 22-23" fill="none" stroke="#fff" stroke-width="4" /><path d="M103 143h94" stroke="#17191c" stroke-width="2" />
+        </>}
+      </svg>
+    </div>
+  ))}
+</div>
+<style>
+  .process-storyboard{width:100%;max-width:720px;padding:clamp(24px,5vw,64px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 24px;position:relative}
+  .process-maker{grid-column:1/-1;width:26px;color:#1d4ed8}
+  .process-art-stage{min-width:0}.process-art-label{display:block;font-size:clamp(12px,1.2vw,16px);font-weight:600;margin-bottom:14px;color:#17191c}.process-art-label span{color:#526079;margin-right:8px;font-size:11px}
+  .process-art-stage svg{display:block;width:100%;height:auto}
+  @media(max-width:767px){.process-storyboard{gap:16px;padding:20px;max-width:430px}.process-art-label{margin-bottom:5px}}
+</style>
