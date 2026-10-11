@@ -1,6 +1,6 @@
 ---
 import CircleText from "~/components/ui/CircleText.astro";
-import { imageUrl } from "~/lib/images";
+import BrandMark from "~/components/ui/BrandMark.astro";
 
 interface Props {
   circle: string;
@@ -8,9 +8,9 @@ interface Props {
   href: string;
 }
 const { circle, label, href } = Astro.props;
-const bg = imageUrl("editorial/about-cta.webp");
 ---
-<div class="si-video-area" style={`background-image:url(${bg})`}>
+<div class="si-video-area renoir-statement-band">
+  <span class="statement-mark" aria-hidden="true"><BrandMark /></span>
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
