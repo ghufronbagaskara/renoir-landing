@@ -2,11 +2,29 @@ import { chromium } from "playwright";
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import sharp from "sharp";
 
 const base = process.env.REVIEW_BASE || "http://127.0.0.1:4392";
 const routes = ["/services/internal-systems/", "/id/layanan/sistem-internal/"];
 const browser = await chromium.launch({ headless: true });
 const results = [];
+async function captureSection(page, root, destination) {
+  await page.evaluate(() => scrollTo(0, 0));
+  const bounds = await root.evaluate((el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: Math.floor(rect.left),
+      top: Math.floor(rect.top),
+      width: Math.floor(rect.width),
+      height: Math.floor(rect.height),
+    };
+  });
+  const screenshot = await page.screenshot({ fullPage: true });
+  await sharp(screenshot)
+    .extract(bounds)
+    .jpeg({ quality: 85 })
+    .toFile(destination);
+}
 async function check(name, run) {
   try {
     await run();
@@ -95,14 +113,19 @@ try {
             );
             await root.locator('[data-flow-step="3"]').click();
             await page.waitForTimeout(700);
-            await root.screenshot({
-              path: resolve(
+            if (width < 768)
+              assert.equal(
+                await page.locator(".floating-contact").isVisible(),
+                false,
+              );
+            await captureSection(
+              page,
+              root,
+              resolve(
                 import.meta.dirname,
                 `qa/integrated-${route.startsWith("/id/") ? "id" : "en"}-${width}.jpg`,
               ),
-              type: "jpeg",
-              quality: 85,
-            });
+            );
           } finally {
             await page.close();
           }
