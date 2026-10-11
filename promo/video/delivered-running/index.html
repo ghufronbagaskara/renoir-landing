@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Renoir — Delivered running</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Variable.woff2") format("woff2"); font-weight: 100 900; }
+
+      :root { --paper: #f5f7fb; --ink: #17191c; --ink2: #2a2d33; --cobalt: #1d4ed8; --stone: #565c66; --line: #d5dae3; --white: #ffffff; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); background: var(--paper); }
+      .clip { position: absolute; inset: 0; }
+      .fill { position: absolute; inset: 0; }
+
+      .lines { position: absolute; left: 60px; right: 40px; }
+      .ln { display: block; overflow: hidden; padding: 0.04em 0 0.1em; margin-bottom: -0.12em; }
+      .li { display: block; font-family: "General Sans", sans-serif; font-weight: 600; letter-spacing: -0.045em; line-height: 0.95; white-space: nowrap; }
+      .sub { position: absolute; left: 60px; right: 60px; font-size: 38px; line-height: 1.3; font-weight: 450; color: var(--stone); }
+      .label { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 24px; letter-spacing: 0.16em; text-transform: uppercase; }
+      .accent { color: var(--cobalt); }
+
+      #grid { position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(23, 25, 28, 0.055) 1px, transparent 1px); background-size: 240px 100%; background-position: 60px 0; }
+      #grain { position: absolute; inset: 0; background-image: url("assets/img/grain.png"); background-size: 256px 256px; opacity: 0.06; }
+      .edge { position: absolute; top: 960px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 19px; letter-spacing: 0.32em; color: #666c76; white-space: nowrap; }
+      #edge-l { left: 34px; transform-origin: 0 0; }
+      #edge-r { right: 34px; transform-origin: 100% 0; }
+      .outline { position: absolute; font-family: "General Sans", sans-serif; font-weight: 600; letter-spacing: -0.05em; line-height: 1; white-space: nowrap; }
+
+      /* 1 · Hook: vendor chat with the zip */
+      #cam1 { position: absolute; inset: 0; }
+      #chat { position: absolute; left: 60px; top: 300px; width: 960px; }
+      .chat-head { display: flex; align-items: center; gap: 20px; margin-bottom: 22px; }
+      .av { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--ink); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 32px; }
+      .chat-head b { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 36px; }
+      .chat-head small { display: block; font-size: 26px; color: var(--stone); }
+      .bubble-in { width: 900px; border-radius: 12px 40px 40px 40px; background: var(--white); border: 2px solid var(--line); padding: 26px; }
+      .attach { display: flex; align-items: center; gap: 26px; padding: 22px; border-radius: 26px; background: #eef1f6; }
+      .zip { flex: none; width: 110px; height: 132px; border-radius: 16px; background: var(--ink); position: relative; }
+      .zip::before { content: ""; position: absolute; left: 47px; top: 0; width: 16px; height: 70px; background: repeating-linear-gradient(180deg, #ffffff 0 9px, transparent 9px 18px); opacity: 0.85; }
+      .zip span { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-family: "General Sans", sans-serif; font-weight: 700; font-size: 22px; color: var(--white); letter-spacing: 0.1em; }
+      #fname { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 46px; letter-spacing: -0.02em; white-space: nowrap; }
+      .meta { margin-top: 6px; font-size: 27px; color: var(--stone); }
+      .bubble-in p { margin: 22px 8px 0; font-size: 40px; line-height: 1.25; font-weight: 500; }
+      .bubble-in time { display: block; margin: 8px 8px 0; text-align: right; font-size: 24px; color: var(--stone); }
+      #hook-lines { top: 900px; } #hook-lines .li { font-size: 124px; }
+      #hook-lines .dim { color: var(--stone); }
+      #hook-sub { top: 1290px; }
+
+      /* 2 · Problem (ink) */
+      #inkbg { background: var(--ink); }
+      .chip { position: absolute; left: 0; top: 0; padding: 14px 24px; border-radius: 14px; background: var(--ink2); color: #e8eaee; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 32px; white-space: nowrap; }
+      #term { position: absolute; left: 60px; top: 330px; width: 960px; height: 520px; border-radius: 26px; background: #0d0e10; border: 2px solid #33363d; overflow: hidden; }
+      #term .bar { height: 54px; display: flex; align-items: center; gap: 10px; padding: 0 24px; border-bottom: 2px solid #26292f; color: #a3a8b1; font-size: 22px; }
+      #term .bar i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #3a3e46; }
+      #term .bar span { margin-left: 14px; }
+      .tl { height: 66px; display: flex; align-items: center; gap: 18px; padding: 0 30px; font-size: 32px; color: #d9dce1; white-space: nowrap; }
+      .tl.dim { color: #9ea3ac; }
+      .tl.err { color: var(--white); font-weight: 700; }
+      .tl.err i { display: block; flex: none; width: 10px; height: 40px; background: repeating-linear-gradient(-45deg, #ffffff 0 4px, transparent 4px 8px); }
+      #broken { position: absolute; left: 260px; top: 890px; width: 760px; height: 330px; border-radius: 26px; background: var(--paper); overflow: hidden; }
+      #broken .bar { height: 50px; display: flex; align-items: center; gap: 9px; padding: 0 22px; background: #e3e7ee; }
+      #broken .bar i { display: block; width: 13px; height: 13px; border-radius: 50%; background: #c3c9d3; }
+      #broken .bar span { margin-left: 14px; height: 28px; flex: 1; border-radius: 14px; background: #f5f7fb; }
+      #broken .body { display: flex; align-items: center; gap: 30px; padding: 46px 40px; }
+      #broken svg { flex: none; width: 110px; height: 110px; }
+      #broken b { display: block; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 42px; letter-spacing: -0.02em; color: var(--ink); }
+      #broken small { display: block; margin-top: 8px; font-size: 28px; color: var(--stone); }
+      #seen { position: absolute; left: 60px; right: 60px; top: 1270px; text-align: right; font-size: 26px; color: rgba(255, 255, 255, 0.72); }
+      #out { position: absolute; right: 60px; top: 1316px; padding: 26px 32px 18px; border-radius: 40px 12px 40px 40px; background: var(--ink2); color: var(--white); }
+      #out p { font-size: 38px; font-weight: 500; }
+      #out small { display: block; margin-top: 6px; text-align: right; font-size: 24px; color: rgba(255, 255, 255, 0.66); }
+      #prob-lines { top: 560px; } #prob-lines .li { font-size: 150px; color: var(--white); }
+      #prob-sub { top: 960px; color: rgba(255, 255, 255, 0.74); }
+
+      /* 3 · Turn */
+      #burst { background: var(--paper); }
+      #turn-lines { top: 640px; } #turn-lines .li { font-size: 150px; }
+      #turn-sub { top: 980px; }
+
+      /* 4 · Receipt */
+      #s4cam { position: absolute; inset: 0; }
+      #hand { left: -20px; top: 1540px; font-size: 330px; color: var(--paper); -webkit-text-stroke: 2px rgba(23, 25, 28, 0.08); }
+      #printer { position: absolute; left: 110px; top: 258px; width: 860px; height: 48px; border-radius: 24px; background: var(--ink); }
+      #printer::after { content: ""; position: absolute; left: 40px; right: 40px; top: 22px; height: 4px; border-radius: 2px; background: #3a3e46; }
+      #feed { position: absolute; left: 150px; top: 290px; width: 780px; height: 1240px; overflow: hidden; }
+      #rcpt { position: absolute; left: 0; top: 0; width: 780px; height: 1180px; background: var(--white); border-left: 2px solid var(--line); border-right: 2px solid var(--line); }
+      .r-head { height: 250px; padding: 44px 48px 0; border-bottom: 3px dashed var(--line); }
+      .r-brand { display: flex; align-items: center; gap: 16px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 44px; letter-spacing: -0.03em; }
+      .r-brand svg { width: 52px; height: 50px; }
+      .r-head .label { margin-top: 22px; color: var(--ink); }
+      .r-head p { margin-top: 10px; font-size: 26px; color: var(--stone); }
+      .item { height: 116px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; border-bottom: 1px solid #eceff4; }
+      .item b { display: block; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 38px; letter-spacing: -0.02em; }
+      .item small { display: block; margin-top: 4px; font-size: 26px; color: var(--stone); }
+      .tick { flex: none; width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--cobalt); display: flex; align-items: center; justify-content: center; }
+      .tick svg { width: 32px; height: 32px; }
+      .r-foot { position: relative; height: 234px; padding: 34px 48px; border-top: 3px dashed var(--line); }
+      .r-foot p { margin-top: 10px; font-size: 26px; color: var(--stone); max-width: 340px; }
+      #stamp { position: absolute; right: 44px; top: 50px; padding: 18px 26px; border: 7px solid var(--cobalt); border-radius: 16px; color: var(--cobalt); font-family: "General Sans", sans-serif; font-weight: 700; font-size: 40px; line-height: 1.05; letter-spacing: 0.04em; text-align: center; }
+
+      /* 5 · Live */
+      #live-lines { top: 262px; } #live-lines .li { font-size: 128px; }
+      #live-sub { top: 540px; font-size: 36px; }
+      #status { position: absolute; left: 60px; top: 630px; width: 960px; height: 400px; border-radius: 30px; background: var(--white); border: 2px solid var(--line); padding: 34px 40px; }
+      .s-head { display: flex; align-items: center; gap: 18px; }
+      .dot { position: relative; width: 30px; height: 30px; }
+      .dot i, .dot b { position: absolute; inset: 0; border-radius: 50%; background: var(--cobalt); }
+      .dot b { background: transparent; border: 3px solid var(--cobalt); }
+      .s-head strong { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 46px; letter-spacing: -0.02em; }
+      .s-head span { margin-left: auto; font-size: 28px; color: var(--stone); }
+      #bars { display: flex; align-items: flex-end; gap: 7px; height: 96px; margin: 28px 0 22px; }
+      #bars i { display: block; flex: 1; height: 100%; border-radius: 4px; background: var(--cobalt); transform-origin: 50% 100%; }
+      .s-rows { display: flex; justify-content: space-between; font-size: 28px; color: var(--stone); }
+      .s-rows b { color: var(--ink); font-weight: 600; }
+      .proj { position: absolute; top: 1090px; width: 470px; height: 294px; border-radius: 22px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
+      .proj img { display: block; width: 470px; height: 294px; object-fit: cover; object-position: top left; }
+      .proj em { position: absolute; left: 16px; top: 16px; display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--white); font-style: normal; font-size: 22px; font-weight: 600; }
+      .proj em i { display: block; width: 12px; height: 12px; border-radius: 50%; background: #7d9bff; }
+      #pj1 { left: 40px; } #pj2 { left: 305px; } #pj3 { left: 570px; }
+      #live-cap { top: 1424px; font-size: 28px; }
+
+      /* 6 · Choice */
+      #choice-lines { top: 262px; } #choice-lines .li { font-size: 200px; }
+      #choice-sub { position: absolute; left: 60px; top: 500px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 66px; letter-spacing: -0.035em; color: var(--stone); }
+      .opt { position: absolute; top: 650px; width: 466px; height: 760px; border-radius: 32px; padding: 44px 40px; }
+      #opt1 { left: 60px; background: var(--ink); color: var(--white); }
+      #opt2 { left: 554px; background: var(--white); border: 2px solid var(--line); }
+      .opt .label { color: inherit; opacity: 0.7; }
+      .opt svg { display: block; width: 120px; height: 120px; margin: 46px 0 40px; }
+      .opt h3 { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 66px; letter-spacing: -0.035em; line-height: 1; }
+      .opt p { margin-top: 24px; font-size: 32px; line-height: 1.35; }
+      #opt1 p { color: rgba(255, 255, 255, 0.76); }
+      #opt2 p { color: var(--stone); }
+      #or { position: absolute; left: 488px; top: 990px; width: 104px; height: 104px; border-radius: 50%; background: var(--cobalt); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 30px; }
+
+      /* 7 · CTA */
+      #cta-ink { background: var(--ink); }
+      #cta-outline { left: -40px; top: 1560px; font-size: 300px; color: var(--ink); -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1); }
+      #cta-lines { top: 310px; } #cta-lines .li { font-size: 156px; color: var(--white); }
+      #cta-sub { top: 680px; color: rgba(255, 255, 255, 0.76); font-size: 40px; }
+      #cta-btn { position: absolute; left: 60px; top: 1010px; width: 960px; height: 136px; border-radius: 999px; background: var(--cobalt); color: var(--white); display: flex; align-items: center; justify-content: center; gap: 22px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 56px; letter-spacing: -0.015em; }
+      #cta-btn svg { width: 48px; height: 48px; }
+      #cta-bio { position: absolute; left: 0; right: 0; top: 1186px; text-align: center; color: rgba(255, 255, 255, 0.8); font-size: 38px; font-weight: 500; }
+      #cta-sign { position: absolute; left: 0; right: 0; top: 1380px; display: flex; align-items: center; justify-content: center; gap: 20px; color: var(--white); }
+      #cta-sign svg { width: 62px; height: 60px; }
+      #cta-sign b { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 64px; letter-spacing: -0.03em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27" data-fps="60" data-width="1080" data-height="1920">
+
+      <section id="c-bg" class="clip" data-start="0" data-duration="27" data-track-index="0"><div id="grid"></div></section>
+
+      <!-- 1 · Hook (0–2.6) -->
+      <section id="c-hook" class="clip" data-start="0" data-duration="2.6" data-track-index="1">
+        <div id="cam1">
+          <div id="chat">
+            <div class="chat-head"><div class="av">V</div><div><b>Vendor Web</b><small>online</small></div></div>
+            <div class="bubble-in">
+              <div class="attach"><div class="zip"><span>ZIP</span></div><div><div id="fname">website_FINAL_v7.zip</div><div class="meta">2,3 GB · ZIP</div></div></div>
+              <p>Ini file websitenya. Tinggal di-upload ya.</p>
+              <time>16.42</time>
+            </div>
+          </div>
+        </div>
+        <div class="lines" id="hook-lines"><span class="ln"><span class="li">Your website</span></span><span class="ln"><span class="li">arrived.</span></span><span class="ln"><span class="li dim">As a zip file.</span></span></div>
+        <p class="sub" id="hook-sub">Proyek selesai. Vendornya pamit.</p>
+      </section>
+
+      <!-- 2 · Problem (2.2–7.3) -->
+      <section id="c-prob" class="clip" data-start="2.2" data-duration="5.1" data-track-index="2">
+        <div class="fill" id="inkbg"></div>
+        <div id="chips"></div>
+        <div id="term" class="suck">
+          <div class="bar"><i></i><i></i><i></i><span>Terminal</span></div>
+          <div class="tl">$ npm install</div>
+          <div class="tl dim">added 1.284 packages</div>
+          <div class="tl">$ npm run start</div>
+          <div class="tl err"><i></i>Error: Cannot find module 'dotenv'</div>
+          <div class="tl err"><i></i>Database connection failed</div>
+          <div class="tl err"><i></i>Process exited with code 1</div>
+        </div>
+        <div id="broken" class="suck">
+          <div class="bar"><i></i><i></i><i></i><span></span></div>
+          <div class="body">
+            <svg viewBox="0 0 110 110" fill="none" stroke="#17191c" stroke-width="5"><rect x="10" y="18" width="90" height="74" rx="10" /><path d="M10 38h90M40 58l30 22M70 58 40 80" /></svg>
+            <div><b>Situs tidak dapat dijangkau</b><small>localhost menolak koneksi.</small></div>
+          </div>
+        </div>
+        <div id="seen" class="suck">Vendor Web · terakhir dilihat 3 minggu lalu</div>
+        <div id="out" class="suck"><p>Mas, websitenya nggak bisa jalan.</p><small>Terkirim ✓</small></div>
+        <div class="lines suck" id="prob-lines"><span class="ln"><span class="li">Built.</span></span><span class="ln"><span class="li">Never shipped.</span></span></div>
+        <p class="sub suck" id="prob-sub">Server, domain, SSL, dan monitoring tidak pernah termasuk.</p>
+      </section>
+
+      <!-- 3 · Turn (6.95–8.8) -->
+      <section id="c-turn" class="clip" data-start="6.95" data-duration="1.85" data-track-index="3">
+        <div class="fill" id="burst"></div>
+        <div class="lines" id="turn-lines"><span class="ln"><span class="li">We hand it</span></span><span class="ln"><span class="li">over <span class="accent">running.</span></span></span></div>
+        <p class="sub" id="turn-sub">Bukan file. Sistem yang sudah hidup.</p>
+      </section>
+
+      <!-- 4 · Receipt (8.6–16.6) -->
+      <section id="c-rcpt" class="clip" data-start="8.6" data-duration="8.0" data-track-index="4">
+        <div id="s4cam">
+          <div class="outline" id="hand" data-layout-allow-overflow data-layout-allow-overlap>HANDOVER</div>
+          <div id="feed" data-layout-allow-overflow>
+            <div id="rcpt">
+              <div class="r-head">
+                <div class="r-brand"><svg viewBox="0 0 66 64" fill="#17191c"><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg>Renoir</div>
+                <div class="label">Nota serah terima</div>
+                <p>No. 0001 · Proyek: situs marketing</p>
+              </div>
+              <div id="items"></div>
+              <div class="r-foot">
+                <div class="label">Status</div>
+                <p>Diserahkan dalam keadaan berjalan.</p>
+                <div id="stamp">STATUS:<br />BERJALAN</div>
+              </div>
+            </div>
+          </div>
+          <div id="printer"></div>
+        </div>
+      </section>
+
+      <!-- 5 · Live (16.25–21.2) -->
+      <section id="c-live" class="clip" data-start="16.25" data-duration="4.95" data-track-index="5">
+        <div class="fill" id="live-bg" style="background: var(--paper)"></div>
+        <div class="lines" id="live-lines"><span class="ln"><span class="li">A URL that</span></span><span class="ln"><span class="li accent">stays up.</span></span></div>
+        <p class="sub" id="live-sub">Monitoring menyala sejak hari pertama.</p>
+        <div id="status">
+          <div class="s-head"><div class="dot"><b id="pulse"></b><i></i></div><strong>Live</strong><span>Semua sistem berjalan</span></div>
+          <div id="bars"></div>
+          <div class="s-rows"><span>Situs <b>berjalan</b></span><span>SSL <b>aktif</b></span><span>Backup <b>berhasil</b></span></div>
+        </div>
+        <div class="proj" id="pj1"><img src="assets/img/coatings-desktop.webp" alt="" /><em><i></i>Live</em></div>
+        <div class="proj" id="pj2"><img src="assets/img/field-desktop.webp" alt="" /><em><i></i>Live</em></div>
+        <div class="proj" id="pj3"><img src="assets/img/order-desktop.webp" alt="" /><em><i></i>Live</em></div>
+        <p class="sub" id="live-cap">Proyek pendiri Renoir, diserahkan dalam keadaan berjalan.</p>
+      </section>
+
+      <!-- 6 · Choice (20.95–23.9) -->
+      <section id="c-choice" class="clip" data-start="20.95" data-duration="2.95" data-track-index="6">
+        <div class="lines" id="choice-lines"><span class="ln"><span class="li">Your call.</span></span></div>
+        <div id="choice-sub">Full access either way.</div>
+        <article class="opt" id="opt1">
+          <div class="label">Opsi 1</div>
+          <svg viewBox="0 0 120 120" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"><path d="M60 10 100 26v32c0 26-18 44-40 52-22-8-40-26-40-52V26Z" /><path d="M40 60l14 14 28-30" /></svg>
+          <h3>Kami rawat</h3>
+          <p>Retainer bulanan: hosting, monitoring, backup, dan perubahan kecil.</p>
+        </article>
+        <article class="opt" id="opt2">
+          <div class="label">Opsi 2</div>
+          <svg viewBox="0 0 120 120" fill="none" stroke="#17191c" stroke-width="6" stroke-linecap="round"><circle cx="40" cy="60" r="24" /><path d="M64 60h46M94 60v18M80 60v12" /></svg>
+          <h3>Anda ambil alih</h3>
+          <p>Repositori, akses infrastruktur, dan dokumentasi diserahkan penuh.</p>
+        </article>
+        <div id="or">atau</div>
+      </section>
+
+      <!-- 7 · CTA (23.6–27) -->
+      <section id="c-cta" class="clip" data-start="23.6" data-duration="3.4" data-track-index="7">
+        <div class="fill" id="cta-ink"><div class="outline" id="cta-outline" data-layout-allow-overflow data-layout-allow-overlap>Renoir</div></div>
+        <div class="lines" id="cta-lines"><span class="ln"><span class="li">Let's ship it</span></span><span class="ln"><span class="li">running.</span></span></div>
+        <p class="sub" id="cta-sub">Ceritakan proyek Anda. Mulai dari obrolan 15 menit.</p>
+        <div id="cta-btn">Mulai proyek <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8" /></svg></div>
+        <div id="cta-bio">Link di bio</div>
+        <div id="cta-sign"><svg viewBox="0 0 66 64" fill="#ffffff"><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg><b>Renoir</b></div>
+      </section>
+
+      <section id="c-top" class="clip" data-start="0" data-duration="27" data-track-index="9">
+        <div class="edge" id="edge-l">RENOIR — DIGITAL STUDIO</div>
+        <div class="edge" id="edge-r">DELIVERED RUNNING</div>
+        <div id="grain"></div>
+      </section>
+
+      <!-- Audio -->
+      <audio id="a-music" src="assets/audio/music-motivating-mornings.mp3" data-start="0" data-duration="27" data-track-index="20" data-volume="0.85"></audio>
+      <audio id="a-pull" src="assets/audio/sfx-air-woosh.mp3" data-start="0" data-duration="2.32" data-track-index="21" data-volume="0.45"></audio>
+      <audio id="a-wipe" src="assets/audio/sfx-sweep.mp3" data-start="2.0" data-duration="0.78" data-track-index="22" data-volume="0.4"></audio>
+      <audio id="a-burst" src="assets/audio/sfx-pop-whoosh.mp3" data-start="2.5" data-duration="0.18" data-track-index="23" data-volume="0.7"></audio>
+      <audio id="a-c1" src="assets/audio/sfx-dry-pop.mp3" data-start="2.55" data-duration="0.3" data-track-index="24" data-volume="0.35"></audio>
+      <audio id="a-c2" src="assets/audio/sfx-dry-pop.mp3" data-start="2.68" data-duration="0.3" data-track-index="25" data-volume="0.35"></audio>
+      <audio id="a-c3" src="assets/audio/sfx-dry-pop.mp3" data-start="2.81" data-duration="0.3" data-track-index="26" data-volume="0.35"></audio>
+      <audio id="a-typ" src="assets/audio/sfx-typing.mp3" data-start="3.0" data-duration="1.6" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="a-err" src="assets/audio/sfx-tech-select.mp3" data-start="3.75" data-duration="0.5" data-track-index="28" data-volume="0.35"></audio>
+      <audio id="a-br" src="assets/audio/sfx-select.mp3" data-start="4.15" data-duration="1.1" data-track-index="29" data-volume="0.3"></audio>
+      <audio id="a-msg" src="assets/audio/sfx-message-pop.mp3" data-start="4.75" data-duration="1.06" data-track-index="30" data-volume="0.5"></audio>
+      <audio id="a-whoosh" src="assets/audio/sfx-whoosh-fast.mp3" data-start="6.55" data-duration="1.76" data-track-index="31" data-volume="0.6"></audio>
+      <audio id="a-print" src="assets/audio/sfx-sweep.mp3" data-start="8.5" data-duration="0.78" data-track-index="32" data-volume="0.35"></audio>
+      <audio id="a-feed1" src="assets/audio/sfx-typing.mp3" data-start="8.75" data-duration="3.4" data-track-index="33" data-volume="0.18"></audio>
+      <audio id="a-feed2" src="assets/audio/sfx-typing.mp3" data-start="12.15" data-duration="2.4" data-track-index="34" data-volume="0.18"></audio>
+      <audio id="a-k1" src="assets/audio/sfx-tech-select.mp3" data-start="9.63" data-duration="0.5" data-track-index="35" data-volume="0.45"></audio>
+      <audio id="a-k2" src="assets/audio/sfx-tech-select.mp3" data-start="10.61" data-duration="0.5" data-track-index="36" data-volume="0.45"></audio>
+      <audio id="a-k3" src="assets/audio/sfx-tech-select.mp3" data-start="11.59" data-duration="0.5" data-track-index="37" data-volume="0.45"></audio>
+      <audio id="a-k4" src="assets/audio/sfx-tech-select.mp3" data-start="12.57" data-duration="0.5" data-track-index="38" data-volume="0.45"></audio>
+      <audio id="a-k5" src="assets/audio/sfx-tech-select.mp3" data-start="13.55" data-duration="0.5" data-track-index="39" data-volume="0.45"></audio>
+      <audio id="a-k6" src="assets/audio/sfx-tech-select.mp3" data-start="14.53" data-duration="0.5" data-track-index="40" data-volume="0.45"></audio>
+      <audio id="a-stamp" src="assets/audio/sfx-pop-whoosh.mp3" data-start="15.04" data-duration="0.18" data-track-index="41" data-volume="0.85"></audio>
+      <audio id="a-stamp2" src="assets/audio/sfx-select.mp3" data-start="15.06" data-duration="1.1" data-track-index="42" data-volume="0.5"></audio>
+      <audio id="a-dive" src="assets/audio/sfx-air-woosh.mp3" data-start="15.75" data-duration="2.32" data-track-index="43" data-volume="0.45"></audio>
+      <audio id="a-live" src="assets/audio/sfx-tech-select.mp3" data-start="16.9" data-duration="0.5" data-track-index="44" data-volume="0.3"></audio>
+      <audio id="a-proj" src="assets/audio/sfx-sweep.mp3" data-start="18.3" data-duration="0.78" data-track-index="45" data-volume="0.35"></audio>
+      <audio id="a-ch" src="assets/audio/sfx-sweep.mp3" data-start="20.75" data-duration="0.78" data-track-index="46" data-volume="0.4"></audio>
+      <audio id="a-o1" src="assets/audio/sfx-dry-pop.mp3" data-start="21.3" data-duration="0.3" data-track-index="47" data-volume="0.4"></audio>
+      <audio id="a-o2" src="assets/audio/sfx-dry-pop.mp3" data-start="21.5" data-duration="0.3" data-track-index="48" data-volume="0.4"></audio>
+      <audio id="a-cta" src="assets/audio/sfx-sweep.mp3" data-start="23.35" data-duration="0.78" data-track-index="49" data-volume="0.4"></audio>
+      <audio id="a-confirm" src="assets/audio/sfx-confirm.mp3" data-start="23.85" data-duration="1.04" data-track-index="50" data-volume="0.45"></audio>
+    </div>
+
+    <script>
+      // Seeded PRNG for the scattered file chips (identical every render).
+      function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const rnd = mulberry32(3011);
+
+      const FILES = ["node_modules/", ".env.example", "README.txt", "backup_old/", "config.php", "package.json", "database.sql", "index (2).html", "assets_final/", "deploy?.sh", "jangan-dihapus/", "server.js", ".htaccess", "style-new-FINAL.css"];
+      const chipsEl = document.getElementById("chips");
+      const chipPos = FILES.map((name, i) => {
+        const c = document.createElement("div");
+        c.className = "chip suck";
+        c.textContent = name;
+        c.setAttribute("data-layout-allow-overlap", "");
+        chipsEl.appendChild(c);
+        const col = i % 2, row = Math.floor(i / 2);
+        return { el: c, x: 60 + col * 520 + (rnd() - 0.5) * 120, y: 280 + row * 170 + (rnd() - 0.5) * 60, r: (rnd() - 0.5) * 22 };
+      });
+
+      const ITEMS = [["Domain & SSL", "aktif"], ["Server & pipeline deploy", "dikonfigurasi"], ["Monitoring", "menyala"], ["Backup", "terjadwal"], ["Dokumentasi & walkthrough", "diserahkan"], ["Kode & akses", "100% milik Anda"]];
+      const itemsEl = document.getElementById("items");
+      ITEMS.forEach(([b, s], i) => {
+        const d = document.createElement("div");
+        d.className = "item";
+        d.innerHTML = `<div><b>${b}</b><small>${s}</small></div><div class="tick" id="t${i}"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3.2"><path d="M4 12.5 9.5 18 20 6" /></svg></div>`;
+        itemsEl.appendChild(d);
+      });
+      const barsEl = document.getElementById("bars");
+      for (let i = 0; i < 48; i++) barsEl.appendChild(document.createElement("i"));
+      // The slab of text over busy layers is deliberate.
+      document.querySelectorAll("#chat *, #hook-lines *, #prob-lines *, #c-prob *, #rcpt *").forEach((el) => el.setAttribute("data-layout-allow-overlap", ""));
+
+      const tl = gsap.timeline({ paused: true });
+      const E = "expo.out";
+      const lines = (sel) => document.querySelectorAll(sel + " .li");
+      const reveal = (sel, at, step = 0.09) => tl.fromTo(lines(sel), { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: E, stagger: step }, at);
+      const conceal = (sel, at) => tl.to(lines(sel), { yPercent: -115, duration: 0.45, ease: "power3.in", stagger: 0.05 }, at);
+      const rise = (sel, at, d = 0.6) => tl.fromTo(sel, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: d, ease: E }, at);
+
+      gsap.set("#edge-l", { rotation: -90, y: 200 });
+      gsap.set("#edge-r", { rotation: 90, y: -150 });
+      [[2.3, "rgba(255,255,255,0.62)"], [7.1, "#666c76"], [23.75, "rgba(255,255,255,0.62)"]].forEach(([at, c]) => tl.to(".edge", { color: c, duration: 0.2 }, at));
+
+      // ---------- 1 · Hook: macro on the zip name, pull back to the chat ----------
+      const cam = document.getElementById("cam1").getBoundingClientRect();
+      const fr = document.getElementById("fname").getBoundingClientRect();
+      const fx = fr.left + fr.width * 0.55 - cam.left, fy = fr.top + fr.height / 2 - cam.top;
+      tl.fromTo("#cam1", { scale: 4.2, x: 540 - fx, y: 820 - fy, transformOrigin: `${fx}px ${fy}px` }, { scale: 1, x: 0, y: 0, duration: 1.0, ease: "power4.inOut" }, 0.08);
+      tl.to("#cam1", { scale: 1.03, duration: 1.4, ease: "none" }, 1.08);
+      reveal("#hook-lines", 0.85, 0.11);
+      rise("#hook-sub", 1.3);
+
+      // ---------- 2 · Problem (ink) ----------
+      tl.fromTo("#inkbg", { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 2.2);
+      chipPos.forEach((p, i) => {
+        tl.fromTo(p.el, { x: 470, y: 900, scale: 0.2, rotation: 0, opacity: 0 }, { x: p.x, y: p.y, scale: 1, rotation: p.r, opacity: 1, duration: 0.6, ease: "expo.out" }, 2.5 + i * 0.025);
+      });
+      tl.to("#chips .chip", { opacity: 0.22, duration: 0.4 }, 3.0);
+      tl.fromTo("#term", { y: 120, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: E }, 2.95);
+      tl.fromTo("#term .tl", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.15, stagger: 0.17 }, 3.05);
+      tl.fromTo("#broken", { y: 160, rotation: 4, opacity: 0 }, { y: 0, rotation: -2, opacity: 1, duration: 0.55, ease: "back.out(1.4)" }, 4.1);
+      rise("#seen", 4.6, 0.4);
+      tl.fromTo("#out", { y: 60, scale: 0.8, opacity: 0, transformOrigin: "100% 100%" }, { y: 0, scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, 4.75);
+      // Everything recedes; the unanswered message stays.
+      tl.to("#term, #broken, #chips", { opacity: 0.12, duration: 0.4 }, 5.3);
+      reveal("#prob-lines", 5.4, 0.13);
+      rise("#prob-sub", 5.85);
+
+      // ---------- 3 · Turn: everything is sucked into the centre ----------
+      document.querySelectorAll("#c-prob .suck").forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        tl.to(el, { x: `+=${540 - (r.left + r.width / 2)}`, y: `+=${960 - (r.top + r.height / 2)}`, scale: 0, rotation: (i % 2 ? 1 : -1) * 40, duration: 0.42, ease: "power3.in" }, 6.6 + (i % 5) * 0.02);
+      });
+      tl.fromTo("#burst", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 0.45, ease: "expo.out" }, 6.98);
+      reveal("#turn-lines", 7.2, 0.12);
+      rise("#turn-sub", 7.55);
+      conceal("#turn-lines", 8.4);
+      tl.to("#turn-sub", { opacity: 0, duration: 0.2 }, 8.4);
+
+      // ---------- 4 · Receipt prints on the beat ----------
+      const RH = 1180, HEAD = 250, ROW = 116;
+      tl.fromTo("#printer", { y: -140 }, { y: 0, duration: 0.45, ease: E }, 8.55);
+      tl.fromTo("#hand", { x: 0 }, { x: -900, duration: 8.0, ease: "none" }, 8.6);
+      // Paper unrolls downward: the visible part grows from the header.
+      const cut = (shown) => ({ clipPath: `inset(0px 0px ${RH - shown}px 0px)` });
+      tl.fromTo("#rcpt", cut(0), { ...cut(HEAD), duration: 0.45, ease: "power2.out" }, 8.75);
+      ITEMS.forEach((_, i) => {
+        const at = 9.15 + i * 0.98;
+        tl.to("#rcpt", { ...cut(HEAD + ROW * (i + 1)), duration: 0.32, ease: "power2.out" }, at);
+        tl.fromTo("#t" + i, { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.4)" }, at + 0.46);
+      });
+      tl.to("#rcpt", { ...cut(RH), duration: 0.4, ease: "power2.out" }, 14.6);
+      tl.fromTo("#stamp", { scale: 2.6, rotation: -2, opacity: 0 }, { scale: 1, rotation: -9, opacity: 1, duration: 0.22, ease: "power4.in" }, 14.84);
+      tl.to("#feed", { x: 8, duration: 0.05, yoyo: true, repeat: 3 }, 15.06);
+      tl.fromTo("#s4cam", { scale: 1, x: 0, y: 0, transformOrigin: "0px 0px" }, { scale: 1.035, x: -19, y: -27, duration: 6.4, ease: "none" }, 8.6);
+      // Dive into the stamp (origin 0 0, so solve the translate that keeps the stamp centred).
+      const st = document.getElementById("stamp").getBoundingClientRect();
+      const sx = st.left + st.width / 2, sy = st.top + st.height / 2;
+      tl.to("#s4cam", { scale: 6, x: 540 - 6 * sx, y: 960 - 6 * sy, duration: 0.55, ease: "power3.in" }, 15.75);
+
+      // ---------- 5 · Live ----------
+      tl.fromTo("#live-bg", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 16.25);
+      reveal("#live-lines", 16.45, 0.11);
+      rise("#live-sub", 16.85);
+      tl.fromTo("#status", { y: 120, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: E }, 16.6);
+      tl.fromTo("#bars i", { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.025 }, 16.95);
+      tl.fromTo("#pulse", { scale: 1, opacity: 0.9 }, { scale: 2.6, opacity: 0, duration: 0.98, ease: "power2.out", repeat: 4 }, 16.7);
+      [["#pj1", -14, 0], ["#pj2", 0, 0.1], ["#pj3", 14, 0.2]].forEach(([p, r, d]) => {
+        tl.fromTo(p, { y: 500, rotationY: r * 2, rotation: r * 0.6, opacity: 0, transformPerspective: 1500 }, { y: 0, rotationY: r, rotation: r * 0.25, opacity: 1, duration: 0.7, ease: E }, 18.3 + d);
+      });
+      tl.fromTo(["#pj1 img", "#pj2 img", "#pj3 img"], { scale: 1 }, { scale: 1.1, duration: 2.6, ease: "none" }, 18.5);
+      rise("#live-cap", 18.9);
+      conceal("#live-lines", 20.7);
+      tl.to("#live-sub, #status, #pj1, #pj2, #pj3, #live-cap", { opacity: 0, y: -40, duration: 0.3, stagger: 0.03 }, 20.7);
+
+      // ---------- 6 · Choice ----------
+      reveal("#choice-lines", 20.98);
+      rise("#choice-sub", 21.2);
+      tl.fromTo("#opt1", { rotationY: -90, transformPerspective: 1600, transformOrigin: "100% 50%", opacity: 0 }, { rotationY: 0, opacity: 1, duration: 0.6, ease: E }, 21.25);
+      tl.fromTo("#opt2", { rotationY: 90, transformPerspective: 1600, transformOrigin: "0% 50%", opacity: 0 }, { rotationY: 0, opacity: 1, duration: 0.6, ease: E }, 21.45);
+      tl.fromTo("#or", { scale: 0 }, { scale: 1, duration: 0.35, ease: "back.out(2.2)" }, 21.85);
+
+      // ---------- 7 · CTA ----------
+      tl.fromTo("#cta-ink", { clipPath: "circle(0% at 50% 56%)" }, { clipPath: "circle(150% at 50% 56%)", duration: 0.6, ease: "power3.in" }, 23.45);
+      tl.fromTo("#cta-outline", { x: 0 }, { x: -380, duration: 3.4, ease: "none" }, 23.6);
+      tl.fromTo("#cta-btn", { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.4)" }, 23.85);
+      reveal("#cta-lines", 24.0, 0.12);
+      rise("#cta-sub", 24.4);
+      rise("#cta-bio", 24.55, 0.45);
+      rise("#cta-sign", 24.75, 0.5);
+      tl.to("#cta-btn", { scale: 1.035, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 2 }, 25.2);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
