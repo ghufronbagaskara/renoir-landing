@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Renoir — Where's the answer?</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Variable.woff2") format("woff2"); font-weight: 100 900; }
+
+      :root { --paper: #f5f7fb; --ink: #17191c; --cobalt: #1d4ed8; --tint: #e6ecfb; --stone: #565c66; --line: #d5dae3; --white: #ffffff; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); background: var(--paper); }
+      .clip { position: absolute; inset: 0; }
+
+      /* Mask-revealed display lines */
+      .lines { position: absolute; left: 60px; right: 40px; }
+      .ln { display: block; overflow: hidden; padding: 0.04em 0 0.1em; margin-bottom: -0.12em; }
+      .li { display: block; font-family: "General Sans", sans-serif; font-weight: 600; letter-spacing: -0.045em; line-height: 0.95; white-space: nowrap; }
+      .sub { position: absolute; left: 60px; right: 60px; font-size: 38px; line-height: 1.3; font-weight: 450; color: var(--stone); }
+      .label { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 24px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+      /* Global layers */
+      #grid { position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(23, 25, 28, 0.055) 1px, transparent 1px); background-size: 240px 100%; background-position: 60px 0; }
+      #grain { position: absolute; inset: 0; background-image: url("assets/img/grain.png"); background-size: 256px 256px; opacity: 0.06; pointer-events: none; }
+      .edge { position: absolute; top: 960px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 19px; letter-spacing: 0.32em; color: #666c76; white-space: nowrap; }
+      #edge-l { left: 34px; transform-origin: 0 0; }
+      #edge-r { right: 34px; transform-origin: 100% 0; }
+
+      /* Scene 1 — the spreadsheet */
+      #cam1 { position: absolute; inset: 0; }
+      #sheet { position: absolute; left: -230px; top: 60px; width: 1540px; background: var(--white); border: 2px solid var(--line); border-radius: 26px; overflow: hidden; }
+      .tbar { height: 70px; display: flex; align-items: center; gap: 18px; padding: 0 28px; border-bottom: 2px solid var(--line); background: #fafbfd; font-size: 26px; color: var(--stone); }
+      .tbar .dots { display: flex; gap: 10px; } .tbar .dots i { display: block; width: 15px; height: 15px; border-radius: 50%; background: var(--line); }
+      .fx { height: 56px; display: flex; align-items: center; gap: 16px; padding: 0 22px; border-bottom: 2px solid var(--line); font-size: 24px; color: var(--stone); }
+      .fx b { font-weight: 600; color: var(--ink); width: 70px; } .fx span { font-family: "General Sans", sans-serif; }
+      .gh, .rw { display: grid; grid-template-columns: 54px 150px 330px 140px 230px 220px 150px 266px; }
+      .gh { height: 54px; background: #eef1f6; border-bottom: 2px solid var(--line); font-size: 22px; font-weight: 600; color: var(--stone); }
+      .gh span, .rw > span { display: flex; align-items: center; padding: 0 14px; border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; }
+      .gh span:first-child, .rw > span:first-child { justify-content: center; padding: 0; color: #6b717b; font-size: 20px; }
+      .rw { height: 70px; border-bottom: 1px solid var(--line); font-size: 27px; }
+      .rw .q { font-style: italic; color: #646a74; }
+      .rw .x { text-decoration: line-through; color: #6b717b; }
+      .rw .caps { font-weight: 700; letter-spacing: 0.02em; }
+      .rw .err { background: repeating-linear-gradient(-45deg, #17191c 0 7px, #2b2e34 7px 14px); color: var(--white); font-family: "General Sans", sans-serif; font-weight: 700; justify-content: center; }
+      .rw.dup { background: #f1f2f4; }
+      .rw .note { position: relative; }
+      .rw .note::after { content: ""; position: absolute; right: 0; top: 0; border-left: 14px solid transparent; border-top: 14px solid var(--ink); }
+      .tabs { height: 66px; display: flex; align-items: flex-end; gap: 6px; padding: 0 20px; background: #eef1f6; border-top: 2px solid var(--line); }
+      .tabs span { padding: 12px 22px; font-size: 22px; font-weight: 600; color: var(--stone); background: #e2e6ed; border-radius: 10px 10px 0 0; white-space: nowrap; }
+      .tabs span.on { background: var(--white); color: var(--ink); }
+      #caret { position: absolute; width: 4px; background: var(--white); }
+      .sticky { position: absolute; width: 300px; padding: 26px 26px 30px; background: #fbfaf6; border: 2px solid #e4e2da; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 34px; line-height: 1.1; color: var(--ink); }
+
+      .notif { position: absolute; left: 60px; top: 0; width: 960px; height: 132px; border-radius: 32px; background: rgba(23, 25, 28, 0.95); color: var(--white); display: flex; align-items: center; gap: 24px; padding: 0 30px; }
+      .notif .av { flex: none; width: 74px; height: 74px; border-radius: 22px; background: #2d3036; display: flex; align-items: center; justify-content: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 34px; color: var(--white); }
+      .notif small { display: block; font-size: 23px; font-weight: 600; color: rgba(255, 255, 255, 0.78); margin-bottom: 4px; }
+      .notif small em { font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.62); margin-left: 10px; }
+      .notif p { font-size: 35px; font-weight: 500; line-height: 1.15; white-space: nowrap; }
+
+      #slab { position: absolute; left: 0; right: 0; top: 1060px; height: 900px; background: var(--paper); border-top: 2px solid var(--ink); }
+      #hook-lines { top: 1100px; } #hook-lines .li { font-size: 156px; }
+      #hook-sub { top: 1440px; }
+
+      /* Scene 2 — turn */
+      .plane { position: absolute; left: -700px; top: -400px; width: 2600px; height: 2800px; }
+      #pl-a { background: var(--cobalt); } #pl-b { background: var(--ink); } #pl-c { background: var(--paper); }
+      #wm { position: absolute; right: -120px; top: 520px; width: 760px; height: 737px; opacity: 0.05; }
+      #turn-lines { top: 560px; } #turn-lines .li { font-size: 148px; } #turn-lines .big { font-size: 262px; color: var(--cobalt); }
+      #turn-sub { top: 1230px; }
+
+      /* Scene 3 — answers */
+      #q-card { top: 270px; }
+      #win { position: absolute; left: 60px; top: 448px; width: 960px; height: 846px; border-radius: 28px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
+      #win .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 22px; background: #eef1f6; border-bottom: 2px solid var(--line); }
+      #win .bar i { display: block; width: 13px; height: 13px; border-radius: 50%; background: var(--line); }
+      #vp { position: absolute; left: 0; top: 46px; width: 960px; height: 800px; overflow: hidden; background: #f3f4f6; }
+      .shot { position: absolute; left: 0; top: 0; width: 1280px; height: 800px; transform-origin: 0 0; }
+      .shot img { display: block; width: 1280px; height: 800px; }
+      .ring { position: absolute; left: 0; top: 0; border: 5px solid var(--cobalt); border-radius: 18px; box-shadow: 0 0 0 9999px rgba(23, 25, 28, 0.32); }
+      #ans-phone { position: absolute; left: 340px; top: 448px; width: 400px; background: var(--ink); border-radius: 58px; padding: 14px; }
+      #ans-phone .screen { position: relative; height: 805px; overflow: hidden; border-radius: 46px; background: var(--white); }
+      #ans-phone img { display: block; width: 372px; }
+      #ring3 { left: 10px; top: 362px; width: 352px; height: 300px; box-shadow: none; }
+      .answer { position: absolute; left: 60px; right: 60px; top: 1326px; }
+      .answer .label { color: var(--cobalt); }
+      .answer h3 { margin-top: 10px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 62px; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
+      .answer p { margin-top: 14px; font-size: 32px; color: var(--stone); line-height: 1.3; }
+
+      /* Scene 4 — bento */
+      #svc-lines { top: 262px; } #svc-lines .li { font-size: 104px; }
+      #svc-sub { top: 500px; font-size: 34px; }
+      .bento { position: absolute; width: 468px; height: 448px; border-radius: 28px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
+      .bento .m { height: 246px; overflow: hidden; border-bottom: 2px solid var(--line); }
+      .bento .m img { display: block; width: 468px; height: 246px; object-fit: cover; object-position: top left; }
+      .bento .t { padding: 20px 26px; }
+      .bento .n { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 24px; color: var(--cobalt); letter-spacing: 0.06em; }
+      .bento h4 { margin-top: 6px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 46px; letter-spacing: -0.03em; line-height: 1; }
+      .bento p { margin-top: 10px; font-size: 27px; color: var(--stone); line-height: 1.25; }
+      .bento.dark { background: var(--ink); border-color: var(--ink); color: var(--white); }
+      .bento.dark .m { background: #202328; border-color: #2d3036; padding: 26px 26px 0; }
+      .bento.dark p { color: rgba(255, 255, 255, 0.7); } .bento.dark .n { color: #9db4ff; }
+      .st { display: flex; justify-content: space-between; align-items: center; height: 60px; border-top: 1px solid rgba(255, 255, 255, 0.14); font-size: 27px; font-weight: 500; }
+      .st span { display: flex; align-items: center; gap: 10px; font-size: 24px; color: rgba(255, 255, 255, 0.7); }
+      .st svg { width: 26px; height: 26px; }
+      #b1 { left: 60px; top: 600px; } #b2 { left: 552px; top: 600px; } #b3 { left: 60px; top: 1072px; } #b4 { left: 552px; top: 1072px; }
+      #guide { position: absolute; left: 54px; top: 594px; width: 480px; height: 460px; border: 5px solid var(--cobalt); border-radius: 32px; }
+
+      /* Scene 5 — brand */
+      #ink { position: absolute; inset: 0; background: var(--ink); }
+      #outline { position: absolute; left: 0; top: 1180px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 560px; letter-spacing: -0.05em; line-height: 1; color: var(--ink); -webkit-text-stroke: 2px rgba(255, 255, 255, 0.13); white-space: nowrap; }
+      #joint { position: absolute; left: 375px; top: 430px; width: 330px; height: 320px; overflow: visible; }
+      .plane-label { position: absolute; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 36px; color: rgba(255, 255, 255, 0.75); }
+      #wordmark { position: absolute; left: 0; right: 0; top: 820px; text-align: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 176px; letter-spacing: -0.045em; color: var(--white); line-height: 1; }
+      #tagline { position: absolute; left: 60px; right: 60px; top: 1080px; text-align: center; color: var(--white); }
+      #tagline .t span { display: block; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 60px; line-height: 1.08; letter-spacing: -0.025em; }
+      #tagline .s { margin-top: 26px; font-size: 36px; color: rgba(255, 255, 255, 0.7); }
+
+      /* Scene 6 — website */
+      #site-lines { top: 262px; } #site-lines .li { font-size: 112px; }
+      #site-sub { top: 520px; font-size: 34px; }
+      #site-wm { position: absolute; left: -160px; top: 820px; width: 900px; height: 873px; opacity: 0.045; }
+      #site-phone { position: absolute; left: 315px; top: 600px; width: 450px; background: var(--ink); border-radius: 58px; padding: 15px; }
+      #site-phone .screen { position: relative; height: 909px; overflow: hidden; border-radius: 45px; background: var(--white); }
+      #site-img { display: block; width: 420px; }
+      .fab { position: absolute; right: 14px; bottom: 22px; display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px; border-radius: 999px; background: var(--cobalt); color: var(--white); font-size: 17px; font-weight: 600; }
+      .fab svg { width: 16px; height: 16px; }
+      .tap { position: absolute; width: 96px; height: 96px; border-radius: 50%; border: 5px solid var(--cobalt); left: 608px; top: 1414px; }
+
+      /* Scene 7 — CTA */
+      #cta-ink { position: absolute; inset: 0; background: var(--ink); }
+      #cta-outline { position: absolute; left: -40px; top: 1560px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 300px; letter-spacing: -0.05em; color: var(--ink); -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1); white-space: nowrap; }
+      #cta-lines { top: 300px; } #cta-lines .li { font-size: 150px; color: var(--white); }
+      #cta-sub { top: 650px; color: rgba(255, 255, 255, 0.74); font-size: 40px; }
+      #cta-btn { position: absolute; left: 60px; top: 1010px; width: 960px; height: 136px; border-radius: 999px; background: var(--cobalt); color: var(--white); display: flex; align-items: center; justify-content: center; gap: 22px; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 54px; letter-spacing: -0.015em; }
+      #cta-btn svg { width: 48px; height: 48px; }
+      #cta-bio { position: absolute; left: 0; right: 0; top: 1186px; text-align: center; color: rgba(255, 255, 255, 0.8); font-size: 38px; font-weight: 500; }
+      #cta-sign { position: absolute; left: 0; right: 0; top: 1380px; display: flex; align-items: center; justify-content: center; gap: 20px; color: var(--white); }
+      #cta-sign svg { width: 62px; height: 60px; }
+      #cta-sign b { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 64px; letter-spacing: -0.03em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28.5" data-fps="60" data-width="1080" data-height="1920">
+
+      <section id="c-bg" class="clip" data-start="0" data-duration="28.5" data-track-index="0"><div id="grid"></div></section>
+
+      <!-- 1 · Hook + chaos (0–3.9) -->
+      <section id="c-chaos" class="clip" data-start="0" data-duration="3.9" data-track-index="1">
+        <div id="cam1">
+          <div id="sheet" data-layout-allow-overlap data-layout-allow-overflow>
+            <div class="tbar"><div class="dots"><i></i><i></i><i></i></div>Order_FINAL_v2 (3).xlsx — terakhir diubah oleh 4 orang</div>
+            <div class="fx"><b>H3</b><span>=SUM(H2:H14)+'rekap (3)'!H9</span></div>
+            <div class="gh"><span></span><span>No. Pesanan</span><span>Barang</span><span>Gudang</span><span>Tahap</span><span>PIC</span><span>Batas</span><span>Piutang</span></div>
+            <div id="rows"></div>
+            <div class="tabs"><span>Order_FINAL</span><span class="on">Order_FINAL_v2</span><span>rekap (3)</span><span>JANGAN DIEDIT</span><span>Sheet7</span></div>
+          </div>
+          <div class="sticky" id="sticky" data-layout-allow-overlap style="left: 690px; top: 720px">Cek ulang semua angka sebelum laporan</div>
+          <div id="caret"></div>
+        </div>
+        <div class="notif" id="n1" data-layout-allow-overlap><div class="av">S</div><div><small>Sales<em>baru saja</em></small><p>PO-0292 sudah sampai mana?</p></div></div>
+        <div class="notif" id="n2" data-layout-allow-overlap><div class="av">K</div><div><small>Keuangan<em>baru saja</em></small><p>Piutang jatuh tempo berapa?</p></div></div>
+        <div class="notif" id="n3" data-layout-allow-overlap><div class="av">M</div><div><small>Manajer<em>baru saja</em></small><p>Agenda sales hari ini apa?</p></div></div>
+        <div class="notif" id="n4" data-layout-allow-overlap><div class="av">O</div><div><small>Owner<em>baru saja</em></small><p>Kok angkanya beda lagi?</p></div></div>
+        <div id="slab" data-layout-allow-overlap></div>
+        <div class="lines" id="hook-lines"><span class="ln"><span class="li">Where's</span></span><span class="ln"><span class="li">the answer?</span></span></div>
+        <p class="sub" id="hook-sub">Data di spreadsheet. Pertanyaan di chat.</p>
+      </section>
+
+      <!-- 2 · Turn (3.1–5.2) -->
+      <section id="c-turn" class="clip" data-start="3.1" data-duration="2.1" data-track-index="2">
+        <div class="plane" id="pl-a"></div><div class="plane" id="pl-b"></div><div class="plane" id="pl-c"></div>
+        <svg id="wm" viewBox="0 0 66 64" fill="#17191c"><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div class="lines" id="turn-lines"><span class="ln"><span class="li">We build the</span></span><span class="ln"><span class="li big">system</span></span><span class="ln"><span class="li">behind it.</span></span></div>
+        <p class="sub" id="turn-sub">Sistem internal yang menjawabnya.</p>
+      </section>
+
+      <!-- 3 · Answers (5.0–13.0) -->
+      <section id="c-ans" class="clip" data-start="5.0" data-duration="8.0" data-track-index="3">
+        <div class="notif" id="q-card"><div class="av" id="q-av">S</div><div><small id="q-who">Sales<em>tadi</em></small><p id="q-text">PO-0292 sudah sampai mana?</p></div></div>
+        <div id="win">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div id="vp">
+            <div class="shot" id="shotA"><img src="assets/img/order-detail-2x.webp" alt="" /></div>
+            <div class="shot" id="shotB"><img src="assets/img/order-desktop-2x.webp" alt="" /></div>
+            <div class="ring" id="ring1" data-layout-allow-overflow></div>
+            <div class="ring" id="ring2" data-layout-allow-overflow></div>
+          </div>
+        </div>
+        <div id="ans-phone"><div class="screen"><img src="assets/img/order-mobile.webp" alt="" /><div class="ring" id="ring3"></div></div></div>
+        <div class="answer" id="a1"><div class="label">Jawaban</div><h3>Di Gudang, tahap 1 dari 10.</h3><p>PIC, tenggat, dan status terlambat terlihat semua tim.</p></div>
+        <div class="answer" id="a2"><div class="label">Jawaban</div><h3><span id="count">Rp 0,00 M</span> · 33 order</h3><p>Tenggat dan piutang tetap terlihat di dashboard.</p></div>
+        <div class="answer" id="a3"><div class="label">Jawaban</div><h3>Agenda kunjungan, di HP.</h3><p>Sales lapangan punya ruang kerjanya sendiri.</p></div>
+      </section>
+
+      <!-- 4 · Services bento (12.7–18.0) -->
+      <section id="c-svc" class="clip" data-start="12.7" data-duration="5.3" data-track-index="4">
+        <div class="lines" id="svc-lines"><span class="ln"><span class="li">One studio,</span></span><span class="ln"><span class="li">design to <span style="color: var(--cobalt)">server.</span></span></span></div>
+        <p class="sub" id="svc-sub">Mulai dari desain saja, atau lanjut sampai peluncuran.</p>
+        <article class="bento" id="b1"><div class="m"><img src="assets/img/maxy-desktop.webp" alt="" /></div><div class="t"><div class="n">01</div><h4>Websites</h4><p>Situs marketing &amp; landing page</p></div></article>
+        <article class="bento" id="b2"><div class="m"><img src="assets/img/field-desktop.webp" alt="" /></div><div class="t"><div class="n">02</div><h4>Systems</h4><p>Sistem internal custom</p></div></article>
+        <article class="bento" id="b3"><div class="m"><img src="assets/img/coatings-desktop.webp" alt="" /></div><div class="t"><div class="n">03</div><h4>UI/UX &amp; identity</h4><p>UI/UX &amp; identitas visual</p></div></article>
+        <article class="bento dark" id="b4">
+          <div class="m">
+            <div class="label" style="font-size: 20px; color: rgba(255, 255, 255, 0.7); margin-bottom: 12px">Status: berjalan</div>
+            <div class="st">Server<span>aktif <svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+            <div class="st">Monitoring<span>aktif <svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+            <div class="st">Backup<span>terjadwal <svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M4 12.5 9.5 18 20 6" /></svg></span></div>
+          </div>
+          <div class="t"><div class="n">04</div><h4>Deploy &amp; care</h4><p>Deployment &amp; perawatan</p></div>
+        </article>
+        <div id="guide" data-layout-allow-overlap></div>
+      </section>
+
+      <!-- 5 · Brand (17.6–21.1) -->
+      <section id="c-logo" class="clip" data-start="17.6" data-duration="3.5" data-track-index="5">
+        <div id="ink"></div>
+        <div id="outline" data-layout-allow-overflow data-layout-allow-overlap>Renoir Renoir</div>
+        <svg id="joint" viewBox="0 0 66 64" fill="#ffffff"><path id="p1" d="M27 11 43 2v36L27 47V11Z" /><path id="p2" d="M3 45 24 33 42 44 21 56 3 45Z" /><path id="p3" d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div class="plane-label" id="l1" style="left: 470px; top: 356px">Design</div>
+        <div class="plane-label" id="l2" style="left: 240px; top: 752px">Build</div>
+        <div class="plane-label" id="l3" style="left: 730px; top: 742px">Run</div>
+        <div id="wordmark">Renoir</div>
+        <div id="tagline"><div class="t"><span>Make a stronger impression.</span><span>Run a better operation.</span></div><div class="s">Tampil meyakinkan. Bekerja lebih rapi.</div></div>
+      </section>
+
+      <!-- 6 · Website (20.8–24.9) -->
+      <section id="c-site" class="clip" data-start="20.8" data-duration="4.1" data-track-index="6">
+        <svg id="site-wm" viewBox="0 0 66 64" fill="#17191c"><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg>
+        <div class="lines" id="site-lines"><span class="ln"><span class="li">See the work</span></span><span class="ln"><span class="li">on our <span style="color: var(--cobalt)">site.</span></span></span></div>
+        <p class="sub" id="site-sub">Layanan, karya, dan proses kami ada di website.</p>
+        <div id="site-phone">
+          <div class="screen">
+            <img data-layout-allow-overflow id="site-img" src="assets/img/site-home.jpg" alt="" />
+            <div class="fab" id="fab">Apa masalahnya? <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M7 17 17 7M9 7h8v8" /></svg></div>
+          </div>
+        </div>
+        <div class="tap" id="tap"></div>
+      </section>
+
+      <!-- 7 · CTA (24.4–28.5) -->
+      <section id="c-cta" class="clip" data-start="24.4" data-duration="4.1" data-track-index="7">
+        <div id="cta-ink"><div id="cta-outline" data-layout-allow-overflow data-layout-allow-overlap>Renoir</div></div>
+        <div class="lines" id="cta-lines"><span class="ln"><span class="li">Tell us what's</span></span><span class="ln"><span class="li">broken.</span></span></div>
+        <p class="sub" id="cta-sub">Ceritakan yang ingin Anda perbaiki. Kami bertanya seperlunya, lalu menyusun pekerjaannya.</p>
+        <div id="cta-btn">Ceritakan masalahnya <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8" /></svg></div>
+        <div id="cta-bio">Link di bio</div>
+        <div id="cta-sign"><svg viewBox="0 0 66 64" fill="#ffffff"><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg><b>Renoir</b></div>
+      </section>
+
+      <!-- Always on top: edge labels and grain -->
+      <section id="c-top" class="clip" data-start="0" data-duration="28.5" data-track-index="9">
+        <div class="edge" id="edge-l">RENOIR — DIGITAL STUDIO</div>
+        <div class="edge" id="edge-r">DESIGN · BUILD · RUN</div>
+        <div id="grain"></div>
+      </section>
+
+      <!-- Audio -->
+      <audio id="a-music" src="assets/audio/music-rising-forest-v2.mp3" data-start="0" data-duration="28.5" data-track-index="20" data-volume="0.85"></audio>
+      <audio id="a-pull" src="assets/audio/sfx-air-woosh.mp3" data-start="0" data-duration="2.32" data-track-index="21" data-volume="0.45"></audio>
+      <audio id="a-typing" src="assets/audio/sfx-typing.mp3" data-start="0.6" data-duration="2.7" data-track-index="22" data-volume="0.3"></audio>
+      <audio id="a-n1" src="assets/audio/sfx-message-pop.mp3" data-start="1.0" data-duration="1.06" data-track-index="23" data-volume="0.5"></audio>
+      <audio id="a-n2" src="assets/audio/sfx-message-pop.mp3" data-start="1.42" data-duration="1.06" data-track-index="24" data-volume="0.5"></audio>
+      <audio id="a-n3" src="assets/audio/sfx-message-pop.mp3" data-start="1.84" data-duration="1.06" data-track-index="25" data-volume="0.5"></audio>
+      <audio id="a-n4" src="assets/audio/sfx-message-pop.mp3" data-start="2.26" data-duration="1.06" data-track-index="26" data-volume="0.5"></audio>
+      <audio id="a-whoosh" src="assets/audio/sfx-whoosh-fast.mp3" data-start="2.73" data-duration="1.76" data-track-index="27" data-volume="0.6"></audio>
+      <audio id="a-q1" src="assets/audio/sfx-sweep.mp3" data-start="4.7" data-duration="0.78" data-track-index="28" data-volume="0.4"></audio>
+      <audio id="a-r1" src="assets/audio/sfx-tech-select.mp3" data-start="6.0" data-duration="0.5" data-track-index="29" data-volume="0.4"></audio>
+      <audio id="a-q2" src="assets/audio/sfx-sweep.mp3" data-start="7.3" data-duration="0.78" data-track-index="30" data-volume="0.4"></audio>
+      <audio id="a-r2" src="assets/audio/sfx-tech-select.mp3" data-start="8.55" data-duration="0.5" data-track-index="31" data-volume="0.4"></audio>
+      <audio id="a-q3" src="assets/audio/sfx-sweep.mp3" data-start="9.9" data-duration="0.78" data-track-index="32" data-volume="0.4"></audio>
+      <audio id="a-r3" src="assets/audio/sfx-tech-select.mp3" data-start="11.2" data-duration="0.5" data-track-index="33" data-volume="0.4"></audio>
+      <audio id="a-sv" src="assets/audio/sfx-sweep.mp3" data-start="12.5" data-duration="0.78" data-track-index="34" data-volume="0.4"></audio>
+      <audio id="a-b1" src="assets/audio/sfx-dry-pop.mp3" data-start="13.15" data-duration="0.3" data-track-index="35" data-volume="0.4"></audio>
+      <audio id="a-b2" src="assets/audio/sfx-dry-pop.mp3" data-start="13.27" data-duration="0.3" data-track-index="36" data-volume="0.4"></audio>
+      <audio id="a-b3" src="assets/audio/sfx-dry-pop.mp3" data-start="13.39" data-duration="0.3" data-track-index="37" data-volume="0.4"></audio>
+      <audio id="a-b4" src="assets/audio/sfx-dry-pop.mp3" data-start="13.51" data-duration="0.3" data-track-index="38" data-volume="0.4"></audio>
+      <audio id="a-ink" src="assets/audio/sfx-sweep.mp3" data-start="17.35" data-duration="0.78" data-track-index="39" data-volume="0.4"></audio>
+      <audio id="a-air" src="assets/audio/sfx-air-woosh.mp3" data-start="18.15" data-duration="2.32" data-track-index="40" data-volume="0.55"></audio>
+      <audio id="a-lock" src="assets/audio/sfx-pop-whoosh.mp3" data-start="18.85" data-duration="0.18" data-track-index="41" data-volume="0.7"></audio>
+      <audio id="a-lock2" src="assets/audio/sfx-select.mp3" data-start="18.87" data-duration="1.1" data-track-index="42" data-volume="0.4"></audio>
+      <audio id="a-site" src="assets/audio/sfx-sweep.mp3" data-start="20.5" data-duration="0.78" data-track-index="43" data-volume="0.4"></audio>
+      <audio id="a-tap" src="assets/audio/sfx-select.mp3" data-start="24.35" data-duration="1.1" data-track-index="44" data-volume="0.6"></audio>
+      <audio id="a-confirm" src="assets/audio/sfx-confirm.mp3" data-start="24.6" data-duration="1.04" data-track-index="45" data-volume="0.45"></audio>
+    </div>
+
+    <script>
+      // ---------- Spreadsheet content: the same order vocabulary the real system uses ----------
+      // Cell markers: q = unsure (italic grey), x = struck through, caps = shouting, err = hatched error, note = comment flag.
+      const ROWS = [
+        ["PO-0291", "60x Heat Resistant Alu 600C", "Cirebon", "Gudang ??|q", "|", "28 Sep", "Rp 12,5 jt"],
+        ["PO-0292", "15x Thinner Khusus", "Cirebon", "sdh kirim?|q", "Candra?|q", "—", "#REF!|err"],
+        ["PO-0293", "40x Epoxy Primer", "Bekasi", "Admin Pengiriman", "cek WA|note", "30/9 ??|q", "Rp 8,0 jt"],
+        ["PO-0294", "25x Floor Coating", "Cirebon", "KEUANGAN CEK|caps", "?|q", "lewat|x", "Rp 6,4 jt?|q"],
+        ["PO-0292", "15x Thinner Khusus", "Cirebon", "Driver", "Candra", "—", "Rp 4,1 jt", "dup"],
+        ["PO-02??|q", "10x Waterproofing", "??|q", "Gudang", "Gudang Cirebon 2", "28 Sep", "#VALUE!|err"],
+        ["PO-0297", "60x Heat Resistant Alu 600C", "Bekasi", "???|q", "—", "—", "??|err"],
+        ["PO-0298", "12x Protective Coating", "Cirebon", "Pajak?|q", "Admin Penjualan", "2 Okt", "Rp 3,3 jt"],
+        ["PO-0299", "30x Epoxy Primer", "Bekasi", "Gudang|x", "cek lagi|note", "1 Okt", "Rp 9,9 jt"],
+        ["PO-0300", "8x Thinner Khusus", "Cirebon", "Verifikasi bayar", "Keuangan", "—", "Rp 2,7 jt"],
+        ["PO-0301", "20x Floor Coating", "Cirebon", "?|q", "?|q", "?|q", "#N/A|err"],
+        ["PO-0302", "15x Protective Coating", "Bekasi", "Admin Penjualan", "lihat grup|note", "3 Okt", "Rp 5,2 jt"],
+        ["TOTAL|caps", "", "", "", "", "", "#REF!|err"],
+        ["", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", ""],
+      ];
+      const rowsEl = document.getElementById("rows");
+      ROWS.forEach((r, i) => {
+        const row = document.createElement("div");
+        row.className = "rw" + (r[7] === "dup" ? " dup" : "");
+        row.setAttribute("data-layout-allow-overlap", "");
+        const cells = r.slice(0, 7).map((c) => { const [t, k] = c.split("|"); return `<span data-layout-allow-overlap class="${k || ""}">${t}</span>`; });
+        row.innerHTML = `<span>${i + 2}</span>` + cells.join("");
+        rowsEl.appendChild(row);
+      });
+      // The hook's macro target: PO-0292's receivable.
+      const target = rowsEl.children[1].children[7];
+      // The slab and notifications cover the sheet on purpose.
+      document.querySelectorAll("#sheet *, #hook-lines *, #hook-sub, #site-lines *, #cta-lines *").forEach((el) => el.setAttribute("data-layout-allow-overlap", ""));
+
+      const tl = gsap.timeline({ paused: true });
+      const E = "expo.out";
+      const lines = (sel) => document.querySelectorAll(sel + " .li");
+      const reveal = (sel, at, step = 0.09) => tl.fromTo(lines(sel), { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: E, stagger: step }, at);
+      const conceal = (sel, at) => tl.to(lines(sel), { yPercent: -115, duration: 0.45, ease: "power3.in", stagger: 0.05 }, at);
+      const rise = (sel, at, d = 0.6) => tl.fromTo(sel, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: d, ease: E }, at);
+
+      // Edge labels (rotated, static).
+      gsap.set("#edge-l", { rotation: -90, y: 200 });
+      gsap.set("#edge-r", { rotation: 90, y: -170 });
+      // Edge labels follow the ground: dark on paper, light on ink.
+      [[17.75, "rgba(255,255,255,0.62)"], [20.7, "#666c76"], [24.7, "rgba(255,255,255,0.62)"]].forEach(([at, c]) => tl.to(".edge", { color: c, duration: 0.2 }, at));
+
+      // ---------- 1 · Hook: macro on #REF!, then pull back ----------
+      gsap.set("#sheet", { rotationX: 20, rotationY: -12, rotationZ: -7, transformPerspective: 1900, transformOrigin: "50% 40%" });
+      // Where the target cell lands after the 3D tilt, relative to the camera layer (measured once at build).
+      const cam = document.getElementById("cam1").getBoundingClientRect();
+      const tr = target.getBoundingClientRect();
+      const cx = tr.left + tr.width / 2 - cam.left, cy = tr.top + tr.height / 2 - cam.top;
+      const caret = document.getElementById("caret");
+      caret.style.left = tr.right - cam.left - 30 + "px"; caret.style.top = tr.top - cam.top + 14 + "px"; caret.style.height = Math.max(20, tr.height - 28) + "px";
+      tl.fromTo("#cam1", { scale: 7.5, x: 540 - cx, y: 760 - cy, transformOrigin: `${cx}px ${cy}px` }, { scale: 1, x: 0, y: 0, duration: 1.05, ease: "power4.inOut" }, 0.1);
+      tl.to("#cam1", { scale: 1.06, duration: 2.6, ease: "none" }, 1.15);
+      tl.fromTo("#caret", { opacity: 1 }, { opacity: 0, duration: 0.1, ease: "steps(1)", repeat: 5, yoyo: true }, 0);
+      document.querySelectorAll(".rw .err").forEach((el, i) => tl.fromTo(el, { opacity: 1 }, { opacity: 0.45, duration: 0.1, ease: "steps(1)", yoyo: true, repeat: 5 }, 1.25 + i * 0.13));
+      tl.fromTo("#sticky", { rotation: 14, scale: 0.6, opacity: 0 }, { rotation: 7, scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 1.05);
+      // Notifications stack from the top, newest first.
+      const nIds = ["#n1", "#n2", "#n3", "#n4"];
+      nIds.forEach((n, i) => {
+        const at = 1.0 + i * 0.42;
+        tl.fromTo(n, { y: 120, scale: 0.92, opacity: 0 }, { y: 270, scale: 1, opacity: 1, duration: 0.42, ease: "back.out(1.4)" }, at);
+        nIds.slice(0, i).forEach((prev, k) => tl.to(prev, { y: 270 + (i - k) * 148, duration: 0.38, ease: E }, at));
+      });
+      tl.fromTo("#slab", { y: 900 }, { y: 0, duration: 0.65, ease: E }, 1.25);
+      reveal("#hook-lines", 1.4, 0.12);
+      rise("#hook-sub", 1.85);
+      // Out: the questions collapse upward, headline masks out.
+      nIds.forEach((n, i) => tl.to(n, { y: -260, opacity: 0, duration: 0.35, ease: "power3.in" }, 3.05 + i * 0.03));
+      conceal("#hook-lines", 3.05);
+      tl.to("#hook-sub", { opacity: 0, duration: 0.2 }, 3.05);
+
+      // ---------- 2 · Turn: The Joint planes sweep on the drop ----------
+      [["#pl-a", 3.12], ["#pl-b", 3.2], ["#pl-c", 3.28]].forEach(([p, at]) => {
+        tl.fromTo(p, { rotation: -32, x: 1500, y: 1500 }, { rotation: -32, x: 0, y: 0, duration: 0.5, ease: "power3.inOut" }, at);
+      });
+      tl.fromTo("#wm", { x: 120, rotation: 8 }, { x: 0, rotation: 0, duration: 1.6, ease: E }, 3.55);
+      reveal("#turn-lines", 3.6, 0.1);
+      rise("#turn-sub", 4.0);
+      conceal("#turn-lines", 4.75);
+      tl.to("#turn-sub, #wm", { opacity: 0, duration: 0.25 }, 4.75);
+
+      // ---------- 3 · Answers: the system answers the hook's questions ----------
+      const W0 = 1280, H0 = 800, VW = 960, VH = 800;
+      const camState = (cxn, cyn, z) => ({ scale: z, x: VW / 2 - cxn * W0 * z, y: VH / 2 - cyn * H0 * z });
+      const ringRect = (st, r) => ({ x: st.x + r[0] * W0 * st.scale - 14, y: st.y + r[1] * H0 * st.scale - 14, width: (r[2] - r[0]) * W0 * st.scale + 28, height: (r[3] - r[1]) * H0 * st.scale + 28 });
+      const camA = camState(0.45, 0.36, 1.85);
+      const camB = camState(0.40, 0.31, 2.3);
+      const qWho = document.getElementById("q-who"), qAv = document.getElementById("q-av"), qText = document.getElementById("q-text");
+      const QS = [["Sales", "S", "PO-0292 sudah sampai mana?"], ["Keuangan", "K", "Piutang jatuh tempo berapa?"], ["Manajer", "M", "Agenda sales hari ini apa?"]];
+      // Seek-safe question swap: a proxy whose value picks the visible question.
+      const qState = { i: 0 };
+      const showQ = () => { const q = QS[Math.round(qState.i)]; qWho.innerHTML = q[0] + "<em>tadi</em>"; qAv.textContent = q[1]; qText.textContent = q[2]; };
+
+      tl.fromTo("#q-card", { y: -220, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.3)" }, 5.0);
+      tl.fromTo("#win", { y: 300, opacity: 0, rotationX: 18, transformPerspective: 1600 }, { y: 0, opacity: 1, rotationX: 0, duration: 0.75, ease: E }, 5.05);
+      tl.fromTo(qState, { i: 0 }, { i: 0, duration: 0.01, onUpdate: showQ }, 5.0);
+      // A1 — order detail: push to the current stage, then the timeline.
+      tl.fromTo("#shotA", camState(0.5, 0.5, 1), { ...camA, duration: 1.0, ease: "power3.inOut" }, 5.35);
+      tl.fromTo("#ring1", { ...ringRect(camA, [0.252, 0.212, 0.48, 0.258]), opacity: 0 }, { opacity: 1, duration: 0.25 }, 6.0);
+      tl.to("#ring1", { ...ringRect(camA, [0.262, 0.395, 0.64, 0.518]), duration: 0.5, ease: "power3.inOut" }, 6.65);
+      rise("#a1", 6.1);
+      tl.to("#a1", { opacity: 0, y: -20, duration: 0.25 }, 7.35);
+      tl.to("#ring1", { opacity: 0, duration: 0.2 }, 7.35);
+
+      // A2 — dashboard: push to the due-date card, count up.
+      tl.to("#q-card", { rotationX: 90, transformPerspective: 1200, duration: 0.18, ease: "power2.in" }, 7.4);
+      tl.to(qState, { i: 1, duration: 0.01, onUpdate: showQ }, 7.58);
+      tl.to("#q-card", { rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 7.6);
+      tl.to("#shotA", { opacity: 0, duration: 0.3 }, 7.45);
+      tl.fromTo("#shotB", { ...camState(0.5, 0.5, 1.15), opacity: 0 }, { opacity: 1, duration: 0.3 }, 7.45);
+      tl.to("#shotB", { ...camB, duration: 1.0, ease: "power3.inOut" }, 7.75);
+      tl.fromTo("#ring2", { ...ringRect(camB, [0.372, 0.249, 0.514, 0.368]), opacity: 0 }, { opacity: 1, duration: 0.25 }, 8.55);
+      rise("#a2", 8.6);
+      const counter = { v: 0 };
+      const countEl = document.getElementById("count");
+      tl.fromTo(counter, { v: 0 }, { v: 1.56, duration: 0.9, ease: "power2.out", onUpdate: () => { countEl.textContent = "Rp " + counter.v.toFixed(2).replace(".", ",") + " M"; } }, 8.65);
+      tl.to("#a2", { opacity: 0, y: -20, duration: 0.25 }, 9.95);
+      tl.to("#ring2", { opacity: 0, duration: 0.2 }, 9.95);
+
+      // A3 — the field-sales phone rises in front of the window.
+      tl.to("#q-card", { rotationX: 90, duration: 0.18, ease: "power2.in" }, 10.0);
+      tl.to(qState, { i: 2, duration: 0.01, onUpdate: showQ }, 10.18);
+      tl.to("#q-card", { rotationX: 0, duration: 0.3, ease: "back.out(1.6)" }, 10.2);
+      tl.to("#win", { scale: 0.86, y: 40, opacity: 0.25, duration: 0.6, ease: "power3.inOut" }, 10.05);
+      tl.fromTo("#ans-phone", { y: 1600, rotationY: -28, rotationX: 10, transformPerspective: 1600 }, { y: 0, rotationY: -10, rotationX: 4, duration: 0.8, ease: E }, 10.15);
+      tl.to("#ans-phone", { rotationY: 0, rotationX: 0, duration: 1.6, ease: "power1.inOut" }, 10.95);
+      tl.fromTo("#ring3", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.2);
+      rise("#a3", 11.25);
+      tl.to("#q-card, #a3", { opacity: 0, y: -24, duration: 0.3 }, 12.55);
+      tl.to("#ans-phone", { y: -1300, duration: 0.5, ease: "power3.in" }, 12.5);
+      tl.to("#win", { y: -1400, duration: 0.5, ease: "power3.in" }, 12.48);
+
+      // ---------- 4 · Services bento ----------
+      reveal("#svc-lines", 12.75, 0.1);
+      rise("#svc-sub", 13.05);
+      ["#b1", "#b2", "#b3", "#b4"].forEach((b, i) => {
+        tl.fromTo(b, { y: 160 + i * 40, scale: 0.9, opacity: 0, rotation: i % 2 ? 3 : -3 }, { y: 0, scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: E }, 13.15 + i * 0.12);
+      });
+      ["#b1", "#b2", "#b3"].forEach((b, i) => tl.fromTo(b + " .m img", { scale: 1 }, { scale: 1.12, duration: 4.2, ease: "none", transformOrigin: "30% 0%" }, 13.3 + i * 0.1));
+      const gpos = [[492, 0], [0, 472], [492, 472]];
+      tl.fromTo("#guide", { x: 0, y: 0, opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.3, ease: E }, 14.0);
+      gpos.forEach(([x, y], i) => tl.to("#guide", { x, y, duration: 0.45, ease: "power3.inOut" }, 14.75 + i * 0.75));
+      tl.to("#guide", { opacity: 0, duration: 0.25 }, 17.1);
+      conceal("#svc-lines", 17.3);
+      tl.to("#svc-sub, #b1, #b2, #b3, #b4", { opacity: 0, y: -30, duration: 0.3, stagger: 0.03 }, 17.3);
+
+      // ---------- 5 · Brand ----------
+      tl.fromTo("#ink", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.inOut" }, 17.6);
+      tl.fromTo("#outline", { x: -60 }, { x: -760, duration: 3.5, ease: "none" }, 17.6);
+      tl.fromTo("#p1", { x: 6, y: -70, rotation: -32, opacity: 0, svgOrigin: "35 25" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.15);
+      tl.fromTo("#p2", { x: -70, y: 26, rotation: 26, opacity: 0, svgOrigin: "22 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.22);
+      tl.fromTo("#p3", { x: 70, y: 22, rotation: -26, opacity: 0, svgOrigin: "55 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 18.29);
+      [["#l1", 18.17], ["#l2", 18.24], ["#l3", 18.31]].forEach(([l, at]) => { tl.fromTo(l, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: E }, at); tl.to(l, { opacity: 0, duration: 0.25 }, 18.85); });
+      tl.fromTo("#joint", { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 18.85);
+      tl.to("#joint path", { fill: "#1d4ed8", duration: 0.25 }, 18.87);
+      tl.fromTo("#wordmark", { y: 70, scale: 1.06, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.7, ease: E }, 18.95);
+      tl.fromTo("#tagline .t span", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: E, stagger: 0.15 }, 19.3);
+      tl.fromTo("#tagline .s", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 19.75);
+      tl.to("#ink, #outline, #joint, #wordmark, #tagline", { y: -1920, duration: 0.55, ease: "power3.inOut" }, 20.55);
+
+      // ---------- 6 · Website ----------
+      tl.fromTo("#site-wm", { y: 300, rotation: -6 }, { y: -120, rotation: 0, duration: 4.1, ease: "none" }, 20.8);
+      reveal("#site-lines", 20.95, 0.1);
+      rise("#site-sub", 21.3);
+      tl.fromTo("#site-phone", { y: 1300, rotationY: -22, rotationX: 12, transformPerspective: 1700 }, { y: 0, rotationY: -12, rotationX: 6, duration: 0.8, ease: E }, 20.75);
+      tl.to("#site-phone", { rotationY: 0, rotationX: 0, duration: 2.8, ease: "power1.inOut" }, 21.55);
+      tl.fromTo("#fab", { scale: 0, transformOrigin: "100% 50%" }, { scale: 1, duration: 0.4, ease: "back.out(2)" }, 21.6);
+      tl.fromTo("#site-img", { y: 0 }, { y: -2962, duration: 2.6, ease: "power2.inOut" }, 21.55);
+      tl.fromTo("#tap", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "power2.out" }, 24.3);
+      tl.to("#tap", { scale: 1.5, opacity: 0, duration: 0.35, ease: "power2.out" }, 24.55);
+      tl.to("#fab", { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 }, 24.35);
+
+      // ---------- 7 · CTA ----------
+      tl.fromTo("#cta-ink", { clipPath: "circle(0% at 60% 77%)" }, { clipPath: "circle(150% at 60% 77%)", duration: 0.6, ease: "power3.in" }, 24.45);
+      tl.fromTo("#cta-btn", { x: 120, y: 460, scale: 0.21, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.7, ease: "expo.inOut" }, 24.55);
+      tl.fromTo("#cta-outline", { x: 0 }, { x: -380, duration: 4.1, ease: "none" }, 24.4);
+      reveal("#cta-lines", 24.95, 0.12);
+      rise("#cta-sub", 25.35);
+      rise("#cta-bio", 25.5, 0.45);
+      rise("#cta-sign", 25.7, 0.5);
+      tl.to("#cta-btn", { scale: 1.035, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 3 }, 26.2);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
