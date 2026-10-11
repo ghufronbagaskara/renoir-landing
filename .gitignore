@@ -8,3 +8,4 @@ dist/
 averix-modern-creative-agency-html-template-*/
 .tmp*
 .work-capture/
+.playwright-mcp/
