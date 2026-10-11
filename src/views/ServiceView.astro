@@ -38,7 +38,7 @@ const alternates = { en: child("services", "en", entry.data.en.slug), id: child(
               <h2>{locale === "id" ? "Lihat sistemnya, bukan hanya ilustrasinya" : "See the system, not just the illustration"}</h2>
             </>}
             <figure class:list={["si-service-details-thumb service-main-screen", { "service-diagram": entry.data.images[0].kind === "diagram" }]}>
-              <Img src={entry.data.images[0].src} alt={entry.data.images[0].alt[locale]} loading="eager" />
+              <Img src={entry.data.images[0].src} alt={entry.data.images[0].alt[locale]} loading={internal ? "lazy" : "eager"} />
               <figcaption>{entry.data.images[0].caption[locale]}</figcaption>
             </figure>
             <div class="si-service-details-text">
