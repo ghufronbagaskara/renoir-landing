@@ -12,7 +12,7 @@
     "deploy": "alchemy deploy",
     "images:mirror": "bun scripts/mirror-demo-images.ts",
     "images:optimize": "bun scripts/optimize-images.ts",
-    "images:editorial": "bun scripts/compose-editorial-images.ts",
+    "images:editorial": "node --experimental-strip-types scripts/compose-editorial-images.ts",
     "icons:subset": "bun scripts/subset-icons.ts",
     "check:copy": "bun scripts/check-copy.ts"
   },
