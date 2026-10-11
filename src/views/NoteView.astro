@@ -45,7 +45,7 @@ const share = [
       <div class="row">
         <article class="col-lg-8">
           <div class="si-blog-details-thumb">
-            <Img src={note.image} alt="" loading="eager" />
+            <Img src={note.image} alt={`${locale === "id" ? "Diagram" : "Illustration"}: ${note.title}`} loading="eager" />
           </div>
           <div class="si-blog-details-text">
             <span>{note.category}</span>
