@@ -1,0 +1,845 @@
+[
+  {
+    "id": "services",
+    "route": "/services/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Services",
+      "Four services, one accountable studio",
+      "Marketing & landing sites",
+      "Custom internal systems",
+      "UI/UX & visual identity",
+      "Deployment & care",
+      "A clear scope, a fixed price"
+    ]
+  },
+  {
+    "id": "services",
+    "route": "/services/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Services",
+      "Four services, one accountable studio",
+      "Marketing & landing sites",
+      "Custom internal systems",
+      "UI/UX & visual identity",
+      "Deployment & care",
+      "A clear scope, a fixed price"
+    ]
+  },
+  {
+    "id": "services",
+    "route": "/services/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Services",
+      "Four services, one accountable studio",
+      "Marketing & landing sites",
+      "Custom internal systems",
+      "UI/UX & visual identity",
+      "Deployment & care",
+      "A clear scope, a fixed price"
+    ]
+  },
+  {
+    "id": "marketing",
+    "route": "/services/marketing-sites/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Marketing & landing sites",
+      "A website that earns the first meeting",
+      "What's included",
+      "Tell us about your website",
+      "Questions about this service",
+      "How long does a marketing site take?",
+      "Can my team edit the content ourselves?",
+      "Do you redesign existing websites?",
+      "What happens after launch?"
+    ]
+  },
+  {
+    "id": "marketing",
+    "route": "/services/marketing-sites/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Marketing & landing sites",
+      "A website that earns the first meeting",
+      "What's included",
+      "Tell us about your website",
+      "Questions about this service",
+      "How long does a marketing site take?",
+      "Can my team edit the content ourselves?",
+      "Do you redesign existing websites?",
+      "What happens after launch?"
+    ]
+  },
+  {
+    "id": "marketing",
+    "route": "/services/marketing-sites/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Marketing & landing sites",
+      "A website that earns the first meeting",
+      "What's included",
+      "Tell us about your website",
+      "Questions about this service",
+      "How long does a marketing site take?",
+      "Can my team edit the content ourselves?",
+      "Do you redesign existing websites?",
+      "What happens after launch?"
+    ]
+  },
+  {
+    "id": "internal",
+    "route": "/services/internal-systems/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Custom internal systems",
+      "Software shaped around how you work",
+      "What's included",
+      "Tell us how you work today",
+      "Questions about this service",
+      "How do you price an internal system?",
+      "Can it connect to the tools we already use?",
+      "Who owns the data and the code?",
+      "Can we see progress during the build?"
+    ]
+  },
+  {
+    "id": "internal",
+    "route": "/services/internal-systems/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Custom internal systems",
+      "Software shaped around how you work",
+      "What's included",
+      "Tell us how you work today",
+      "Questions about this service",
+      "How do you price an internal system?",
+      "Can it connect to the tools we already use?",
+      "Who owns the data and the code?",
+      "Can we see progress during the build?"
+    ]
+  },
+  {
+    "id": "internal",
+    "route": "/services/internal-systems/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Custom internal systems",
+      "Software shaped around how you work",
+      "What's included",
+      "Tell us how you work today",
+      "Questions about this service",
+      "How do you price an internal system?",
+      "Can it connect to the tools we already use?",
+      "Who owns the data and the code?",
+      "Can we see progress during the build?"
+    ]
+  },
+  {
+    "id": "design",
+    "route": "/services/uiux-identity/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "UI/UX & visual identity",
+      "Make the experience feel like your business",
+      "What's included",
+      "Tell us what you need designed",
+      "Questions about this service",
+      "Can we commission design without development?",
+      "Can you also build what you design?"
+    ]
+  },
+  {
+    "id": "design",
+    "route": "/services/uiux-identity/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "UI/UX & visual identity",
+      "Make the experience feel like your business",
+      "What's included",
+      "Tell us what you need designed",
+      "Questions about this service",
+      "Can we commission design without development?",
+      "Can you also build what you design?"
+    ]
+  },
+  {
+    "id": "design",
+    "route": "/services/uiux-identity/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "UI/UX & visual identity",
+      "Make the experience feel like your business",
+      "What's included",
+      "Tell us what you need designed",
+      "Questions about this service",
+      "Can we commission design without development?",
+      "Can you also build what you design?"
+    ]
+  },
+  {
+    "id": "care",
+    "route": "/services/deployment-care/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Deployment & care",
+      "Built is not the same as running",
+      "What's included",
+      "Tell us what you're running",
+      "Questions about this service",
+      "Is care included or extra?",
+      "Can you take over a system someone else built?",
+      "What does the retainer cover?",
+      "What if we want to move it in-house?"
+    ]
+  },
+  {
+    "id": "care",
+    "route": "/services/deployment-care/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Deployment & care",
+      "Built is not the same as running",
+      "What's included",
+      "Tell us what you're running",
+      "Questions about this service",
+      "Is care included or extra?",
+      "Can you take over a system someone else built?",
+      "What does the retainer cover?",
+      "What if we want to move it in-house?"
+    ]
+  },
+  {
+    "id": "care",
+    "route": "/services/deployment-care/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Deployment & care",
+      "Built is not the same as running",
+      "What's included",
+      "Tell us what you're running",
+      "Questions about this service",
+      "Is care included or extra?",
+      "Can you take over a system someone else built?",
+      "What does the retainer cover?",
+      "What if we want to move it in-house?"
+    ]
+  },
+  {
+    "id": "about",
+    "route": "/about/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "About Renoir",
+      "A name with a working history",
+      "Good work takes practice",
+      "Who we work best with",
+      "Good fit",
+      "Not a fit"
+    ]
+  },
+  {
+    "id": "about",
+    "route": "/about/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "About Renoir",
+      "A name with a working history",
+      "Good work takes practice",
+      "Who we work best with",
+      "Good fit",
+      "Not a fit"
+    ]
+  },
+  {
+    "id": "about",
+    "route": "/about/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "About Renoir",
+      "A name with a working history",
+      "Good work takes practice",
+      "Who we work best with",
+      "Good fit",
+      "Not a fit"
+    ]
+  },
+  {
+    "id": "process",
+    "route": "/process/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Process",
+      "From first conversation to handover",
+      "Scope",
+      "Design",
+      "Build",
+      "Deploy & care",
+      "A clear scope, a fixed price",
+      "Before we start",
+      "Why aren't prices listed?",
+      "Do I own the code?",
+      "What if I want to leave?",
+      "How long does a project take?",
+      "Do you maintain what you build?",
+      "Do you work with clients outside Indonesia?"
+    ]
+  },
+  {
+    "id": "process",
+    "route": "/process/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Process",
+      "From first conversation to handover",
+      "Scope",
+      "Design",
+      "Build",
+      "Deploy & care",
+      "A clear scope, a fixed price",
+      "Before we start",
+      "Why aren't prices listed?",
+      "Do I own the code?",
+      "What if I want to leave?",
+      "How long does a project take?",
+      "Do you maintain what you build?",
+      "Do you work with clients outside Indonesia?"
+    ]
+  },
+  {
+    "id": "process",
+    "route": "/process/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Process",
+      "From first conversation to handover",
+      "Scope",
+      "Design",
+      "Build",
+      "Deploy & care",
+      "A clear scope, a fixed price",
+      "Before we start",
+      "Why aren't prices listed?",
+      "Do I own the code?",
+      "What if I want to leave?",
+      "How long does a project take?",
+      "Do you maintain what you build?",
+      "Do you work with clients outside Indonesia?"
+    ]
+  },
+  {
+    "id": "work",
+    "route": "/portfolio/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Work",
+      "Work that makes the next step clearer",
+      "Start with these three",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Explore all eight projects",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Expert Profile & Collaboration Paths",
+      "MAXY AI Website",
+      "AI CEO Circle",
+      "Work Activity Review",
+      "Deployment & Operations Control",
+      "Nothing matches that search"
+    ]
+  },
+  {
+    "id": "work",
+    "route": "/portfolio/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Work",
+      "Work that makes the next step clearer",
+      "Start with these three",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Explore all eight projects",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Expert Profile & Collaboration Paths",
+      "MAXY AI Website",
+      "AI CEO Circle",
+      "Work Activity Review",
+      "Deployment & Operations Control",
+      "Nothing matches that search"
+    ]
+  },
+  {
+    "id": "work",
+    "route": "/portfolio/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Work",
+      "Work that makes the next step clearer",
+      "Start with these three",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Explore all eight projects",
+      "Order & Field Sales Workflow",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring",
+      "Expert Profile & Collaboration Paths",
+      "MAXY AI Website",
+      "AI CEO Circle",
+      "Work Activity Review",
+      "Deployment & Operations Control",
+      "Nothing matches that search"
+    ]
+  },
+  {
+    "id": "work-detail",
+    "route": "/portfolio/order-sales/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Order & Field Sales Workflow",
+      "The need",
+      "One order, ten accountable steps",
+      "Deadlines and payments stay in view",
+      "Field sales has its own working view",
+      "Our role",
+      "Project information",
+      "More work in the same field",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring"
+    ]
+  },
+  {
+    "id": "work-detail",
+    "route": "/portfolio/order-sales/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Order & Field Sales Workflow",
+      "The need",
+      "One order, ten accountable steps",
+      "Deadlines and payments stay in view",
+      "Field sales has its own working view",
+      "Our role",
+      "Project information",
+      "More work in the same field",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring"
+    ]
+  },
+  {
+    "id": "work-detail",
+    "route": "/portfolio/order-sales/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Order & Field Sales Workflow",
+      "The need",
+      "One order, ten accountable steps",
+      "Deadlines and payments stay in view",
+      "Field sales has its own working view",
+      "Our role",
+      "Project information",
+      "More work in the same field",
+      "Industrial Coatings Catalogue",
+      "Field Project Monitoring"
+    ]
+  },
+  {
+    "id": "notes",
+    "route": "/notes/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade",
+      "No notes match that search",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "notes",
+    "route": "/notes/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade",
+      "No notes match that search",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "notes",
+    "route": "/notes/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade",
+      "No notes match that search",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "note-detail",
+    "route": "/notes/speed-is-a-specification/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Speed is a specification, not an upgrade",
+      "Why speed decides first impressions",
+      "What to measure",
+      "Being found is part of the spec",
+      "Writing targets into the scope",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "note-detail",
+    "route": "/notes/speed-is-a-specification/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Speed is a specification, not an upgrade",
+      "Why speed decides first impressions",
+      "What to measure",
+      "Being found is part of the spec",
+      "Writing targets into the scope",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "note-detail",
+    "route": "/notes/speed-is-a-specification/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Speed is a specification, not an upgrade",
+      "Why speed decides first impressions",
+      "What to measure",
+      "Being found is part of the spec",
+      "Writing targets into the scope",
+      "Topics",
+      "Recent notes",
+      "Most websites are bought, not built",
+      "Nothing is delivered until it is running",
+      "Speed is a specification, not an upgrade"
+    ]
+  },
+  {
+    "id": "contact",
+    "route": "/contact/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Start a project",
+      "Tell us what you want to change",
+      "Where we work",
+      "Start a project"
+    ]
+  },
+  {
+    "id": "contact",
+    "route": "/contact/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Start a project",
+      "Tell us what you want to change",
+      "Where we work",
+      "Start a project"
+    ]
+  },
+  {
+    "id": "contact",
+    "route": "/contact/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Start a project",
+      "Tell us what you want to change",
+      "Where we work",
+      "Start a project"
+    ]
+  },
+  {
+    "id": "services-id",
+    "route": "/id/layanan/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Layanan",
+      "Empat layanan, satu studio yang bertanggung jawab",
+      "Situs marketing & landing page",
+      "Sistem internal custom",
+      "UI/UX & identitas visual",
+      "Deployment & perawatan",
+      "Scope jelas, harga disepakati di awal"
+    ]
+  },
+  {
+    "id": "services-id",
+    "route": "/id/layanan/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Layanan",
+      "Empat layanan, satu studio yang bertanggung jawab",
+      "Situs marketing & landing page",
+      "Sistem internal custom",
+      "UI/UX & identitas visual",
+      "Deployment & perawatan",
+      "Scope jelas, harga disepakati di awal"
+    ]
+  },
+  {
+    "id": "services-id",
+    "route": "/id/layanan/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Layanan",
+      "Empat layanan, satu studio yang bertanggung jawab",
+      "Situs marketing & landing page",
+      "Sistem internal custom",
+      "UI/UX & identitas visual",
+      "Deployment & perawatan",
+      "Scope jelas, harga disepakati di awal"
+    ]
+  },
+  {
+    "id": "internal-id",
+    "route": "/id/layanan/sistem-internal/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Sistem internal custom",
+      "Software yang mengikuti cara kerja Anda",
+      "Yang termasuk",
+      "Ceritakan cara kerja Anda saat ini",
+      "Pertanyaan seputar layanan ini",
+      "Bagaimana harga sistem internal ditentukan?",
+      "Bisakah terhubung dengan tools yang sudah kami pakai?",
+      "Siapa pemilik data dan kodenya?",
+      "Bisakah kami melihat progres selama build?"
+    ]
+  },
+  {
+    "id": "internal-id",
+    "route": "/id/layanan/sistem-internal/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Sistem internal custom",
+      "Software yang mengikuti cara kerja Anda",
+      "Yang termasuk",
+      "Ceritakan cara kerja Anda saat ini",
+      "Pertanyaan seputar layanan ini",
+      "Bagaimana harga sistem internal ditentukan?",
+      "Bisakah terhubung dengan tools yang sudah kami pakai?",
+      "Siapa pemilik data dan kodenya?",
+      "Bisakah kami melihat progres selama build?"
+    ]
+  },
+  {
+    "id": "internal-id",
+    "route": "/id/layanan/sistem-internal/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Sistem internal custom",
+      "Software yang mengikuti cara kerja Anda",
+      "Yang termasuk",
+      "Ceritakan cara kerja Anda saat ini",
+      "Pertanyaan seputar layanan ini",
+      "Bagaimana harga sistem internal ditentukan?",
+      "Bisakah terhubung dengan tools yang sudah kami pakai?",
+      "Siapa pemilik data dan kodenya?",
+      "Bisakah kami melihat progres selama build?"
+    ]
+  },
+  {
+    "id": "contact-id",
+    "route": "/id/kontak/",
+    "width": 390,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Mulai proyek",
+      "Ceritakan yang ingin Anda ubah",
+      "Lokasi",
+      "Mulai proyek"
+    ]
+  },
+  {
+    "id": "contact-id",
+    "route": "/id/kontak/",
+    "width": 768,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Mulai proyek",
+      "Ceritakan yang ingin Anda ubah",
+      "Lokasi",
+      "Mulai proyek"
+    ]
+  },
+  {
+    "id": "contact-id",
+    "route": "/id/kontak/",
+    "width": 1440,
+    "status": 200,
+    "overflow": false,
+    "broken": [],
+    "headings": [
+      "Mulai proyek",
+      "Ceritakan yang ingin Anda ubah",
+      "Lokasi",
+      "Mulai proyek"
+    ]
+  }
+]
