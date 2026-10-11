@@ -33,7 +33,7 @@ const notes = await getNotes(locale);
               return (
                 <article class="si-blog-standard-box" data-note-card data-category={note.data.category} data-search={`${note.data.title} ${note.data.description} ${note.data.category}`.toLocaleLowerCase(locale)}>
                   <div class="si-blog-standard-thumb">
-                    <Img src={note.data.listImage} alt="" loading={i === 0 ? "eager" : "lazy"} />
+                    <Img src={note.data.listImage} alt={`${locale === "id" ? "Diagram" : "Illustration"}: ${note.data.title}`} loading={i === 0 ? "eager" : "lazy"} />
                   </div>
                   <div class="si-blog-standard-text">
                     <span>{note.data.category}</span>
