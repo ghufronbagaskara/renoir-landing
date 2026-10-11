@@ -4,10 +4,10 @@ description: Situs yang butuh empat detik untuk terbuka belum selesai. Cara mene
 date: 2026-08-27
 category: Performa
 translationKey: speed-specification
-image: editorial/note-speed-article.webp
-listImage: editorial/note-speed-list.webp
-cardImage: editorial/note-speed-card.webp
-thumb: editorial/note-speed-thumb.webp
+image: editorial/note-speed-article-id.webp
+listImage: editorial/note-speed-list-id.webp
+cardImage: editorial/note-speed-card-id.webp
+thumb: editorial/note-speed-thumb-id.webp
 ---
 
 Performa sering dianggap sebagai sentuhan akhir: bangun situsnya dulu, percepat nanti. "Nanti" jarang datang. Saat akhirnya ada yang mengukur, situs sudah live, anggaran sudah habis, dan mempercepatnya berarti membongkar keputusan yang dibuat berbulan-bulan sebelumnya.
