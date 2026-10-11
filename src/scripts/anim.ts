@@ -13,17 +13,50 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 // rAF-throttled scroll listener, transforms only.
 const parallax = [...document.querySelectorAll<HTMLElement>("[data-speed]")];
 if (parallax.length && !reducedMotion) {
-  let items: { el: HTMLElement; frame: HTMLElement; factor: number; center: number }[] = [];
+  let items: {
+    el: HTMLElement;
+    frame: HTMLElement;
+    factor: number;
+    center: number;
+    height: number;
+    desktop: boolean;
+    limit: number;
+  }[] = [];
   const measure = () => {
     items = parallax.map((el) => {
       const frame = el.closest<HTMLElement>(".fix") ?? el.parentElement!;
       const r = frame.getBoundingClientRect(); // the frame isn't transformed, so this is the natural position
-      return { el, frame, factor: 1 - parseFloat(el.dataset.speed!), center: r.top + scrollY + r.height / 2 };
+      const desktop = el.hasAttribute("data-parallax-desktop");
+      const limit = desktop
+        ? Math.min(
+            120,
+            r.width * 0.07,
+            Math.max(0, (el.offsetHeight - r.height) / 2),
+          )
+        : Infinity;
+      return {
+        el,
+        frame,
+        factor: 1 - parseFloat(el.dataset.speed!),
+        center: r.top + scrollY + r.height / 2,
+        height: r.height,
+        desktop,
+        limit,
+      };
     });
   };
   const update = () => {
     const mid = scrollY + innerHeight / 2;
-    for (const { el, factor, center } of items) el.style.transform = `translate3d(0, ${(factor * (mid - center)).toFixed(1)}px, 0)`;
+    for (const { el, factor, center, height, desktop, limit } of items) {
+      if (desktop && innerWidth < 1024) {
+        el.style.removeProperty("transform");
+        continue;
+      }
+      const top = center - height / 2 - scrollY;
+      if (top + height < -120 || top > innerHeight + 120) continue;
+      const y = Math.max(-limit, Math.min(limit, factor * (mid - center)));
+      el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
+    }
   };
   let queued = false;
   const onScroll = () => {
@@ -42,20 +75,25 @@ async function init() {
 
   // On phones, a single compositor animation communicates the reveal without loading GSAP/SplitText.
   if (matchMedia("(max-width: 767px)").matches) {
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        observer.unobserve(entry.target);
-        (entry.target as HTMLElement).animate(
-          [
-            { opacity: 0.72, transform: "translateY(14px)" },
-            { opacity: 1, transform: "translateY(0)" },
-          ],
-          { duration: 480, easing: "cubic-bezier(.16, 1, .3, 1)" },
-        );
-      }
-    }, { rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll(SELECTOR).forEach((element) => observer.observe(element));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          (entry.target as HTMLElement).animate(
+            [
+              { opacity: 0.72, transform: "translateY(14px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            { duration: 480, easing: "cubic-bezier(.16, 1, .3, 1)" },
+          );
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    document
+      .querySelectorAll(SELECTOR)
+      .forEach((element) => observer.observe(element));
     return;
   }
 
@@ -68,11 +106,16 @@ async function init() {
   ScrollTrigger.config({ ignoreMobileResize: true });
   if (import.meta.env.DEV) Object.assign(window, { ScrollTrigger });
 
-  const attr = (el: Element, name: string, fallback: number | string) => el.getAttribute(name) ?? fallback;
+  const attr = (el: Element, name: string, fallback: number | string) =>
+    el.getAttribute(name) ?? fallback;
   // Reveals start as soon as the element's top enters the bottom 8% of the viewport, so text near the
   // end of the page (e.g. the footer heading) never needs extra scrolling to appear.
   const REVEAL_START = "top 92%";
-  const trigger = (el: Element) => ({ trigger: el, start: REVEAL_START, once: true });
+  const trigger = (el: Element) => ({
+    trigger: el,
+    start: REVEAL_START,
+    once: true,
+  });
 
   for (const el of gsap.utils.toArray<HTMLElement>(".si-text-revel-anim")) {
     // No "lines" split: its block wrappers reflow the text (layout shift) and nothing styles them.
@@ -99,14 +142,23 @@ async function init() {
       delay: Number(attr(el, "data-delay", 0.15)),
       x: from === "left" ? -offset : from === "right" ? offset : 0,
       y: from === "top" ? -offset : from === "bottom" ? offset : 0,
-      ...(Number(attr(el, "data-on-scroll", 1)) === 1 && { scrollTrigger: trigger(el) }),
+      ...(Number(attr(el, "data-on-scroll", 1)) === 1 && {
+        scrollTrigger: trigger(el),
+      }),
     });
   }
 
   for (const el of gsap.utils.toArray<HTMLElement>(".si-char-animation")) {
     const split = SplitText.create(el, { type: "chars, words" });
     gsap.set(el, { perspective: 300 });
-    gsap.from(split.chars, { duration: 1, delay: 0.5, x: 100, autoAlpha: 0, stagger: 0.05, scrollTrigger: trigger(el) });
+    gsap.from(split.chars, {
+      duration: 1,
+      delay: 0.5,
+      x: 100,
+      autoAlpha: 0,
+      stagger: 0.05,
+      scrollTrigger: trigger(el),
+    });
   }
 
   // Keep trigger positions right when the page height changes after init (sliders, late images, fonts).
@@ -118,6 +170,9 @@ async function init() {
 }
 
 // Wait for load + an idle slot so animation code never competes with first paint / LCP.
-const idle = (cb: () => void) => ("requestIdleCallback" in window ? requestIdleCallback(cb, { timeout: 2000 }) : setTimeout(cb, 200));
+const idle = (cb: () => void) =>
+  "requestIdleCallback" in window
+    ? requestIdleCallback(cb, { timeout: 2000 })
+    : setTimeout(cb, 200);
 if (document.readyState === "complete") idle(init);
 else window.addEventListener("load", () => idle(init), { once: true });
