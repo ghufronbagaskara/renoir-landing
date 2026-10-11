@@ -169,14 +169,35 @@ dialog.si-lightbox {
 .si-hero-text2 { margin: 34px 0 0; padding-bottom: 58px; justify-content: flex-start; }
 .si-hero-text2 p { max-width: 55ch; font-size: clamp(1.1rem, 1.5vw, 1.35rem); line-height: 1.5; }
 .si-hero-area { background: var(--renoir-paper); }
-.si-hero-thumb { height: auto; aspect-ratio: 12 / 5; background: #e8ebef; }
+.si-hero-thumb { position: relative; height: auto; aspect-ratio: 12 / 5; background: #e8ebef; }
 .si-hero-thumb picture, .si-hero-thumb img { display: block; width: 100%; height: 100%; }
-.si-hero-thumb img { object-fit: contain; }
+.si-hero-thumb img { object-fit: cover; }
+@media (max-width: 767px) {
+  .si-hero-thumb { aspect-ratio: 4 / 5; }
+}
+@media (min-width: 1024px) {
+  .si-hero-thumb picture { position: absolute; inset: -180px 0; height: calc(100% + 360px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-hero-thumb picture { transform: none !important; }
+}
 
 .si-about-box { display: grid; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); align-items: center; gap: clamp(28px, 4vw, 68px); }
 .si-about-img { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 12px; }
 .si-about-img img, .si-about-img .si-about-img2 { width: 100%; margin: 0; object-fit: cover; }
 .si-about-img .si-about-img2 { transform: translateY(24px); }
+.si-about-img figure { min-width: 0; margin: 0; }
+.si-about-img figure img { height: auto; object-fit: contain; }
+.si-about-img figcaption { margin-top: 10px; font-size: 12px; line-height: 1.4; }
+.si-about-img figcaption a { text-decoration: underline; text-underline-offset: 3px; }
+.renoir-statement-band { position: relative; overflow: hidden; background: var(--renoir-ink); border-top: 2px solid var(--renoir-accent); }
+.statement-mark { position: absolute; inset: 0; display: grid; place-items: center; color: #252b38; pointer-events: none; }
+.statement-mark svg { width: min(62vw, 420px); height: auto; }
+.renoir-statement-band .si-video-icon { position: relative; z-index: 1; }
+.service-main-screen { margin: 0; }
+.service-main-screen img { display: block; width: 100%; height: auto !important; object-fit: contain !important; }
+.service-main-screen figcaption { margin: 14px 0 32px; color: var(--renoir-muted); font-size: 14px; line-height: 1.5; }
+.service-main-screen.service-diagram img { max-height: 580px; }
 .si-about-main { min-width: 0; margin: 0; }
 .si-about-main .about-eyebrow { display: block; margin-bottom: 15px; color: var(--renoir-accent); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .si-about-main .h2 { max-width: 20ch; font-size: clamp(1.55rem, 2.3vw, 2.35rem); line-height: 1.14; }
@@ -286,7 +307,7 @@ dialog.si-lightbox {
 .notes-controls button:hover { background: var(--renoir-ink); color: #fff; }
 .notes-track { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding: 2px 2px 18px; }
 .notes-track .si-blog-box { flex: 0 0 clamp(290px, 31vw, 430px); width: auto; min-width: 0; margin: 0; scroll-snap-align: start; }
-.notes-track .si-blog-img img { width: 100%; aspect-ratio: 1.45; object-fit: cover; }
+.notes-track .si-blog-img img { width: 100%; height: auto; aspect-ratio: 1.45; object-fit: contain; background: var(--renoir-paper); }
 .notes-track .si-blog-text { text-align: left; margin: 0; padding: 22px 24px 28px; }
 .notes-track .si-blog-text .h3 { display: block; border: 0; padding: 0; margin: 0 0 12px; line-height: 1.4; }
 .notes-track .si-blog-text .h3 span { font-size: .875rem; }
@@ -299,7 +320,8 @@ dialog.si-lightbox {
 .notes-layout > .si-blolg-standard-main { position: sticky; top: 112px; }
 .notes-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px; margin: 0; }
 .notes-grid > .si-blog-standard-box { min-width: 0; margin: 0; }
-.notes-grid .si-blog-standard-thumb img { width: 100%; aspect-ratio: 1.55; object-fit: cover; }
+.notes-grid .si-blog-standard-thumb img { width: 100%; height: auto; aspect-ratio: 1.55; object-fit: contain; background: var(--renoir-paper); }
+.si-blog-details-thumb img { display: block; width: 100%; height: auto; object-fit: contain; }
 .notes-grid .si-blog-standard-text { padding: 20px 0 0; }
 .notes-grid .si-blog-standard-text h2 { font-size: clamp(1.65rem, 2.25vw, 2.35rem); line-height: 1.2; }
 .notes-grid .si-blog-standard-box, .notes-grid .si-blog-standard-text { min-width: 0; }
