@@ -4,6 +4,7 @@ import BaseLayout from "~/layouts/BaseLayout.astro";
 import Img from "~/components/ui/Img.astro";
 import Accordion from "~/components/ui/Accordion.astro";
 import ContactForm from "~/components/ui/ContactForm.astro";
+import InternalFlow from "~/components/sections/services/InternalFlow.astro";
 import { child, path, t, type Locale } from "~/i18n";
 import { serviceCopy } from "~/lib/content";
 import { faqNode, serviceNode } from "~/lib/seo";
@@ -15,6 +16,7 @@ interface Props {
 const { locale, entry } = Astro.props;
 const c = t(locale);
 const s = serviceCopy(entry, locale);
+const internal = entry.id === "internal-systems";
 const url = child("services", locale, s.slug);
 const alternates = { en: child("services", "en", entry.data.en.slug), id: child("services", "id", entry.data.id_.slug) };
 ---
@@ -30,10 +32,15 @@ const alternates = { en: child("services", "en", entry.data.en.slug), id: child(
     <div class="container container-1617">
       <div class="row">
         <div class="col-lg-12">
-          <div class="si-service-details-box">
-            <div class="si-service-details-thumb">
-              <Img src={entry.data.images[0].src} alt="" loading="eager" />
-            </div>
+          <div class:list={["si-service-details-box", { "internal-service-details": internal }]}>
+            {internal && <>
+              <InternalFlow locale={locale} />
+              <h2>{locale === "id" ? "Lihat sistemnya, bukan hanya ilustrasinya" : "See the system, not just the illustration"}</h2>
+            </>}
+            <figure class:list={["si-service-details-thumb service-main-screen", { "service-diagram": entry.data.images[0].kind === "diagram" }]}>
+              <Img src={entry.data.images[0].src} alt={entry.data.images[0].alt[locale]} loading="eager" />
+              <figcaption>{entry.data.images[0].caption[locale]}</figcaption>
+            </figure>
             <div class="si-service-details-text">
               <span>{s.tagline}</span>
               <h2 class="h1">{s.heading}</h2>
@@ -72,7 +79,7 @@ const alternates = { en: child("services", "en", entry.data.en.slug), id: child(
                   }
                 </div>
               </div>
-              <div class="si-service-details-from">
+              <div class="si-service-details-from" id="service-inquiry">
                 <h2 class="h3">{s.formTitle}</h2>
                 <ContactForm locale={locale} variant="service" source={`service:${entry.id}`} build={entry.data.build} />
               </div>
