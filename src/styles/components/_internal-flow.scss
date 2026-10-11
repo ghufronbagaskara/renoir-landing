@@ -224,3 +224,9 @@ body:has(.internal-flow) .si-breadcumb-text {
     color: #bcc3cf;
   }
 }
+
+@media (max-width: 767px) {
+  body:has(.internal-flow) .floating-contact {
+    display: none;
+  }
+}
