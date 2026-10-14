@@ -1,0 +1,314 @@
+{
+  "screens": [
+    {
+      "route": "services",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "services",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "services",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "services",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "services",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/layanan",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/layanan",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/layanan",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/layanan",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/layanan",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "process",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "process",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "process",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "process",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "process",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/proses",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/proses",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/proses",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/proses",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/proses",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "portfolio",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "portfolio",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "portfolio",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "portfolio",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "portfolio",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/karya",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/karya",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/karya",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/karya",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/karya",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "about",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "about",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "about",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "about",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "about",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/tentang",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/tentang",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/tentang",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/tentang",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/tentang",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "notes",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "notes",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "notes",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "notes",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "notes",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/catatan",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/catatan",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/catatan",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/catatan",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/catatan",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "contact",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "contact",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "contact",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "contact",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "contact",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "route": "id/kontak",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "route": "id/kontak",
+      "width": 394,
+      "overflow": 0
+    },
+    {
+      "route": "id/kontak",
+      "width": 430,
+      "overflow": 0
+    },
+    {
+      "route": "id/kontak",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "route": "id/kontak",
+      "width": 1440,
+      "overflow": 0
+    }
+  ],
+  "checks": [
+    "two-column Work/Notes",
+    "touch/keyboard disclosures",
+    "visible labels and native form validation",
+    "search and filters",
+    "no JavaScript",
+    "failed images",
+    "reduced motion",
+    "Home geometry and non-image pixel equality at 394/1440; lazy-image timing excluded"
+  ]
+}
