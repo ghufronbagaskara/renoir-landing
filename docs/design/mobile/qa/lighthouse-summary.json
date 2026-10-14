@@ -1,0 +1,44 @@
+[
+  {
+    "page": "services",
+    "performance": 97.0,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0
+  },
+  {
+    "page": "process",
+    "performance": 98.0,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0
+  },
+  {
+    "page": "portfolio",
+    "performance": 97.0,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0
+  },
+  {
+    "page": "about",
+    "performance": 96.0,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0
+  },
+  {
+    "page": "notes",
+    "performance": 97.0,
+    "accessibility": 100,
+    "cls": 8.092784375899585E-05,
+    "tbt": 0
+  },
+  {
+    "page": "contact",
+    "performance": 98.0,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0
+  }
+]
