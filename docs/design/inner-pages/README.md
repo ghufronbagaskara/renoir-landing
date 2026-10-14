@@ -4,6 +4,8 @@
 
 ## Buka hasilnya
 
+- [Integrasi Astro, QA final dan Lighthouse EN/ID](implementation.md)
+
 - [Moodboard dan pemetaan komponen](index.html)
 - [Percontohan Internal Systems, EN/ID](pilot.html)
 - [Storyboard empat layanan](storyboards.md)

@@ -1,5 +1,7 @@
 # Validasi riset dan prototype
 
+**Pembaruan:** Internal Systems sudah diterapkan ke halaman Astro EN/ID atas instruksi pemilik. Hasil build, QA dan Lighthouse terkini berada di [laporan integrasi](implementation.md). Isi di bawah mencatat tahap riset awal sebelum integrasi.
+
 11 Oktober 2026. Hasil untuk paket review lokal, bukan sertifikasi situs produksi.
 
 ## Audit keadaan sekarang
