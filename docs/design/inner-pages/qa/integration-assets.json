@@ -1,0 +1,20 @@
+[
+  {
+    "route": "services/internal-systems",
+    "sceneScripts": [
+      {
+        "source": "inline",
+        "rawBytes": 2217,
+        "gzipBytes": 964
+      }
+    ]
+  },
+  {
+    "route": "services/marketing-sites",
+    "sceneScripts": []
+  },
+  {
+    "route": "home",
+    "sceneScripts": []
+  }
+]
