@@ -1,0 +1,92 @@
+[
+  {
+    "route": "/about/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/tentang/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/services/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/layanan/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/process/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/proses/",
+    "width": 390,
+    "status": "PASS"
+  },
+  {
+    "route": "/about/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/tentang/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/services/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/layanan/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/process/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/proses/",
+    "width": 768,
+    "status": "PASS"
+  },
+  {
+    "route": "/about/",
+    "width": 1440,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/tentang/",
+    "width": 1440,
+    "status": "PASS"
+  },
+  {
+    "route": "/services/",
+    "width": 1440,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/layanan/",
+    "width": 1440,
+    "status": "PASS"
+  },
+  {
+    "route": "/process/",
+    "width": 1440,
+    "status": "PASS"
+  },
+  {
+    "route": "/id/proses/",
+    "width": 1440,
+    "status": "PASS"
+  }
+]
