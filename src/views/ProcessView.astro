@@ -21,7 +21,7 @@ const p = c.process;
   breadcrumb={{ title: p.breadcrumb }}
   schema={[faqNode(path("process", locale), c.home.faq.items)]}
 >
-  <Process label={p.label} title={p.title} steps={p.steps} />
-  <Engagements locale={locale} />
-  <Faq id="process-faq" label={c.home.faq.label} title={c.home.faq.title} items={c.home.faq.items} />
+  <Process label={p.label} title={p.title} steps={p.steps} compact />
+  <Engagements locale={locale} variant="process" />
+  <Faq id="process-faq" locale={locale} label={c.home.faq.label} title={c.home.faq.title} items={c.home.faq.items} />
 </BaseLayout>

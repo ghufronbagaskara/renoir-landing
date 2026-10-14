@@ -7,8 +7,9 @@ interface Props {
   title: string;
   steps: { title: string; body: string }[];
   pt?: boolean;
+  compact?: boolean;
 }
-const { label, title, steps, pt = true } = Astro.props;
+const { label, title, steps, pt = true, compact = false } = Astro.props;
 const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
 ---
 <section class:list={["si-process-area pb-124", { "pt-124": pt }]}>
@@ -19,7 +20,13 @@ const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
           <span>{label}</span>
           <h2 class="si-text-revel-anim">{title}</h2>
         </div>
-        <div class="si-process-box">
+        {compact && <div class="process-mobile">
+          {steps.map((step, i) => <details name="process-steps" open={i === 0}>
+            <summary><span class="process-step-number">0{i + 1}</span><h3>{step.title}</h3><span class="process-step-toggle" aria-hidden="true">+</span></summary>
+            <p>{step.body}</p>
+          </details>)}
+        </div>}
+        <div class:list={["si-process-box", { "process-desktop": compact }]}>
           <div class="si-process-border">
             <Img src="process/line.svg" alt="" />
           </div>
