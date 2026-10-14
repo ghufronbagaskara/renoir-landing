@@ -2,6 +2,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fontsource-variable/inter/wght.css";
 import "~/styles/global.scss";
+import "~/styles/_inner-mobile.scss";
 import HeaderHome from "~/components/layout/HeaderHome.astro";
 import HeaderInner from "~/components/layout/HeaderInner.astro";
 import Offcanvas from "~/components/layout/Offcanvas.astro";
@@ -94,14 +95,11 @@ const c = t(locale);
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>
-  <body>
-    <div id="magic-cursor" class="cursor-black-bg" aria-hidden="true">
-      <div id="ball"></div>
-    </div>
+  <body class:list={{ "inner-page": !home }}>
 
-    <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+    {home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
       <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
-    </a>
+    </a>}
 
     {home ? <HeaderHome locale={locale} alternates={alternates} /> : <HeaderInner locale={locale} alternates={alternates} solid={solidHeader} />}
     <Offcanvas locale={locale} alternates={alternates} />
@@ -112,12 +110,15 @@ const c = t(locale);
       <slot />
     </main>
 
+    {!home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+      <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
+    </a>}
+
     <Footer locale={locale} home={home} />
 
     <script>
       import "~/scripts/site";
       import "~/scripts/anim";
-      import "~/scripts/cursor";
     </script>
   </body>
 </html>
