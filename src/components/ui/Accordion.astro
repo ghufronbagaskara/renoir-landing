@@ -2,11 +2,12 @@
 // Template accordion markup (Bootstrap collapse classes kept for styling), driven by ~/scripts/accordion.ts.
 interface Props {
   id: string;
+  hover?: boolean;
   items: { question: string; answer: string }[];
 }
-const { id, items } = Astro.props;
+const { id, items, hover = false } = Astro.props;
 ---
-<div class="accordion" id={id} data-accordion>
+<div class="accordion" id={id} data-accordion data-hover-accordion={hover ? "" : undefined}>
   {
     items.map((item, i) => {
       const open = i === 0;
@@ -24,7 +25,7 @@ const { id, items } = Astro.props;
               <span class="accordion-icon" />
             </button>
           </Heading>
-          <div id={`${id}-${i}`} class:list={["accordion-collapse collapse", { show: open }]}>
+          <div id={`${id}-${i}`} style={hover ? "display: block" : undefined} class:list={["accordion-collapse collapse", { show: open }]}>
             <div class="accordion-body">
               <p>{item.answer}</p>
             </div>
