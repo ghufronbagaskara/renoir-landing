@@ -74,6 +74,7 @@ scripts/                    build, serve, check-links, mirror/optimize images, s
 public/_headers             noindex on *.workers.dev, immutable /_astro/*, security headers
 docs/renoir-run.md          brand brief (phase 2 input)
 docs/design/inner-pages/    research: 12 reference screenshots, inner-page audit, four service storyboards and isolated EN/ID prototype; `node docs/design/inner-pages/serve.mjs` on :4391. Internal Systems pilot integrated into ServiceView; remaining designs await implementation
+promo/gambar/<NN-post>/     Instagram posts: index.html canvas → `node promo/gambar/render.mjs <dir>` → numbered JPEGs in renders/ (see promo/gambar/README.md)
 promo/video/<name>/         social videos: HyperFrames projects (HTML+GSAP → MP4; BRIEF.md, CREDITS.md) and studio-overview (Claude Design export + render-60fps.mjs). Skills in .claude/skills/hyperframes*
 averix-modern-...-utc/      original template (git-ignored, licensed). Source of truth for phase-1 markup
 src/
@@ -89,7 +90,7 @@ src/
   pages/                    routes (all prerendered except api/contact.ts)
   server/contact.ts         contact form Effect program + Turnstile/Telegram/webhook helpers (+ contact.test.ts)
   scripts/*.ts              client modules (vanilla TS)
-  styles/                   template SCSS (utils/theme/components/layout) + _site.scss (our additions) + global.scss
+  styles/                   template SCSS + _site.scss (our additions) + _inner-mobile.scss (inner-page mobile variants) + global.scss
   env.d.ts                  types for `cloudflare:workers` env bindings — keep in sync with alchemy.run.ts
 ```
 
@@ -110,6 +111,14 @@ Team, pricing, and other unused template pages are not public routes. English an
 
 ## 5. Conventions
 
+- **Owner's copy preference: no closing periods in headings.** Never end page titles, H1–H6 headings,
+  hero headlines, card titles, short UI labels or CTA labels with a full stop (`.`). Apply this to both
+  EN/ID website copy and Renoir promotional artwork, including Instagram slides. When a headline spans
+  multiple lines or uses separate short sentences, omit the closing period from each headline phrase
+  (e.g. `One studio` / `From sketch to running`, not `One studio.` / `From sketch to running.`).
+  Body paragraphs retain normal sentence punctuation; meaningful question marks may remain.
+  Preserve owner-approved wording when enhancing visuals: do not rewrite existing copy unless asked.
+
 - `.astro` first. Client code = small vanilla TS modules in `src/scripts`, imported from a component `<script>`
   (Astro bundles/dedupes them). No framework islands.
 - **Keep the template's markup and class names** (`si-*`, Bootstrap grid) so the template SCSS keeps working.
@@ -129,20 +138,22 @@ Team, pricing, and other unused template pages are not public routes. English an
   Internal Systems additionally opens with `sections/services/InternalFlow.astro`: a labeled conceptual order
   scene under `assets/img/services/internal-flow/`, scoped SCSS and native TypeScript playback (finite 8s,
   selectable stages, pause/replay, viewport/visibility pause and reduced-motion/no-JS/image-error fallbacks).
-  Work screenshots remain separate proof. Other services and homepage retain their existing presentation.
+  Work screenshots remain separate proof. The floating contact CTA is hidden on these pages so it cannot cover
+  the stage controls; the in-page CTA targets the existing form. Other services and homepage retain their presentation.
   Notes use explanatory diagrams with EN/ID labels and four WebP sizes. Process scenes are SVG with HTML labels;
   shared page bands use CSS and The Joint geometry. `images:editorial` runs through Node TypeScript stripping.
 - Work screenshots: raw PNGs live in ignored `.work-capture/<slug>/`. `scripts/compose-work-images.ts` keeps
   desktop/mobile and curated supporting screens at source resolution as high-quality WebP under
   `src/assets/img/work/<slug>/`; it also makes a 1800×1000 desktop-and-mobile `pair.webp` for cards and an OG JPEG.
+  Work catalogue cards additionally select 720px `pair-mobile.webp` through srcset; regenerate these after replacing
+  any pair with `node docs/design/mobile/prepare-work-thumbnails.mjs`. Home and detail imagery use the original files.
   The detail view shows both full-resolution screens and ordered feature screens from `portfolio-features.ts`.
   On narrow Work details, the global floating CTA is hidden so it cannot cover image captions; the in-page CTA remains.
   Redactions are defined in `scripts/work-redactions.json`; check every asset for private data before publication.
   The Order & Field Sales mobile hero is the real Sales Dashboard captured against a separate demo SQLite
   database inside ignored `.work-capture/order-sales/`. Never migrate or seed the source application's database.
 - Brand: `src/components/ui/BrandMark.astro` and `public/favicon.svg` share the single-colour The Joint
-  geometry. Keep the wordmark beside the symbol in header, offcanvas, and footer. The About name image is
-  an editorial illustration (`about/porcelain-editorial.webp`), not historical proof.
+  geometry. Keep the wordmark beside the symbol in header, offcanvas, and footer. About uses real founder-project software screenshots; porcelain imagery is prohibited on public pages.
 - Icons: Font Awesome Pro classes from the template (`fa-sharp fa-regular fa-arrow-right`, `fa-brands …`).
   After adding a new `fa-*` class run `bun run icons:subset`.
 - Runtime-added classes must appear as strings in the JS (PurgeCSS scans each page's HTML + all built JS) or be
@@ -178,7 +189,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   ScrollTrigger.refresh() jumps the scroll position and a smooth behavior turns that into broken trigger
   positions. Trigger positions refresh on body resize (ResizeObserver in `anim.ts`).
 - In `bun run dev`, `window.ScrollTrigger` is exposed for debugging.
-- Magic cursor (`src/scripts/cursor.ts`) only on `(hover: hover) and (pointer: fine)`; its rAF loop stops when idle.
+- Native pointer only; the custom cursor markup and client import are removed.
 - Swiper (`src/scripts/sliders.ts`) is imported and initialised per slider when it comes within one viewport
   (IntersectionObserver), so it never competes with first paint. Home Work uses `homeRank` ordering (four
   entries, independent of `featuredRank` on Work), with three cards visible at ≥1280px, two at ≥768px, one
@@ -245,6 +256,11 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 
 ## 9. Known gaps / TODO
 
+- Internal Systems EN/ID now includes the approved conceptual order scene. Local built-page Lighthouse on
+  2026-10-11 measured ID 97 / EN 98 performance, accessibility 100, CLS 0 and TBT 0ms in both final runs;
+  these are not site-wide or deployed CWV guarantees. Integration checks and remaining limits:
+  `docs/design/inner-pages/implementation.md`. Other inner-page designs remain pending.
+
 - Public-page stock photography has been replaced with Renoir campaign artwork, real founder-project screenshots, and
   SVG/CSS geometry. `docs/brand/editorial-image-system.md` records the generation brief. Final approval of all
   public assets and Work permissions is still required before launch.
@@ -254,7 +270,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 - Work now presents eight founder projects with EN/ID detail pages, paired desktop/mobile screens, feature stories, service filters, project OG images, and sitemap entries. The operations-control study still uses a sanitized architecture diagram and requires owner-provided Komodo access for its final dashboard screenshot. Client logo marquee and testimonials stay unpublished until real names/assets/quotes and permission exist.
 - SEO/GEO implementation is partial; verify final domain, OG assets and actual business details before launch.
 - Swiper chunk is ~80 KB (the `swiper/modules` barrel isn't tree-shaken); loaded lazily, acceptable for now.
-- Accordion panels open/close instantly (Bootstrap's height animation not reproduced).
+- Process FAQ and Services/Process engagement panels animate on desktop hover; keyboard/touch activation remains available, with reduced-motion and no-JS fallbacks. Other accordions keep their existing click behavior.
 - Search needs the built `/pagefind/` index: it doesn't work under `bun run dev`.
 - Nothing has been deployed yet; the contact flow is covered by unit tests only. After the first deploy, submit each form variant once and check Telegram, the Sheet row and the email.
 - Analytics not wired yet: plan is Cloudflare Web Analytics (CWV) + Umami Cloud (events, `data-domains` = prod host), Search Console + Bing Webmaster, Better Stack uptime on `/` and `GET /api/contact`.
@@ -268,6 +284,16 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-10-12 - Recorded the owner's no-closing-period rule for EN/ID website headings and promotional titles; applied it to the three enhanced Instagram carousels while keeping their restored original wording, captions and current visual design. Regenerated the 21 JPEGs and previews.
+
+- 2026-10-12 - Restored original copywriting for all three Instagram carousels from `.work-capture/instagram-before`, including 21 headings, main slide copy, CTAs and the three caption bodies. Enhanced SVGs/screenshots retained; spacing adjusted for the restored text, alt texts synchronized, JPEGs and previews regenerated.
+
+- 2026-10-11 - Enhanced all three `promo/gambar` carousels: shared `carousel.css`, six custom service/workflow SVGs, larger real project screenshots, Indonesian copy and per-slide alt text, 21 regenerated 1080x1350 JPEGs and combined previews. The renderer validates image loading and text bounds; original versions are backed up under ignored `.work-capture/instagram-before`. Fixed inner mobile Services pressed/hover/focus colors and split descriptions into a lead sentence and supporting text without removing copy.
+
+- 2026-10-11 — Added Instagram posts #1 `01-hello-renoir` (introduction: who, services, fit, why Renoir, how to start) and #2 `02-why-renoir` (origin story: three recurring problems and Renoir's answer), each seven slides with caption and alt text; the earlier panorama moved to post #3.
+
+- 2026-10-11 — Added `promo/gambar/` Instagram pipeline (`render.mjs`: HTML canvas → 2× Playwright capture → Lanczos 1080×1350 JPEG) and post #3 `03-sketch-to-running` (first drafted as #1), a seven-slide panorama carousel through the Industrial Coatings project, with caption and alt text.
 
 - 2026-10-11 — Integrated the approved Internal Systems concept into its existing EN/ID service pages after the owner's three-minute timer: native four-stage playback, mobile focus crops and accessible static/error states; original proof, metadata and contact flow preserved. No deployment.
 
@@ -297,3 +323,10 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 - 2026-09-17 — Parallax rewritten to ScrollSmoother's formula (no zoom); matches the demo's hero overlap.
 - 2026-09-17 — Motion fixes: restored `data-speed` image parallax (hero, portfolio), earlier text reveals, removed smooth scroll-behavior, fixed invisible testimonial quote icon (`box-sizing: content-box`).
 - 2026-09-17 — Phase 1: Astro 7 clone of 12 Averix pages, collections, contact API (Effect + D1 + Turnstile + Resend), Pagefind, PurgeCSS, WebP images, Alchemy stack + GitHub Actions CI, skills cleanup.
+
+
+- 2026-10-11 — Replaced About porcelain imagery with real software proof, added service-specific engagement visuals and a localized FAQ handover package; enabled animated hover on inner-page disclosures, removed the custom pointer, and simplified the floating CTA to Make the call! / Hubungi. Porcelain imagery is prohibited on public pages.
+
+
+The copy guard permits the owner-approved exclamation mark only in the floating CTA spans; other copy remains guarded.
+- 2026-10-11 - Added mobile-only inner-page styling in src/styles/_inner-mobile.scss, scoped by BaseLayout inner-page class: compact service proof cards, native process disclosures, two-column Work/Notes, visible compact form labels, smaller About facts and footer. Inner mobile contact CTA is in document flow before the footer; Home remains unchanged. Research and responsive QA live in docs/design/mobile/.
