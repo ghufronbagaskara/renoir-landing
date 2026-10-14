@@ -20,10 +20,11 @@ async function captureSection(page, root, destination) {
     };
   });
   const screenshot = await page.screenshot({ fullPage: true });
-  await sharp(screenshot)
+  const cropped = await sharp(screenshot)
     .extract(bounds)
     .jpeg({ quality: 85 })
-    .toFile(destination);
+    .toBuffer();
+  await writeFile(destination, cropped);
 }
 async function check(name, run) {
   try {
@@ -123,7 +124,7 @@ try {
               root,
               resolve(
                 import.meta.dirname,
-                `qa/integrated-${route.startsWith("/id/") ? "id" : "en"}-${width}.jpg`,
+                `qa/integrated-final-${route.startsWith("/id/") ? "id" : "en"}-${width}.jpg`,
               ),
             );
           } finally {
@@ -232,6 +233,12 @@ try {
           page.on("request", (request) => requests.push(request.url()));
           await page.goto(base + route);
           assert.equal(await page.locator("[data-internal-flow]").count(), 0);
+          assert.equal(
+            (await page.content()).includes(
+              "querySelectorAll(`[data-internal-flow]`)",
+            ),
+            false,
+          );
           assert.equal(
             requests.some((url) =>
               /InternalFlow|internal-flow|scene-1440|station-/.test(url),
