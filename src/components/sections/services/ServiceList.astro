@@ -1,5 +1,6 @@
 ---
 import { getServices, serviceCopy } from "~/lib/content";
+import Img from "~/components/ui/Img.astro";
 import { child, path, t, type Locale } from "~/i18n";
 
 interface Props {
@@ -25,6 +26,7 @@ const services = await getServices();
         {
           services.map((entry, i) => {
             const copy = serviceCopy(entry, locale);
+            const sentenceEnd = copy.excerpt.indexOf(". ");
             const number = String(i + 1).padStart(3, "0");
             const title = (
               <div class:list={["si-service-2-text", { "service-2-right": i % 2 === 1 }]}>
@@ -36,10 +38,10 @@ const services = await getServices();
             );
             const text = (
               <div class:list={["si-service-2-p", { "service-2-left": i % 2 === 1 }]}>
-                <p>{copy.excerpt}</p>
+                <p>{sentenceEnd < 0 ? copy.excerpt : <><span class="service-card-lead">{copy.excerpt.slice(0, sentenceEnd + 1)}</span>{" "}<span class="service-card-detail">{copy.excerpt.slice(sentenceEnd + 2)}</span></>}</p>
               </div>
             );
-            return <div class="si-service-2-box">{i % 2 === 1 ? [text, title] : [title, text]}</div>;
+            return <div class="si-service-2-box"><div class="service-mobile-proof" aria-hidden="true"><Img src={entry.data.images[0].src} alt="" /></div>{i % 2 === 1 ? [text, title] : [title, text]}</div>;
           })
         }
       </div>
