@@ -46,7 +46,8 @@ const notes = await getNotes(locale);
                     <h2 class="h3">
                       <a class="underline-black" href={href}>{note.data.title}</a>
                     </h2>
-                    <p class="note-excerpt">{note.data.description}</p>
+                    <p class="note-excerpt desktop-card-description">{note.data.description}</p>
+                    <details class="mobile-card-details"><summary>{locale === "en" ? "Summary" : "Ringkasan"}</summary><p>{note.data.description}</p></details>
                   </div>
                   <div class="si-blog-standard-btn">
                     <a class="si-btn-one" href={href} aria-label={`${n.readMore}: ${note.data.title}`}>

@@ -45,8 +45,8 @@ const categories = Object.entries(
       ))
     }
   </div>
-  <div class="si-blog-sidebar-post">
-    <h2><a class="no-href">{n.recent}</a></h2>
+  <details class="si-blog-sidebar-post notes-recent" open>
+    <summary><h2>{n.recent}</h2></summary>
     {
       notes.slice(0, 4).map((note) => (
         <div class="si-blog-sidebar-right">
@@ -62,5 +62,9 @@ const categories = Object.entries(
         </div>
       ))
     }
-  </div>
+  </details>
 </aside>
+<script>
+  const recent = document.querySelector<HTMLDetailsElement>(".notes-recent");
+  if (recent && matchMedia("(max-width: 767px)").matches) recent.open = false;
+</script>
