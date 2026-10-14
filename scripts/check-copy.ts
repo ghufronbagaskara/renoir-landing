@@ -37,7 +37,9 @@ const problems: string[] = [];
 const pages = (await walk(DIST)).filter((f) => f.endsWith(".html") && !f.includes("pagefind"));
 for (const file of pages) {
   const html = await readFile(file, "utf8");
-  const text = visibleText(html.slice(html.indexOf("<body")));
+  // The owner explicitly approved this punctuation for the floating CTA.
+  const body = html.slice(html.indexOf("<body")).replace(/(<span class="floating-contact-(?:long|short)")([^>]*>)(Make the call!)(<\/span>)/g, "$1$2Make the call$4");
+  const text = visibleText(body);
   const lower = text.toLowerCase();
   for (const word of BANNED) {
     if (new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(lower)) problems.push(`${file}: banned word "${word}"`);
