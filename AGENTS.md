@@ -153,12 +153,14 @@ Team, pricing, and other unused template pages are not public routes. English an
   Redactions are defined in `scripts/work-redactions.json`; check every asset for private data before publication.
   The Order & Field Sales mobile hero is the real Sales Dashboard captured against a separate demo SQLite
   database inside ignored `.work-capture/order-sales/`. Never migrate or seed the source application's database.
-- Brand: `src/data/brand.ts` owns logo 08 geometry and the Midnight Blue + Cyan palette. `BrandMark.astro`
+- Brand: `src/data/brand.ts` owns the flowing logo 09 geometry, its navy/cyan gradient, and the Cobalt + Ink website palette. `brandArtwork()` shares the SVG paths and paint across the component and asset generators. `BrandMark.astro`
   supports color, white, and current-color variants. Header/offcanvas on light surfaces use color; inner header
   and footer use white. Keep the Katalhys wordmark beside the symbol. `bun run brand:assets` exports
   symbol-only SVGs under `public/brand/` and opaque white-background favicon/touch icons. Existing `renoir-*`
-  CSS tokens/classes and infrastructure names remain for compatibility. Cyan actions use dark text;
-  navy links remain readable on light surfaces. Name pronunciation is not part of brand content.
+  CSS tokens/classes and infrastructure names remain for compatibility. Primary actions are cobalt with white text;
+  inverse actions on cobalt use white with cobalt text. Color symbols retain navy `#173E72` to cyan `#64D6F2`;
+  white and current-color versions omit gradients. Inline color marks use unique gradient IDs. Favicon URLs carry
+  `?v=09` to refresh cached icons. Name pronunciation is not part of brand content.
   About uses real founder-project software screenshots; porcelain imagery is prohibited on public pages.
 - Icons: Font Awesome Pro classes from the template (`fa-sharp fa-regular fa-arrow-right`, `fa-brands …`).
   After adding a new `fa-*` class run `bun run icons:subset`.
@@ -270,7 +272,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 - Public-page stock photography has been replaced with Renoir campaign artwork, real founder-project screenshots, and
   SVG/CSS geometry. `docs/brand/editorial-image-system.md` records the generation brief. Final approval of all
   public assets and Work permissions is still required before launch.
-- Katalhys logo 08 and palette 10 are implemented for local review; co-owner approval is pending before launch.
+- Katalhys flowing logo 09 and the confirmed Cobalt + Ink website palette are implemented for local review; co-owner approval is pending before launch.
   The intended canonical domain is `katalhys.com`; verify ownership, DNS, and Turnstile configuration before deployment.
   Historical Renoir explorations and promotional projects remain archived; they are not current website identity.
   WhatsApp remains conditional on a verified contact-center number; `site.whatsapp` is currently `null`.
@@ -291,6 +293,8 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-10-15 - Replaced the stepped logo with the selected flowing logo 09, shared navy/cyan SVG gradients, white/mono variants and refreshed white-background icons. Applied the confirmed Cobalt + Ink palette to website UI, explanatory diagrams and campaign artwork; updated the EN/ID logo meaning and regenerated OG assets. Separated the 404 return button from heading decoration to prevent mobile overflow. Infrastructure preserved; no deployment.
 
 - 2026-10-15 - Applied the selected Katalhys logo 08 and Midnight Blue + Cyan palette for local review; added shared SVG geometry, color/white/mono exports, white-background favicon/touch icons, localized brand metadata and regenerated campaign/Notes/OG artwork. Removed obsolete name pronunciation and porcelain origin story. Co-owner identity approval and production domain configuration remain pending; no deployment.
 

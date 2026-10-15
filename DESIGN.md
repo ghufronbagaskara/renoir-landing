@@ -1,6 +1,6 @@
 # Katalhys visual direction
 
-Status: selected logo 08 and palette 10 applied to the local site on 2026-10-15. Co-owner approval remains pending. See `docs/brand/katalhys-identity.md` for assets and usage.
+Status: selected flowing logo 09 and confirmed Cobalt + Ink website palette applied to the local site on 2026-10-15. Co-owner approval remains pending. See `docs/brand/katalhys-identity.md` for assets and usage.
 
 ## Positioning
 
@@ -8,13 +8,13 @@ Katalhys connects identity, interface, websites, business systems, and the infra
 
 ## Design system
 
-- Palette: midnight blue (`#173E72`), cyan (`#64D6F2`), ink (`#16283C`), muted text (`#566678`), paper (`#F6FAFF`), and panel (`#E7EFF8`). Navy anchors dark sections and readable links. Cyan adds energy to primary actions and the separate logo block; use ink text on cyan. White logo variants belong on dark surfaces.
+- Website palette: cobalt (`#1D4ED8`), ice (`#DBEAFE`), ink (`#17191C`), muted text (`#596273`), white (`#FFFFFF`), and panel (`#EEF2F8`). Cobalt anchors primary actions and dark sections. Use white text on cobalt actions and cobalt text on inverse white actions. The selected logo keeps its own midnight blue (`#173E72`) and cyan (`#64D6F2`) gradient; white logo variants belong on dark surfaces.
 - Type: GeneralSans for display, Inter for body. These are already bundled, preload/fallback-tuned, and part of the existing performance budget; revisit only with measured evidence.
 - Layout: generous horizontal margins, clear section starts, smaller service headlines, readable measure, and low-density cards. No decorative text should compete with the offer.
 - Motion: desktop retains one-time GSAP reveals and lightweight parallax; phones use native one-time element reveals and do not download GSAP for them. UI motion uses `cubic-bezier(.16, 1, .3, 1)` and only animates transform/opacity. The contact signal pulses briefly every seven seconds and all non-essential motion stops under reduced motion. Avoid pinning or scroll-jacking.
 - Navigation: Home pill stays floating while scrolling; inner-page header remains simple. A contact CTA persists on every page. All service rows show a clear link affordance on hover and focus.
 - Proof: Work presents eight projects completed by the Katalhys founder. Credit the actual role, use real screens, and avoid unverified results or metrics. Internal screens must use dummy data or redact private details.
-- Brand mark: logo 08 is a solid stepped form with a rounded inner opening and a separate upper-right block. Its geometry lives in `src/data/brand.ts`. The same two paths drive the site component, exported SVGs, campaign artwork, and white-background favicon. Keep the wordmark beside the symbol in navigation and footer; symbol-only uses include watermarks and the favicon.
+- Brand mark: logo 09 has two curved fields around an open flowing channel. It expresses opening a path so businesses can move forward. Geometry and gradients live in `src/data/brand.ts`; `brandArtwork()` supplies the site, exported SVGs, campaign artwork, and white-background favicon. Inline gradient IDs are unique. Keep the wordmark beside the symbol in navigation and footer; symbol-only uses include watermarks and the favicon.
 - Photography: the hero and small About images show Katalhys identity artwork on photographic poster/publication surfaces. Exact SVG and typography are composited after generation. These are editorial illustrations, not proof of a real campaign installation. Only actual Work screenshots demonstrate product outcomes. No generated people, interfaces, offices, or abstract material sculptures. Prompts and crop roles are in `docs/brand/editorial-image-system.md`.
 
 ## Component direction
@@ -26,15 +26,17 @@ Katalhys connects identity, interface, websites, business systems, and the infra
 - Service detail: the hero and supporting images show real projects appropriate to each offer, with descriptive alt text and captions. Deployment has one honest architecture diagram until a safe Komodo capture exists.
 - Engagements: four divided service rows, not a 2×2 pricing grid; the expanded row holds scope details and its CTA. Dividing lines reveal once when in view; the details height is not animated.
 - Home motion: process stages and the image reveal once with transform and opacity. Four founder projects rotate through the home slider in the order Order & Field Sales, MAXY AI, Industrial Coatings, Deployment & Operations; three cards are visible on wide desktop, with a pause control and reduced-motion fallback. The Work page's three featured projects remain separate.
-- Work: three equal featured cards and the two-column catalog use a consistent 9:5 desktop-and-phone composition. Both screens remain visible without cropping. Detail pages use a solid dark header above a light canvas, then a compact breadcrumb, title, and two full-resolution screens side by side; on phones they stack. Context leads into numbered feature stories with real supporting screens, then role, services, and a consultation CTA. Screens can be opened at full size. On narrow Work details, the global floating CTA is hidden so it does not cover the screen captions; the page's own consultation CTA remains. Paper, ink, and navy and cyan accents frame the source UI without redrawing it.
+- Work: three equal featured cards and the two-column catalog use a consistent 9:5 desktop-and-phone composition. Both screens remain visible without cropping. Detail pages use a solid dark header above a light canvas, then a compact breadcrumb, title, and two full-resolution screens side by side; on phones they stack. Context leads into numbered feature stories with real supporting screens, then role, services, and a consultation CTA. Screens can be opened at full size. On narrow Work details, the global floating CTA is hidden so it does not cover the screen captions; the page's own consultation CTA remains. White, ink, and cobalt frame the source UI without redrawing it.
 - Notes: two-column reading grid with one sticky utility rail on desktop; single-column flow on smaller screens. Each article has a distinct explanatory diagram exported for article, list, card, and sidebar roles. EN/ID labels are rendered from the same diagram design using the site's font.
-- Shared surfaces: breadcrumb and footer use midnight blue and the white Katalhys symbol, with no repeated stock photo or texture request. Locale OG artwork uses the shared geometry and bundled GeneralSans font.
+- Shared surfaces: breadcrumb and footer use cobalt and the white Katalhys symbol, with no repeated stock photo or texture request. Locale OG artwork uses the shared geometry and bundled GeneralSans font.
 
 ## Review gates
 
 Before launch, review the new editorial assets and logo, provide a WhatsApp contact-center number, verify domain and contact details, and obtain permission for every public client/proof asset. Keep Lighthouse mobile performance ≥95, CLS 0, and TBT <100 ms. A local mobile pass after native phone reveals measured 87 / 0 / 270 ms. ScrollTrigger no longer loads on phones; the remaining long task is dominated by style/layout work from the template.
 
 ## Last updated
+
+- 2026-10-15 - Replaced the stepped mark with flowing logo 09, retaining its navy/cyan gradient while adopting the confirmed Cobalt + Ink website palette. Updated every shared symbol and regenerated campaign and icon assets for local review.
 
 - 2026-10-15 - Applied the selected Katalhys identity for local review, including vector logo variants, white-background icons, Midnight Blue + Cyan tokens, and refreshed website campaign artwork. Co-owner approval remains pending.
 
