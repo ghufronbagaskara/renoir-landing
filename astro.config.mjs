@@ -69,7 +69,7 @@ const searchIndex = () => ({
 
 // No adapter here on purpose: Alchemy's Cloudflare.Website.Astro injects its own (see scripts/build.ts).
 export default defineConfig({
-  site: process.env.SITE_URL ?? "https://renoir.run",
+  site: process.env.SITE_URL ?? "https://katalhys.com",
   output: "static",
   trailingSlash: "always",
   build: { format: "directory", inlineStylesheets: "always" },

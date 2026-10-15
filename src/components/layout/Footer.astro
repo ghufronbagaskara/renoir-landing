@@ -13,7 +13,7 @@ const c = t(locale);
 const links = footerLinks(locale);
 ---
 <footer class:list={["si-footer-area si-background", { "pt-127": !home }]}>
-  <BrandMark class="footer-watermark" />
+  <BrandMark class="footer-watermark" variant="white" />
   <div class="container container-1588">
     <div class="row">
       <div class="col-lg-7">
@@ -30,7 +30,7 @@ const links = footerLinks(locale);
     <div class="row border-line">
       <div class="col-lg-5 p-0">
         <div class="si-footer-logo">
-          <a class="renoir-brand" href={path("home", locale)}><BrandMark class="renoir-brand-mark" /><span class="renoir-wordmark">{c.site.name}</span></a>
+          <a class="renoir-brand" href={path("home", locale)}><BrandMark class="renoir-brand-mark" variant="white" /><span class="renoir-wordmark">{c.site.name}</span></a>
           <p>{c.footer.tagline}</p>
         </div>
       </div>

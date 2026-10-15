@@ -1,4 +1,4 @@
-// Renoir services (brief §4, copy deck §3). Each entry carries shared fields plus EN and ID copy.
+// Katalhys services (brief §4, copy deck §3). Each entry carries shared fields plus EN and ID copy.
 // `id` is the stable key; localized URL slugs live in `slug`.
 const media = {
   marketing: [
@@ -141,7 +141,7 @@ export const services = [
     en: {
       slug: "marketing-sites",
       title: "Marketing & landing sites",
-      metaTitle: "Marketing & Landing Sites Written From Scratch | Renoir",
+      metaTitle: "Marketing & Landing Sites Written From Scratch | Katalhys",
       metaDescription:
         "Fast, search-ready marketing sites built from zero, with performance and indexing targets agreed before we start and checked before launch.",
       excerpt:
@@ -197,7 +197,7 @@ export const services = [
     id_: {
       slug: "situs-marketing",
       title: "Situs marketing & landing page",
-      metaTitle: "Situs Marketing & Landing Page dari Nol | Renoir",
+      metaTitle: "Situs Marketing & Landing Page dari Nol | Katalhys",
       metaDescription:
         "Situs marketing yang cepat dan siap dicari, dibangun dari nol dengan target performa dan indexing yang disepakati sejak awal dan dicek sebelum live.",
       excerpt:
@@ -260,7 +260,7 @@ export const services = [
     en: {
       slug: "internal-systems",
       title: "Custom internal systems",
-      metaTitle: "Custom Internal Systems Built Around How You Work | Renoir",
+      metaTitle: "Custom Internal Systems Built Around How You Work | Katalhys",
       metaDescription:
         "Order tracking, dashboards, monitoring, approvals, and integrations — business software built around your process, delivered running with monitoring and backups.",
       excerpt:
@@ -316,7 +316,7 @@ export const services = [
     id_: {
       slug: "sistem-internal",
       title: "Sistem internal custom",
-      metaTitle: "Sistem Internal Custom Sesuai Cara Kerja Anda | Renoir",
+      metaTitle: "Sistem Internal Custom Sesuai Cara Kerja Anda | Katalhys",
       metaDescription:
         "Pelacakan order, dashboard, monitoring, persetujuan, dan integrasi — software bisnis yang mengikuti proses Anda, diserahkan berjalan dengan monitoring dan backup.",
       excerpt:
@@ -379,7 +379,7 @@ export const services = [
     en: {
       slug: "uiux-identity",
       title: "UI/UX & visual identity",
-      metaTitle: "UI/UX and Visual Identity Design | Renoir",
+      metaTitle: "UI/UX and Visual Identity Design | Katalhys",
       metaDescription:
         "Interface design and visual identity for digital products, websites, and businesses. Design can be scoped on its own or alongside a build.",
       excerpt:
@@ -425,7 +425,7 @@ export const services = [
     id_: {
       slug: "uiux-identitas",
       title: "UI/UX & identitas visual",
-      metaTitle: "Desain UI/UX dan Identitas Visual | Renoir",
+      metaTitle: "Desain UI/UX dan Identitas Visual | Katalhys",
       metaDescription:
         "Desain antarmuka dan identitas visual untuk produk digital, website, dan bisnis. Bisa dikerjakan sebagai proyek tersendiri atau bersama pembangunan.",
       excerpt:
@@ -463,7 +463,7 @@ export const services = [
             "Bisa. Desain dapat menjadi proyek tersendiri, dengan hasil akhir yang ditetapkan dalam scope tertulis.",
         },
         {
-          question: "Bisakah Renoir membangun desainnya juga?",
+          question: "Bisakah Katalhys membangun desainnya juga?",
           answer:
             "Bisa. Desain dan pembangunan dapat disusun dalam satu scope agar rancangan yang disetujui berlanjut sampai produk live.",
         },
@@ -479,9 +479,9 @@ export const services = [
     en: {
       slug: "deployment-care",
       title: "Deployment & care",
-      metaTitle: "Deployment, Monitoring & Website Care Retainers | Renoir",
+      metaTitle: "Deployment, Monitoring & Website Care Retainers | Katalhys",
       metaDescription:
-        "Servers, pipelines, monitoring, backups, domains, and SSL — included in every Renoir build and available as a monthly care retainer afterwards.",
+        "Servers, pipelines, monitoring, backups, domains, and SSL — included in every Katalhys build and available as a monthly care retainer afterwards.",
       excerpt:
         "Servers, pipelines, monitoring, backups, domains, certificates. Included in every build and available afterwards, so what we built keeps working.",
       tagline: "For every client, by default",
@@ -535,9 +535,9 @@ export const services = [
     id_: {
       slug: "deployment-perawatan",
       title: "Deployment & perawatan",
-      metaTitle: "Deployment, Monitoring & Retainer Perawatan Website | Renoir",
+      metaTitle: "Deployment, Monitoring & Retainer Perawatan Website | Katalhys",
       metaDescription:
-        "Server, pipeline, monitoring, backup, domain, dan SSL — termasuk di setiap proyek Renoir dan tersedia sebagai retainer perawatan bulanan setelahnya.",
+        "Server, pipeline, monitoring, backup, domain, dan SSL — termasuk di setiap proyek Katalhys dan tersedia sebagai retainer perawatan bulanan setelahnya.",
       excerpt:
         "Server, pipeline, monitoring, backup, domain, sertifikat. Termasuk di setiap proyek dan tersedia setelahnya, supaya yang kami bangun tetap bekerja.",
       tagline: "Untuk setiap klien, tanpa perlu diminta",

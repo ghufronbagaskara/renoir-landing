@@ -17,7 +17,7 @@ import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
 
 interface Props {
   locale: Locale;
-  /** Full <title> text (already includes "Renoir"). */
+  /** Full <title> text (already includes "Katalhys"). */
   title: string;
   description: string;
   /** URLs of this page in each language that has it (drives hreflang + the language switch). */
@@ -40,7 +40,7 @@ interface Props {
   schema?: JsonLd[];
   ogType?: "website" | "article";
 }
-const { locale, title, description, alternates, home = false, solidHeader = false, breadcrumb, noindex = false, searchable = !noindex, pageType, schema = [], ogType = "website", ogImage: ogImagePath = `/og/renoir-${locale}.jpg` } = Astro.props;
+const { locale, title, description, alternates, home = false, solidHeader = false, breadcrumb, noindex = false, searchable = !noindex, pageType, schema = [], ogType = "website", ogImage: ogImagePath = `/og/katalhys-${locale}.jpg` } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const canonical = abs(pathname);
@@ -63,6 +63,8 @@ const c = t(locale);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#173E72" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {
