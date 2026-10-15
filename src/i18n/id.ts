@@ -290,9 +290,9 @@ const id: Dictionary = {
     name: {
       label: "Tentang nama",
       title: "Nama yang berangkat dari peran katalis",
-      cardTitle: "Mengurangi hambatan melalui desain dan teknologi",
+      cardTitle: "Membuka jalan agar bisnis dapat bergerak maju",
       cardBody:
-        "Katalhys mengambil gagasan katalis: membantu bisnis mengurangi hambatan melalui desain dan teknologi. Kami menghubungkan identitas, pengalaman digital, dan sistem kerja agar hasilnya dapat digunakan serta terus dikembangkan.",
+        "Katalhys mengambil gagasan katalis: membantu bisnis mengurangi hambatan melalui desain dan teknologi. Dua bidang melengkung pada logo membentuk jalur putih yang terbuka, menggambarkan proses rumit yang dibuat lebih mudah dijalankan. Kami merancang website yang membantu pelanggan menemukan layanan dan membangun sistem yang menghubungkan pekerjaan beberapa divisi.",
     },
     band: "MULAI PROYEK · ",
     facts: [

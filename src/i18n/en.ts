@@ -288,9 +288,9 @@ const en = {
     name: {
       label: "The name",
       title: "A name shaped by our role",
-      cardTitle: "Removing obstacles through design and technology",
+      cardTitle: "Opening a path for businesses to move forward",
       cardBody:
-        "Katalhys draws on the idea of a catalyst: helping businesses remove obstacles through design and technology. We connect identity, digital experiences, and operational systems so the work can be used and developed further.",
+        "Katalhys draws on the idea of a catalyst: helping businesses remove obstacles through design and technology. Two curved forms leave an open white path between them, expressing how complex processes can become easier to run. We design websites that help customers find services and build systems that connect work across departments.",
     },
     band: "START A PROJECT · ",
     facts: [
