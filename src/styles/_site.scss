@@ -129,22 +129,27 @@ dialog.si-lightbox {
 
 // Katalhys palette; retain the existing token names for component compatibility.
 :root {
-  --renoir-accent: #173E72;
-  --renoir-accent-deep: #16283C;
-  --renoir-accent-soft: #E7EFF8;
-  --renoir-signal: #64D6F2;
-  --renoir-ink: #16283C;
-  --renoir-paper: #F6FAFF;
-  --renoir-panel: #E7EFF8;
-  --renoir-line: #c6d4e4;
-  --renoir-muted: #566678;
+  --renoir-accent: #1D4ED8;
+  --renoir-accent-deep: #153AA3;
+  --renoir-accent-soft: #DBEAFE;
+  --renoir-signal: #DBEAFE;
+  --renoir-ink: #17191C;
+  --renoir-paper: #FFFFFF;
+  --renoir-panel: #EEF2F8;
+  --renoir-line: #cbd3df;
+  --renoir-muted: #596273;
 }
 :focus-visible { outline: 3px solid var(--renoir-accent); outline-offset: 4px; }
-.si-btn-one { background: var(--renoir-signal); color: var(--renoir-ink); }
-.si-btn-one .btn-text { color: var(--renoir-ink); }
-.si-btn-one .btn-icon, .si-btn-one .btn-icon2 { background: var(--renoir-accent); }
-.si-btn-one .btn-icon i { color: #fff; }
-.si-btn-one:hover, .si-btn-one:focus-visible { background: var(--renoir-panel); color: var(--renoir-ink); }
+.si-btn-one { background: var(--renoir-accent); color: #fff; }
+.si-btn-one .btn-text { color: #fff; }
+.si-btn-one .btn-icon, .si-btn-one .btn-icon2 { background: #fff; }
+.si-btn-one .btn-icon i { color: var(--renoir-accent); }
+.si-btn-one:hover, .si-btn-one:focus-visible { background: var(--renoir-accent-deep); color: #fff; }
+.si-btn-one:is(.si-btn-white, .black-bg-btn) { background: #fff; color: var(--renoir-accent); }
+.si-btn-one:is(.si-btn-white, .black-bg-btn) .btn-text { color: var(--renoir-accent); }
+.si-btn-one:is(.si-btn-white, .black-bg-btn) .btn-icon { background: var(--renoir-accent); }
+.si-btn-one:is(.si-btn-white, .black-bg-btn) .btn-icon i { color: #fff; }
+.si-btn-one:is(.si-btn-white, .black-bg-btn):hover, .si-btn-one:is(.si-btn-white, .black-bg-btn):focus-visible { background: var(--renoir-accent-soft); }
 :is(.si-header-3-area, .si-breadcumb-area, .si-footer-area, .si-service-area, .renoir-statement-band) :focus-visible { outline-color: var(--renoir-signal); }
 
 .renoir-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--renoir-ink); text-decoration: none; white-space: nowrap; }
@@ -300,10 +305,10 @@ dialog.si-lightbox {
 .si-copyright-area .copyright-line { min-height: 0; padding: 16px 0; }
 .si-copyright-title p { margin: 0; }
 
-.floating-contact { position: fixed; z-index: 45; right: 20px; bottom: 20px; display: inline-flex; align-items: center; gap: 14px; min-height: 54px; padding: 0 20px; border-radius: 50px; background: var(--renoir-signal); color: var(--renoir-ink); box-shadow: 0 14px 34px rgba(23, 62, 114, .24); font-size: 14px; font-weight: 650; transition: transform .3s cubic-bezier(.16, 1, .3, 1), background-color .3s; isolation: isolate; }
-.floating-contact::before { content: ""; position: absolute; inset: -5px; z-index: -1; border: 1px solid rgba(23, 62, 114, .4); border-radius: inherit; opacity: 0; animation: cta-signal 7s cubic-bezier(.16, 1, .3, 1) infinite; }
+.floating-contact { position: fixed; z-index: 45; right: 20px; bottom: 20px; display: inline-flex; align-items: center; gap: 14px; min-height: 54px; padding: 0 20px; border-radius: 50px; background: var(--renoir-accent); color: #fff; box-shadow: 0 14px 34px rgba(29, 78, 216, .24); font-size: 14px; font-weight: 650; transition: transform .3s cubic-bezier(.16, 1, .3, 1), background-color .3s; isolation: isolate; }
+.floating-contact::before { content: ""; position: absolute; inset: -5px; z-index: -1; border: 1px solid rgba(29, 78, 216, .4); border-radius: inherit; opacity: 0; animation: cta-signal 7s cubic-bezier(.16, 1, .3, 1) infinite; }
 .floating-contact i { transition: transform .3s cubic-bezier(.16, 1, .3, 1); }
-.floating-contact:hover, .floating-contact:focus-visible { color: var(--renoir-ink); background: var(--renoir-panel); transform: translateY(-3px); }
+.floating-contact:hover, .floating-contact:focus-visible { color: #fff; background: var(--renoir-accent-deep); transform: translateY(-3px); }
 .floating-contact:hover i, .floating-contact:focus-visible i { transform: translate(3px, -3px); }
 .floating-contact-short { display: none; }
 @keyframes cta-signal { 0%, 78%, 100% { opacity: 0; transform: scale(.96); } 84% { opacity: .65; } 92% { opacity: 0; transform: scale(1.12); } }
@@ -505,7 +510,7 @@ dialog .si-search-results p { padding: 0 12px; }
 .work-case-facts dl > div { padding: 14px 0; border-top: 1px solid var(--renoir-line); }
 .work-case-facts dt { margin-bottom: 6px; font-weight: 650; }
 .work-case-facts dd { margin: 0; color: var(--renoir-muted); }
-.work-case-cta { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 52px; margin-top: 28px; padding: 12px 18px; border-radius: 9px; background: var(--renoir-signal); color: var(--renoir-ink); font-weight: 650; }
+.work-case-cta { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 52px; margin-top: 28px; padding: 12px 18px; border-radius: 9px; background: var(--renoir-accent); color: #fff; font-weight: 650; }
 .work-case-cta:hover, .work-case-cta:focus-visible { color: white; background: var(--renoir-ink); }
 .floating-contact[hidden] { display: none; }
 .work-case-neighbours { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 75px; padding-top: 28px; border-top: 1px solid var(--renoir-line); }
