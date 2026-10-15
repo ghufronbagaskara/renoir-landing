@@ -1,11 +1,9 @@
 ---
-import { brandColors, brandPaths } from "~/data/brand";
+import { brandArtwork } from "~/data/brand";
 interface Props { class?: string; variant?: "color" | "white" | "current" }
 const { class: className = "", variant = "color" } = Astro.props;
-const base = variant === "color" ? brandColors.primary : variant === "white" ? "#ffffff" : "currentColor";
-const accent = variant === "color" ? brandColors.accent : base;
+const artwork = brandArtwork(variant, `brand-${crypto.randomUUID()}`);
 ---
 <svg class={className} viewBox="0 0 256 256" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-  <path d={brandPaths.base} fill={base} />
-  <path d={brandPaths.accent} fill={accent} />
+  <Fragment set:html={artwork} />
 </svg>

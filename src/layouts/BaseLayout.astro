@@ -14,6 +14,7 @@ import { abs, graph, organization, webPage, website, type JsonLd, type PageMeta 
 // Preloaded so the hero heading doesn't reflow when the web font swaps in (CLS). Body text (Inter)
 // uses a metric-matched fallback instead (see utils/_typography.scss), so it needs no preload.
 import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
+import { brandColors } from "~/data/brand";
 
 interface Props {
   locale: Locale;
@@ -61,10 +62,10 @@ const c = t(locale);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#173E72" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=09" />
+    <link rel="icon" type="image/png" href="/favicon.png?v=09" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=09" />
+    <meta name="theme-color" content={brandColors.primary} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {

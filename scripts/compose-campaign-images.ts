@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { chromium } from "playwright";
 import { mkdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { brandColors, brandPaths } from "../src/data/brand.ts";
+import { brandArtwork, brandColors } from "../src/data/brand.ts";
 import { writeImage } from "./write-image.ts";
 
 const raw = join(process.cwd(), ".work-capture/renoir-visual");
@@ -22,7 +22,7 @@ async function artwork(
   const page = await browser.newPage({ viewport: { width, height } });
   try {
     const top = campaign ? 33 : 15;
-    const mark = `<path d="${brandPaths.base}" fill="${dark ? "#ffffff" : brandColors.primary}"/><path d="${brandPaths.accent}" fill="${dark ? "#ffffff" : brandColors.accent}"/>`;
+    const mark = brandArtwork(dark ? "white" : "color", "campaign");
     await page.setContent(
       `<style>@font-face{font-family:General;src:url(data:font/woff2;base64,${font})}*{box-sizing:border-box}body{margin:0;color:${dark ? "#ffffff" : brandColors.ink};font-family:General,sans-serif}main{position:relative;width:${width}px;height:${height}px}.symbol{position:absolute;left:12%;top:${top}%;width:${dark ? (campaign ? "44" : "40") : "11"}%}.name{position:absolute;left:12%;top:${top + (dark ? (campaign ? 39 : 49) : 6)}%;font-size:${width * 0.12}px;letter-spacing:-.055em;margin:0;line-height:1}.statement{position:absolute;left:12%;top:${top + 21}%;font-size:${width * 0.075}px;line-height:1.12;margin:0;letter-spacing:-.025em}.rule{position:absolute;left:12%;right:12%;top:${top + 41}%;height:2px;background:${brandColors.primary}}.scope{position:absolute;left:12%;top:${top + 44}%;font-size:${Math.max(9, width * 0.023)}px;letter-spacing:.025em;line-height:1.5}.number{position:absolute;right:12%;top:${top}%;font-size:${width * 0.021}px}</style><main><svg class="symbol" viewBox="0 0 256 256">${mark}</svg><p class="name">Katalhys</p>${dark ? "" : `<span class="number">INDEPENDENT DIGITAL STUDIO</span><p class="statement">Design<br>Build<br>Run</p><span class="rule"></span><p class="scope">WEBSITES / BUSINESS SYSTEMS / IDENTITY</p>`}</main>`,
     );
