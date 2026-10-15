@@ -2,6 +2,8 @@ import sharp from "sharp";
 import { chromium } from "playwright";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { brandColors } from "../src/data/brand.ts";
+import { writeImage } from "./write-image.ts";
 
 const raw = ".work-capture/renoir-visual";
 const out = "src/assets/img/editorial";
@@ -10,9 +12,9 @@ const font = (
   await readFile("src/assets/fonts/GeneralSans-Semibold.woff2")
 ).toString("base64");
 const browser = await chromium.launch({ headless: true });
-const ink = "#17191c",
-  blue = "#1d4ed8",
-  paper = "#f5f7fb";
+const ink = brandColors.ink,
+  blue = brandColors.primary,
+  paper = brandColors.paper;
 const rect = (x: number, y: number, w: number, h: number, fill = "#fff") =>
   `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${ink}" stroke-width="2"/>`;
 const text = (x: number, y: number, label: string, size = 25) =>
@@ -34,12 +36,12 @@ function scene(note: string, locale: string) {
       const x = 85 + i * 216;
       s +=
         rect(x, 190, 172, 310) +
-        rect(x + 15, 213, 142, 68, "#e5eaf2") +
+        rect(x + 15, 213, 142, 68, brandColors.panel) +
         line(x + 15, 311, 118) +
         line(x + 15, 333, 118) +
         line(x + 15, 355, 118) +
-        rect(x + 15, 395, 61, 70, "#e5eaf2") +
-        rect(x + 96, 395, 61, 70, "#e5eaf2");
+        rect(x + 15, 395, 61, 70, brandColors.panel) +
+        rect(x + 96, 395, 61, 70, brandColors.panel);
     }
     s +=
       arrow(718, 345, 61) +
@@ -49,7 +51,7 @@ function scene(note: string, locale: string) {
       line(1020, 238, 45) +
       line(850, 335, 200) +
       line(850, 357, 152) +
-      rect(849, 386, 232, 94, "#e5eaf2");
+      rect(849, 386, 232, 94, brandColors.panel);
     return (
       s +
       text(85, 574, id ? "Seragam" : "Repeated", 22) +
@@ -105,7 +107,7 @@ function scene(note: string, locale: string) {
     s +=
       rect(x, 190, 290, 300) +
       line(x, 230, 290) +
-      rect(x + 18, 250, 160, 70, "#e5eaf2") +
+      rect(x + 18, 250, 160, 70, brandColors.panel) +
       line(x + 18, 346, 244) +
       line(x + 18, 369, 201) +
       rect(x + 18, 405, 125, 46, blue) +
@@ -141,14 +143,16 @@ try {
         ["card", 700, 480],
         ["thumb", 180, 180],
       ] as const) {
-        await sharp(master)
+        const image = await sharp(master)
           .resize(width, height, {
             fit: "contain",
             background: paper,
             withoutEnlargement: true,
           })
           .webp({ quality: 90, effort: 6 })
-          .toFile(join(out, `note-${note}-${role}-${locale}.webp`));
+          .toBuffer();
+        const destination = join(out, `note-${note}-${role}-${locale}.webp`);
+        await writeImage(destination, image);
       }
     }
   }

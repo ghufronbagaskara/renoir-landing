@@ -2,13 +2,12 @@ import sharp from "sharp";
 import { chromium } from "playwright";
 import { mkdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
+import { brandColors, brandPaths } from "../src/data/brand.ts";
+import { writeImage } from "./write-image.ts";
 
 const raw = join(process.cwd(), ".work-capture/renoir-visual");
 const output = join(process.cwd(), "src/assets/img/editorial");
 await mkdir(output, { recursive: true });
-const mark = (await readFile("src/components/ui/BrandMark.astro", "utf8"))
-  .match(/<path[^>]+\/>/g)!
-  .join("");
 const font = (
   await readFile("src/assets/fonts/GeneralSans-Semibold.woff2")
 ).toString("base64");
@@ -23,8 +22,9 @@ async function artwork(
   const page = await browser.newPage({ viewport: { width, height } });
   try {
     const top = campaign ? 33 : 15;
+    const mark = `<path d="${brandPaths.base}" fill="${dark ? "#ffffff" : brandColors.primary}"/><path d="${brandPaths.accent}" fill="${dark ? "#ffffff" : brandColors.accent}"/>`;
     await page.setContent(
-      `<style>@font-face{font-family:General;src:url(data:font/woff2;base64,${font})}*{box-sizing:border-box}body{margin:0;color:${dark ? "#f5f7fb" : "#17191c"};font-family:General,sans-serif}main{position:relative;width:${width}px;height:${height}px}.symbol{position:absolute;left:12%;top:${top}%;width:${dark ? (campaign ? "54" : "40") : "11"}%;color:#1d4ed8}.name{position:absolute;left:12%;top:${top + (dark ? (campaign ? 39 : 49) : 6)}%;font-size:${width * (dark ? 0.125 : 0.145)}px;letter-spacing:-.055em;margin:0;line-height:1}.statement{position:absolute;left:12%;top:${top + 21}%;font-size:${width * 0.075}px;line-height:1.12;margin:0;letter-spacing:-.025em}.rule{position:absolute;left:12%;right:12%;top:${top + 41}%;height:1px;background:#17191c}.scope{position:absolute;left:12%;top:${top + 44}%;font-size:${Math.max(9, width * 0.023)}px;letter-spacing:.025em;line-height:1.5}.number{position:absolute;right:12%;top:${top}%;font-size:${width * 0.021}px}</style><main><svg class="symbol" viewBox="0 0 66 64" fill="currentColor">${mark}</svg><p class="name">Renoir</p>${dark ? "" : `<span class="number">INDEPENDENT DIGITAL STUDIO</span><p class="statement">Design.<br>Build.<br>Run.</p><span class="rule"></span><p class="scope">WEBSITES / BUSINESS SYSTEMS / IDENTITY</p>`}</main>`,
+      `<style>@font-face{font-family:General;src:url(data:font/woff2;base64,${font})}*{box-sizing:border-box}body{margin:0;color:${dark ? "#ffffff" : brandColors.ink};font-family:General,sans-serif}main{position:relative;width:${width}px;height:${height}px}.symbol{position:absolute;left:12%;top:${top}%;width:${dark ? (campaign ? "44" : "40") : "11"}%}.name{position:absolute;left:12%;top:${top + (dark ? (campaign ? 39 : 49) : 6)}%;font-size:${width * 0.12}px;letter-spacing:-.055em;margin:0;line-height:1}.statement{position:absolute;left:12%;top:${top + 21}%;font-size:${width * 0.075}px;line-height:1.12;margin:0;letter-spacing:-.025em}.rule{position:absolute;left:12%;right:12%;top:${top + 41}%;height:2px;background:${brandColors.primary}}.scope{position:absolute;left:12%;top:${top + 44}%;font-size:${Math.max(9, width * 0.023)}px;letter-spacing:.025em;line-height:1.5}.number{position:absolute;right:12%;top:${top}%;font-size:${width * 0.021}px}</style><main><svg class="symbol" viewBox="0 0 256 256">${mark}</svg><p class="name">Katalhys</p>${dark ? "" : `<span class="number">INDEPENDENT DIGITAL STUDIO</span><p class="statement">Design<br>Build<br>Run</p><span class="rule"></span><p class="scope">WEBSITES / BUSINESS SYSTEMS / IDENTITY</p>`}</main>`,
     );
     await page.evaluate(() => document.fonts.ready);
     return await page.screenshot({ omitBackground: true });
@@ -52,10 +52,11 @@ async function campaign(
       top,
     });
   }
-  await sharp(join(raw, source))
+  const master = await sharp(join(raw, source))
     .composite(layers)
     .png()
-    .toFile(join(raw, `${dest}.png`));
+    .toBuffer();
+  await writeImage(join(raw, `${dest}.png`), master);
 }
 
 async function webp(
@@ -66,10 +67,11 @@ async function webp(
   quality = 86,
 ) {
   const dest = join(output, `${name}.webp`);
-  await sharp(source)
+  const image = await sharp(source)
     .resize({ width, height, fit: "cover", withoutEnlargement: true })
     .webp({ quality, effort: 6, smartSubsample: true })
-    .toFile(dest);
+    .toBuffer();
+  await writeImage(dest, image);
   const meta = await sharp(dest).metadata();
   console.log(
     `${name}: ${meta.width}x${meta.height}, ${Math.round((await stat(dest)).size / 1024)} KB`,
@@ -132,17 +134,6 @@ try {
     await campaign(job.source, job.boxes, job.name, false);
     await webp(join(raw, `${job.name}.png`), job.name, 720, 720);
   }
-  await sharp(join(raw, "campaign-porcelain.png"))
-    .resize({
-      width: 720,
-      height: 900,
-      fit: "contain",
-      background: "#f5f7fb",
-      withoutEnlargement: true,
-    })
-    .webp({ quality: 85, effort: 6 })
-    .toFile("src/assets/img/about/porcelain-editorial.webp");
-
   for (const [name, project] of [
     ["home-proof-website", "maxy-ai"],
     ["home-proof-system", "order-sales"],
@@ -153,7 +144,7 @@ try {
       .toBuffer();
     const m = await sharp(input).metadata();
     const composite = await sharp({
-      create: { width: 720, height: 500, channels: 4, background: "#f5f7fb" },
+      create: { width: 720, height: 500, channels: 4, background: brandColors.paper },
     })
       .composite([
         {
@@ -172,14 +163,15 @@ try {
     ["design", "expert-profile"],
     ["care", "operations-control"],
   ] as const) {
-    await sharp(`src/assets/img/work/${project}/desktop.webp`)
+    const image = await sharp(`src/assets/img/work/${project}/desktop.webp`)
       .resize(720, 720, {
         fit: "contain",
-        background: "#f5f7fb",
+        background: brandColors.paper,
         withoutEnlargement: true,
       })
       .webp({ quality: 90, effort: 6 })
-      .toFile(join(output, `service-${service}-thumb.webp`));
+      .toBuffer();
+    await writeImage(join(output, `service-${service}-thumb.webp`), image);
   }
 } finally {
   await browser.close();
