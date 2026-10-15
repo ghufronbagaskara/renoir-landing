@@ -1,4 +1,4 @@
-# AGENTS.md — Renoir landing
+# AGENTS.md | Katalhys landing
 
 Single source of context for AI agents working on this repo. Read it fully before changing anything, and
 **update it in the same change** whenever you alter something it describes (stack, commands, structure,
@@ -6,12 +6,12 @@ conventions, infra, TODOs). Add a line to the changelog at the bottom.
 
 ## 1. What this is
 
-Marketing site for **Renoir**, a digital studio. Brand/company brief: [`docs/renoir-run.md`](docs/renoir-run.md).
+Marketing site for **Katalhys**, formerly Renoir, a digital studio. Historical company brief: [`docs/renoir-run.md`](docs/renoir-run.md). Current identity: [`docs/brand/katalhys-identity.md`](docs/brand/katalhys-identity.md). The selected identity is implemented for local review; co-owner approval is pending.
 
 | Phase | Scope | Status |
 | --- | --- | --- |
 | 1 | Clone 12 pages of the purchased **Averix** HTML template into Astro, as close to the original as possible, with high performance; working navigation (no dead links), working contact form, static search, IaC + CI ready to deploy | **Done** (not deployed yet) |
-| 2 | Renoir positioning, bilingual copy, four services and UI polish; replace demo imagery and approve final logo/client proof before launch | In progress |
+| 2 | Katalhys identity, bilingual copy, four services and UI polish; approve final logo/client proof before launch | In progress; co-owner identity approval pending |
 | 3 | SEO + GEO (metadata, structured data, sitemap, OG images, heading hierarchy, AI-crawler readability). Use the `astro-seo` skill | In progress; final domain/proof pending |
 
 During phase 1 the template's look wins over the brief when they conflict.
@@ -50,6 +50,7 @@ bun alchemy destroy --stage <stage>
 bun run images:mirror  # one-off: download demo images (already done; output committed in src/assets/img)
 bun run images:optimize# convert new jpg/png in src/assets/img to WebP (deletes originals)
 bun run images:editorial # ignored editorial masters → final WebP crops, proof composites, locale OG
+bun run brand:assets    # shared Katalhys geometry → color/white/mono SVGs + white-background favicon/touch icon
 bun run icons:subset   # regenerate Font Awesome subset after adding/removing fa-* icons
 cd promo/video/<name> && bunx hyperframes@0.8.145 check   # promo videos (HyperFrames); render: ... render --quality high --output renders/<name>.mp4
 node --experimental-strip-types scripts/capture-work-sources.ts <slug> <url> [desktop-path] [mobile-path]
@@ -133,7 +134,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   `<Image>`/`getImage` — Alchemy's adapter forces the passthrough image service, so nothing would be optimised.
 - Editorial masters live in ignored `.work-capture/renoir-visual/`; `scripts/compose-editorial-images.ts` makes
   the shipped WebP variants and locale OG JPEGs. Prompts and crop roles are in `docs/brand/editorial-image-system.md`.
-  Campaign photographs receive the exact Joint SVG and site typography through Sharp/Playwright, rather than generated lettering.
+  Campaign photographs receive the exact Katalhys SVG and site typography through Sharp/Playwright, rather than generated lettering.
   Service heroes and supporting images use actual Work screenshots with localized alt text and captions.
   Internal Systems additionally opens with `sections/services/InternalFlow.astro`: a labeled conceptual order
   scene under `assets/img/services/internal-flow/`, scoped SCSS and native TypeScript playback (finite 8s,
@@ -141,7 +142,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   Work screenshots remain separate proof. The floating contact CTA is hidden on these pages so it cannot cover
   the stage controls; the in-page CTA targets the existing form. Other services and homepage retain their presentation.
   Notes use explanatory diagrams with EN/ID labels and four WebP sizes. Process scenes are SVG with HTML labels;
-  shared page bands use CSS and The Joint geometry. `images:editorial` runs through Node TypeScript stripping.
+  shared page bands use CSS and Katalhys geometry. `images:editorial` runs through Node TypeScript stripping.
 - Work screenshots: raw PNGs live in ignored `.work-capture/<slug>/`. `scripts/compose-work-images.ts` keeps
   desktop/mobile and curated supporting screens at source resolution as high-quality WebP under
   `src/assets/img/work/<slug>/`; it also makes a 1800×1000 desktop-and-mobile `pair.webp` for cards and an OG JPEG.
@@ -152,8 +153,13 @@ Team, pricing, and other unused template pages are not public routes. English an
   Redactions are defined in `scripts/work-redactions.json`; check every asset for private data before publication.
   The Order & Field Sales mobile hero is the real Sales Dashboard captured against a separate demo SQLite
   database inside ignored `.work-capture/order-sales/`. Never migrate or seed the source application's database.
-- Brand: `src/components/ui/BrandMark.astro` and `public/favicon.svg` share the single-colour The Joint
-  geometry. Keep the wordmark beside the symbol in header, offcanvas, and footer. About uses real founder-project software screenshots; porcelain imagery is prohibited on public pages.
+- Brand: `src/data/brand.ts` owns logo 08 geometry and the Midnight Blue + Cyan palette. `BrandMark.astro`
+  supports color, white, and current-color variants. Header/offcanvas on light surfaces use color; inner header
+  and footer use white. Keep the Katalhys wordmark beside the symbol. `bun run brand:assets` exports
+  symbol-only SVGs under `public/brand/` and opaque white-background favicon/touch icons. Existing `renoir-*`
+  CSS tokens/classes and infrastructure names remain for compatibility. Cyan actions use dark text;
+  navy links remain readable on light surfaces. Name pronunciation is not part of brand content.
+  About uses real founder-project software screenshots; porcelain imagery is prohibited on public pages.
 - Icons: Font Awesome Pro classes from the template (`fa-sharp fa-regular fa-arrow-right`, `fa-brands …`).
   After adding a new `fa-*` class run `bun run icons:subset`.
 - Runtime-added classes must appear as strings in the JS (PurgeCSS scans each page's HTML + all built JS) or be
@@ -264,8 +270,9 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 - Public-page stock photography has been replaced with Renoir campaign artwork, real founder-project screenshots, and
   SVG/CSS geometry. `docs/brand/editorial-image-system.md` records the generation brief. Final approval of all
   public assets and Work permissions is still required before launch.
-- The Joint SVG now accompanies the Renoir wordmark and replaces the favicon. The owner should review this
-  direction before launch. Raster explorations and the porcelain illustration source live in `docs/brand/`.
+- Katalhys logo 08 and palette 10 are implemented for local review; co-owner approval is pending before launch.
+  The intended canonical domain is `katalhys.com`; verify ownership, DNS, and Turnstile configuration before deployment.
+  Historical Renoir explorations and promotional projects remain archived; they are not current website identity.
   WhatsApp remains conditional on a verified contact-center number; `site.whatsapp` is currently `null`.
 - Work now presents eight founder projects with EN/ID detail pages, paired desktop/mobile screens, feature stories, service filters, project OG images, and sitemap entries. The operations-control study still uses a sanitized architecture diagram and requires owner-provided Komodo access for its final dashboard screenshot. Client logo marquee and testimonials stay unpublished until real names/assets/quotes and permission exist.
 - SEO/GEO implementation is partial; verify final domain, OG assets and actual business details before launch.
@@ -284,6 +291,8 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-10-15 - Applied the selected Katalhys logo 08 and Midnight Blue + Cyan palette for local review; added shared SVG geometry, color/white/mono exports, white-background favicon/touch icons, localized brand metadata and regenerated campaign/Notes/OG artwork. Removed obsolete name pronunciation and porcelain origin story. Co-owner identity approval and production domain configuration remain pending; no deployment.
 
 - 2026-10-12 - Recorded the owner's no-closing-period rule for EN/ID website headings and promotional titles; applied it to the three enhanced Instagram carousels while keeping their restored original wording, captions and current visual design. Regenerated the 21 JPEGs and previews.
 
