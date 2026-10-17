@@ -1,5 +1,7 @@
 import { revealPanel } from "./disclosure-motion";
+const hover = matchMedia("(hover: hover) and (pointer: fine)");
 function select(button: HTMLButtonElement, opening: boolean) {
+  if (button.getAttribute("aria-expanded") === String(opening)) return;
   const root = button.closest<HTMLElement>("[data-accordion]")!;
   for (const b of root.querySelectorAll<HTMLButtonElement>(".accordion-buttons")) {
     const open = b === button && opening;
@@ -20,8 +22,10 @@ document.addEventListener("click", (event) => {
 for (const root of document.querySelectorAll<HTMLElement>("[data-hover-accordion]")) {
   for (const panel of root.querySelectorAll<HTMLElement>(".accordion-collapse")) panel.style.removeProperty("display");
   for (const item of root.querySelectorAll<HTMLElement>(".accordion-items")) {
-    item.querySelector("button")!.addEventListener("pointermove", () => {
-      if (matchMedia("(hover: hover) and (pointer: fine)").matches && !root.querySelector(".accordion-buttons:focus")) select(item.querySelector<HTMLButtonElement>("button")!, true);
+    const button = item.querySelector<HTMLButtonElement>("button")!;
+    button.addEventListener("pointermove", () => {
+      if (button.getAttribute("aria-expanded") === "true") return;
+      if (hover.matches && !root.querySelector(".accordion-buttons:focus")) select(button, true);
     });
   }
 }

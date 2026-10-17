@@ -72,8 +72,8 @@ export const workFeatures: Record<string, WorkFeature[]> = {
   "expert-profile": [
     {
       image: image("expert-profile", "resources"),
-      en: { title: "Visitors can find a useful next step", body: "Services and writing establish the areas Isaac works in. The free resources offer a more immediate entry point for people who want to learn before starting a collaboration conversation.", caption: "Resource section on the public site." },
-      id_: { title: "Pengunjung menemukan langkah berikutnya", body: "Layanan dan tulisan menjelaskan bidang kerja Isaac. Materi gratis memberi jalan masuk bagi pembaca yang ingin belajar sebelum memulai percakapan kerja sama.", caption: "Bagian materi gratis pada situs publik." },
+      en: { title: "Visitors can find a useful next step", body: "Services and writing establish the expert’s areas of work. The free resources offer a more immediate entry point for people who want to learn before starting a collaboration conversation.", caption: "Resource section on the public site." },
+      id_: { title: "Pengunjung menemukan langkah berikutnya", body: "Layanan dan tulisan menjelaskan bidang kerja ahli tersebut. Materi gratis memberi jalan masuk bagi pembaca yang ingin belajar sebelum memulai percakapan kerja sama.", caption: "Bagian materi gratis pada situs publik." },
     },
     {
       image: image("expert-profile", "resource-modal"),
@@ -119,8 +119,8 @@ export const workFeatures: Record<string, WorkFeature[]> = {
   ],
   "operations-control": [
     {
-      en: { title: "One controlled route into three applications", body: "A shared edge routes traffic to Fanos, Proteksindo, and Fanos Monitor. Komodo manages stack releases, while error monitoring and scheduled backups provide operational records. The public diagram omits hostnames and access details.", caption: "Simplified architecture; live Komodo capture awaits access." },
-      id_: { title: "Satu jalur terkendali untuk tiga aplikasi", body: "Lapisan routing bersama mengarahkan trafik ke Fanos, Proteksindo, dan Fanos Monitor. Komodo mengelola rilis stack, sedangkan pemantauan galat dan backup terjadwal memberi catatan operasional. Diagram publik tidak memuat hostname dan detail akses.", caption: "Arsitektur ringkas; tangkapan Komodo menunggu akses." },
+      en: { title: "One controlled route into three applications", body: "A shared edge routes traffic to the order workflow, field-project system, and activity dashboard. Komodo manages stack releases, while error monitoring and scheduled backups provide operational records. The public diagram omits hostnames and access details.", caption: "Simplified architecture; live Komodo capture awaits access." },
+      id_: { title: "Satu jalur terkendali untuk tiga aplikasi", body: "Lapisan routing bersama mengarahkan trafik ke alur pesanan, sistem proyek lapangan, dan dashboard aktivitas. Komodo mengelola rilis stack, sedangkan pemantauan galat dan backup terjadwal memberi catatan operasional. Diagram publik tidak memuat hostname dan detail akses.", caption: "Arsitektur ringkas; tangkapan Komodo menunggu akses." },
     },
   ],
 };

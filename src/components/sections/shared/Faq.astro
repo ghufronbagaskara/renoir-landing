@@ -18,7 +18,7 @@ const { id, label, title, items, locale } = Astro.props;
       <div class="col-lg-5">
         <div class="si-section-title pb-78">
           <span>{label}</span>
-          <h2 class="si-text-revel-anim">{title}</h2>
+          <h2>{title}</h2>
           {locale && <div class="handover-visual">
             <div class="handover-heading"><BrandMark /><span>{locale === "en" ? "Your project. Your files." : "Proyek Anda. File Anda."}</span></div>
             <ol>{(locale === "en" ? ["Source code", "Accounts & access", "Documentation"] : ["Kode sumber", "Akun & akses", "Dokumentasi"]).map((file, index) => <li><span aria-hidden="true">0{index + 1}</span>{file}<span aria-hidden="true">↗</span></li>)}</ol>

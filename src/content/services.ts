@@ -260,19 +260,19 @@ export const services = [
     en: {
       slug: "internal-systems",
       title: "Custom internal systems",
-      metaTitle: "Custom Internal Systems Built Around How You Work | Katalhys",
+      metaTitle: "AI-Integrated Internal Systems Built for Your Team | Katalhys",
       metaDescription:
-        "Order tracking, dashboards, monitoring, approvals, and integrations — business software built around your process, delivered running with monitoring and backups.",
+        "Custom internal systems with AI assistance for operators: information search, report summaries, order tracking and approvals, built around your team's workflow.",
       excerpt:
-        "Software built around how your business actually runs. Order and document tracking, operational dashboards, monitoring, approvals, internal tools, and integrations between systems that were never meant to talk to each other.",
+        "Software built around how your business runs, with AI assistance inside the workflow. Help operators find information, summarise reports, and prepare follow-ups alongside order tracking, dashboards, and approvals.",
       tagline: "For operations that outgrew spreadsheets",
-      heading: "Software shaped around how you work",
+      heading: "Your workflow, with AI alongside your team",
       intro: [
         "When orders live in chat threads, approvals live in someone's inbox, and the real numbers live in a spreadsheet only one person understands, the business is running on memory.",
-        "We build the system your team opens every morning: designed around your process, not a tool built for someone else's business.",
+        "We build the system your team opens every morning, with AI assistance connected to the information and tasks operators actually use. Your process shapes the software, and your team stays in control of decisions.",
       ],
       summary:
-        "Built from a written scope, shown on a staging URL while it's built, and deployed with monitoring and backups so it keeps running after handover.",
+        "We agree the AI tasks, data access, and review steps during scoping. You can follow the build on a staging URL; handover includes a running system, monitoring, and backups.",
       lists: [
         [
           "Order and document tracking",
@@ -280,6 +280,7 @@ export const services = [
           "Activity monitoring",
           "Approval workflows",
           "Internal tools",
+          "AI-assisted search and report summaries",
         ],
         [
           "Integrations between existing systems",
@@ -291,6 +292,10 @@ export const services = [
       ],
       formTitle: "Tell us how you work today",
       faq: [
+        {
+          question: "How does AI help the operator?",
+          answer: "AI can help find information, summarise records, or prepare follow-ups inside the system. We agree the tasks, permitted data, and review steps in the scope. Important actions stay subject to your team's approval.",
+        },
         {
           question: "How do you price an internal system?",
           answer:
@@ -316,19 +321,19 @@ export const services = [
     id_: {
       slug: "sistem-internal",
       title: "Sistem internal custom",
-      metaTitle: "Sistem Internal Custom Sesuai Cara Kerja Anda | Katalhys",
+      metaTitle: "Sistem Internal Terintegrasi AI untuk Tim Anda | Katalhys",
       metaDescription:
-        "Pelacakan order, dashboard, monitoring, persetujuan, dan integrasi — software bisnis yang mengikuti proses Anda, diserahkan berjalan dengan monitoring dan backup.",
+        "Sistem internal custom dengan bantuan AI untuk operator: pencarian informasi, ringkasan laporan, pelacakan order, dan persetujuan sesuai alur kerja tim Anda.",
       excerpt:
-        "Software yang dibangun mengikuti cara bisnis Anda berjalan. Pelacakan order dan dokumen, dashboard operasional, monitoring, persetujuan, tools internal, dan integrasi antar sistem yang tadinya tidak saling terhubung.",
+        "Software yang mengikuti cara bisnis Anda berjalan, dengan bantuan AI di dalam alur kerjanya. Operator dapat mencari informasi, merangkum laporan, dan menyiapkan tindak lanjut bersama pelacakan order, dashboard, dan persetujuan.",
       tagline: "Untuk operasional yang sudah melampaui spreadsheet",
-      heading: "Software yang mengikuti cara kerja Anda",
+      heading: "Alur kerja Anda, dibantu AI bersama tim",
       intro: [
         "Saat order tercatat di grup chat, persetujuan tersimpan di inbox seseorang, dan angka sebenarnya ada di spreadsheet yang hanya dipahami satu orang, bisnis Anda sedang berjalan di atas ingatan.",
-        "Kami membangun sistem yang dibuka tim Anda setiap pagi: dirancang mengikuti proses Anda, bukan tools yang dibuat untuk bisnis orang lain.",
+        "Kami membangun sistem yang dibuka tim Anda setiap pagi, dengan bantuan AI yang terhubung ke informasi dan tugas yang dipakai operator. Software mengikuti proses Anda, dan tim tetap memegang keputusan.",
       ],
       summary:
-        "Dikerjakan dari scope tertulis, bisa dilihat di URL staging selama proses, dan di-deploy dengan monitoring serta backup supaya tetap berjalan setelah serah terima.",
+        "Tugas AI, akses data, dan langkah review disepakati saat menyusun scope. Progres bisa dilihat di URL staging; serah terima mencakup sistem yang berjalan, monitoring, dan backup.",
       lists: [
         [
           "Pelacakan order dan dokumen",
@@ -336,6 +341,7 @@ export const services = [
           "Monitoring aktivitas",
           "Alur persetujuan",
           "Tools internal",
+          "Pencarian dan ringkasan laporan dengan AI",
         ],
         [
           "Integrasi antar sistem yang sudah ada",
@@ -347,6 +353,10 @@ export const services = [
       ],
       formTitle: "Ceritakan cara kerja Anda saat ini",
       faq: [
+        {
+          question: "Bagaimana AI membantu operator?",
+          answer: "AI dapat membantu mencari informasi, merangkum catatan, atau menyiapkan tindak lanjut di dalam sistem. Tugas, data yang boleh diakses, dan langkah review disepakati dalam scope. Tindakan penting tetap memerlukan persetujuan tim Anda.",
+        },
         {
           question: "Bagaimana harga sistem internal ditentukan?",
           answer:

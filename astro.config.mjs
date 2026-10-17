@@ -31,7 +31,7 @@ const purgeUnusedCss = () => ({
           content: [{ raw: html.replace(STYLE_TAG, ""), extension: "html" }, ...scripts],
           css: [{ raw: css }],
           fontFace: false,
-          keyframes: false,
+          keyframes: true,
           variables: false,
           safelist: {
             standard: [/^swiper/, /^is-/, /^has-/, /^show$/, /^collapsed$/, /^active$/, /^opened$/, /^with-blur$/],

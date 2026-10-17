@@ -74,7 +74,7 @@ const text = (project: (typeof projects)[number]) => {
         return (
           <div class="work-card-shell" data-work-card data-services={project.data.serviceIds.join(" ")} data-search={text(project)}>
             <article class="si-project-3-box">
-              <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 si_fade_anim fix not-hide-cursor" data-cursor={w.view}>
+              <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 fix not-hide-cursor" data-cursor={w.view}>
                 <a class="cursor-hide img-cover" href={href} tabindex="-1" aria-hidden="true">
                   <Img src={project.data.pairImage} srcset={`${imageUrl(project.data.pairImage.replace("pair.webp", "pair-mobile.webp"))} 720w, ${imageUrl(project.data.pairImage)} 1800w`} sizes="(max-width: 767px) calc((100vw - 36px) / 2), 45vw" alt="" loading={index < 2 ? "eager" : "lazy"} />
                 </a>

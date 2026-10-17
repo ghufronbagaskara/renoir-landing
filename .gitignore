@@ -9,3 +9,9 @@ averix-modern-creative-agency-html-template-*/
 .tmp*
 .work-capture/
 .playwright-mcp/
+
+promo/video/**/.hyperframes/
+promo/video/**/.thumbnails/
+promo/video/**/.waveform-cache/
+promo/video/**/renders/
+promo/video/**/snapshots/

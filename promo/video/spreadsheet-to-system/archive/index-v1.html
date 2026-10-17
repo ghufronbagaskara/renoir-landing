@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1080, height=1920">
-    <title>Renoir — Spreadsheet to system</title>
-    <script src="assets/gsap.min.js"></script>
+    <title>Katalhys — Spreadsheet to system</title>
+    <script src="../assets/gsap.min.js"></script>
     <style>
-      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; }
-      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; }
-      @font-face { font-family: "General Sans"; src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2"); font-weight: 700; }
-      @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-Variable.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "General Sans"; src: url("../assets/fonts/GeneralSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "General Sans"; src: url("../assets/fonts/GeneralSans-Semibold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "General Sans"; src: url("../assets/fonts/GeneralSans-Bold.woff2") format("woff2"); font-weight: 700; }
+      @font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-Variable.woff2") format("woff2"); font-weight: 100 900; }
 
       :root {
-        --paper: #f5f7fb;
+        --paper: #ffffff;
         --ink: #17191c;
         --cobalt: #1d4ed8;
-        --cobalt-tint: #e6ecfb;
-        --stone: #565c66;
+        --cobalt-tint: #dbeafe;
+        --stone: #596273;
         --line: #d5dae3;
         --white: #ffffff;
       }
@@ -76,7 +76,7 @@
       #sys-phone { left: 750px; top: 940px; width: 278px; }
       #sys-phone .screen { height: 541px; }
 
-      /* Scene 3 — four ways to work with Renoir */
+      /* Scene 3 — four ways to work with Katalhys */
       .svc { position: absolute; left: 60px; top: 650px; width: 960px; height: 860px; border-radius: 30px; overflow: hidden; background: var(--white); border: 2px solid var(--line); }
       .svc header { height: 230px; padding: 34px 40px 0; }
       .svc .num { font-family: "General Sans", sans-serif; font-weight: 600; font-size: 30px; color: var(--cobalt); letter-spacing: 0.04em; }
@@ -92,9 +92,9 @@
       .ops li span { color: rgba(255, 255, 255, 0.62); font-size: 30px; display: flex; align-items: center; gap: 14px; }
       .ops li svg { width: 34px; height: 34px; }
 
-      /* Scene 4 — The Joint */
+      /* Scene 4 — Flowing mark 09 */
       #ink { position: absolute; inset: 0; background: var(--ink); }
-      #joint { position: absolute; left: 375px; top: 470px; width: 330px; height: 320px; overflow: visible; }
+      #joint { position: absolute; left: 375px; top: 470px; width: 330px; height: 330px; overflow: visible; }
       .plane-label { position: absolute; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 34px; color: rgba(255, 255, 255, 0.7); letter-spacing: 0.02em; }
       #wordmark { position: absolute; left: 0; right: 0; top: 850px; text-align: center; font-family: "General Sans", sans-serif; font-weight: 600; font-size: 168px; letter-spacing: -0.04em; color: var(--white); line-height: 1; }
       #tagline { position: absolute; left: 60px; right: 60px; top: 1100px; text-align: center; color: var(--white); }
@@ -102,7 +102,7 @@
       #tagline .t span { display: block; }
       #tagline .s { margin-top: 26px; font-size: 36px; color: rgba(255, 255, 255, 0.66); }
 
-      /* Scene 5 — the Renoir website */
+      /* Scene 5 — the Katalhys website */
       #site-phone { left: 315px; top: 600px; width: 450px; }
       #site-phone .screen { height: 909px; }
       #site-img { width: 420px; }
@@ -160,34 +160,34 @@
       <!-- 3.4–7.9s: the real system -->
       <section data-hf-id="hf-sq2j" id="c-sys" class="clip" data-start="3.4" data-duration="4.5" data-track-index="4">
         <div data-hf-id="hf-0adq" class="head" id="sys-head">
-          <h1 data-hf-id="hf-x7mn" class="h1"><span data-hf-id="hf-te2w" class="w">We</span> <span data-hf-id="hf-mjig" class="w">build</span> <span data-hf-id="hf-cto3" class="w">the</span> <span data-hf-id="hf-xxf7" class="w accent">system</span> <span data-hf-id="hf-zeec" class="w">behind</span> <span data-hf-id="hf-3rmp" class="w">it.</span></h1>
+          <h1 data-hf-id="hf-x7mn" class="h1"><span data-hf-id="hf-te2w" class="w">We</span> <span data-hf-id="hf-mjig" class="w">build</span> <span data-hf-id="hf-cto3" class="w">the</span> <span data-hf-id="hf-xxf7" class="w accent">system</span> <span data-hf-id="hf-zeec" class="w">behind</span> <span data-hf-id="hf-3rmp" class="w">it</span></h1>
           <p data-hf-id="hf-jlll" class="sub" id="sys-sub">Sistem internal yang mengikuti cara kerja bisnis Anda.</p>
         </div>
         <div data-hf-id="hf-mnpi" class="chip label" id="sys-chip"><i data-hf-id="hf-ylp6"></i>Proyek nyata · Order &amp; Field Sales</div>
         <div data-hf-id="hf-ktfa" class="browser" id="sys-browser">
           <div data-hf-id="hf-ufsv" class="bar"><i data-hf-id="hf-0l8b"></i><i data-hf-id="hf-0zjc"></i><i data-hf-id="hf-zsm9"></i></div>
-          <div data-hf-id="hf-2ycw" class="shot"><img data-hf-id="hf-a8fz" id="sys-shot" src="assets/img/order-desktop.webp" alt=""></div>
+          <div data-hf-id="hf-2ycw" class="shot"><img data-hf-id="hf-a8fz" id="sys-shot" src="../assets/img/order-desktop.webp" alt=""></div>
         </div>
-        <div data-hf-id="hf-yb6u" class="phone" id="sys-phone"><div data-hf-id="hf-cdmk" class="screen"><img data-hf-id="hf-q6vx" src="assets/img/order-mobile.webp" alt=""></div></div>
+        <div data-hf-id="hf-yb6u" class="phone" id="sys-phone"><div data-hf-id="hf-cdmk" class="screen"><img data-hf-id="hf-q6vx" src="../assets/img/order-mobile.webp" alt=""></div></div>
       </section>
 
-      <!-- 7.3–12.6s: four ways to work with Renoir -->
+      <!-- 7.3–12.6s: four ways to work with Katalhys -->
       <section data-hf-id="hf-aesv" id="c-svc" class="clip" data-start="7.3" data-duration="5.3" data-track-index="5">
         <div data-hf-id="hf-fpb9" class="head" id="svc-head">
-          <h1 data-hf-id="hf-wtbm" class="h1"><span data-hf-id="hf-iogc" class="w">One</span> <span data-hf-id="hf-acza" class="w">studio,</span> <span data-hf-id="hf-jgko" class="w">from</span> <span data-hf-id="hf-u8a6" class="w">design</span> <span data-hf-id="hf-z575" class="w">to</span> <span data-hf-id="hf-eycp" class="w accent">server.</span></h1>
+          <h1 data-hf-id="hf-wtbm" class="h1"><span data-hf-id="hf-iogc" class="w">One</span> <span data-hf-id="hf-acza" class="w">studio,</span> <span data-hf-id="hf-jgko" class="w">from</span> <span data-hf-id="hf-u8a6" class="w">design</span> <span data-hf-id="hf-z575" class="w">to</span> <span data-hf-id="hf-eycp" class="w accent">server</span></h1>
           <p data-hf-id="hf-l2ma" class="sub" id="svc-sub">Mulai dari desain saja, atau lanjut sampai peluncuran.</p>
         </div>
         <article data-hf-id="hf-xf24" class="svc" data-layout-allow-overflow="" data-layout-allow-overlap="" id="s1">
           <header data-hf-id="hf-0drs"><div data-hf-id="hf-rokj" class="num">01</div><h2 data-hf-id="hf-14v9">Websites</h2><p data-hf-id="hf-587v">Situs marketing &amp; landing page</p></header>
-          <div data-hf-id="hf-v3x0" class="media"><img data-hf-id="hf-c6f4" src="assets/img/maxy-desktop.webp" alt=""></div>
+          <div data-hf-id="hf-v3x0" class="media"><img data-hf-id="hf-c6f4" src="../assets/img/maxy-desktop.webp" alt=""></div>
         </article>
         <article data-hf-id="hf-8ajr" class="svc" data-layout-allow-overflow="" data-layout-allow-overlap="" id="s2">
           <header data-hf-id="hf-igeo"><div data-hf-id="hf-ra9i" class="num">02</div><h2 data-hf-id="hf-5tw7">Systems</h2><p data-hf-id="hf-mvf2">Sistem internal custom</p></header>
-          <div data-hf-id="hf-ddpo" class="media"><img data-hf-id="hf-vdod" src="assets/img/field-desktop.webp" alt=""></div>
+          <div data-hf-id="hf-ddpo" class="media"><img data-hf-id="hf-vdod" src="../assets/img/field-desktop.webp" alt=""></div>
         </article>
         <article data-hf-id="hf-4cfq" class="svc" data-layout-allow-overflow="" data-layout-allow-overlap="" id="s3">
           <header data-hf-id="hf-h9hl"><div data-hf-id="hf-qvyh" class="num">03</div><h2 data-hf-id="hf-2841">UI/UX &amp; identity</h2><p data-hf-id="hf-dxye">UI/UX &amp; identitas visual</p></header>
-          <div data-hf-id="hf-c6sl" class="media"><img data-hf-id="hf-ea5j" src="assets/img/coatings-desktop.webp" alt=""></div>
+          <div data-hf-id="hf-c6sl" class="media"><img data-hf-id="hf-ea5j" src="../assets/img/coatings-desktop.webp" alt=""></div>
         </article>
         <article data-hf-id="hf-d0bl" class="svc" data-layout-allow-overflow="" data-layout-allow-overlap="" id="s4">
           <header data-hf-id="hf-hnsm"><div data-hf-id="hf-qhng" class="num">04</div><h2 data-hf-id="hf-6m0j">Deploy &amp; care</h2><p data-hf-id="hf-nqmb">Deployment &amp; perawatan</p></header>
@@ -206,33 +206,29 @@
         </article>
       </section>
 
-      <!-- 12.2–15.7s: The Joint assembles -->
+      <!-- 12.2–15.7s: Flowing mark 09 assembles -->
       <section data-hf-id="hf-kkug" id="c-logo" class="clip" data-start="12.2" data-duration="3.5" data-track-index="6">
         <div data-hf-id="hf-5lnr" id="ink"></div>
-        <svg data-hf-id="hf-kwdm" id="joint" viewBox="0 0 66 64" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-          <path data-hf-id="hf-ee9v" id="p1" d="M27 11 43 2v36L27 47V11Z" />
-          <path data-hf-id="hf-bwhb" id="p2" d="M3 45 24 33 42 44 21 56 3 45Z" />
-          <path data-hf-id="hf-7jih" id="p3" d="M47 31 63 40v20L46 50V31Z" />
-        </svg>
+        <svg data-hf-id="hf-kwdm" id="joint" viewBox="0 0 256 256" fill="#ffffff" xmlns="http://www.w3.org/2000/svg"><g data-hf-id="hf-k2ds" transform="translate(0 17.4) scale(.790123)"><path data-hf-id="hf-t3c7" id="p1" d="M0 99C53 60 120 4 165 1C205 -4 232 12 244 39C262 79 232 120 201 148Q196 156 206 152C250 126 284 102 324 71V172C292 200 261 216 229 218C194 220 170 206 170 177C170 159 180 141 180 125C181 97 157 88 133 88C91 87 43 110 0 129Z"/><path data-hf-id="hf-lfcz" id="p2" d="M0 180C39 153 85 120 111 120C137 118 145 132 139 152C132 174 118 190 124 212C132 242 160 249 198 253C161 267 125 280 90 280C35 283 1 261 0 214Z"/></g></svg>
         <div data-hf-id="hf-579c" class="plane-label" id="l1" style="left: 470px; top: 400px">Design</div>
         <div data-hf-id="hf-yztr" class="plane-label" id="l2" style="left: 250px; top: 790px">Build</div>
         <div data-hf-id="hf-c28g" class="plane-label" id="l3" style="left: 720px; top: 780px">Run</div>
-        <div data-hf-id="hf-1de7" id="wordmark">Renoir</div>
+        <div data-hf-id="hf-1de7" id="wordmark">Katalhys</div>
         <div data-hf-id="hf-vin9" id="tagline">
-          <div data-hf-id="hf-i7y4" class="t"><span data-hf-id="hf-sa4x">Make a stronger impression.</span><span data-hf-id="hf-4kxy">Run a better operation.</span></div>
+          <div data-hf-id="hf-i7y4" class="t"><span data-hf-id="hf-sa4x">Make a stronger impression</span><span data-hf-id="hf-4kxy">Run a better operation</span></div>
           <div data-hf-id="hf-tqno" class="s">Tampil meyakinkan. Bekerja lebih rapi.</div>
         </div>
       </section>
 
-      <!-- 15.2–19.3s: the Renoir website on a phone -->
+      <!-- 15.2–19.3s: the Katalhys website on a phone -->
       <section data-hf-id="hf-qrk5" id="c-site" class="clip" data-start="15.2" data-duration="4.1" data-track-index="7">
         <div data-hf-id="hf-lrxk" class="head" id="site-head">
-          <h1 data-hf-id="hf-wf0l" class="h1"><span data-hf-id="hf-nqaj" class="w">See</span> <span data-hf-id="hf-cfd2" class="w">the</span> <span data-hf-id="hf-35et" class="w">work</span> <span data-hf-id="hf-b15h" class="w">on</span> <span data-hf-id="hf-0l12" class="w">our</span> <span data-hf-id="hf-pgph" class="w accent">site.</span></h1>
+          <h1 data-hf-id="hf-wf0l" class="h1"><span data-hf-id="hf-nqaj" class="w">See</span> <span data-hf-id="hf-cfd2" class="w">the</span> <span data-hf-id="hf-35et" class="w">work</span> <span data-hf-id="hf-b15h" class="w">on</span> <span data-hf-id="hf-0l12" class="w">our</span> <span data-hf-id="hf-pgph" class="w accent">site</span></h1>
           <p data-hf-id="hf-2a6o" class="sub" id="site-sub">Layanan, karya, dan proses kami ada di website.</p>
         </div>
         <div data-hf-id="hf-esp0" class="phone" id="site-phone">
           <div data-hf-id="hf-0hv8" class="screen">
-            <img data-hf-id="hf-3xmg" data-layout-allow-overflow="" id="site-img" src="assets/img/site-home.jpg" alt="">
+            <img data-hf-id="hf-3xmg" data-layout-allow-overflow="" id="site-img" src="../assets/img/site-home.jpg" alt="">
             <div data-hf-id="hf-5jlm" class="fab" id="fab">Apa masalahnya? <svg data-hf-id="hf-yh65" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path data-hf-id="hf-kfpa" d="M7 17 17 7M9 7h8v8" /></svg></div>
           </div>
         </div>
@@ -243,43 +239,43 @@
       <section data-hf-id="hf-k1jo" id="c-cta" class="clip" data-start="18.6" data-duration="3.4" data-track-index="8">
         <div data-hf-id="hf-nz2e" id="cta-ink"></div>
         <div data-hf-id="hf-okrw" id="cta-head">
-          <h1 data-hf-id="hf-z75s" class="h1"><span data-hf-id="hf-x9v7" class="w">Tell</span> <span data-hf-id="hf-xj0s" class="w">us</span> <span data-hf-id="hf-14v0" class="w">what's</span> <span data-hf-id="hf-tf3d" class="w">broken.</span></h1>
+          <h1 data-hf-id="hf-z75s" class="h1"><span data-hf-id="hf-x9v7" class="w">Tell</span> <span data-hf-id="hf-xj0s" class="w">us</span> <span data-hf-id="hf-14v0" class="w">what's</span> <span data-hf-id="hf-tf3d" class="w">broken</span></h1>
           <p data-hf-id="hf-rl5g" class="sub" id="cta-sub">Ceritakan yang ingin Anda perbaiki. Kami bertanya seperlunya, lalu menyusun pekerjaannya.</p>
         </div>
         <div data-hf-id="hf-aljz" id="cta-btn">Ceritakan masalahnya <svg data-hf-id="hf-10c7" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path data-hf-id="hf-pjs2" d="M7 17 17 7M9 7h8v8" /></svg></div>
         <div data-hf-id="hf-fugd" id="cta-bio">Link di bio</div>
         <div data-hf-id="hf-1b79" id="cta-sign">
-          <svg data-hf-id="hf-1l6u" viewBox="0 0 66 64" fill="#ffffff"><path data-hf-id="hf-n2v8" d="M27 11 43 2v36L27 47V11Z" /><path data-hf-id="hf-36tf" d="M3 45 24 33 42 44 21 56 3 45Z" /><path data-hf-id="hf-wce4" d="M47 31 63 40v20L46 50V31Z" /></svg>
-          <b data-hf-id="hf-5a9s">Renoir</b>
+          <svg data-hf-id="hf-1l6u" viewBox="0 0 256 256" fill="#ffffff"><g data-hf-id="hf-78bs" transform="translate(0 17.4) scale(.790123)"><path data-hf-id="hf-yhj4" d="M0 99C53 60 120 4 165 1C205 -4 232 12 244 39C262 79 232 120 201 148Q196 156 206 152C250 126 284 102 324 71V172C292 200 261 216 229 218C194 220 170 206 170 177C170 159 180 141 180 125C181 97 157 88 133 88C91 87 43 110 0 129Z"/><path data-hf-id="hf-n7pb" d="M0 180C39 153 85 120 111 120C137 118 145 132 139 152C132 174 118 190 124 212C132 242 160 249 198 253C161 267 125 280 90 280C35 283 1 261 0 214Z"/></g></svg>
+          <b data-hf-id="hf-5a9s">Katalhys</b>
         </div>
       </section>
 
       <!-- Audio: music bed (Mixkit "Rising Forest", trimmed from 0:43) and SFX -->
-      <audio data-hf-id="hf-rbzm" id="a-music" src="assets/audio/music-rising-forest.mp3" data-start="0" data-duration="22" data-track-index="20" data-volume="0.85"></audio>
-      <audio data-hf-id="hf-q10a" id="a-typing" src="assets/audio/sfx-typing.mp3" data-start="0" data-duration="3.4" data-track-index="21" data-volume="0.35"></audio>
-      <audio data-hf-id="hf-k87h" id="a-pop1" src="assets/audio/sfx-message-pop.mp3" data-start="0.55" data-duration="1.06" data-track-index="22" data-volume="0.5"></audio>
-      <audio data-hf-id="hf-7xam" id="a-pop2" src="assets/audio/sfx-message-pop.mp3" data-start="1.15" data-duration="1.06" data-track-index="23" data-volume="0.5"></audio>
-      <audio data-hf-id="hf-6z06" id="a-pop3" src="assets/audio/sfx-message-pop.mp3" data-start="1.75" data-duration="1.06" data-track-index="24" data-volume="0.5"></audio>
-      <audio data-hf-id="hf-ewyf" id="a-pop4" src="assets/audio/sfx-message-pop.mp3" data-start="2.35" data-duration="1.06" data-track-index="25" data-volume="0.5"></audio>
-      <audio data-hf-id="hf-rynb" id="a-whoosh" src="assets/audio/sfx-whoosh-fast.mp3" data-start="2.73" data-duration="1.76" data-track-index="26" data-volume="0.6"></audio>
-      <audio data-hf-id="hf-9jsf" id="a-k1" src="assets/audio/sfx-dry-pop.mp3" data-start="4.05" data-duration="0.3" data-track-index="27" data-volume="0.45"></audio>
-      <audio data-hf-id="hf-yyta" id="a-k2" src="assets/audio/sfx-dry-pop.mp3" data-start="4.15" data-duration="0.3" data-track-index="28" data-volume="0.45"></audio>
-      <audio data-hf-id="hf-a5wp" id="a-k3" src="assets/audio/sfx-dry-pop.mp3" data-start="4.25" data-duration="0.3" data-track-index="29" data-volume="0.45"></audio>
-      <audio data-hf-id="hf-n74v" id="a-sw1" src="assets/audio/sfx-sweep.mp3" data-start="4.6" data-duration="0.78" data-track-index="30" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-dlkg" id="a-sw2" src="assets/audio/sfx-sweep.mp3" data-start="5.35" data-duration="0.78" data-track-index="31" data-volume="0.35"></audio>
-      <audio data-hf-id="hf-x9u5" id="a-sw3" src="assets/audio/sfx-sweep.mp3" data-start="7.3" data-duration="0.78" data-track-index="32" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-jswc" id="a-sw4" src="assets/audio/sfx-sweep.mp3" data-start="8.5" data-duration="0.78" data-track-index="33" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-tbmn" id="a-sw5" src="assets/audio/sfx-sweep.mp3" data-start="9.7" data-duration="0.78" data-track-index="34" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-39u5" id="a-sw6" src="assets/audio/sfx-sweep.mp3" data-start="10.9" data-duration="0.78" data-track-index="35" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-clyj" id="a-t1" src="assets/audio/sfx-tech-select.mp3" data-start="11.6" data-duration="0.5" data-track-index="36" data-volume="0.3"></audio>
-      <audio data-hf-id="hf-h8e3" id="a-t2" src="assets/audio/sfx-tech-select.mp3" data-start="11.8" data-duration="0.5" data-track-index="37" data-volume="0.3"></audio>
-      <audio data-hf-id="hf-vv48" id="a-t3" src="assets/audio/sfx-tech-select.mp3" data-start="12.0" data-duration="0.5" data-track-index="38" data-volume="0.3"></audio>
-      <audio data-hf-id="hf-300p" id="a-air" src="assets/audio/sfx-air-woosh.mp3" data-start="12.55" data-duration="2.32" data-track-index="39" data-volume="0.55"></audio>
-      <audio data-hf-id="hf-wwga" id="a-lock" src="assets/audio/sfx-pop-whoosh.mp3" data-start="13.25" data-duration="0.18" data-track-index="40" data-volume="0.7"></audio>
-      <audio data-hf-id="hf-zmeb" id="a-lock2" src="assets/audio/sfx-select.mp3" data-start="13.27" data-duration="1.1" data-track-index="41" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-cc09" id="a-sw7" src="assets/audio/sfx-sweep.mp3" data-start="15.1" data-duration="0.78" data-track-index="42" data-volume="0.4"></audio>
-      <audio data-hf-id="hf-kt4k" id="a-tap" src="assets/audio/sfx-select.mp3" data-start="18.65" data-duration="1.1" data-track-index="43" data-volume="0.6"></audio>
-      <audio data-hf-id="hf-31zw" id="a-confirm" src="assets/audio/sfx-confirm.mp3" data-start="18.85" data-duration="1.04" data-track-index="44" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-rbzm" id="a-music" src="../assets/audio/music-rising-forest.mp3" data-start="0" data-duration="22" data-track-index="20" data-volume="0.85"></audio>
+      <audio data-hf-id="hf-q10a" id="a-typing" src="../assets/audio/sfx-typing.mp3" data-start="0" data-duration="3.4" data-track-index="21" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-k87h" id="a-pop1" src="../assets/audio/sfx-message-pop.mp3" data-start="0.55" data-duration="1.06" data-track-index="22" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-7xam" id="a-pop2" src="../assets/audio/sfx-message-pop.mp3" data-start="1.15" data-duration="1.06" data-track-index="23" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-6z06" id="a-pop3" src="../assets/audio/sfx-message-pop.mp3" data-start="1.75" data-duration="1.06" data-track-index="24" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-ewyf" id="a-pop4" src="../assets/audio/sfx-message-pop.mp3" data-start="2.35" data-duration="1.06" data-track-index="25" data-volume="0.5"></audio>
+      <audio data-hf-id="hf-rynb" id="a-whoosh" src="../assets/audio/sfx-whoosh-fast.mp3" data-start="2.73" data-duration="1.76" data-track-index="26" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-9jsf" id="a-k1" src="../assets/audio/sfx-dry-pop.mp3" data-start="4.05" data-duration="0.3" data-track-index="27" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-yyta" id="a-k2" src="../assets/audio/sfx-dry-pop.mp3" data-start="4.15" data-duration="0.3" data-track-index="28" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-a5wp" id="a-k3" src="../assets/audio/sfx-dry-pop.mp3" data-start="4.25" data-duration="0.3" data-track-index="29" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-n74v" id="a-sw1" src="../assets/audio/sfx-sweep.mp3" data-start="4.6" data-duration="0.78" data-track-index="30" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-dlkg" id="a-sw2" src="../assets/audio/sfx-sweep.mp3" data-start="5.35" data-duration="0.78" data-track-index="31" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-x9u5" id="a-sw3" src="../assets/audio/sfx-sweep.mp3" data-start="7.3" data-duration="0.78" data-track-index="32" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-jswc" id="a-sw4" src="../assets/audio/sfx-sweep.mp3" data-start="8.5" data-duration="0.78" data-track-index="33" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-tbmn" id="a-sw5" src="../assets/audio/sfx-sweep.mp3" data-start="9.7" data-duration="0.78" data-track-index="34" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-39u5" id="a-sw6" src="../assets/audio/sfx-sweep.mp3" data-start="10.9" data-duration="0.78" data-track-index="35" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-clyj" id="a-t1" src="../assets/audio/sfx-tech-select.mp3" data-start="11.6" data-duration="0.5" data-track-index="36" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-h8e3" id="a-t2" src="../assets/audio/sfx-tech-select.mp3" data-start="11.8" data-duration="0.5" data-track-index="37" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-vv48" id="a-t3" src="../assets/audio/sfx-tech-select.mp3" data-start="12.0" data-duration="0.5" data-track-index="38" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-300p" id="a-air" src="../assets/audio/sfx-air-woosh.mp3" data-start="12.55" data-duration="2.32" data-track-index="39" data-volume="0.55"></audio>
+      <audio data-hf-id="hf-wwga" id="a-lock" src="../assets/audio/sfx-pop-whoosh.mp3" data-start="13.25" data-duration="0.18" data-track-index="40" data-volume="0.7"></audio>
+      <audio data-hf-id="hf-zmeb" id="a-lock2" src="../assets/audio/sfx-select.mp3" data-start="13.27" data-duration="1.1" data-track-index="41" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-cc09" id="a-sw7" src="../assets/audio/sfx-sweep.mp3" data-start="15.1" data-duration="0.78" data-track-index="42" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-kt4k" id="a-tap" src="../assets/audio/sfx-select.mp3" data-start="18.65" data-duration="1.1" data-track-index="43" data-volume="0.6"></audio>
+      <audio data-hf-id="hf-31zw" id="a-confirm" src="../assets/audio/sfx-confirm.mp3" data-start="18.85" data-duration="1.04" data-track-index="44" data-volume="0.45"></audio>
     </div>
 
     <script>
@@ -391,17 +387,15 @@
         tl.fromTo(o, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: E }, 11.45 + i * 0.13);
       });
 
-      // ---------- Scene 4 · The Joint (12.4–15.4) ----------
+      // ---------- Scene 4 · Flowing mark 09 (12.4–15.4) ----------
       tl.fromTo("#ink", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 12.2);
-      tl.fromTo("#p1", { x: 6, y: -60, rotation: -30, opacity: 0, svgOrigin: "35 25" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 12.6);
-      tl.fromTo("#p2", { x: -60, y: 24, rotation: 24, opacity: 0, svgOrigin: "22 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 12.68);
-      tl.fromTo("#p3", { x: 60, y: 20, rotation: -24, opacity: 0, svgOrigin: "55 45" }, { x: 0, y: 0, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 12.76);
+      tl.fromTo("#p1", { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 12.6);
+      tl.fromTo("#p2", { x: 100, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 12.68);
       [["#l1", 12.62], ["#l2", 12.7], ["#l3", 12.78]].forEach(([l, at]) => {
         tl.fromTo(l, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: E }, at);
         tl.to(l, { opacity: 0, duration: 0.25 }, 13.25);
       });
       tl.fromTo("#joint", { scale: 1 }, { scale: 1.08, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 13.25);
-      tl.to("#joint path", { fill: "#1d4ed8", duration: 0.25 }, 13.27);
       tl.fromTo("#wordmark", { y: 60, scale: 1.06, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.7, ease: E }, 13.35);
       tl.fromTo("#tagline .t span", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: E, stagger: 0.15 }, 13.7);
       tl.fromTo("#tagline .s", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 14.15);

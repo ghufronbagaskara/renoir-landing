@@ -15,8 +15,8 @@ document
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
     let selected = 0;
     let elapsed = 0;
-    let frame = 0;
-    let previous = 0;
+    let timer = 0;
+    let startedAt = 0;
     let visible = false;
     let playing = false;
     let ready = false;
@@ -49,23 +49,22 @@ document
     }
 
     function pause() {
+      if (playing) elapsed += performance.now() - startedAt;
       playing = false;
-      cancelAnimationFrame(frame);
-      previous = 0;
+      window.clearTimeout(timer);
       updateStatus();
     }
 
-    function tick(time: number) {
+    function tick() {
       if (!playing) return;
-      if (previous) elapsed += time - previous;
-      previous = time;
-      const next = Math.min(3, Math.floor(elapsed / 2000));
+      const progress = elapsed + performance.now() - startedAt;
+      const next = Math.min(3, Math.floor(progress / 2000));
       if (next !== selected) select(next);
-      if (elapsed >= 8000) {
+      if (progress >= 8000) {
         pause();
         return;
       }
-      frame = requestAnimationFrame(tick);
+      timer = window.setTimeout(tick, (next + 1) * 2000 - progress);
     }
 
     function start(reset = false) {
@@ -76,9 +75,9 @@ document
         select(0);
       }
       playing = true;
-      previous = 0;
+      startedAt = performance.now();
       updateStatus();
-      frame = requestAnimationFrame(tick);
+      timer = window.setTimeout(tick, (Math.floor(elapsed / 2000) + 1) * 2000 - elapsed);
     }
 
     function error() {

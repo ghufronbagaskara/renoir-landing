@@ -11,9 +11,9 @@ import Footer from "~/components/layout/Footer.astro";
 import Breadcrumb, { type Crumb } from "~/components/layout/Breadcrumb.astro";
 import { langTag, ogLocale, path, t, type Alternates, type Locale } from "~/i18n";
 import { abs, graph, organization, webPage, website, type JsonLd, type PageMeta } from "~/lib/seo";
-// Preloaded so the hero heading doesn't reflow when the web font swaps in (CLS). Body text (Inter)
-// uses a metric-matched fallback instead (see utils/_typography.scss), so it needs no preload.
+// Preload the fonts used above the fold; Inter also keeps its metric-matched fallback for the swap.
 import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
+import bodyFont from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { brandColors } from "~/data/brand";
 
 interface Props {
@@ -95,6 +95,7 @@ const c = t(locale);
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>

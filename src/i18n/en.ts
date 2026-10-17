@@ -5,7 +5,7 @@ const en = {
     name: "Katalhys",
     tagline: "Make a stronger impression. Run a better operation",
     description:
-      "Katalhys designs identities and digital experiences, builds websites and business systems, and keeps the products it builds running.",
+      "Katalhys designs identities and websites, builds AI-integrated internal systems around your team, and keeps the products it builds running.",
   },
 
   nav: {
@@ -94,19 +94,64 @@ const en = {
   home: {
     metaTitle: "Katalhys | Design, websites, apps and business systems",
     metaDescription:
-      "Katalhys designs identities and digital experiences, builds websites and business systems, and keeps the products it builds running.",
+      "Katalhys designs identities and websites, builds AI-integrated internal systems around your team, and keeps the products it builds running.",
     hero: {
       title: ["Make a stronger impression", "Run a better operation"],
-      body: "Katalhys is a digital studio for identities, interfaces, websites, and business systems. Start with design alone or work with us through launch and care.",
+      label: "Independent digital studio",
+      body: "We design identities and websites that earn trust, and build AI-integrated internal systems that help your team run everyday operations.",
+      work: "See our work",
+      factsLabel: "How we work",
+      facts: ["A written scope", "Design through deployment", "AI inside your workflow"],
+      pause: "Pause background video",
+      play: "Play background video",
     },
     problem: {
       label: "The problem",
-      title: "Good design should hold up in use",
-      side: "Design to server",
-      stat: "One studio",
-      cardTitle: "One team for the whole job",
-      cardBody:
-        "A good first impression matters. So does the system behind it. We bring design and engineering together, then stay accountable when the work goes live.",
+      title: "How long does it take to find one order's status?",
+      intro: "When updates live in chats, spreadsheets, and documents, finding an answer becomes a task of its own.",
+      sourcesLabel: "Information in different places",
+      sources: [
+        {
+          name: "Chat",
+          detail: "Has this order been sent?"
+        },
+        {
+          name: "Spreadsheet",
+          detail: "Which status is the latest?"
+        },
+        {
+          name: "Documents",
+          detail: "Where is the current report?"
+        }
+      ],
+      stat: "Internal systems + AI",
+      cardTitle: "One order, a clear next step",
+      fields: [
+        {
+          label: "Status",
+          value: "The latest stage"
+        },
+        {
+          label: "Owner",
+          value: "Who is responsible"
+        },
+        {
+          label: "Next step",
+          value: "What needs attention"
+        }
+      ],
+      aiLabel: "AI assistance inside the workflow",
+      aiActions: [
+        "Find the information",
+        "Summarise the report",
+        "Prepare the follow-up"
+      ],
+      decision: "Your team reviews and decides",
+      illustration: "Workflow illustration. AI tasks and data access are agreed in scope.",
+      proofLabel: "Real project example",
+      proofTitle: "Order & Field Sales Workflow",
+      proofAlt: "Real order and field sales dashboard on desktop and mobile",
+      button: "Explore internal systems"
     },
     strip: [
       "Marketing sites",
@@ -121,6 +166,18 @@ const en = {
       title: "Design, build, and care in one studio",
       body: "Four ways to work with us. Start with design, a public-facing site, a business system, or the infrastructure that keeps it running.",
       button: "See all services",
+      detail: "Explore this service",
+      hint: "Select a service or drag the images",
+      previous: "Previous service",
+      next: "Next service",
+      overview: "Show the image ring",
+      wheelLabel: ["Design", "Build", "Run"],
+      items: [
+        { title: "Marketing sites", body: "A clear offer, a considered interface, and a fast website that helps the right people take the next step." },
+        { title: "AI-integrated systems", body: "Custom operational software with AI assistance for finding information, summarising reports, and preparing the next action." },
+        { title: "UI/UX & identity", body: "Clear user flows, interfaces, and a visual identity that belongs to your business. Start with design alone or continue into the build." },
+        { title: "Deployment & care", body: "A working release, monitoring, backups, and a clear handover. Keep us on for care or take over with full access." },
+      ],
     },
     work: {
       label: "Work",
@@ -131,6 +188,10 @@ const en = {
       next: "Next project",
       pause: "Pause project rotation",
       resume: "Resume project rotation",
+      count: "Selected projects",
+      approach: "The approach",
+      caseStudy: "View case study",
+      screens: "Real project screens · Desktop and mobile",
     },
     process: {
       label: "How it goes",
@@ -172,6 +233,7 @@ const en = {
             "Dashboards and monitoring",
             "Approval workflows",
             "Integrations between your systems",
+            "AI assistance for agreed operational tasks",
           ],
           priceLine: "Fixed fee",
           note: "for agreed scope",
@@ -229,6 +291,10 @@ const en = {
     why: {
       label: "Why work with us",
       title: "What you get with Katalhys",
+      handover: {
+        label: "Part of the handover",
+        items: ["Design files","Source code","Access & documentation"],
+      },
       rows: [
         { title: "Written from zero", body: "No themes, no page builders. Every line exists because your project needed it.", tag: "Code" },
         { title: "Speed is a specification", body: "Performance and indexing targets are agreed before we start and checked before handover.", tag: "Speed" },
@@ -284,7 +350,7 @@ const en = {
     metaTitle: "About Katalhys | A studio that builds and runs the web",
     metaDescription:
       "Katalhys is a digital studio that keeps design, engineering, and infrastructure on one team, from the first design to launch and ongoing care.",
-    breadcrumb: "About Katalhys",
+    breadcrumb: "About",
     name: {
       label: "The name",
       title: "A name shaped by our role",

@@ -1,4 +1,4 @@
-# Renoir / Four services / Clone
+# Katalhys / Four services / Clone
 
 Status: draft for review. Owner chose the studio-profile direction on 2026-10-11.
 1080 × 1920; 28.5 seconds; intended export 60 fps.
@@ -6,19 +6,19 @@ Status: draft for review. Owner chose the studio-profile direction on 2026-10-11
 | Time | Scene | Purpose |
 | --- | --- | --- |
 | 0–3.45 | Spreadsheet error and chat questions | A familiar business problem catches attention. |
-| 3.45–5 | Meet Renoir. Digital studio. | Name the studio before its work appears. |
+| 3.45–5 | Meet Katalhys. Digital studio. | Name the studio before its work appears. |
 | 5.4–8.45 | Websites | Large MAXY website screen; explain the service in Indonesian. |
 | 8.45–11.5 | Systems | Large Field Projects dashboard; business-specific workflows. |
 | 11.5–14.55 | UI/UX & identity | Industrial Coatings interface; clear design and distinct identity. |
 | 14.55–17.6 | Deploy & care | Service-scope panel; deployment, monitoring, backup planning. |
 | 17.6–20.8 | Brand lockup | Joint assembly and the studio's positioning. |
-| 20.8–24.6 | Website | Show the actual Indonesian Renoir home page. |
+| 20.8–24.6 | Website | Show the actual Indonesian Katalhys home page. |
 | 24.6–28.5 | CTA | Website, system, or design; invite the viewer to describe the problem. |
 
 ## Design read
 
 ENERGY 2 / RHYTHM 2 / MOTION 2. Preserve the source's paper, ink and cobalt palette, General Sans
-and Inter, the Joint geometry and its three-plane wipe. Spreadsheet density motivates the opening
+and Inter, the flowing logo 09 and three brand-color transition panels. Spreadsheet density motivates the opening
 grid; the quiet service frames then give the viewer one thing to read. Grain comes from the source.
 
 Screens are enlarged to 960 pixels, with source proportions retained in a cropping viewport.

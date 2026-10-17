@@ -1,5 +1,5 @@
-// Renoir promo score v2: restrained, minimal-house groove at 120 BPM. Direct DSP (no Web Audio), deterministic.
-function renderRenoirMusic2() {
+// Katalhys promo score v2: restrained, minimal-house groove at 120 BPM. Direct DSP (no Web Audio), deterministic.
+function renderKatalhysMusic2() {
   const sr = 44100, DUR = 26, N = sr * DUR, TAU = Math.PI * 2;
   const mk = () => new Float32Array(N);
   const DL = mk(), DR = mk(), ML = mk(), MR = mk(), VS = mk(), ES = mk();

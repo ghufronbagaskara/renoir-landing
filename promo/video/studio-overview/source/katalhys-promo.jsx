@@ -1,5 +1,5 @@
-const LIGHT = { bg: '#FFFFFF', ink: '#0A0A0A', dim: '#6B6B6B', hair: 'rgba(10,10,10,0.14)', shadow: '0 30px 60px rgba(0,0,0,0.14)', chipLab: '#A3A3A3', dark: false };
-const DARK = { bg: '#0A0A0A', ink: '#F5F5F5', dim: '#A3A3A3', hair: 'rgba(255,255,255,0.22)', shadow: '0 30px 70px rgba(0,0,0,0.7)', chipLab: '#525252', dark: true };
+const LIGHT = { bg: '#FFFFFF', ink: '#17191C', dim: '#596273', hair: 'rgba(23,25,28,0.14)', shadow: '0 30px 60px rgba(0,0,0,0.14)', chipLab: '#DBEAFE', dark: false };
+const DARK = { bg: '#17191C', ink: '#FFFFFF', dim: '#DBEAFE', hair: 'rgba(255,255,255,0.22)', shadow: '0 30px 70px rgba(0,0,0,0.7)', chipLab: '#DBEAFE', dark: true };
 const ThCtx = React.createContext(LIGHT);
 const GS = '"General Sans", "Helvetica Neue", Arial, sans-serif';
 const IN = '"Inter", system-ui, sans-serif';
@@ -37,7 +37,8 @@ function Rise({ T, a, out = 1e9, style, children }) {
 }
 
 function Mark({ size, color }) {
-  return <svg width={size} height={size * 64 / 66} viewBox="0 0 66 64" fill={color} style={{ display: 'block' }}><path d="M27 11 43 2v36L27 47V11Z" /><path d="M3 45 24 33 42 44 21 56 3 45Z" /><path d="M47 31 63 40v20L46 50V31Z" /></svg>;
+  const light = color !== "#FFFFFF" && color !== "#ffffff";
+  return <img src={light ? "katalhys-symbol.svg" : "katalhys-symbol-white.svg"} width={size} height={size} alt="" style={{ display: "block" }} />;
 }
 
 function Crop({ src, w, h, style }) {
@@ -55,9 +56,9 @@ function Nav({ T, nd, St }) {
   const out = MOTION.draw(T, St - 0.1, St + 0.3);
   return (
     <div style={{ position: 'absolute', left: 80, right: 80, top: 245, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Rise T={T} a={0.1} style={{ display: 'flex', alignItems: 'center', gap: 18, fontFamily: GS, fontWeight: 600, fontSize: 56, letterSpacing: '-0.03em', lineHeight: 1, color: ink }}><Mark size={46} color={ink} />Renoir</Rise>
+      <Rise T={T} a={0.1} style={{ display: 'flex', alignItems: 'center', gap: 18, fontFamily: GS, fontWeight: 600, fontSize: 56, letterSpacing: '-0.03em', lineHeight: 1, color: ink }}><Mark size={52} color={nd > 0.5 ? "#FFFFFF" : "#17191C"} />Katalhys</Rise>
       <div style={{ opacity: 1 - out }}>
-        <Rise T={T} a={0.2} style={{ fontFamily: IN, fontWeight: 600, fontSize: 28, lineHeight: 1.1, whiteSpace: 'nowrap', padding: '18px 34px', borderRadius: 50, background: ink, color: bg }}>Start a project</Rise>
+        <Rise T={T} a={0.2} style={{ fontFamily: IN, fontWeight: 600, fontSize: 28, lineHeight: 1.1, whiteSpace: 'nowrap', padding: '18px 34px', borderRadius: 12, background: '#1D4ED8', color: '#FFFFFF' }}>Start a project</Rise>
       </div>
     </div>
   );
@@ -69,7 +70,7 @@ function Sc({ th, from, to, children }) {
 
 const SERVICES = [
   { name: [{ t: 'Marketing &' }, { t: 'landing sites', em: 1 }], desc: 'For companies whose website is the first thing a prospect judges them by.', img: 'maxy-ai.jpg', img2: 'ai-ceo-circle.jpg', fee: 'FIXED FEE', sub: 'for agreed scope' },
-  { name: [{ t: 'Custom internal' }, { t: 'systems', em: 1 }], desc: 'For operations running on spreadsheets, chat threads, and paper.', img: 'order-sales.jpg', img2: 'activity-review.jpg', fee: 'FIXED FEE', sub: 'for agreed scope' },
+  { name: [{ t: 'AI-integrated' }, { t: 'systems', em: 1 }], desc: 'Connected workflows and AI assistance, built around the people running your operation.', img: 'order-sales.jpg', img2: 'activity-review.jpg', fee: 'FIXED FEE', sub: 'for agreed scope' },
   { name: [{ t: 'UI/UX &' }, { t: 'visual identity', em: 1 }], desc: 'For products that need a clearer experience and an identity of their own.', img: 'expert-profile.jpg', img2: 'industrial-coatings.jpg', fee: 'FIXED FEE', sub: 'for agreed scope' },
   { name: [{ t: 'Deployment' }, { t: '& care', em: 1 }], desc: 'Monitoring, backups, documentation. We keep it running, or you take it.', img: 'operations-control.jpg', img2: 'field-projects.jpg', fee: 'INCLUDED', sub: 'for every client' },
 ];
@@ -86,9 +87,9 @@ function Service({ T, s, e, idx }) {
       <Rise T={T} a={s + 0.2} out={out} style={{ position: 'absolute', left: 80, top: 650, width: 920, fontFamily: IN, fontWeight: 500, fontSize: 36, lineHeight: 1.35, color: th.ink, textWrap: 'pretty' }}>{d.desc}</Rise>
       <Crop src={d.img} w={920} h={483} style={{ position: 'absolute', left: 80, top: 800, opacity: p * (1 - q), transform: 'translateY(' + ((1 - p) * 170 - q * 80) + 'px)' }} />
       <Crop src={d.img2} w={640} h={336} style={{ position: 'absolute', left: 360, top: 1236, opacity: p2 * (1 - q), transform: 'translateY(' + ((1 - p2) * 190 - q * 90) + 'px)' }} />
-      <div style={{ position: 'absolute', left: 80, top: 1424, width: 400, height: 124, borderRadius: 24, background: th.ink, padding: '24px 30px', boxSizing: 'border-box', opacity: Math.max(0, Math.min(1, b)) * (1 - q), transform: 'scale(' + b + ')', transformOrigin: 'left bottom' }}>
+      <div style={{ position: 'absolute', left: 80, top: 1424, width: 400, height: 124, borderRadius: 24, background: '#1D4ED8', padding: '24px 30px', boxSizing: 'border-box', opacity: Math.max(0, Math.min(1, b)) * (1 - q), transform: 'scale(' + b + ')', transformOrigin: 'left bottom' }}>
         <div style={{ fontFamily: IN, fontWeight: 600, fontSize: 24, letterSpacing: '0.12em', color: th.chipLab }}>{d.fee}</div>
-        <div style={{ fontFamily: IN, fontWeight: 600, fontSize: 32, color: th.bg, marginTop: 6 }}>{d.sub}</div>
+        <div style={{ fontFamily: IN, fontWeight: 600, fontSize: 32, color: '#FFFFFF', marginTop: 6 }}>{d.sub}</div>
       </div>
     </React.Fragment>
   );
@@ -131,7 +132,7 @@ function Piece({ music, flip }) {
   const au = React.useRef(null), st = React.useRef({});
   st.current = { T, playing, music };
   React.useEffect(() => {
-    const a = new Audio('renoir-music-v2.wav'); a.preload = 'auto'; au.current = a; window.__renoirAudio = a;
+    const a = new Audio('katalhys-music-v2.wav'); a.preload = 'auto'; au.current = a; window.__katalhysAudio = a;
     const kick = () => {
       const s = st.current;
       if (a.paused && s.playing && s.music) { try { a.currentTime = s.T; } catch (e) {} a.play().then(() => window.dispatchEvent(new Event('om-audio-ok'))).catch(() => {}); }
@@ -173,17 +174,17 @@ function Piece({ music, flip }) {
       })}
 
       <Sc th={th[0]} from={H - 0.02} to={hb}>
-        <Lines T={T} x={80} y={360} size={144} inAt={H + 0.1} step={0.1} outAt={H + 1.1} lines={[{ t: 'Make a' }, { t: 'stronger' }, { t: 'impression.', em: 1 }]} />
+        <Lines T={T} x={80} y={360} size={144} inAt={H + 0.1} step={0.1} outAt={H + 1.1} lines={[{ t: 'Make a' }, { t: 'stronger' }, { t: 'impression', em: 1 }]} />
         <Crop src="ai-ceo-circle.jpg" w={920} h={483} style={{ position: 'absolute', left: 80, top: 950, opacity: pa * (1 - qa), transform: 'translateY(' + ((1 - pa) * 150 - qa * 90) + 'px)' }} />
       </Sc>
       <Sc th={th[1]} from={hb - 0.1} to={Tm + 0.02}>
-        <Lines T={T} x={80} y={360} size={144} inAt={hb + 0.1} step={0.1} outAt={Tm - 0.5} lines={[{ t: 'Run a' }, { t: 'better' }, { t: 'operation.', em: 1 }]} />
+        <Lines T={T} x={80} y={360} size={144} inAt={hb + 0.1} step={0.1} outAt={Tm - 0.5} lines={[{ t: 'Run a' }, { t: 'better' }, { t: 'operation', em: 1 }]} />
         <Crop src="activity-review.jpg" w={920} h={483} style={{ position: 'absolute', left: 80, top: 950, opacity: pb * (1 - qb), transform: 'translateY(' + ((1 - pb) * 150 - qb * 70) + 'px)' }} />
       </Sc>
 
       <Sc th={th[2]} from={Tm - 0.02} to={S + 0.02}>
-        <Lines T={T} x={80} y={360} size={160} inAt={Tm + 0.1} step={0.12} outAt={S - 0.3} lines={[{ t: 'Design' }, { t: 'to server.', em: 1 }]} />
-        <Rise T={T} a={Tm + 0.4} out={S - 0.3} style={{ position: 'absolute', left: 80, top: 722, fontFamily: IN, fontWeight: 500, fontSize: 38, color: th[2].ink }}>One team for the whole job.</Rise>
+        <Lines T={T} x={80} y={360} size={160} inAt={Tm + 0.1} step={0.12} outAt={S - 0.3} lines={[{ t: 'Design' }, { t: 'to server', em: 1 }]} />
+        <Rise T={T} a={Tm + 0.4} out={S - 0.3} style={{ position: 'absolute', left: 80, top: 722, fontFamily: IN, fontWeight: 500, fontSize: 38, color: th[2].ink }}>One team for the whole job</Rise>
         <Crop src="industrial-coatings.jpg" w={800} h={420} style={{ position: 'absolute', left: 80, top: 850, opacity: tp(0.2) * (1 - tqe), transform: 'translateX(' + ((1 - tp(0.2)) * -240) + 'px) translateY(' + (-tqe * 60) + 'px)' }} />
         <Crop src="field-projects.jpg" w={800} h={420} style={{ position: 'absolute', left: 200, top: 1130, opacity: tp(0.4) * (1 - tqe), transform: 'translateX(' + ((1 - tp(0.4)) * 240) + 'px) translateY(' + (-tqe * 60) + 'px)' }} />
         <div style={{ ...label(th[2], { color: th[2].bg, fontSize: 26 }), position: 'absolute', left: 104, top: 874, background: th[2].ink, padding: '10px 22px', borderRadius: 30, opacity: tp(0.6) * (1 - tqe) }}>Design</div>
@@ -197,7 +198,7 @@ function Piece({ music, flip }) {
       <Sc th={th[7]} from={W - 0.02} to={P + 0.02}><Work T={T} s={W} e={P} /></Sc>
 
       <Sc th={th[8]} from={P - 0.02} to={St + 0.02}>
-        <Lines T={T} x={80} y={350} size={96} inAt={P + 0.02} step={0.08} outAt={pOut} lines={[{ t: 'Four stages,' }, { t: 'with the work' }, { t: 'in view.', em: 1 }]} />
+        <Lines T={T} x={80} y={350} size={96} inAt={P + 0.02} step={0.08} outAt={pOut} lines={[{ t: 'Four stages,' }, { t: 'with the work' }, { t: 'in view', em: 1 }]} />
         {STAGES.map((sg, i) => {
           const a = P + 0.5 + i * 0.42, p = MOTION.enter(T, a, a + 0.5), q = MOTION.draw(T, pOut, pOut + 0.3);
           return (
@@ -219,16 +220,16 @@ function Piece({ music, flip }) {
       </Sc>
 
       <Sc th={tS} from={St - 0.02} to={St + 99}>
-        <Lines T={T} x={80} y={440} size={150} inAt={St + 0.4} step={0.12} lines={[{ t: 'Tell us' }, { t: 'what needs' }, { t: 'to work.' }]} />
+        <Lines T={T} x={80} y={440} size={150} inAt={St + 0.4} step={0.12} lines={[{ t: 'Tell us' }, { t: 'what needs' }, { t: 'to work' }]} />
         <div style={{ position: 'absolute', left: 80, top: 1050, width: 620, height: 132, opacity: clamp(btn, 0, 1), transform: 'scale(' + (btn * (1 - 0.05 * tap)) + ')', transformOrigin: 'left center' }}>
-          <div style={{ position: 'absolute', inset: 0, borderRadius: 66, border: '3px solid ' + tS.ink, opacity: (1 - ring) * 0.9, transform: 'scale(' + (1 + 0.22 * ring) + ')' }} />
-          <div style={{ position: 'absolute', inset: 0, borderRadius: 66, background: tS.ink, color: tS.bg, fontFamily: GS, fontWeight: 600, letterSpacing: '-0.02em', fontSize: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18 }}>Start a project <span>→</span></div>
+          <div style={{ position: 'absolute', inset: 0, borderRadius: 14, border: '3px solid ' + tS.ink, opacity: (1 - ring) * 0.9, transform: 'scale(' + (1 + 0.22 * ring) + ')' }} />
+          <div style={{ position: 'absolute', inset: 0, borderRadius: 14, background: '#1D4ED8', color: '#FFFFFF', fontFamily: GS, fontWeight: 600, letterSpacing: '-0.02em', fontSize: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18 }}>Start a project <span>→</span></div>
         </div>
-        <Rise T={T} a={St + 1.3} style={{ position: 'absolute', left: 80, top: 1236, fontFamily: GS, fontWeight: 600, letterSpacing: '-0.03em', fontSize: 62, color: tS.ink }}>@renoir.studio</Rise>
-        <Rise T={T} a={St + 1.4} style={{ position: 'absolute', left: 80, top: 1318, fontFamily: IN, fontWeight: 500, fontSize: 34, color: tS.dim }}>on Instagram</Rise>
-        <Rise T={T} a={St + 1.5} style={{ position: 'absolute', left: 80, top: 1384, fontFamily: IN, fontWeight: 500, fontSize: 28, color: tS.ink }}>renoir.ghufronbagaskara08.workers.dev</Rise>
-        <div style={{ position: 'absolute', left: 0, right: 0, top: 1480, height: 96, overflow: 'hidden', background: tS.ink, opacity: MOTION.enter(T, St + 1.2, St + 1.7) }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, whiteSpace: 'nowrap', fontFamily: GS, fontWeight: 600, letterSpacing: '-0.03em', fontSize: 54, lineHeight: '96px', color: tS.bg, transform: 'translateX(' + (-(T - St) * 160) + 'px)' }}>{'Start a project  →  '.repeat(10)}</div>
+        <Rise T={T} a={St + 1.3} style={{ position: 'absolute', left: 80, top: 1236, fontFamily: GS, fontWeight: 600, letterSpacing: '-0.03em', fontSize: 62, color: tS.ink }}>Katalhys</Rise>
+        <Rise T={T} a={St + 1.4} style={{ position: 'absolute', left: 80, top: 1318, fontFamily: IN, fontWeight: 500, fontSize: 34, color: tS.dim }}>Design · Build · Run</Rise>
+        <Rise T={T} a={St + 1.5} style={{ position: 'absolute', left: 80, top: 1384, fontFamily: IN, fontWeight: 500, fontSize: 28, color: tS.ink }}>Ceritakan kebutuhan Anda · Link di bio</Rise>
+        <div style={{ position: 'absolute', left: 0, right: 0, top: 1480, height: 96, overflow: 'hidden', background: '#1D4ED8', opacity: MOTION.enter(T, St + 1.2, St + 1.7) }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, whiteSpace: 'nowrap', fontFamily: GS, fontWeight: 600, letterSpacing: '-0.03em', fontSize: 54, lineHeight: '96px', color: '#FFFFFF', transform: 'translateX(' + (-(T - St) * 160) + 'px)' }}>{'Start a project  →  '.repeat(10)}</div>
         </div>
       </Sc>
 
@@ -237,7 +238,7 @@ function Piece({ music, flip }) {
   );
 }
 
-function RenoirPromo() {
+function KatalhysPromo() {
   const [t, setTweak] = useTweaks(window.TWEAK_DEFAULTS);
   const [blocked, setBlocked] = React.useState(false);
   React.useEffect(() => {
@@ -245,14 +246,14 @@ function RenoirPromo() {
     window.addEventListener('om-audio-blocked', b); window.addEventListener('om-audio-ok', o);
     return () => { window.removeEventListener('om-audio-blocked', b); window.removeEventListener('om-audio-ok', o); };
   }, []);
-  const dl = () => { const a = document.createElement('a'); a.href = 'renoir-music-v2.wav'; a.download = 'renoir-music.wav'; document.body.appendChild(a); a.click(); a.remove(); };
+  const dl = () => { const a = document.createElement('a'); a.href = 'katalhys-music-v2.wav'; a.download = 'katalhys-music.wav'; document.body.appendChild(a); a.click(); a.remove(); };
   React.useEffect(() => {
     const ts = [0, 100, 300, 800].map((d) => setTimeout(() => window.dispatchEvent(new Event('resize')), d));
     return () => ts.forEach(clearTimeout);
   }, []);
   return (
     <React.Fragment>
-      <CompositionStage width={1080} height={1920} scenes={window.OM_SCENES} playback={window.OM_PLAYBACK} bg={t.flip ? '#0A0A0A' : '#FFFFFF'}>
+      <CompositionStage width={1080} height={1920} scenes={window.OM_SCENES} playback={window.OM_PLAYBACK} bg={t.flip ? '#17191C' : '#FFFFFF'}>
         <Piece music={t.music !== false} flip={!!t.flip} />
       </CompositionStage>
       <TweaksPanel>
@@ -263,8 +264,8 @@ function RenoirPromo() {
         <TweakButton label="Download music (WAV)" onClick={dl} secondary />
         <TweakToggle label="Motion editor" value={t.motionEditor} onChange={(v) => setTweak('motionEditor', v)} />
       </TweaksPanel>
-      {blocked && t.music !== false ? <div style={{ position: 'fixed', top: 14, left: '50%', transform: 'translateX(-50%)', zIndex: 50, padding: '9px 18px', borderRadius: 30, background: '#0A0A0A', color: '#fff', font: '600 13px system-ui, sans-serif', pointerEvents: 'none' }}>Click anywhere to turn on sound</div> : null}
+      {blocked && t.music !== false ? <div style={{ position: 'fixed', top: 14, left: '50%', transform: 'translateX(-50%)', zIndex: 50, padding: '9px 18px', borderRadius: 30, background: '#17191C', color: '#fff', font: '600 13px system-ui, sans-serif', pointerEvents: 'none' }}>Click anywhere to turn on sound</div> : null}
     </React.Fragment>
   );
 }
-window.RenoirPromo = RenoirPromo;
+window.KatalhysPromo = KatalhysPromo;

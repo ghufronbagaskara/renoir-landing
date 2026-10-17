@@ -1,0 +1,54 @@
+---
+import Img from "./Img.astro";
+interface Props {
+  services: { title: string; body: string; href: string; image: string }[];
+  projects: string[];
+  label: string[];
+  detail: string;
+  hint: string;
+  previous: string;
+  next: string;
+  overview: string;
+}
+const { services, projects, label, detail, hint, previous, next, overview } = Astro.props;
+const cards = [
+  { image: services[0].image, service: 0 },
+  { image: projects[0] },
+  { image: services[1].image, service: 1 },
+  { image: projects[1] },
+  { image: projects[2] },
+  { image: services[2].image, service: 2 },
+  { image: projects[3] },
+  { image: services[3].image, service: 3 },
+  { image: projects[4] },
+];
+---
+<div class="works-wheel" data-works-wheel data-home-tabs>
+  <div class="wheel-index" data-tab-controls aria-label={label.join(", ")} hidden>
+    {services.map((service, i) => <button type="button" id={`service-tab-${i}`} data-tab><span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>{service.title}</button>)}
+  </div>
+  <div class="wheel-stage" data-wheel-stage>
+    <div class="wheel-orbit" data-wheel-orbit>
+      {cards.map((card) => <div class="wheel-card" data-service-index={card.service} data-project={card.service === undefined ? "" : undefined} aria-hidden={card.service === undefined ? "true" : undefined}>
+        {card.service !== undefined ? <a href={services[card.service].href} aria-label={`${detail}: ${services[card.service].title}`} draggable="false"><Img src={card.image} alt="" draggable="false" /><span class="wheel-card-action">{detail} <span aria-hidden="true">↗</span></span></a> : <span><Img src={card.image} alt="" draggable="false" /></span>}
+      </div>)}
+    </div>
+    <div class="wheel-center" data-wheel-label aria-hidden="true">{label.map((line) => <span>{line}</span>)}</div>
+  </div>
+  <div class="wheel-content">
+    {services.map((service, i) => <article class="wheel-service" id={`service-panel-${i}`} data-tab-panel>
+      <span>{String(i + 1).padStart(2, "0")} / 04</span>
+      <h3>{service.title}</h3><p>{service.body}</p>
+      <a class="home-text-link" href={service.href}>{detail}<span aria-hidden="true">↗</span></a>
+    </article>)}
+  </div>
+  <div class="wheel-navigation" data-wheel-controls hidden>
+    <p>{hint}</p>
+    <div>
+      <button type="button" data-wheel-overview aria-label={overview}>↺</button>
+      <button type="button" data-wheel-previous aria-label={previous}>←</button>
+      <button type="button" data-wheel-next aria-label={next}>→</button>
+    </div>
+  </div>
+</div>
+<script>import "~/scripts/works-wheel";</script>

@@ -2,7 +2,7 @@
 // Uses the design's own seek protocol ('data-om-seek-to-time-frame', sync) so every frame is the exact
 // deterministic render at t = n / fps.
 //
-//   node render-60fps.mjs [--fps 60] [--out renders/renoir-studio-overview-60fps.mp4] [--from 0] [--to <dur>]
+//   node render-60fps.mjs [--fps 60] [--out renders/katalhys-studio-overview-60fps.mp4] [--from 0] [--to <dur>]
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
@@ -14,9 +14,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const { chromium } = createRequire(join(here, "../../../package.json"))("playwright");
 const arg = (k, d) => { const i = process.argv.indexOf("--" + k); return i > 0 ? process.argv[i + 1] : d; };
 const FPS = Number(arg("fps", 60));
-const OUT = join(here, arg("out", `renders/renoir-studio-overview-${FPS}fps.mp4`));
+const OUT = join(here, arg("out", `renders/katalhys-studio-overview-${FPS}fps.mp4`));
 const SRC = join(here, "source");
-const MUSIC = join(SRC, "renoir-music-v2.wav");
+const MUSIC = join(SRC, "katalhys-music-v2.wav");
 
 // Static server for ./source (the runtime fetches the .jsx files, so file:// will not work).
 const types = { ".html": "text/html", ".js": "text/javascript", ".jsx": "text/plain", ".wav": "audio/wav", ".jpg": "image/jpeg", ".svg": "image/svg+xml" };
@@ -28,9 +28,9 @@ const server = createServer(async (req, res) => {
   catch { res.writeHead(404).end(); }
 }).listen(0, "127.0.0.1");
 await new Promise((r) => server.once("listening", r));
-const url = `http://127.0.0.1:${server.address().port}/Renoir%20Promo.dc.html`;
+const url = `http://127.0.0.1:${server.address().port}/Katalhys%20Promo.dc.html`;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1080, height: 2200 }, deviceScaleFactor: 1 });
 page.on("pageerror", (e) => console.error("page error:", e.message));
 await page.goto(url, { waitUntil: "networkidle", timeout: 120000 });
@@ -40,7 +40,7 @@ await page.waitForSelector(STAGE, { timeout: 120000 });
 await page.addStyleTag({ content: `${STAGE}{transform:none!important;box-shadow:none!important}` });
 await page.evaluate(async () => {
   await document.fonts.ready;
-  await Promise.all([...document.images].map((i) => i.decode().catch(() => {})));
+  await Promise.all([...document.images].map((i) => i.decode()));
 });
 await page.waitForFunction((s) => document.querySelector(s)?.hasAttribute("data-om-sync-seek"), STAGE, { timeout: 60000 });
 const duration = Number(await page.$eval(STAGE, (el) => el.getAttribute("data-om-exportable-video-with-duration-secs")));

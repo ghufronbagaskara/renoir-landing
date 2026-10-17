@@ -72,7 +72,7 @@ export const portfolio: WorkProject[] = [
     },
   },
   {
-    id: "field-projects", order: 3, primaryService: "internal", serviceIds: ["internal", "design", "care"], featuredRank: 3, ...images("field-projects"),
+    id: "field-projects", order: 3, primaryService: "internal", serviceIds: ["internal", "design", "care"], featuredRank: 3, homeRank: 4, ...images("field-projects"),
     en: {
       title: "Field Project Monitoring", subtitle: "A project record from survey to handover.",
       overview: "Field projects can lose context between survey and handover. This system keeps zone progress, daily reports, approvals, and costs in one record.",
@@ -94,7 +94,7 @@ export const portfolio: WorkProject[] = [
     id: "expert-profile", order: 4, primaryService: "marketing", serviceIds: ["marketing", "design"], ...images("expert-profile"),
     en: {
       title: "Expert Profile & Collaboration Paths", subtitle: "A clear way to learn, connect, and collaborate.",
-      overview: "Prospective partners should not have to hunt for a way in. Isaac Munandar’s site brings his work, services, free resources, and contact path together.",
+      overview: "Prospective partners should not have to hunt for a way in. This expert’s site brings their work, services, free resources, and contact path together.",
       challenge: "A personal platform has to serve different visitors: potential partners, learners, and people looking for expertise.",
       approach: "The site structures the profile, services, writing, free resources, and contact routes around each visitor's next question.",
       role: "The Katalhys founder designed and developed this website independently.",
@@ -102,7 +102,7 @@ export const portfolio: WorkProject[] = [
     },
     id_: {
       title: "Profil Ahli & Jalur Kolaborasi", subtitle: "Jalan yang jelas untuk mengenal dan menghubungi seorang ahli.",
-      overview: "Calon mitra tak perlu mencari-cari jalan masuk. Situs Isaac Munandar menyatukan profil, layanan, materi gratis, dan kontak dalam satu alur.",
+      overview: "Calon mitra tak perlu mencari-cari jalan masuk. Situs seorang ahli ini menyatukan profil, layanan, materi gratis, dan kontak dalam satu alur.",
       challenge: "Platform personal perlu melayani calon mitra, pembelajar, dan orang yang mencari keahlian dengan kebutuhan berbeda.",
       approach: "Situs menata profil, layanan, tulisan, materi gratis, dan jalur kontak mengikuti pertanyaan berikutnya dari setiap pengunjung.",
       role: "Pendiri Katalhys merancang dan mengembangkan situs ini secara mandiri.",
@@ -167,7 +167,7 @@ export const portfolio: WorkProject[] = [
     },
   },
   {
-    id: "operations-control", order: 8, primaryService: "care", serviceIds: ["care"], homeRank: 4, ...images("operations-control"),
+    id: "operations-control", order: 8, primaryService: "care", serviceIds: ["care"], homeRank: 5, ...images("operations-control"),
     imageNote: { en: "Sanitized architecture diagram based on the deployment repository. Komodo dashboard capture pending access.", id_: "Diagram arsitektur yang disamarkan berdasarkan repo deployment. Tangkapan dashboard Komodo menunggu akses." },
     en: {
       title: "Deployment & Operations Control", subtitle: "A release path the team can inspect.",

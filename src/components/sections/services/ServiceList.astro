@@ -17,7 +17,7 @@ const services = await getServices();
         <div class="si-service-2-main pb-20">
           <div class="si-section-title">
             <span>{s.label}</span>
-            <h2 class="si-text-revel-anim">{s.title}</h2>
+            <h2>{s.title}</h2>
           </div>
           <div class="si-service-2-btn">
             <a class="si-btn-one black-bg-btn border-btn" href={path("contact", locale)}> <span class="btn-text"><span>{s.button}</span> </span> <span class="btn-icon btn-icon2"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
@@ -41,7 +41,7 @@ const services = await getServices();
                 <p>{sentenceEnd < 0 ? copy.excerpt : <><span class="service-card-lead">{copy.excerpt.slice(0, sentenceEnd + 1)}</span>{" "}<span class="service-card-detail">{copy.excerpt.slice(sentenceEnd + 2)}</span></>}</p>
               </div>
             );
-            return <div class="si-service-2-box"><div class="service-mobile-proof" aria-hidden="true"><Img src={entry.data.images[0].src} alt="" /></div>{i % 2 === 1 ? [text, title] : [title, text]}</div>;
+            return <div class="si-service-2-box"><div class="service-mobile-proof" aria-hidden="true"><Img src={entry.data.images[0].src.replace(".webp", "-thumb.webp")} alt="" /></div>{i % 2 === 1 ? [text, title] : [title, text]}</div>;
           })
         }
       </div>

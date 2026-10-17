@@ -28,7 +28,7 @@ const services = await getServices();
     <form class="search-command-form" role="search" data-search-form>
       <label for="site-search-input" class="visually-hidden">{s.label}</label>
       <i class="fa-sharp fa-regular fa-magnifying-glass" aria-hidden="true"></i>
-      <input id="site-search-input" type="search" name="q" placeholder={s.placeholder} autocomplete="off" aria-describedby="site-search-hint" />
+      <input id="site-search-input" type="search" name="q" placeholder={s.placeholder} autocomplete="off" aria-describedby="site-search-hint" aria-controls="site-search-results" />
       <kbd>Esc</kbd>
     </form>
     <p id="site-search-hint" class="search-command-hint">{s.hint}</p>
@@ -50,7 +50,7 @@ const services = await getServices();
         </div>
       </section>
     </div>
-    <ul class="si-search-results" data-search-results aria-live="polite" aria-label={s.label} hidden></ul>
+    <ul id="site-search-results" class="si-search-results" data-search-results aria-live="polite" aria-label={s.label} hidden></ul>
   </div>
 </dialog>
 <script>

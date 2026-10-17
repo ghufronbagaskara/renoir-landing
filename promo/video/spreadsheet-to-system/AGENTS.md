@@ -107,3 +107,7 @@ Fix all errors before presenting the result. Warnings should be reviewed before 
 4. A video with sound keeps it on the `<video>` (`data-has-audio="true"`, no `muted`). Use a separate `<audio>` for music, voiceover, replacement audio, J/L cuts, or audio detached in Studio. Silent footage and b-roll: `muted`.
 5. Sub-compositions use `data-composition-src="compositions/file.html"` to reference other HTML files
 6. Only deterministic logic — no `Date.now()`, no `Math.random()`, no network fetches
+
+## Katalhys identity — 2026-10-17
+
+Follow the root DESIGN.md and ../README.md. Use approved flowing logo 09 and Cobalt + Ink; keep GeneralSans and Inter local. Render with pinned HyperFrames 0.8.166 at 1080×1920 / 60fps, retaining existing music/SFX and scene lengths. Katalhys-named MP4s are current; earlier rendered files are historical. The v1 source in spreadsheet-to-system/archive/ is also rebranded and must be rendered with --composition archive/index-v1.html. Run the root promo/video/check-renders.mjs after producing all five outputs. No publishing or deployment without a separate owner request.

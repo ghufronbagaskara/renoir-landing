@@ -35,7 +35,7 @@ Both languages use Katalhys in visible brand names, metadata, structured data, s
 
 `bun run images:editorial` composites the shared SVG and bundled GeneralSans lettering onto existing blank photographic masters, refreshes explanatory Notes diagrams, and produces `public/og/katalhys-en.jpg` and `katalhys-id.jpg`. Actual Work screens remain authentic project proof.
 
-The intended canonical fallback is `https://katalhys.com`. Cloudflare resource names, credentials, bindings, and deployment stages remain unchanged. Domain ownership, DNS, Turnstile domains, and co-owner approval must be resolved before deployment. Historical Renoir promotional material remains outside this website rebrand.
+The intended canonical fallback is `https://katalhys.com`. Cloudflare resource names, credentials, bindings, and deployment stages remain unchanged. Domain ownership, DNS, Turnstile domains, and co-owner approval must be resolved before deployment. Historical Renoir explorations remain archived. The five active promo video variants were rebranded to the same Katalhys identity on 2026-10-17; see promo/video/README.md.
 
 ## Current local validation on 2026-10-15
 
