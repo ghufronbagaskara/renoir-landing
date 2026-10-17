@@ -1,0 +1,18 @@
+[
+  {
+    "locale": "id",
+    "performance": 97,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0,
+    "lcp": 2403.70875
+  },
+  {
+    "locale": "en",
+    "performance": 98,
+    "accessibility": 100,
+    "cls": 0,
+    "tbt": 0,
+    "lcp": 2176.12
+  }
+]

@@ -4,10 +4,10 @@ description: Tema dengan logo Anda cepat dibeli, tapi mahal untuk dijalani. Ini 
 date: 2026-09-10
 category: Website
 translationKey: bought-not-built
-image: editorial/note-bought-article.webp
-listImage: editorial/note-bought-list.webp
-cardImage: editorial/note-bought-card.webp
-thumb: editorial/note-bought-thumb.webp
+image: editorial/note-bought-article-id.webp
+listImage: editorial/note-bought-list-id.webp
+cardImage: editorial/note-bought-card-id.webp
+thumb: editorial/note-bought-thumb-id.webp
 ---
 
 Tema adalah website jadi yang dirancang orang lain untuk siapa saja. Anda memasang logo, mengganti foto, mengubah judul, lalu meluncurkannya. Hasilnya terlihat rapi. Tapi juga terlihat sama dengan bisnis lain yang membeli tema yang sama — dan calon klien merasakannya, meski tidak bisa menjelaskan kenapa.

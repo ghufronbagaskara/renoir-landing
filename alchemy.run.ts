@@ -18,7 +18,8 @@ import * as Redacted from "effect/Redacted";
 export default Alchemy.Stack(
   "renoir-landing",
   {
-    providers: Layer.mergeAll(Cloudflare.providers(), GitHub.providers()),
+    // GitHub is only needed for the PR preview comment; local and prod deploys need Cloudflare credentials only.
+    providers: process.env.PULL_REQUEST ? Layer.mergeAll(Cloudflare.providers(), GitHub.providers()) : Cloudflare.providers(),
     state: Cloudflare.state(),
   },
   Effect.gen(function* () {

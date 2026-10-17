@@ -37,7 +37,11 @@ const workCopy = z.object({
   tags: z.array(z.string()).min(1),
 });
 
-const featureCopy = z.object({ title: z.string(), body: z.string(), caption: z.string() });
+const featureCopy = z.object({
+  title: z.string(),
+  body: z.string(),
+  caption: z.string(),
+});
 
 export const collections = {
   services: defineCollection({
@@ -46,12 +50,17 @@ export const collections = {
       order: z.number(),
       build: z.enum(["marketing", "internal", "design", "both", "unsure"]),
       thumb: img,
-      images: z.array(z.object({
-        src: img,
-        kind: z.enum(["editorial", "proof"]),
-        alt: z.object({ en: z.string(), id: z.string() }),
-        caption: z.object({ en: z.string(), id: z.string() }),
-      })).min(1).max(3),
+      images: z
+        .array(
+          z.object({
+            src: img,
+            kind: z.enum(["editorial", "proof", "diagram"]),
+            alt: z.object({ en: z.string(), id: z.string() }),
+            caption: z.object({ en: z.string(), id: z.string() }),
+          }),
+        )
+        .min(1)
+        .max(3),
       en: serviceCopy,
       id_: serviceCopy,
     }),
@@ -78,11 +87,19 @@ export const collections = {
       primaryService: z.enum(workServiceIds),
       serviceIds: z.array(z.enum(workServiceIds)).min(1),
       featuredRank: z.number().int().positive().optional(),
-        homeRank: z.number().int().positive().optional(),
+      homeRank: z.number().int().positive().optional(),
       desktopImage: img,
       mobileImage: img,
       pairImage: img,
-      features: z.array(z.object({ image: img.optional(), en: featureCopy, id_: featureCopy })).min(1),
+      features: z
+        .array(
+          z.object({
+            image: img.optional(),
+            en: featureCopy,
+            id_: featureCopy,
+          }),
+        )
+        .min(1),
       imageNote: z.object({ en: z.string(), id_: z.string() }).optional(),
       year: z.string().optional(),
       en: workCopy,

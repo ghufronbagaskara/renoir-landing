@@ -4,10 +4,10 @@ description: Serah terima adalah titik di mana banyak proyek web gagal tanpa sua
 date: 2026-09-03
 category: Serah terima
 translationKey: delivered-running
-image: editorial/note-running-article.webp
-listImage: editorial/note-running-list.webp
-cardImage: editorial/note-running-card.webp
-thumb: editorial/note-running-thumb.webp
+image: editorial/note-running-article-id.webp
+listImage: editorial/note-running-list-id.webp
+cardImage: editorial/note-running-card-id.webp
+thumb: editorial/note-running-thumb-id.webp
 ---
 
 Build selesai, tagihan terakhir dikirim, dan vendor mengirim link repository atau file zip. Dari sisi mereka, pekerjaan sudah selesai. Dari sisi Anda, pekerjaan baru dimulai: seseorang harus menaruh software itu di server, menghubungkan domain, mengamankannya, dan menjaganya tetap berjalan.

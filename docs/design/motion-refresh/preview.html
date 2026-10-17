@@ -1,0 +1,37 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Katalhys — What you get concept</title><style>
+@font-face{font-family:General;src:url("/general.woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Inter;src:url("/inter.woff2");font-weight:100 900;font-display:swap}
+*{box-sizing:border-box}body{margin:0;background:#eef2f8;color:#17191c;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.review{max-width:1440px;margin:auto;padding:24px 32px;display:flex;gap:20px;justify-content:space-between;align-items:center;font-size:12px;color:#596273}
+.review p{margin:0;max-width:65ch;line-height:1.5}.review button{background:transparent;border:1px solid #aab4c5;padding:10px 14px;cursor:pointer;color:#17191c;border-radius:5px;font:inherit}
+.review button[aria-pressed=true]{background:#17191c;color:white;border-color:#17191c}
+.review div{display:flex;gap:6px}button:focus-visible{outline:2px solid #1d4ed8;outline-offset:3px}
+.concept{max-width:1440px;margin:0 auto 32px;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);background:#17191c;padding:64px;gap:72px;overflow:hidden}
+.intro{display:flex;flex-direction:column;justify-content:space-between;color:#fff;min-width:0}.eyebrow{font-size:12px;color:#a9b7cb;letter-spacing:.1em;text-transform:uppercase;margin:0 0 28px}
+h1{font-family:General,Arial,sans-serif;font-weight:600;font-size:clamp(36px,4.5vw,66px);line-height:1.04;letter-spacing:-.045em;max-width:11ch;margin:0}
+.brand{display:flex;gap:12px;align-items:center;font-family:General,Arial,sans-serif;font-size:28px;margin-top:72px}.brand img{width:34px;height:34px}.intro-rule{height:1px;background:#ffffff30;margin-top:40px;width:90px}
+.sheet{padding:12px 32px;background:#fff;position:relative;box-shadow:12px 14px 0 #ffffff12;min-width:0}
+.item{position:relative;padding:24px 0 24px 14px;border-top:1px solid #dce1e9;min-width:0}.item:first-child{border:0}
+.item::before{content:"";position:absolute;inset:24px auto 24px -16px;width:3px;background:#1d4ed8;opacity:0;transition:opacity .18s}
+.item:hover::before{opacity:1}.tag{font-size:10px;color:#1d4ed8;font-weight:600;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:9px}
+h2{font-family:General,Arial,sans-serif;font-weight:600;font-size:clamp(20px,1.7vw,25px);line-height:1.15;letter-spacing:-.025em;margin:0 0 10px}
+.item p{font-size:14px;line-height:1.65;color:#596273;max-width:52ch;margin:0}
+@media(max-width:800px){.concept{grid-template-columns:1fr;padding:40px 24px;gap:32px;margin-bottom:0}.intro{display:block}h1{max-width:17ch}.brand{margin-top:32px;font-size:22px}.brand img{width:26px;height:26px}.intro-rule{display:none}.sheet{padding:8px 20px;box-shadow:6px 8px 0 #ffffff12}.item{padding:22px 0 22px 6px}.item::before{left:-10px}.review{padding:16px 20px;align-items:start;gap:12px}.review p{max-width:24ch}.item p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><header class="review"><p>Konsep awal · Versi enhanced sudah terintegrasi di homepage EN/ID · <a href="http://localhost:4321/id/#benefits">Buka homepage</a></p><div><button type="button" data-lang="id" aria-pressed="true">ID</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></header><main class="concept"><div class="intro"><div><p class="eyebrow" data-label></p><h1 data-title></h1><div class="intro-rule"></div></div><div class="brand"><img src="/mark.svg" alt=""><span>Katalhys</span></div></div><div class="sheet" data-sheet></div></main><script>
+const copy={
+en:{label:"Why work with us",title:"What you get with Katalhys",rows:[
+["Code","Written from zero","No themes, no page builders. Every line exists because your project needed it."],
+["Speed","Speed is a specification","Performance and indexing targets are agreed before we start and checked before handover."],
+["Team","One team, one result","Design and engineering sit together. Nothing gets lost between them."],
+["Handover","Delivered running","Not a zip file. A working URL on infrastructure we configured."],
+["Contact","Talk to the person building it","Small team, short lines. No account manager in between."]]},
+id:{label:"Kenapa Katalhys",title:"Yang Anda dapat dari Katalhys",rows:[
+["Kode","Ditulis dari nol","Tanpa tema, tanpa page builder. Setiap baris ada karena proyek Anda membutuhkannya."],
+["Kecepatan","Kecepatan adalah spesifikasi","Target performa dan indexing disepakati sebelum mulai dan dicek sebelum serah terima."],
+["Tim","Satu tim, satu hasil","Desain dan engineering bekerja bersama. Tidak ada yang hilang di tengah jalan."],
+["Serah terima","Diserahkan dalam keadaan berjalan","Bukan file zip. URL yang berfungsi, di infrastruktur yang kami konfigurasi."],
+["Kontak","Bicara langsung dengan yang membangun","Tim kecil, jalur singkat. Tanpa account manager di tengah."]]}};
+function show(lang){document.documentElement.lang=lang;document.querySelector("[data-title]").textContent=copy[lang].title;document.querySelector("[data-label]").textContent=copy[lang].label;const sheet=document.querySelector("[data-sheet]");sheet.replaceChildren(...copy[lang].rows.map(([tag,title,body])=>{const article=document.createElement("article");article.className="item";const label=document.createElement("span");label.className="tag";label.textContent=tag;const heading=document.createElement("h2");heading.textContent=title;const p=document.createElement("p");p.textContent=body;article.append(label,heading,p);return article}));document.querySelectorAll("[data-lang]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.lang===lang)))}
+document.querySelectorAll("[data-lang]").forEach(button=>button.addEventListener("click",()=>show(button.dataset.lang)));show("id");
+</script></body></html>

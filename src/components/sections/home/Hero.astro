@@ -1,33 +1,31 @@
 ---
 import Img from "~/components/ui/Img.astro";
+import heroVideo from "~/assets/video/katalhys-hero.mp4?url";
+import heroVideoMobile from "~/assets/video/katalhys-hero-mobile.mp4?url";
 import { imageUrl } from "~/lib/images";
-import { t, type Locale } from "~/i18n";
-
-interface Props {
-  locale: Locale;
-}
+import { t, path, type Locale } from "~/i18n";
+interface Props { locale: Locale }
 const { locale } = Astro.props;
-const h = t(locale).home.hero;
+const c = t(locale);
+const h = c.home.hero;
 ---
-<section class="si-hero-area">
-  <div class="container container-1617">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="si-hero-text">
-          <h1 class="si-text-revel-anim">
-            {h.title.map((line, i) => (i === 0 ? line : <><br class="d-none d-xxl-block" /> {line}</>))}
-          </h1>
-        </div>
-        <div class="si-hero-text2">
-          <p>{h.body}</p>
-        </div>
-      </div>
+<section class="si-hero-area home-cinema" aria-labelledby="home-title">
+  <div class="home-cinema-media" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 767px)" srcset={imageUrl("home-refresh/hero-poster-mobile.webp")} />
+      <Img src="home-refresh/hero-poster.webp" alt="" loading="eager" fetchpriority="high" />
+    </picture>
+    <video data-hero-video data-src={heroVideo} data-mobile-src={heroVideoMobile} muted loop playsinline preload="none" tabindex="-1" hidden></video>
+  </div>
+  <div class="home-cinema-copy">
+    <p class="home-cinema-label">{h.label}</p>
+    <h1 id="home-title">{h.title.map((line, i) => <span class:list={{ "home-cinema-emphasis": i === 1 }}>{line}{" "}</span>)}</h1>
+    <p class="home-cinema-lede">{h.body}</p>
+    <div class="home-cinema-actions">
+      <a class="home-action home-action-primary" href={path("contact", locale)}>{c.nav.cta}<span aria-hidden="true">↗</span></a>
+      <a class="home-action home-action-glass" href="#selected-work">{h.work}<span aria-hidden="true">↓</span></a>
     </div>
   </div>
-  <div class="si-hero-thumb fix z-index-1">
-    <picture>
-      <source media="(max-width: 767px)" srcset={imageUrl("editorial/hero-mobile.webp")} width="900" height="1125" />
-      <Img class="w-100" src="editorial/hero-desktop.webp" alt="" loading="eager" fetchpriority="high" />
-    </picture>
-  </div>
+  <button class="home-video-toggle" data-video-toggle type="button" data-pause={h.pause} data-play={h.play} aria-label={h.play} hidden><span aria-hidden="true">▶</span></button>
 </section>
+<script>import "~/scripts/hero-video";</script>

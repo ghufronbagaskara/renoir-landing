@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Pilot 390px EN/ID and controls",
+    "status": "PASS"
+  },
+  {
+    "name": "Pilot 768px EN/ID and controls",
+    "status": "PASS"
+  },
+  {
+    "name": "Pilot 1440px EN/ID and controls",
+    "status": "PASS"
+  },
+  {
+    "name": "Finite playback ends at delivery after 8 seconds",
+    "status": "PASS"
+  },
+  {
+    "name": "Reduced motion is static and readable",
+    "status": "PASS"
+  },
+  {
+    "name": "No JavaScript: full tableau and all descriptions",
+    "status": "PASS"
+  },
+  {
+    "name": "Failed illustration: visible fallback and stopped animation",
+    "status": "PASS"
+  },
+  {
+    "name": "Moodboard: 12 screenshots, all local links and 3 viewport layouts",
+    "status": "PASS"
+  }
+]

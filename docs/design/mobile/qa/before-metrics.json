@@ -1,0 +1,297 @@
+[
+  {
+    "route": "services",
+    "selector": ".si-service-2-main",
+    "height": 195,
+    "heading": [
+      {
+        "text": "Four services, one accountable studio",
+        "font": "25px"
+      }
+    ]
+  },
+  {
+    "route": "services",
+    "selector": ".si-service-2-box",
+    "height": 422,
+    "heading": [
+      {
+        "text": "Marketing & landing sites",
+        "font": "36.8px"
+      }
+    ]
+  },
+  {
+    "route": "services",
+    "selector": "[data-hover-engagements]",
+    "height": 1631,
+    "heading": [
+      {
+        "text": "A clear scope, a fixed price",
+        "font": "25px"
+      }
+    ]
+  },
+  {
+    "route": "services",
+    "selector": ".engagement-panel",
+    "height": 329,
+    "heading": []
+  },
+  {
+    "route": "services",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "process",
+    "selector": ".si-process-area",
+    "height": 1570,
+    "heading": [
+      {
+        "text": "From first conversation to handover",
+        "font": "43.2px"
+      },
+      {
+        "text": "Scope",
+        "font": "21.6px"
+      }
+    ]
+  },
+  {
+    "route": "process",
+    "selector": ".si-faq-area",
+    "height": 1368,
+    "heading": [
+      {
+        "text": "Before we start",
+        "font": "25px"
+      },
+      {
+        "text": "Why aren't prices listed?",
+        "font": "25px"
+      }
+    ]
+  },
+  {
+    "route": "process",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "portfolio",
+    "selector": ".work-intro",
+    "height": 590,
+    "heading": [
+      {
+        "text": "Work that makes the next step clearer",
+        "font": "44.8px"
+      }
+    ]
+  },
+  {
+    "route": "portfolio",
+    "selector": ".work-featured-grid",
+    "height": 1397,
+    "heading": [
+      {
+        "text": "Order & Field Sales Workflow",
+        "font": "23.2px"
+      },
+      {
+        "text": "Industrial Coatings Catalogue",
+        "font": "23.2px"
+      }
+    ]
+  },
+  {
+    "route": "portfolio",
+    "selector": ".work-catalog-head",
+    "height": 302,
+    "heading": [
+      {
+        "text": "Explore all eight projects",
+        "font": "38.4px"
+      }
+    ]
+  },
+  {
+    "route": "portfolio",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "about",
+    "selector": ".si-breadcumb-area",
+    "height": 403,
+    "heading": [
+      {
+        "text": "About Renoir",
+        "font": "41.6px"
+      }
+    ]
+  },
+  {
+    "route": "about",
+    "selector": ".studio-work",
+    "height": 1170,
+    "heading": [
+      {
+        "text": "A name with a working history",
+        "font": "32px"
+      },
+      {
+        "text": "Good work takes practice",
+        "font": "28.8px"
+      }
+    ]
+  },
+  {
+    "route": "about",
+    "selector": ".si-counter-area",
+    "height": 1515,
+    "heading": []
+  },
+  {
+    "route": "about",
+    "selector": ".about-fit",
+    "height": 1173,
+    "heading": [
+      {
+        "text": "Who we work best with",
+        "font": "38.4px"
+      },
+      {
+        "text": "Good fit",
+        "font": "13px"
+      }
+    ]
+  },
+  {
+    "route": "about",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "notes",
+    "selector": ".notes-grid",
+    "height": 2149,
+    "heading": [
+      {
+        "text": "Most websites are bought, not built",
+        "font": "26.4px"
+      },
+      {
+        "text": "Nothing is delivered until it is running",
+        "font": "26.4px"
+      }
+    ]
+  },
+  {
+    "route": "notes",
+    "selector": ".si-blog-sidebar-text",
+    "height": 279,
+    "heading": [
+      {
+        "text": "Topics",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "notes",
+    "selector": ".si-blog-sidebar-post",
+    "height": 1033,
+    "heading": [
+      {
+        "text": "Recent notes",
+        "font": "24px"
+      },
+      {
+        "text": "Most websites are bought, not built",
+        "font": "20px"
+      }
+    ]
+  },
+  {
+    "route": "notes",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  },
+  {
+    "route": "contact",
+    "selector": "#project-form",
+    "height": 1076,
+    "heading": [
+      {
+        "text": "Start a project",
+        "font": "35px"
+      }
+    ]
+  },
+  {
+    "route": "contact",
+    "selector": "footer",
+    "height": 1306,
+    "heading": [
+      {
+        "text": "Tell us what needs to work",
+        "font": "48px"
+      },
+      {
+        "text": "Studio",
+        "font": "24px"
+      }
+    ]
+  }
+]

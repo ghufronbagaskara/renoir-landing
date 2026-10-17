@@ -7,7 +7,8 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const n = t(locale).home.notes;
+const c = t(locale);
+const n = c.home.notes;
 const notes = (await getNotes(locale)).slice(0, 5);
 ---
 <section class="si-blog-area pt-120 pb-130">
@@ -17,7 +18,7 @@ const notes = (await getNotes(locale)).slice(0, 5);
         <div class="si-blog-left">
           <div class="si-section-title">
             <span>{n.label}</span>
-            <h2 class="si-text-revel-anim">{n.title}</h2>
+            <h2>{n.title}</h2>
             <p>{n.body}</p>
           </div>
           <div class="si-blog-btn">
@@ -32,21 +33,30 @@ const notes = (await getNotes(locale)).slice(0, 5);
       <div class="col-lg-12 p-0">
         <div class="si-blog-main notes-track" tabindex="0" role="region" aria-label={n.title} data-notes-track>
           {
-            notes.map((note) => (
-              <article class="si-blog-box">
-                <div class="si-blog-img">
-                  <Img src={note.data.cardImage} alt="" />
-                </div>
-                <div class="si-blog-text">
-                  <p class="h3">
-                    <span class="project-dot2">{note.data.category}</span> <span>{formatDate(note.data.date, locale)}</span>
-                  </p>
-                  <h3 class="h4">
-                    <a class="underline-black" href={child("notes", locale, noteSlug(note))}>{note.data.title}</a>
-                  </h3>
-                </div>
-              </article>
-            ))
+            notes.map((note) => {
+              const href = child("notes", locale, noteSlug(note));
+              return (
+                <article class="si-blog-box">
+                  <div class="si-blog-img">
+                    <a href={href} aria-label={`${c.notes.readMore}: ${note.data.title}`}>
+                      <Img src={note.data.cardImage} alt="" />
+                    </a>
+                  </div>
+                  <div class="si-blog-text">
+                    <p class="h3">
+                      <span class="project-dot2">{note.data.category}</span> <span>{formatDate(note.data.date, locale)}</span>
+                    </p>
+                    <h3 class="h4">
+                      <a class="underline-black" href={href}>{note.data.title}</a>
+                    </h3>
+                    <a class="si-btn-one" href={href} aria-label={`${c.notes.readMore}: ${note.data.title}`}>
+                      <span class="btn-text"><span>{c.notes.readMore}</span></span>
+                      <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span>
+                    </a>
+                  </div>
+                </article>
+              );
+            })
           }
         </div>
       </div>

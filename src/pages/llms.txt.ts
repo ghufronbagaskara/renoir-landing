@@ -5,17 +5,17 @@ import { abs } from "~/lib/seo";
 
 export const prerender = true;
 
-// https://llmstxt.org — a plain summary of who Renoir is and where the key pages are, for LLMs and agents.
+// https://llmstxt.org — a plain summary of who Katalhys is and where the key pages are, for LLMs and agents.
 export const GET: APIRoute = async () => {
   const en = t("en");
   const id = t("id");
   const services = await getServices();
   const notes = await getNotes("en");
-  const body = `# Renoir
+  const body = `# Katalhys
 
 > ${en.site.description}
 
-Renoir (pronounced ren-WAHR) is an independent digital studio based in Indonesia and working remotely worldwide. One team designs, builds from scratch, deploys, and maintains marketing sites and custom internal business systems. Projects start with a written scope and a fixed price. Every project is handed over running, with documentation and full ownership of the code. Languages: English and Indonesian.
+Katalhys is an independent digital studio based in Indonesia and working remotely worldwide. One team designs, builds from scratch, deploys, and maintains marketing sites and custom internal business systems. Projects start with a written scope and a fixed price. Every project is handed over running, with documentation and full ownership of the code. Languages: English and Indonesian.
 
 ## Services
 
@@ -28,7 +28,7 @@ ${services
 
 ## Company
 
-- [About Renoir](${abs(path("about", "en"))}): ${en.about.metaDescription}
+- [About Katalhys](${abs(path("about", "en"))}): ${en.about.metaDescription}
 - [Process](${abs(path("process", "en"))}): ${en.process.metaDescription}
 - [Start a project](${abs(path("contact", "en"))}): ${en.contact.metaDescription}
 

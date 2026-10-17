@@ -1,13 +1,16 @@
 ---
 import Accordion from "~/components/ui/Accordion.astro";
+import BrandMark from "~/components/ui/BrandMark.astro";
+import type { Locale } from "~/i18n";
 
 interface Props {
   id: string;
+  locale?: Locale;
   label: string;
   title: string;
   items: { question: string; answer: string }[];
 }
-const { id, label, title, items } = Astro.props;
+const { id, label, title, items, locale } = Astro.props;
 ---
 <section class="si-faq-area pt-124">
   <div class="container container-1617">
@@ -15,13 +18,18 @@ const { id, label, title, items } = Astro.props;
       <div class="col-lg-5">
         <div class="si-section-title pb-78">
           <span>{label}</span>
-          <h2 class="si-text-revel-anim">{title}</h2>
+          <h2>{title}</h2>
+          {locale && <div class="handover-visual">
+            <div class="handover-heading"><BrandMark /><span>{locale === "en" ? "Your project. Your files." : "Proyek Anda. File Anda."}</span></div>
+            <ol>{(locale === "en" ? ["Source code", "Accounts & access", "Documentation"] : ["Kode sumber", "Akun & akses", "Dokumentasi"]).map((file, index) => <li><span aria-hidden="true">0{index + 1}</span>{file}<span aria-hidden="true">↗</span></li>)}</ol>
+            <p>{locale === "en" ? "A handover you can build on." : "Serah terima untuk melanjutkan pengembangan."}</p>
+          </div>}
         </div>
       </div>
       <div class="col-lg-7">
         <div class="si-faq-box">
           <div class="si-faq-accordion-wrap">
-            <Accordion id={id} items={items} />
+            <Accordion id={id} items={items} hover={!!locale} />
           </div>
         </div>
       </div>

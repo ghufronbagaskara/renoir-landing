@@ -2,6 +2,7 @@
 import Img from "~/components/ui/Img.astro";
 import { child, t, type Locale } from "~/i18n";
 import { getPortfolio, portfolioCopy } from "~/lib/content";
+import { imageUrl } from "~/lib/images";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -27,12 +28,13 @@ const text = (project: (typeof projects)[number]) => {
         return (
           <article class="work-featured-card">
             <a class="work-featured-image fix" href={href} tabindex="-1" aria-hidden="true">
-              <Img src={project.data.pairImage} alt="" loading="eager" />
+              <Img src={project.data.pairImage} srcset={`${imageUrl(project.data.pairImage.replace("pair.webp", "pair-mobile.webp"))} 720w, ${imageUrl(project.data.pairImage)} 1800w`} sizes="(max-width: 767px) calc((100vw - 36px) / 2), (max-width: 991px) 45vw, 30vw" alt="" loading="eager" />
             </a>
             <div class="work-featured-copy">
               <span class="work-service-badge">{w.services[project.data.primaryService]}</span>
               <h3><a class="underline-black" href={href}>{copy.title}</a></h3>
-              <p>{copy.overview}</p>
+              <p class="desktop-card-description">{copy.overview}</p>
+              <details class="mobile-card-details"><summary>{locale === "en" ? "Project brief" : "Ringkasan proyek"}</summary><p>{copy.overview}</p></details>
             </div>
           </article>
         );
@@ -72,9 +74,9 @@ const text = (project: (typeof projects)[number]) => {
         return (
           <div class="work-card-shell" data-work-card data-services={project.data.serviceIds.join(" ")} data-search={text(project)}>
             <article class="si-project-3-box">
-              <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 si_fade_anim fix not-hide-cursor" data-cursor={w.view}>
+              <div class="si-project-3-thumb portfolio-radius si-portfolio-thumb-height3 fix not-hide-cursor" data-cursor={w.view}>
                 <a class="cursor-hide img-cover" href={href} tabindex="-1" aria-hidden="true">
-                  <Img src={project.data.pairImage} alt="" loading={index < 2 ? "eager" : "lazy"} />
+                  <Img src={project.data.pairImage} srcset={`${imageUrl(project.data.pairImage.replace("pair.webp", "pair-mobile.webp"))} 720w, ${imageUrl(project.data.pairImage)} 1800w`} sizes="(max-width: 767px) calc((100vw - 36px) / 2), 45vw" alt="" loading={index < 2 ? "eager" : "lazy"} />
                 </a>
                 <span class="work-service-badge work-service-badge-overlay">{w.services[project.data.primaryService]}</span>
               </div>

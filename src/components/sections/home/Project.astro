@@ -1,62 +1,48 @@
 ---
 import Img from "~/components/ui/Img.astro";
+import { imageUrl } from "~/lib/images";
 import { child, path, t, type Locale } from "~/i18n";
 import { getPortfolio, portfolioCopy } from "~/lib/content";
-
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = t(locale);
+const w = c.home.work;
 const projects = (await getPortfolio()).filter((project) => project.data.homeRank).sort((a, b) => a.data.homeRank! - b.data.homeRank!);
 ---
-<section class="si-project-area pt-124 pb-130">
+<section id="selected-work" class="home-featured-work" aria-labelledby="home-work-title" data-home-tabs>
   <div class="container container-1617">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="si-section-title pb-60 relative-tag home-work-heading">
-          <span>{c.home.work.label}</span>
-          <h2 class="si-text-revel-anim">{c.home.work.title}</h2>
-          <p>{c.home.work.body}</p>
-          <div class="si-project-navigation">
-            <div class="si-button-next navigation-icon"><button type="button" aria-label={c.home.work.previous}><Img src="project/left.svg" alt="" /></button></div>
-            <button class="home-work-rotation" type="button" aria-label={c.home.work.pause} data-work-rotation data-pause-label={c.home.work.pause} data-resume-label={c.home.work.resume}><span aria-hidden="true">Ⅱ</span></button>
-            <div class="si-button-prev navigation-icon"><button type="button" aria-label={c.home.work.next}><Img src="project/right.svg" alt="" /></button></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-12">
-        <div class="si-project swiper">
-          <div class="swiper-wrapper">
-            {projects.map((project, index) => {
-              const copy = portfolioCopy(project, locale);
-              return (
-                <div class="swiper-slide">
-                  <article class="si-project-box">
-                    <a class="si-project-img" href={child("work", locale, project.id)} tabindex="-1" aria-hidden="true">
-                      <Img src={project.data.pairImage} alt="" />
-                    </a>
-                    <div class="si-project-right">
-                      <div class="si-project-right-inner">
-                        <div class="si-project-number"><span>{String(index + 1).padStart(2, "0")}</span></div>
-                        <div class="si-project-text">
-                          <span class="work-service-badge">{c.work.services[project.data.primaryService]}</span>
-                          <h3><a class="underline-black" href={child("work", locale, project.id)}>{copy.title}</a></h3>
-                          <p>{copy.subtitle}</p>
-                        </div>
-                      </div>
-                      {project.data.year && <div class="si-project-year"><span>{project.data.year}</span></div>}
-                    </div>
-                  </article>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div class="home-work-link"><a href={path("work", locale)}>{c.work.allTitle} <i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></a></div>
-      </div>
+    <div class="home-section-head">
+      <div><p class="home-section-label">{w.label}</p><h2 id="home-work-title">{w.title}</h2></div>
+      <div class="home-section-intro"><p>{w.body}</p><span class="home-project-count">{w.count} / <strong>{String(projects.length).padStart(2, "0")}</strong></span></div>
     </div>
+    <div class="home-project-controls">
+    <div class="home-project-tabs" data-tab-controls aria-label={w.count} hidden>
+      {projects.map((project, i) => <button type="button" id={`work-tab-${i}`} data-tab><span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>{portfolioCopy(project, locale).title}</button>)}
+    </div>
+    <button class="home-work-rotation" data-project-rotation data-pause={w.pause} data-resume={w.resume} aria-label={w.pause} type="button" hidden><span aria-hidden="true">Ⅱ</span></button>
+    </div>
+    <div class="home-project-stage">
+    {projects.map((project, i) => {
+      const copy = portfolioCopy(project, locale);
+      return <div id={`work-panel-${i}`} class="home-project-panel" data-tab-panel>
+        <figure class="home-project-visual">
+          <Img src={project.data.pairImage} srcset={`${imageUrl(project.data.pairImage.replace("pair.webp", "pair-mobile.webp"))} 720w, ${imageUrl(project.data.pairImage)} 1800w`} sizes="(max-width: 767px) calc(100vw - 58px), (min-width: 1700px) 800px, 48vw" alt={`${copy.title} — ${w.screens}`} />
+          <figcaption>{project.data.imageNote ? (locale === "en" ? project.data.imageNote.en : project.data.imageNote.id_) : w.screens}</figcaption>
+        </figure>
+        <div class="home-project-info">
+          <p class="home-project-meta">{c.work.services[project.data.primaryService]}{project.data.year && ` / ${project.data.year}`}</p>
+          <h3>{copy.title}</h3>
+          <p class="home-project-summary">{copy.overview}</p>
+          <ul class="home-project-services" aria-label={c.work.details.services}>{project.data.serviceIds.map((id) => <li>{c.work.services[id]}</li>)}</ul>
+          <div class="home-project-approach"><span>{w.approach}</span><p>{copy.approach}</p></div>
+          <a class="home-action home-action-primary" href={child("work", locale, project.id)}>{w.caseStudy}<span aria-hidden="true">↗</span></a>
+        </div>
+      </div>;
+    })}
+    </div>
+    <div class="home-work-all"><a class="home-text-link" href={path("work", locale)}>{c.work.allTitle}<span aria-hidden="true">→</span></a></div>
   </div>
 </section>
 <script>
-  import { initSliders } from "~/scripts/sliders";
-  initSliders();
+  import "~/scripts/project-showcase";
 </script>

@@ -1,3 +1,6 @@
+// Register overlay handlers before opening a search from ?q.
+import "./site";
+import { searchCatalog, type SearchEntry } from "../lib/search-catalog";
 // Header search overlay backed by Pagefind. The index (/pagefind/) is generated at build time and only
 // downloaded when the visitor starts searching.
 interface PagefindResult {
@@ -19,6 +22,21 @@ const load = () =>
 
 const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+let catalog: Promise<SearchEntry[]> | undefined;
+async function find(term: string) {
+  const pf = await load();
+  if (pf) {
+    try {
+      const { results } = await pf.search(term);
+      return await Promise.all(results.slice(0, 50).map(result => result.data()));
+    } catch { /* Use the content catalog if the full-text index cannot load. */ }
+  }
+  catalog ??= fetch("/search-index.json").then(response => {
+    if (!response.ok) throw new Error("Search catalog unavailable");
+    return response.json() as Promise<SearchEntry[]>;
+  }).catch(error => { catalog = undefined; throw error; });
+  return searchCatalog(await catalog, term, overlay?.dataset.locale ?? "en");
+}
 let seq = 0;
 async function run(term: string) {
   if (!list) return;
@@ -34,16 +52,8 @@ async function run(term: string) {
   list.hidden = false;
   if (defaults) defaults.hidden = true;
   list.innerHTML = `<li><p>${escapeHtml(overlay!.dataset.loading ?? "")}</p></li>`;
-  const pf = await load();
-  if (id !== seq) return;
-  if (!pf) {
-    list.innerHTML = `<li><p>${escapeHtml(overlay!.dataset.unavailable ?? "")}</p></li>`;
-    list.removeAttribute("aria-busy");
-    return;
-  }
   try {
-    const { results } = await pf.search(term.trim());
-    const data = await Promise.all(results.slice(0, 50).map((r: PagefindResult) => r.data()));
+    const data = await find(term.trim());
     if (id !== seq) return;
     const locale = overlay!.dataset.locale ?? "en";
     const labels = JSON.parse(overlay!.dataset.groups ?? "{}") as Record<string, string>;
@@ -80,6 +90,7 @@ if (overlay && form && input) {
   });
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    clearTimeout(timer);
     run(input.value);
   });
 

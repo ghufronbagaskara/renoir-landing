@@ -1,14 +1,15 @@
 ---
 import Img from "~/components/ui/Img.astro";
-import ProcessJoint from "~/components/ui/ProcessJoint.astro";
+import ProcessStoryboard from "~/components/ui/ProcessStoryboard.astro";
 
 interface Props {
   label: string;
   title: string;
   steps: { title: string; body: string }[];
   pt?: boolean;
+  compact?: boolean;
 }
-const { label, title, steps, pt = true } = Astro.props;
+const { label, title, steps, pt = true, compact = false } = Astro.props;
 const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
 ---
 <section class:list={["si-process-area pb-124", { "pt-124": pt }]}>
@@ -17,15 +18,21 @@ const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
       <div class="col-lg-6">
         <div class="si-section-title">
           <span>{label}</span>
-          <h2 class="si-text-revel-anim">{title}</h2>
+          <h2>{title}</h2>
         </div>
-        <div class="si-process-box">
+        {compact && <div class="process-mobile">
+          {steps.map((step, i) => <details name="process-steps" open={i === 0}>
+            <summary><span class="process-step-number">0{i + 1}</span><h3>{step.title}</h3><span class="process-step-toggle" aria-hidden="true">+</span></summary>
+            <p>{step.body}</p>
+          </details>)}
+        </div>}
+        <div class:list={["si-process-box", { "process-desktop": compact }]}>
           <div class="si-process-border">
             <Img src="process/line.svg" alt="" />
           </div>
           {
             steps.map((step, i) => (
-              <div class:list={["si-process-right si_fade_anim", { "pb-70": i < steps.length - 1 }]} data-fade-offset="18" data-duration="0.55" data-delay={String(i * 0.07)}>
+              <div class:list={["si-process-right", { "pb-70": i < steps.length - 1 }]}>
                 <div class="si-process-icon">
                   <span aria-hidden="true"><i class={`fa-sharp fa-regular ${icons[i % icons.length]}`}></i></span>
                 </div>
@@ -40,5 +47,5 @@ const icons = ["fa-list-check", "fa-pen-ruler", "fa-code", "fa-server"];
       </div>
     </div>
   </div>
-  <div class="si-process-thumb si_fade_anim" data-fade-offset="16" data-duration="0.7"><ProcessJoint /></div>
+  <div class="si-process-thumb"><ProcessStoryboard steps={steps} /></div>
 </section>

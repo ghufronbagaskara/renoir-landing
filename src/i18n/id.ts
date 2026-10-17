@@ -4,11 +4,10 @@ import type { Dictionary } from "./en";
 
 const id: Dictionary = {
   site: {
-    name: "Renoir",
-    pronunciation: "ren-WAHR",
+    name: "Katalhys",
     tagline: "Tampil meyakinkan. Bekerja lebih rapi",
     description:
-      "Renoir merancang identitas dan pengalaman digital, membangun website serta sistem bisnis, lalu menjaga produk yang kami bangun tetap berjalan.",
+      "Katalhys merancang identitas dan website, membangun sistem internal terintegrasi AI untuk tim Anda, lalu menjaga produk yang kami bangun tetap berjalan.",
   },
 
   nav: {
@@ -16,12 +15,12 @@ const id: Dictionary = {
     process: "Proses",
     work: "Karya",
     about: "Tentang",
-    aboutRenoir: "Tentang Renoir",
+    aboutRenoir: "Tentang Katalhys",
     team: "Tim",
     notes: "Catatan",
     cta: "Mulai proyek",
-    floatingCta: "Ceritakan yang bermasalah",
-    floatingCtaShort: "Apa masalahnya?",
+    floatingCta: "Hubungi",
+    floatingCtaShort: "Hubungi",
     language: "Bahasa",
     openMenu: "Buka menu",
     closeMenu: "Tutup menu",
@@ -44,7 +43,7 @@ const id: Dictionary = {
 
   offcanvas: {
     about:
-      "Renoir adalah studio digital untuk identitas visual, antarmuka, website, dan sistem bisnis. Anda bisa memesan desain saja, atau mengajak kami membangun dan menjalankan hasilnya.",
+      "Katalhys adalah studio digital untuk identitas visual, antarmuka, website, dan sistem bisnis. Anda bisa memesan desain saja, atau mengajak kami membangun dan menjalankan hasilnya.",
     contactTitle: "Hubungi kami",
     followTitle: "Ikuti kami",
   },
@@ -63,8 +62,8 @@ const id: Dictionary = {
   },
 
   notFound: {
-    metaTitle: "Halaman tidak ditemukan — Renoir",
-    metaDescription: "Halaman ini tidak ada. Tautannya mungkin sudah lama, atau halamannya sudah dipindah. Kembali ke beranda Renoir.",
+    metaTitle: "Halaman tidak ditemukan — Katalhys",
+    metaDescription: "Halaman ini tidak ada. Tautannya mungkin sudah lama, atau halamannya sudah dipindah. Kembali ke beranda Katalhys.",
     breadcrumb: "Halaman tidak ditemukan",
     title: "Halaman ini tidak ada.",
     body: "Tautannya mungkin sudah lama, atau halamannya sudah dipindah.",
@@ -95,21 +94,66 @@ const id: Dictionary = {
   },
 
   home: {
-    metaTitle: "Renoir | Desain, website, aplikasi, dan sistem bisnis",
+    metaTitle: "Katalhys | Desain, website, aplikasi, dan sistem bisnis",
     metaDescription:
-      "Renoir merancang identitas dan pengalaman digital, membangun website serta sistem bisnis, lalu menjaga produk yang kami bangun tetap berjalan.",
+      "Katalhys merancang identitas dan website, membangun sistem internal terintegrasi AI untuk tim Anda, lalu menjaga produk yang kami bangun tetap berjalan.",
     hero: {
       title: ["Tampil meyakinkan", "Bekerja lebih rapi"],
-      body: "Renoir membantu bisnis tampil lebih jelas dan bekerja lebih tertata. Kami mengerjakan identitas, antarmuka, website, hingga sistem operasional. Mulai dari desain saja atau lanjut bersama kami sampai peluncuran.",
+      label: "Studio digital independen",
+      body: "Kami merancang identitas dan website yang meyakinkan, serta sistem internal terintegrasi AI yang membantu tim menjalankan pekerjaan sehari-hari.",
+      work: "Lihat karya kami",
+      factsLabel: "Cara kami bekerja",
+      facts: ["Scope tertulis", "Desain sampai deployment", "AI di alur kerja Anda"],
+      pause: "Jeda video latar",
+      play: "Putar video latar",
     },
     problem: {
       label: "Masalahnya",
-      title: "Desain yang baik harus enak dipakai",
-      side: "Desain sampai server",
-      stat: "Satu studio",
-      cardTitle: "Satu tim untuk seluruh pekerjaan",
-      cardBody:
-        "Kesan pertama itu penting. Sistem di belakangnya juga. Kami menyatukan desain dan engineering, lalu tetap bertanggung jawab ketika hasilnya digunakan.",
+      title: "Berapa lama mencari status satu pesanan?",
+      intro: "Saat informasi tersebar di chat, spreadsheet, dan dokumen, mencari jawaban jadi pekerjaan tersendiri.",
+      sourcesLabel: "Informasi di tempat berbeda",
+      sources: [
+        {
+          name: "Chat",
+          detail: "Pesanan ini sudah dikirim?"
+        },
+        {
+          name: "Spreadsheet",
+          detail: "Status mana yang terbaru?"
+        },
+        {
+          name: "Dokumen",
+          detail: "Laporan terakhir ada di mana?"
+        }
+      ],
+      stat: "Sistem internal + AI",
+      cardTitle: "Satu pesanan, langkah berikutnya jelas",
+      fields: [
+        {
+          label: "Status",
+          value: "Tahap terbaru"
+        },
+        {
+          label: "Penanggung jawab",
+          value: "Siapa yang menangani"
+        },
+        {
+          label: "Langkah berikutnya",
+          value: "Yang perlu diperhatikan"
+        }
+      ],
+      aiLabel: "Bantuan AI di dalam alur kerja",
+      aiActions: [
+        "Temukan informasinya",
+        "Rangkum laporannya",
+        "Siapkan tindak lanjut"
+      ],
+      decision: "Tim Anda meninjau dan memutuskan",
+      illustration: "Ilustrasi alur kerja. Tugas AI dan akses data disepakati dalam scope.",
+      proofLabel: "Contoh proyek nyata",
+      proofTitle: "Alur Pesanan & Sales Lapangan",
+      proofAlt: "Dashboard asli pesanan dan sales lapangan pada desktop dan ponsel",
+      button: "Lihat sistem internal"
     },
     strip: [
       "Situs marketing",
@@ -124,6 +168,18 @@ const id: Dictionary = {
       title: "Dari wajah bisnis sampai sistem di baliknya",
       body: "Empat cara bekerja bersama kami. Mulai dari desain, website publik, sistem bisnis, atau infrastruktur yang menjaganya tetap berjalan.",
       button: "Lihat semua layanan",
+      detail: "Lihat layanan ini",
+      hint: "Pilih layanan atau geser gambar",
+      previous: "Layanan sebelumnya",
+      next: "Layanan berikutnya",
+      overview: "Tampilkan lingkaran gambar",
+      wheelLabel: ["Desain", "Bangun", "Jalankan"],
+      items: [
+        { title: "Website marketing", body: "Penawaran yang jelas, antarmuka yang dipikirkan dengan baik, dan website cepat yang memudahkan calon klien mengambil langkah berikutnya." },
+        { title: "Sistem internal + AI", body: "Software operasional custom dengan bantuan AI untuk menemukan informasi, merangkum laporan, dan menyiapkan tindakan berikutnya." },
+        { title: "UI/UX & identitas", body: "Alur pengguna, antarmuka, dan identitas visual yang terasa milik bisnis Anda. Mulai dari desain saja atau lanjut sampai pembangunan." },
+        { title: "Deploy & perawatan", body: "Rilis yang berjalan, monitoring, backup, dan serah terima yang jelas. Lanjut bersama kami untuk perawatan atau kelola sendiri dengan akses penuh." },
+      ],
     },
     work: {
       label: "Karya",
@@ -134,6 +190,10 @@ const id: Dictionary = {
       next: "Proyek berikutnya",
       pause: "Jeda pergantian proyek",
       resume: "Lanjutkan pergantian proyek",
+      count: "Proyek pilihan",
+      approach: "Pendekatannya",
+      caseStudy: "Lihat studi kasus",
+      screens: "Layar asli proyek · Desktop dan ponsel",
     },
     process: {
       label: "Cara kami bekerja",
@@ -175,6 +235,7 @@ const id: Dictionary = {
             "Dashboard dan monitoring",
             "Alur persetujuan",
             "Integrasi antar sistem yang Anda pakai",
+            "Bantuan AI untuk tugas operasional yang disepakati",
           ],
           priceLine: "Harga tetap",
           note: "setelah lingkup disepakati",
@@ -230,8 +291,12 @@ const id: Dictionary = {
       ],
     },
     why: {
-      label: "Kenapa Renoir",
-      title: "Yang Anda dapat dari Renoir",
+      label: "Kenapa Katalhys",
+      title: "Yang Anda dapat dari Katalhys",
+      handover: {
+        label: "Dalam serah terima",
+        items: ["File desain","Kode sumber","Akses & dokumentasi"],
+      },
       rows: [
         { title: "Ditulis dari nol", body: "Tanpa tema, tanpa page builder. Setiap baris ada karena proyek Anda membutuhkannya.", tag: "Kode" },
         { title: "Kecepatan adalah spesifikasi", body: "Target performa dan indexing disepakati sebelum mulai dan dicek sebelum serah terima.", tag: "Kecepatan" },
@@ -284,17 +349,16 @@ const id: Dictionary = {
   },
 
   about: {
-    metaTitle: "Tentang Renoir — Studio kecil yang membangun & menjalankan web",
+    metaTitle: "Tentang Katalhys | Studio desain, website dan sistem bisnis",
     metaDescription:
-      "Renoir, dibaca ren-WAHR, adalah studio digital kecil yang menyatukan desain, engineering, dan infrastruktur dalam satu tim.",
-    breadcrumb: "Tentang Renoir",
+      "Katalhys adalah studio digital yang menyatukan desain, engineering, dan infrastruktur dalam satu tim, dari rancangan awal hingga peluncuran dan perawatan.",
+    breadcrumb: "Tentang",
     name: {
       label: "Tentang nama",
-      title: "Nama ini punya cerita kerja",
-      pronunciationLabel: "Cara membacanya",
-      cardTitle: "Kerja yang baik perlu latihan",
+      title: "Nama yang berangkat dari peran katalis",
+      cardTitle: "Membuka jalan agar bisnis dapat bergerak maju",
       cardBody:
-        "Pierre-Auguste Renoir menghabiskan tahun-tahun awalnya melukis dekorasi di porselen, di sebuah pabrik — pekerjaan komersial, dibayar per buah, dengan standar yang dijaga. Karena itulah kami memakai namanya. Pekerjaan klien tetap harus dibuat dengan benar.",
+        "Katalhys mengambil gagasan katalis: membantu bisnis mengurangi hambatan melalui desain dan teknologi. Dua bidang melengkung pada logo membentuk jalur putih yang terbuka, menggambarkan proses rumit yang dibuat lebih mudah dijalankan. Kami merancang website yang membantu pelanggan menemukan layanan dan membangun sistem yang menghubungkan pekerjaan beberapa divisi.",
     },
     band: "MULAI PROYEK · ",
     facts: [
@@ -332,9 +396,9 @@ const id: Dictionary = {
   },
 
   services: {
-    metaTitle: "Layanan: Desain, Website, Sistem dan Perawatan | Renoir",
+    metaTitle: "Layanan: Desain, Website, Sistem dan Perawatan | Katalhys",
     metaDescription:
-      "Empat layanan Renoir: UI/UX dan identitas visual, situs marketing, sistem bisnis custom, serta deployment dan perawatan.",
+      "Empat layanan Katalhys: UI/UX dan identitas visual, situs marketing, sistem bisnis custom, serta deployment dan perawatan.",
     breadcrumb: "Layanan",
     label: "Layanan",
     title: "Empat layanan, satu studio yang bertanggung jawab",
@@ -344,9 +408,9 @@ const id: Dictionary = {
   },
 
   process: {
-    metaTitle: "Cara Kerja — Scope, Desain, Build, Deploy & Perawatan | Renoir",
+    metaTitle: "Cara Kerja — Scope, Desain, Build, Deploy & Perawatan | Katalhys",
     metaDescription:
-      "Empat tahap, scope tertulis, harga tetap, dan URL staging yang bisa dipantau sepanjang proses. Lihat bagaimana proyek bersama Renoir berjalan.",
+      "Empat tahap, scope tertulis, harga tetap, dan URL staging yang bisa dipantau sepanjang proses. Lihat bagaimana proyek bersama Katalhys berjalan.",
     breadcrumb: "Proses",
     label: "Proses",
     title: "Dari obrolan awal sampai serah terima",
@@ -371,9 +435,9 @@ const id: Dictionary = {
   },
 
   notes: {
-    metaTitle: "Catatan — Membangun website yang tetap bekerja | Renoir",
+    metaTitle: "Catatan — Membangun website yang tetap bekerja | Katalhys",
     metaDescription:
-      "Catatan dari Renoir tentang kecepatan website, visibilitas di pencarian, serah terima, dan apa yang membuat sistem web tetap bekerja setelah diluncurkan.",
+      "Catatan dari Katalhys tentang kecepatan website, visibilitas di pencarian, serah terima, dan apa yang membuat sistem web tetap bekerja setelah diluncurkan.",
     breadcrumb: "Catatan",
     articleBreadcrumb: "Catatan",
     readMore: "Baca catatan",
@@ -390,9 +454,9 @@ const id: Dictionary = {
   },
 
   contact: {
-    metaTitle: "Mulai Proyek — Ceritakan apa yang bermasalah | Renoir",
+    metaTitle: "Mulai Proyek — Ceritakan apa yang bermasalah | Katalhys",
     metaDescription:
-      "Ceritakan kebutuhan desain atau pembangunan Anda kepada Renoir. Kirim detail proyek, lalu kami akan menghubungi Anda untuk memahami pekerjaannya.",
+      "Ceritakan kebutuhan desain atau pembangunan Anda kepada Katalhys. Kirim detail proyek, lalu kami akan menghubungi Anda untuk memahami pekerjaannya.",
     breadcrumb: "Mulai proyek",
     title: "Ceritakan yang ingin Anda ubah",
     body: "Jelaskan kebutuhan Anda, baik identitas baru, antarmuka, website, maupun sistem. Kami akan menghubungi Anda untuk memahami pekerjaannya sebelum menyusun scope.",
@@ -403,12 +467,12 @@ const id: Dictionary = {
   },
 
   work: {
-    metaTitle: "Karya Website, Sistem Bisnis & UI/UX | Renoir",
-    metaDescription: "Lihat delapan proyek karya pendiri Renoir: situs marketing, sistem bisnis, UI/UX, serta pekerjaan deployment yang menopangnya.",
+    metaTitle: "Karya Website, Sistem Bisnis & UI/UX | Katalhys",
+    metaDescription: "Lihat delapan proyek karya pendiri Katalhys: situs marketing, sistem bisnis, UI/UX, serta pekerjaan deployment yang menopangnya.",
     breadcrumb: "Karya",
     label: "Karya",
     title: "Pekerjaan yang membuat langkah berikutnya jelas",
-    intro: "Delapan proyek karya pendiri Renoir, dari website publik sampai sistem dan infrastruktur untuk operasi sehari-hari.",
+    intro: "Delapan proyek karya pendiri Katalhys, dari website publik sampai sistem dan infrastruktur untuk operasi sehari-hari.",
     featuredLabel: "Karya pilihan",
     featuredTitle: "Mulai dari tiga proyek ini",
     allLabel: "Semua karya",

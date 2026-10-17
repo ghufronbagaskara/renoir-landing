@@ -1,0 +1,46 @@
+[
+  {
+    "name": "/services/internal-systems/ 390px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "/services/internal-systems/ 768px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "/services/internal-systems/ 1440px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "/id/layanan/sistem-internal/ 390px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "/id/layanan/sistem-internal/ 768px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "/id/layanan/sistem-internal/ 1440px: layout, all stages, keyboard, CTA and proof",
+    "status": "PASS"
+  },
+  {
+    "name": "Finite 8-second playback; viewport and document visibility pause",
+    "status": "PASS"
+  },
+  {
+    "name": "reduced: static information and fallback",
+    "status": "PASS"
+  },
+  {
+    "name": "no-js: static information and fallback",
+    "status": "PASS"
+  },
+  {
+    "name": "image-error: static information and fallback",
+    "status": "PASS"
+  },
+  {
+    "name": "Other service and homepage have no scene or runtime",
+    "status": "PASS"
+  }
+]

@@ -10,9 +10,11 @@ const id = t("id").notFound;
 <BaseLayout locale="en" title={en.metaTitle} description={en.metaDescription} alternates={{}} breadcrumb={{ title: en.breadcrumb }} noindex>
   <section class="si-contact-area pt-127 pb-130">
     <div class="container container-1617">
-      <div class="si-section-title text-center">
-        <h2>{en.title}</h2>
-        <p>{en.body}</p>
+      <div class="text-center">
+        <div class="si-section-title">
+          <h2>{en.title}</h2>
+          <p>{en.body}</p>
+        </div>
         <a class="si-btn-one mt-30" href={path("home", "en")}> <span class="btn-text"> <span>{en.button}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
         <div lang="id" class="mt-60">
           <p class="h4">{id.title}</p>

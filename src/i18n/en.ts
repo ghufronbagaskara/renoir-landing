@@ -2,11 +2,10 @@
 // match this shape exactly (enforced by the Dictionary type).
 const en = {
   site: {
-    name: "Renoir",
-    pronunciation: "ren-WAHR",
+    name: "Katalhys",
     tagline: "Make a stronger impression. Run a better operation",
     description:
-      "Renoir designs identities and digital experiences, builds websites and business systems, and keeps the products it builds running.",
+      "Katalhys designs identities and websites, builds AI-integrated internal systems around your team, and keeps the products it builds running.",
   },
 
   nav: {
@@ -14,12 +13,12 @@ const en = {
     process: "Process",
     work: "Work",
     about: "About",
-    aboutRenoir: "About Renoir",
+    aboutRenoir: "About Katalhys",
     team: "Team",
     notes: "Notes",
     cta: "Start a project",
-    floatingCta: "Tell us what’s broken",
-    floatingCtaShort: "What’s broken?",
+    floatingCta: "Make the call!",
+    floatingCtaShort: "Make the call!",
     language: "Language",
     openMenu: "Open menu",
     closeMenu: "Close menu",
@@ -42,7 +41,7 @@ const en = {
 
   offcanvas: {
     about:
-      "Renoir is a digital studio for visual identity, interfaces, websites, and business systems. We can take on design by itself or build and run the finished product.",
+      "Katalhys is a digital studio for visual identity, interfaces, websites, and business systems. We can take on design by itself or build and run the finished product.",
     contactTitle: "Get in touch",
     followTitle: "Follow",
   },
@@ -61,8 +60,8 @@ const en = {
   },
 
   notFound: {
-    metaTitle: "Page not found — Renoir",
-    metaDescription: "This page doesn't exist. The link may be old, or the page moved. Go back to the Renoir home page.",
+    metaTitle: "Page not found — Katalhys",
+    metaDescription: "This page doesn't exist. The link may be old, or the page moved. Go back to the Katalhys home page.",
     breadcrumb: "Page not found",
     title: "This page doesn't exist.",
     body: "The link may be old, or the page moved.",
@@ -93,21 +92,66 @@ const en = {
   },
 
   home: {
-    metaTitle: "Renoir | Design, websites, apps and business systems",
+    metaTitle: "Katalhys | Design, websites, apps and business systems",
     metaDescription:
-      "Renoir designs identities and digital experiences, builds websites and business systems, and keeps the products it builds running.",
+      "Katalhys designs identities and websites, builds AI-integrated internal systems around your team, and keeps the products it builds running.",
     hero: {
       title: ["Make a stronger impression", "Run a better operation"],
-      body: "Renoir is a digital studio for identities, interfaces, websites, and business systems. Start with design alone or work with us through launch and care.",
+      label: "Independent digital studio",
+      body: "We design identities and websites that earn trust, and build AI-integrated internal systems that help your team run everyday operations.",
+      work: "See our work",
+      factsLabel: "How we work",
+      facts: ["A written scope", "Design through deployment", "AI inside your workflow"],
+      pause: "Pause background video",
+      play: "Play background video",
     },
     problem: {
       label: "The problem",
-      title: "Good design should hold up in use",
-      side: "Design to server",
-      stat: "One studio",
-      cardTitle: "One team for the whole job",
-      cardBody:
-        "A good first impression matters. So does the system behind it. We bring design and engineering together, then stay accountable when the work goes live.",
+      title: "How long does it take to find one order's status?",
+      intro: "When updates live in chats, spreadsheets, and documents, finding an answer becomes a task of its own.",
+      sourcesLabel: "Information in different places",
+      sources: [
+        {
+          name: "Chat",
+          detail: "Has this order been sent?"
+        },
+        {
+          name: "Spreadsheet",
+          detail: "Which status is the latest?"
+        },
+        {
+          name: "Documents",
+          detail: "Where is the current report?"
+        }
+      ],
+      stat: "Internal systems + AI",
+      cardTitle: "One order, a clear next step",
+      fields: [
+        {
+          label: "Status",
+          value: "The latest stage"
+        },
+        {
+          label: "Owner",
+          value: "Who is responsible"
+        },
+        {
+          label: "Next step",
+          value: "What needs attention"
+        }
+      ],
+      aiLabel: "AI assistance inside the workflow",
+      aiActions: [
+        "Find the information",
+        "Summarise the report",
+        "Prepare the follow-up"
+      ],
+      decision: "Your team reviews and decides",
+      illustration: "Workflow illustration. AI tasks and data access are agreed in scope.",
+      proofLabel: "Real project example",
+      proofTitle: "Order & Field Sales Workflow",
+      proofAlt: "Real order and field sales dashboard on desktop and mobile",
+      button: "Explore internal systems"
     },
     strip: [
       "Marketing sites",
@@ -122,6 +166,18 @@ const en = {
       title: "Design, build, and care in one studio",
       body: "Four ways to work with us. Start with design, a public-facing site, a business system, or the infrastructure that keeps it running.",
       button: "See all services",
+      detail: "Explore this service",
+      hint: "Select a service or drag the images",
+      previous: "Previous service",
+      next: "Next service",
+      overview: "Show the image ring",
+      wheelLabel: ["Design", "Build", "Run"],
+      items: [
+        { title: "Marketing sites", body: "A clear offer, a considered interface, and a fast website that helps the right people take the next step." },
+        { title: "AI-integrated systems", body: "Custom operational software with AI assistance for finding information, summarising reports, and preparing the next action." },
+        { title: "UI/UX & identity", body: "Clear user flows, interfaces, and a visual identity that belongs to your business. Start with design alone or continue into the build." },
+        { title: "Deployment & care", body: "A working release, monitoring, backups, and a clear handover. Keep us on for care or take over with full access." },
+      ],
     },
     work: {
       label: "Work",
@@ -132,6 +188,10 @@ const en = {
       next: "Next project",
       pause: "Pause project rotation",
       resume: "Resume project rotation",
+      count: "Selected projects",
+      approach: "The approach",
+      caseStudy: "View case study",
+      screens: "Real project screens · Desktop and mobile",
     },
     process: {
       label: "How it goes",
@@ -173,6 +233,7 @@ const en = {
             "Dashboards and monitoring",
             "Approval workflows",
             "Integrations between your systems",
+            "AI assistance for agreed operational tasks",
           ],
           priceLine: "Fixed fee",
           note: "for agreed scope",
@@ -229,7 +290,11 @@ const en = {
     },
     why: {
       label: "Why work with us",
-      title: "What you get with Renoir",
+      title: "What you get with Katalhys",
+      handover: {
+        label: "Part of the handover",
+        items: ["Design files","Source code","Access & documentation"],
+      },
       rows: [
         { title: "Written from zero", body: "No themes, no page builders. Every line exists because your project needed it.", tag: "Code" },
         { title: "Speed is a specification", body: "Performance and indexing targets are agreed before we start and checked before handover.", tag: "Speed" },
@@ -282,17 +347,16 @@ const en = {
   },
 
   about: {
-    metaTitle: "About Renoir — A small studio that builds and runs the web",
+    metaTitle: "About Katalhys | A studio that builds and runs the web",
     metaDescription:
-      "Renoir, pronounced ren-WAHR, is a small digital studio that keeps design, engineering, and infrastructure on one team.",
-    breadcrumb: "About Renoir",
+      "Katalhys is a digital studio that keeps design, engineering, and infrastructure on one team, from the first design to launch and ongoing care.",
+    breadcrumb: "About",
     name: {
       label: "The name",
-      title: "A name with a working history",
-      pronunciationLabel: "How to say it",
-      cardTitle: "Good work takes practice",
+      title: "A name shaped by our role",
+      cardTitle: "Opening a path for businesses to move forward",
       cardBody:
-        "Pierre-Auguste Renoir spent his first years painting decoration onto porcelain in a factory — commercial work, paid by the piece, held to a standard. We took the name for that reason. Client work should still be made properly.",
+        "Katalhys draws on the idea of a catalyst: helping businesses remove obstacles through design and technology. Two curved forms leave an open white path between them, expressing how complex processes can become easier to run. We design websites that help customers find services and build systems that connect work across departments.",
     },
     band: "START A PROJECT · ",
     facts: [
@@ -330,9 +394,9 @@ const en = {
   },
 
   services: {
-    metaTitle: "Services: Design, Websites, Systems and Care | Renoir",
+    metaTitle: "Services: Design, Websites, Systems and Care | Katalhys",
     metaDescription:
-      "Explore Renoir's four services: UI/UX and visual identity, marketing sites, custom business systems, and deployment and care.",
+      "Explore Katalhys's four services: UI/UX and visual identity, marketing sites, custom business systems, and deployment and care.",
     breadcrumb: "Services",
     label: "Services",
     title: "Four services, one accountable studio",
@@ -342,9 +406,9 @@ const en = {
   },
 
   process: {
-    metaTitle: "How We Work — Scope, Design, Build, Deploy & Care | Renoir",
+    metaTitle: "How We Work — Scope, Design, Build, Deploy & Care | Katalhys",
     metaDescription:
-      "Four stages, a written scope, a fixed price, and a live staging URL the whole way. See how a project with Renoir runs.",
+      "Four stages, a written scope, a fixed price, and a live staging URL the whole way. See how a project with Katalhys runs.",
     breadcrumb: "Process",
     label: "Process",
     title: "From first conversation to handover",
@@ -369,9 +433,9 @@ const en = {
   },
 
   notes: {
-    metaTitle: "Notes — Building websites that keep working | Renoir",
+    metaTitle: "Notes — Building websites that keep working | Katalhys",
     metaDescription:
-      "Notes from Renoir on website speed, search visibility, handovers, and what keeps web systems working long after launch.",
+      "Notes from Katalhys on website speed, search visibility, handovers, and what keeps web systems working long after launch.",
     breadcrumb: "Notes",
     articleBreadcrumb: "Note",
     readMore: "Read the note",
@@ -388,9 +452,9 @@ const en = {
   },
 
   contact: {
-    metaTitle: "Start a Project — Tell us what's broken | Renoir",
+    metaTitle: "Start a Project — Tell us what's broken | Katalhys",
     metaDescription:
-      "Tell Renoir what you want to design or build. Share your project details and we will follow up to understand the work before defining a scope.",
+      "Tell Katalhys what you want to design or build. Share your project details and we will follow up to understand the work before defining a scope.",
     breadcrumb: "Start a project",
     title: "Tell us what you want to change",
     body: "Describe the work you need, whether that is a new identity, an interface, a website, or a system. We will follow up with the questions needed to define it.",
@@ -401,12 +465,12 @@ const en = {
   },
 
   work: {
-    metaTitle: "Websites, Business Systems & UI/UX Work | Renoir",
-    metaDescription: "Explore eight projects by the Renoir founder: marketing websites, business systems, UI/UX, and the deployment work that supports them.",
+    metaTitle: "Websites, Business Systems & UI/UX Work | Katalhys",
+    metaDescription: "Explore eight projects by the Katalhys founder: marketing websites, business systems, UI/UX, and the deployment work that supports them.",
     breadcrumb: "Work",
     label: "Work",
     title: "Work that makes the next step clearer",
-    intro: "Eight projects by the Renoir founder, from public websites to the systems and infrastructure behind daily operations.",
+    intro: "Eight projects by the Katalhys founder, from public websites to the systems and infrastructure behind daily operations.",
     featuredLabel: "Featured work",
     featuredTitle: "Start with these three",
     allLabel: "All work",

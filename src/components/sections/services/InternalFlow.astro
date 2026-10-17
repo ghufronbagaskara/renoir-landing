@@ -1,0 +1,67 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { imageUrl } from "~/lib/images";
+import type { Locale } from "~/i18n";
+import "~/styles/components/_internal-flow.scss";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = locale === "id" ? {
+  title: "Satu pesanan. Satu alur.",
+  intro: "Sales, persetujuan, gudang, dan pengiriman terhubung dalam satu sistem.",
+  caption: "Ilustrasi konsep. Alur disederhanakan untuk menjelaskan layanan, bukan screenshot aplikasi.",
+  alt: "Ilustrasi empat tahap pesanan: sales, persetujuan, gudang, dan pengiriman",
+  labels: ["Sales", "Persetujuan", "Gudang", "Pengiriman"],
+  descriptions: ["Pesanan dicatat satu kali.", "Tanggung jawab dan status terlihat.", "Gudang menerima pesanan yang disetujui.", "Pengiriman terhubung dengan riwayat pesanan."],
+  play: "Putar alur", pause: "Jeda", replay: "Ulangi alur",
+  static: "Tampilan statis", error: "Ilustrasi tidak dapat dimuat. Urutan dan penjelasan tetap dapat dibaca.",
+  cta: "Bahas sistem Anda",
+} : {
+  title: "One order. One connected flow.",
+  intro: "Sales, approval, warehouse, and delivery connected in one system.",
+  caption: "Concept illustration. The flow is simplified to explain the service, not an application screenshot.",
+  alt: "Four order stages illustrated: sales, approval, warehouse, and delivery",
+  labels: ["Sales", "Approval", "Warehouse", "Delivery"],
+  descriptions: ["Record the order once.", "Ownership and status are visible.", "Warehouse receives the approved order.", "Delivery stays connected to the order history."],
+  play: "Play flow", pause: "Pause", replay: "Replay flow",
+  static: "Static view", error: "The illustration could not load. The sequence and descriptions remain available.",
+  cta: "Discuss your system",
+};
+---
+<section class="internal-flow" data-internal-flow aria-labelledby="internal-flow-title" data-play-label={copy.play} data-pause-label={copy.pause} data-static-label={copy.static}>
+  <div class="internal-flow-heading">
+    <h2 id="internal-flow-title">{copy.title}</h2>
+    <p>{copy.intro}</p>
+    <a class="internal-flow-cta" href="#service-inquiry">{copy.cta}</a>
+  </div>
+  <figure class="internal-flow-scene">
+    <div class="internal-flow-frame">
+      <picture>
+        <source media="(max-width: 768px)" srcset={imageUrl("services/internal-flow/scene-768.webp")} />
+        <Img src="services/internal-flow/scene-1440.webp" alt={copy.alt} loading="eager" fetchpriority="low" data-flow-scene />
+      </picture>
+      <div class="internal-flow-focus" aria-hidden="true">
+        {copy.labels.map((_, index) => <Img src={`services/internal-flow/station-${index}.webp`} alt="" loading="lazy" data-flow-focus={index} />)}
+      </div>
+    </div>
+    <figcaption>{copy.caption}</figcaption>
+  </figure>
+  <p class="internal-flow-error" data-flow-error role="status" hidden>{copy.error}</p>
+  <div class="internal-flow-rail" aria-hidden="true"><span data-flow-marker></span></div>
+  <ol class="internal-flow-steps">
+    {copy.labels.map((label, index) => (
+      <li>
+        <button type="button" data-flow-step={index} aria-pressed={index === 0 ? "true" : "false"} disabled>{label}</button>
+        <p>{copy.descriptions[index]}</p>
+      </li>
+    ))}
+  </ol>
+  <div class="internal-flow-controls" data-flow-controls hidden>
+    <button type="button" data-flow-play>{copy.play}</button>
+    <button type="button" data-flow-replay>{copy.replay}</button>
+    <output data-flow-status aria-live="off">{copy.static}</output>
+  </div>
+</section>
+<script>
+  import "~/scripts/internal-flow";
+</script>

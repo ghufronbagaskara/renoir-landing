@@ -31,7 +31,7 @@ const purgeUnusedCss = () => ({
           content: [{ raw: html.replace(STYLE_TAG, ""), extension: "html" }, ...scripts],
           css: [{ raw: css }],
           fontFace: false,
-          keyframes: false,
+          keyframes: true,
           variables: false,
           safelist: {
             standard: [/^swiper/, /^is-/, /^has-/, /^show$/, /^collapsed$/, /^active$/, /^opened$/, /^with-blur$/],
@@ -69,7 +69,7 @@ const searchIndex = () => ({
 
 // No adapter here on purpose: Alchemy's Cloudflare.Website.Astro injects its own (see scripts/build.ts).
 export default defineConfig({
-  site: process.env.SITE_URL ?? "https://renoir.run",
+  site: process.env.SITE_URL ?? "https://katalhys.com",
   output: "static",
   trailingSlash: "always",
   build: { format: "directory", inlineStylesheets: "always" },

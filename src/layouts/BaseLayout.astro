@@ -2,6 +2,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fontsource-variable/inter/wght.css";
 import "~/styles/global.scss";
+import "~/styles/_inner-mobile.scss";
 import HeaderHome from "~/components/layout/HeaderHome.astro";
 import HeaderInner from "~/components/layout/HeaderInner.astro";
 import Offcanvas from "~/components/layout/Offcanvas.astro";
@@ -10,13 +11,14 @@ import Footer from "~/components/layout/Footer.astro";
 import Breadcrumb, { type Crumb } from "~/components/layout/Breadcrumb.astro";
 import { langTag, ogLocale, path, t, type Alternates, type Locale } from "~/i18n";
 import { abs, graph, organization, webPage, website, type JsonLd, type PageMeta } from "~/lib/seo";
-// Preloaded so the hero heading doesn't reflow when the web font swaps in (CLS). Body text (Inter)
-// uses a metric-matched fallback instead (see utils/_typography.scss), so it needs no preload.
+// Preload the fonts used above the fold; Inter also keeps its metric-matched fallback for the swap.
 import headingFont from "~/assets/fonts/GeneralSans-Semibold.woff2?url";
+import bodyFont from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import { brandColors } from "~/data/brand";
 
 interface Props {
   locale: Locale;
-  /** Full <title> text (already includes "Renoir"). */
+  /** Full <title> text (already includes "Katalhys"). */
   title: string;
   description: string;
   /** URLs of this page in each language that has it (drives hreflang + the language switch). */
@@ -39,7 +41,7 @@ interface Props {
   schema?: JsonLd[];
   ogType?: "website" | "article";
 }
-const { locale, title, description, alternates, home = false, solidHeader = false, breadcrumb, noindex = false, searchable = !noindex, pageType, schema = [], ogType = "website", ogImage: ogImagePath = `/og/renoir-${locale}.jpg` } = Astro.props;
+const { locale, title, description, alternates, home = false, solidHeader = false, breadcrumb, noindex = false, searchable = !noindex, pageType, schema = [], ogType = "website", ogImage: ogImagePath = `/og/katalhys-${locale}.jpg` } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const canonical = abs(pathname);
@@ -60,8 +62,10 @@ const c = t(locale);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=09" />
+    <link rel="icon" type="image/png" href="/favicon.png?v=09" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=09" />
+    <meta name="theme-color" content={brandColors.primary} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {
@@ -91,17 +95,15 @@ const c = t(locale);
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>
-  <body>
-    <div id="magic-cursor" class="cursor-black-bg" aria-hidden="true">
-      <div id="ball"></div>
-    </div>
+  <body class:list={{ "inner-page": !home }}>
 
-    <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+    {home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
       <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
-    </a>
+    </a>}
 
     {home ? <HeaderHome locale={locale} alternates={alternates} /> : <HeaderInner locale={locale} alternates={alternates} solid={solidHeader} />}
     <Offcanvas locale={locale} alternates={alternates} />
@@ -112,12 +114,15 @@ const c = t(locale);
       <slot />
     </main>
 
+    {!home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+      <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
+    </a>}
+
     <Footer locale={locale} home={home} />
 
     <script>
       import "~/scripts/site";
       import "~/scripts/anim";
-      import "~/scripts/cursor";
     </script>
   </body>
 </html>

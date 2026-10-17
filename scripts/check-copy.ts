@@ -18,6 +18,7 @@ const BANNED = [
   "solusi digital", "solusi terpadu", "terdepan", "berkelas dunia", "inovatif", "canggih", "mutakhir", "holistik",
   "memberdayakan", "merevolusi", "level berikutnya", "era digital",
 ];
+const PRIVATE_CLIENT = /\b(?:proteksindo|protectindo|fanos|vanos|isaac(?:\s+munandar)?)\b/i;
 const TEMPLATE = ["averix", "ovanta", "lorem", "ipsum", "nemo enim", "happy clients", "awards winner", "$99", "/monthly"];
 
 async function walk(dir: string): Promise<string[]> {
@@ -37,7 +38,10 @@ const problems: string[] = [];
 const pages = (await walk(DIST)).filter((f) => f.endsWith(".html") && !f.includes("pagefind"));
 for (const file of pages) {
   const html = await readFile(file, "utf8");
-  const text = visibleText(html.slice(html.indexOf("<body")));
+  if (PRIVATE_CLIENT.test(html)) problems.push(`${file}: private client name in public HTML or metadata`);
+  // The owner explicitly approved this punctuation for the floating CTA.
+  const body = html.slice(html.indexOf("<body")).replace(/(<span class="floating-contact-(?:long|short)")([^>]*>)(Make the call!)(<\/span>)/g, "$1$2Make the call$4");
+  const text = visibleText(body);
   const lower = text.toLowerCase();
   for (const word of BANNED) {
     if (new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(lower)) problems.push(`${file}: banned word "${word}"`);
@@ -57,6 +61,9 @@ for (const file of pages) {
     }
   }
 }
+
+const catalog = join(DIST, "search-index.json");
+if (existsSync(catalog) && PRIVATE_CLIENT.test(await readFile(catalog, "utf8"))) problems.push("search-index.json: private client name in search catalog");
 
 console.log(`checked copy on ${pages.length} pages`);
 if (problems.length) {

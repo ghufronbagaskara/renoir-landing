@@ -6,11 +6,12 @@ import Service from "~/components/sections/home/Service.astro";
 import Project from "~/components/sections/home/Project.astro";
 import Process from "~/components/sections/shared/Process.astro";
 import Engagements from "~/components/sections/shared/Engagements.astro";
-import Rows from "~/components/sections/shared/Rows.astro";
+import Benefits from "~/components/sections/home/Benefits.astro";
 import Faq from "~/components/sections/shared/Faq.astro";
 import Notes from "~/components/sections/home/Notes.astro";
 import { path, routeAlternates, t, type Locale } from "~/i18n";
 import { faqNode } from "~/lib/seo";
+import "~/styles/_home-refresh.scss";
 
 interface Props {
   locale: Locale;
@@ -32,7 +33,7 @@ const h = t(locale).home;
   <Project locale={locale} />
   <Process label={h.process.label} title={h.process.title} steps={h.process.steps} />
   <Engagements locale={locale} />
-  <Rows title={h.why.title} rows={h.why.rows} />
-  <Faq id="home-faq" label={h.faq.label} title={h.faq.title} items={h.faq.items} />
+  <Benefits locale={locale} />
+  <Faq id="home-faq" locale={locale} label={h.faq.label} title={h.faq.title} items={h.faq.items} />
   <Notes locale={locale} />
 </BaseLayout>

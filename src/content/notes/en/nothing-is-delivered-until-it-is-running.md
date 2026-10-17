@@ -4,10 +4,10 @@ description: The handover is where many web projects quietly fail. A zip file is
 date: 2026-09-03
 category: Delivery
 translationKey: delivered-running
-image: editorial/note-running-article.webp
-listImage: editorial/note-running-list.webp
-cardImage: editorial/note-running-card.webp
-thumb: editorial/note-running-thumb.webp
+image: editorial/note-running-article-en.webp
+listImage: editorial/note-running-list-en.webp
+cardImage: editorial/note-running-card-en.webp
+thumb: editorial/note-running-thumb-en.webp
 ---
 
 The build ends, a final invoice goes out, and the vendor sends a repository link or a zip file. From their side, the job is done. From yours, it has just started: someone now has to put that software on a server, point a domain at it, secure it, and keep it running.

@@ -21,7 +21,7 @@ const cta = project.data.primaryService === "marketing" ? w.details.websiteCta :
 ---
 <BaseLayout
   locale={locale}
-  title={`${copy.title} — ${locale === "id" ? "Studi Proyek Renoir" : "Renoir Project Study"}`}
+  title={`${copy.title} — ${locale === "id" ? "Studi Proyek Katalhys" : "Katalhys Project Study"}`}
   description={copy.overview}
   alternates={{ en: child("work", "en", project.id), id: child("work", "id", project.id) }}
   ogImage={`/og/work/${project.id}.jpg`}
@@ -101,7 +101,7 @@ const cta = project.data.primaryService === "marketing" ? w.details.websiteCta :
       <div class="work-related-grid">
         {related.map((entry) => {
           const item = portfolioCopy(entry, locale);
-          return <article><a class="fix" href={href(entry)} tabindex="-1" aria-hidden="true"><Img src={entry.data.pairImage} alt="" /></a><span class="work-service-badge">{w.services[entry.data.primaryService]}</span><h3><a class="underline-black" href={href(entry)}>{item.title}</a></h3><p>{item.subtitle}</p></article>;
+          return <article><a class="fix" href={href(entry)} tabindex="-1" aria-hidden="true"><Img src={entry.data.pairImage} srcset={`${imageUrl(entry.data.pairImage.replace("pair.webp", "pair-mobile.webp"))} 720w, ${imageUrl(entry.data.pairImage)} 1800w`} sizes="(max-width: 767px) calc(100vw - 24px), (min-width: 1700px) 800px, 48vw" alt="" /></a><span class="work-service-badge">{w.services[entry.data.primaryService]}</span><h3><a class="underline-black" href={href(entry)}>{item.title}</a></h3><p>{item.subtitle}</p></article>;
         })}
       </div>
     </div>
