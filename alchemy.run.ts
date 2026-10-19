@@ -3,9 +3,10 @@
 //   bun alchemy deploy                 # personal dev stage
 //   bun alchemy deploy --stage prod    # production
 //
-// Credentials come from Alchemy profiles (~/.alchemy/profiles.json) locally and from
+// Credentials come from Alchemy profiles under ~/.alchemy/ locally and from
 // CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID secrets in CI. Values below that are read with
 // effect/Config come from the environment (.env locally, GitHub secrets in CI): see .env.example.
+// CI setup and production updates: docs/deployment.md.
 import * as Alchemy from "alchemy";
 import * as Cloudflare from "alchemy/Cloudflare";
 import * as GitHub from "alchemy/GitHub";
