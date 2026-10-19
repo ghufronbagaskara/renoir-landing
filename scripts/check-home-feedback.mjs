@@ -146,14 +146,14 @@ try {
     await page.goto(base + (locale === "en" ? "/about/" : "/id/tentang/"));
     assert.equal(await page.locator(".si-breadcumb-text h1").textContent(), locale === "en" ? "About" : "Tentang");
     const menu = page.locator(".home-menu-button");
-    assert.deepEqual(await menu.locator("span").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(255, 255, 255)", "rgb(255, 255, 255)"]);
+    assert.deepEqual(await menu.locator(".home-menu-lines i").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(255, 255, 255)", "rgb(255, 255, 255)"]);
     await menu.hover();
     await page.waitForFunction(() => getComputedStyle(document.querySelector(".home-menu-button")).backgroundColor === "rgba(255, 255, 255, 0.08)");
-    assert.deepEqual(await menu.locator("span").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(255, 255, 255)", "rgb(255, 255, 255)"]);
+    assert.deepEqual(await menu.locator(".home-menu-lines i").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(255, 255, 255)", "rgb(255, 255, 255)"]);
     await page.evaluate(() => scrollTo(0, 600));
     await page.waitForFunction(() => document.querySelector("#header-sticky-black").classList.contains("header-sticky-black"));
-    await page.waitForFunction(() => getComputedStyle(document.querySelector(".home-menu-button span")).backgroundColor === "rgb(23, 25, 28)");
-    assert.deepEqual(await menu.locator("span").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(23, 25, 28)", "rgb(23, 25, 28)"]);
+    await page.waitForFunction(() => getComputedStyle(document.querySelector(".home-menu-lines i")).backgroundColor === "rgb(23, 25, 28)");
+    assert.deepEqual(await menu.locator(".home-menu-lines i").evaluateAll(bars => bars.map(e => getComputedStyle(e).backgroundColor)), ["rgb(23, 25, 28)", "rgb(23, 25, 28)"]);
     await page.goto(base + (locale === "en" ? "/services/" : "/id/layanan/"));
     assert.equal(await page.locator(".si-breadcumb-area").evaluate(e => getComputedStyle(e).backgroundColor), "rgb(23, 25, 28)");
     await page.evaluate(() => scrollTo(0, 600));
@@ -167,7 +167,7 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const nav = page.locator("#header-sticky-black");
       assert.ok(await nav.evaluate(e => e.getBoundingClientRect().right) <= width);
-      assert.equal(await nav.locator(".home-nav-shell").evaluate(e => getComputedStyle(e).borderRadius), "12px");
+      assert.equal(await nav.locator(".home-nav-shell").evaluate(e => getComputedStyle(e).borderRadius), "100px");
       await nav.locator(".home-menu-button").click();
       assert.equal(await page.locator("#main").evaluate(e => e.inert), true);
       await page.keyboard.press("Escape");

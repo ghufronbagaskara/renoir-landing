@@ -38,7 +38,7 @@ try {
         };
       });
       assert.equal(geometry.overflow, false, `${locale}/${width}: horizontal overflow`);
-      assert.equal(geometry.radius, width < 768 ? "12px" : "100px");
+      assert.equal(geometry.radius, "100px");
       assert.ok(geometry.height < 85);
       assert.ok(geometry.controlsAligned);
       const problem = page.locator("#the-problem");

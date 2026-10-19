@@ -1,5 +1,7 @@
 # Mobile component research and implementation
 
+Update, 19 October 2026: the owner's denser follow-up and floating-header research are recorded in [phone section density](section-density.md). The [first pass](2026-10-19.md) includes Home and shared components. Research and Home-isolation checks below describe the original 11 October pass; use the current mobile layout/density scripts for site-wide checks.
+
 Research at 394 × 852, 11 October 2026. Renoir retains GeneralSans/Inter, cobalt/ink palette and all content. Homepage is excluded through the `inner-page` body class. No third-party component code or dependencies are imported.
 
 ## Observed references
