@@ -2,6 +2,11 @@ import { initHomeTabs } from "./home-tabs";
 
 const root = document.getElementById("selected-work");
 if (root) {
+  const compact = matchMedia("(max-width: 767px)");
+  const extras = [...root.querySelectorAll<HTMLDetailsElement>(".home-project-extra")];
+  const setDetails = () => extras.forEach((detail) => { detail.open = !compact.matches; });
+  setDetails();
+  compact.addEventListener("change", setDetails);
   initHomeTabs(root);
   const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-tab]")];
   const panels = [...root.querySelectorAll<HTMLElement>("[data-tab-panel]")];
@@ -38,6 +43,7 @@ if (root) {
 
   const change = (event: Event) => {
     const next = (event as CustomEvent<{ index: number }>).detail.index;
+    if (compact.matches) extras.forEach((detail) => { detail.open = false; });
     panels.forEach((panel, index) => {
       panel.inert = index !== next;
       panel.setAttribute("aria-hidden", String(index !== next));

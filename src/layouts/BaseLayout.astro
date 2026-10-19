@@ -101,10 +101,6 @@ const c = t(locale);
   </head>
   <body class:list={{ "inner-page": !home }}>
 
-    {home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
-      <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
-    </a>}
-
     {home ? <HeaderHome locale={locale} alternates={alternates} /> : <HeaderInner locale={locale} alternates={alternates} solid={solidHeader} />}
     <Offcanvas locale={locale} alternates={alternates} />
     <SearchOverlay locale={locale} />
@@ -114,9 +110,9 @@ const c = t(locale);
       <slot />
     </main>
 
-    {!home && <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
+    <a class="floating-contact" href={pathname === path("contact", locale) ? "#project-form" : path("contact", locale)}>
       <span class="floating-contact-long">{c.nav.floatingCta}</span><span class="floating-contact-short">{c.nav.floatingCtaShort}</span><i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i>
-    </a>}
+    </a>
 
     <Footer locale={locale} home={home} />
 
