@@ -675,7 +675,10 @@ dialog .si-search-results p { padding: 0 12px; }
 .home-header :is(.lang-switch, .si-header-search, .home-menu-button) { display: grid; place-content: center; flex: none; width: 44px; min-width: 44px; height: 44px; margin: 0; padding: 0; border: 1px solid var(--renoir-line); border-radius: 50%; color: var(--renoir-ink); background: transparent; font-size: 14px; }
 .home-header :is(.lang-switch, .si-header-search, .home-menu-button):hover { background: var(--renoir-panel); }
 .home-header .home-menu-button { gap: 6px; }
-.home-menu-button span { display: block; width: 17px; height: 1.5px; background: currentColor; }
+.home-menu-lines { display: grid; gap: 6px; }
+.home-menu-lines i { display: block; width: 17px; height: 1.5px; background: currentColor; }
+.home-menu-label { display: none; }
+.home-header .home-menu-button :is(.home-menu-lines, .home-menu-label) { color: inherit; }
 .home-header .home-nav-cta { min-height: 44px; border-radius: 100px; padding: 5px 6px 5px 16px; font-size: 14px; }
 .home-header .home-nav-cta .btn-icon { width: 32px; height: 32px; line-height: 32px; margin-left: 12px; }
 .home-hero-visible .home-header .renoir-wordmark { color: #fff; }
@@ -690,19 +693,27 @@ dialog .si-search-results p { padding: 0 12px; }
   #header-sticky.home-header, #header-sticky-black.home-header { inset: 12px 12px auto; }
   #header-sticky-black.home-header:not(.header-sticky-black) { padding: 12px; }
   .home-nav-layout { gap: 8px; }
-  .home-header .home-nav-shell { gap: 8px; padding: 8px; border-radius: 12px; }
-  .home-header .home-nav-actions { gap: 5px; }
-  .home-header .renoir-wordmark { font-size: 26px; }
-  .home-header .renoir-brand-mark { width: 27px; }
+  .home-header .home-nav-shell { gap: 0; padding: 4px; border-radius: 100px; background: #fff; border-color: #dce1e9; box-shadow: 0 4px 16px #17191c0d; }
+  .home-header .home-nav-actions { gap: 0; }
+  .home-header .renoir-wordmark { font-size: 24px; }
+  .home-header .renoir-brand-mark { width: 25px; }
   .home-header .renoir-brand { gap: 7px; }
   .home-header .home-nav-cta { display: none; }
-  .home-header :is(.lang-switch, .si-header-search, .home-menu-button) { width: 40px; min-width: 40px; height: 40px; border-radius: 7px; }
+  .home-header .renoir-brand { min-height: 44px; }
+  .home-header :is(.lang-switch, .si-header-search, .home-menu-button) { width: 44px; min-width: 44px; height: 44px; border: 0; border-radius: 100px; }
+  .home-header .home-nav-lang { display: none; }
+  .home-header .home-menu-button { display: flex; justify-content: center; align-items: center; gap: 9px; width: 78px; padding-inline: 10px; }
+  .home-menu-label { display: inline; font-size: 12px; font-weight: 600; line-height: 1; }
+  .home-menu-lines { gap: 4px; }
+  .home-menu-lines i { width: 15px; }
+  .inner-header:not(.header-sticky-black) .home-nav-shell { background: #fff; border-color: #dce1e9; }
+  .inner-header:not(.header-sticky-black) :is(.si-header-search, .home-menu-button) { color: var(--renoir-ink); }
 }
 @media (max-width: 379px) { .home-header .home-nav-lang { display: none; } }
 
 .inner-header:not(.header-sticky-black) .renoir-brand-mark path { fill: #fff; }
 
-.home-header .renoir-brand { padding: 6px 8px; border-radius: 7px; background: #fff; }
+.home-header .renoir-brand { padding: 6px 0; background: transparent; }
 .home-hero-visible .home-header .renoir-brand, .inner-header:not(.header-sticky-black) .renoir-brand { background: transparent; }
 
 @media (prefers-reduced-motion: no-preference) {

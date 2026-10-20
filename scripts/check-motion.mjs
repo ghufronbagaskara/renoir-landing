@@ -24,7 +24,7 @@ try {
       assert.equal(state.animated,0,route+": no heading entrance");
       assert.ok(Math.abs(state.top-top)<1,route+": stable text position");
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-      if(route==="/"||route==="/id/") {
+      if((route==="/"||route==="/id/")&&width>=768) {
         const scene=page.locator(".process-storyboard");
         await scene.scrollIntoViewIfNeeded();
         await page.waitForFunction(()=>document.querySelector(".process-storyboard").classList.contains("is-visible"));
@@ -44,8 +44,9 @@ try {
   for(const options of [{reducedMotion:"reduce"},{javaScriptEnabled:false}]) {
     const page=await browser.newPage({...options,viewport:{width:412,height:915}});
     await page.goto(base+"/id/");
-    await page.locator(".process-storyboard").scrollIntoViewIfNeeded();
-    assert.equal(await page.locator(".process-storyboard .process-art-stage path").first().evaluate(e=>getComputedStyle(e).animationName),"none");
+    assert.equal(await page.locator(".process-storyboard").isVisible(),false);
+    await page.locator(".process-mobile summary").nth(1).click();
+    assert.notEqual(await page.locator(".process-mobile details").nth(1).getAttribute("open"),null);
     assert.equal(await page.locator("#engagement-title").evaluate(e=>getComputedStyle(e).opacity),"1");
     await page.close();count++;
   }

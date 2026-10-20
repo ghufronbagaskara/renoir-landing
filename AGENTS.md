@@ -48,6 +48,9 @@ bun run check:copy     # after build: guard against banned/template copy and inv
 node scripts/check-home-refresh.mjs # after build + serve: Chrome EN/ID responsive/fallback checks
 node scripts/check-home-feedback.mjs # Chrome ring, autoplay/pause, hover, search and inner navbar checks
 node scripts/check-work-badges.mjs # Chrome EN/ID Work badge containment, filtering and responsive navigation
+node scripts/check-mobile-layout.mjs # built-page EN/ID mobile/tablet/desktop layout and touch/keyboard/fallback checks
+node scripts/check-mobile-density.mjs # phone section/component height budgets, expanded states, logo and navigation
+bun test scripts/check-deploy-env.test.ts # CI credential/stage preflight, without cloud calls
 node scripts/check-motion.mjs # stable headings, finite diagrams and motion fallbacks across 24 route/viewport cases
 bun alchemy deploy     # deploy personal dev stage   ← ASK THE OWNER BEFORE EVERY DEPLOY
 bun alchemy deploy --stage prod
@@ -64,7 +67,7 @@ bun scripts/compose-work-images.ts <slug>  # ignored raw PNG → full-size deskt
 
 Rules:
 - **Never deploy (or run `alchemy dev`, which provisions cloud resources) without explicit owner confirmation**, one deploy at a time.
-- Never tell the owner to export `CLOUDFLARE_ACCOUNT_ID`/`CLOUDFLARE_API_TOKEN` locally. Alchemy stores credentials in profiles (`~/.alchemy/profiles.json`); the first `bun alchemy deploy` prompts for OAuth or an API token. CI uses GitHub secrets.
+- Never tell the owner to export `CLOUDFLARE_ACCOUNT_ID`/`CLOUDFLARE_API_TOKEN` locally. Alchemy stores credentials in profiles under `~/.alchemy/`; the first `bun alchemy deploy` prompts for OAuth or an API token. CI uses GitHub secrets.
 - **Never add an adapter** (e.g. `@astrojs/cloudflare`) to `astro.config.mjs`: Alchemy injects its own and a declared adapter fails the build.
 - Plain `astro build` fails by design (the `/api/contact` route needs the adapter). Use `bun run build`.
 - The last line of `bun run build` on Windows may print `GetQueuedCompletionStatusEx ... ERROR_ABANDONED_WAIT_0` — workerd shutdown noise after a successful build.
@@ -73,7 +76,7 @@ Rules:
 
 ```
 alchemy.run.ts              Stack "renoir-landing": Turnstile widget (prod), Website.Astro (+ PR preview comment)
-stacks/github.ts            One-off stack: CI API token + GitHub secrets (run manually with an admin profile)
+stacks/github.ts            One-off stack: CI API token + GitHub secrets + Workers subdomain variable (admin profile)
 .github/workflows/deploy.yml  push main → prod; PR → pr-<n> preview; PR closed → destroy preview
 astro.config.mjs            site/trailingSlash/prefetch + integrations: purge-unused-css, pagefind-index
 scripts/                    build, serve, check-links, mirror/optimize images, subset icons, leads-apps-script.gs (Sheet sink, installed by hand)
@@ -96,7 +99,7 @@ src/
   pages/                    routes (all prerendered except api/contact.ts)
   server/contact.ts         contact form Effect program + Turnstile/Telegram/webhook helpers (+ contact.test.ts)
   scripts/*.ts              client modules (vanilla TS)
-  styles/                   template SCSS + _site.scss (our additions) + _inner-mobile.scss (inner-page mobile variants) + global.scss
+  styles/                   template SCSS + _site.scss (our additions) + _inner-mobile.scss (shared + inner mobile variants) + global.scss
   env.d.ts                  types for `cloudflare:workers` env bindings — keep in sync with alchemy.run.ts
 ```
 
@@ -126,6 +129,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   Preserve owner-approved wording when enhancing visuals: do not rewrite existing copy unless asked.
 - Client privacy: use functional names for internal-system projects and keep the expert-profile client anonymous in public text, metadata and search. Marketing-site names may remain. The owner explicitly retains existing screenshot logos/text; do not redact those pixels automatically. `check:copy` guards private client names in public HTML and the search catalog.
 - Work catalogue thumbnails establish a relative positioning context for their absolute service badges; keep the mobile static badge override.
+- Mobile composition: `_inner-mobile.scss` owns 16px gutters, shared compact engagement/FAQ/footer rules and inner-page details. Phone sections use a 24px vertical register with smaller reading/heading scales and natural content height. Header controls retain 44px targets in one rounded search/Menu group; language switching remains in the offcanvas. The logo has no white background and the wordmark turns ink after leaving the hero. Home services expose four choices in two columns and a shorter detail stage; Home Process uses native stage disclosures below 768px while desktop keeps its storyboard. Home Work keeps approach/service detail in a native disclosure, closed initially with JS on phones and open on desktop/no-JS; tab changes close it on phones. The shared contact CTA follows main content on phones; it remains hidden on Internal Systems and narrow Work details. Service inquiry labels are visible, with 16px field text. Preserve the owner-requested two-column Work/Notes catalogues. Decisions, reference research, measured section budgets and limits: `docs/design/mobile/section-density.md`.
 
 - `.astro` first. Client code = small vanilla TS modules in `src/scripts`, imported from a component `<script>`
   (Astro bundles/dedupes them). No framework islands.
@@ -151,13 +155,14 @@ Team, pricing, and other unused template pages are not public routes. English an
   Home uses four generated conceptual service illustrations (not product proof) and five existing project
   thumbnails under `assets/img/home-refresh/` in `ui/WorksWheel.astro`. Only the four services have text/links;
   the five project images are decorative. The compact cobalt section starts as a ring: native scroll and
-  image drag rotate it; only service tabs and previous/next open the perspective service view. Service images
+  image drag rotate it; only service tabs and previous/next open service detail. Desktop uses the perspective view;
+  phones show one selected illustration above the full detail copy. Service images
   expose real detail links on hover/focus. Dragging an open service changes its selection without navigating.
   The hero uses the owner-provided video, transcoded to local H.264 under `src/assets/video/`, emitted as hashed `/_astro/` URLs with immutable caching, with responsive
   WebP posters, a play/pause control and reduced-motion/save-data/no-JS/error fallbacks. A 506×900 portrait video preserves the desktop center crop on narrow portrait screens; wider viewports use the 1600×900 source. Automatic playback waits for document load, font readiness, poster decode and the next paint; explicit play stays immediate. Video pauses outside
   the viewport and in hidden tabs. A dark scrim improves contrast; the three hero facts were removed.
   Home restores its separate wordmark and right-hand white navigation pill; mobile controls remain aligned
-  in a small 12px-corner group. Inner pages use the same floating navigation after scrolling. Home composition styles live in `_home-refresh.scss` and load from HomeView.
+  in one rounded search/Menu group, with language switching inside the mobile menu. The logo has no white backing. Inner pages use the same floating navigation after scrolling. Home composition styles live in `_home-refresh.scss` and load from HomeView.
   Prompts, source video, asset roles and verification notes: `docs/design/home-refresh/README.md`.
   Home benefits now uses `sections/home/Benefits.astro`: the approved ink/document layout, five inline SVG
   topic icons, a conceptual handover illustration and the existing EN/ID title/tag/body copy. The left caption
@@ -268,10 +273,9 @@ Team, pricing, and other unused template pages are not public routes. English an
 - No custom domain yet: every stage lives on `*.workers.dev`. When a domain exists, add it to the Turnstile
   `domains`, set `astro.site`, and attach the domain to the Website (see Alchemy custom-domains guide).
 - Stages: personal default stage locally, `prod` from `main`, `pr-<n>` previews (destroyed when the PR closes).
-- CI secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (created by `stacks/github.ts`), plus
-  `WORKERS_DEV_SUBDOMAIN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET` added manually.
-  The CI token already carries Zone/DNS/Workers Routes permissions for the custom domain; re-run `stacks/github.ts` after changing them.
-- CI runs `bun test`, `bun run check`, then `bun run build && check:links && check:copy` before deploying.
+- CI secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (declared in `stacks/github.ts`); contact secrets `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET` are configured separately.
+  The setup stack also publishes `WORKERS_DEV_SUBDOMAIN` as a repository variable; workflow reads variables before legacy account/subdomain secrets. CI token includes Secrets Store access and separate account/zone resource scopes. This describes declared configuration, not verified remote secret availability.
+- CI runs `bun test`, `bun run check`, then `bun run build && check:links && check:copy` before deploying. `scripts/check-deploy-env.ts` rejects missing credentials, a missing automatic GitHub token for PRs, malformed production hosts and non-PR cleanup targets before cloud commands. Both cloud steps pass `secrets.GITHUB_TOKEN` for the PR comment provider. One workflow handles main production, trusted PR previews, PR cleanup and manual production dispatch on main. Stage-based concurrency serializes a PR preview with its cleanup; fork/Dependabot PRs run code checks without cloud writes. Setup, routine updates and manual recovery: `docs/deployment.md`.
 - Free plan limits to keep in mind: 100k Worker requests/day, 10 ms CPU per request, 3 MB compressed Worker
   bundle (currently ~0.9 MB uncompressed server output), 20k static asset files.
 - Docs: https://alchemy.run/llms.txt (guides index), https://alchemy.run/llms-full.txt (resource reference).
@@ -322,7 +326,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   localized public pages, services, project studies/features and Notes content when Pagefind is unavailable
   (including development). Fallback matches all query words, normalizes accents and prioritizes titles.
   There is no product collection; product/project examples belong to Work.
-- Nothing has been deployed yet; the contact flow is covered by unit tests only. After the first deploy, submit each form variant once and check Telegram, the Sheet row and the email.
+- The owner reports an earlier manual CLI deployment; live Cloudflare resources and stage were not verified in this audit. GitHub runs #4/#5/#6 failed because CI credentials/config were unavailable, after code/build gates passed. The local default Cloudflare OAuth profile is present but expired; the owner reports failed refresh and denied browser authorization. Reconfigure that provider through Alchemy, using a scoped stored API token if OAuth remains unavailable. GitHub CLI and the Alchemy GitHub/admin setup profile are not authenticated. Remote setup and a successful CI deploy remain pending owner-approved setup; contact delivery still needs a live submission check for each form variant.
 - Analytics not wired yet: plan is Cloudflare Web Analytics (CWV) + Umami Cloud (events, `data-domains` = prod host), Search Console + Bing Webmaster, Better Stack uptime on `/` and `GET /api/contact`.
 - Local Lighthouse mobile on 2026-09-29 measured Home performance 89, CLS 0, TBT 230 ms before the final hero
   priority hint; a second run varied substantially (69 / 0 / 1000 ms). Both identified ScrollTrigger as a long task.
@@ -334,6 +338,10 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-10-19 - Applied the owner's denser mobile direction after measuring each Home section and reusable inner component. Reflowed the Problem canvas into three compact sources, scaled benefits artwork and full copy, shortened expanded service stages, added native Work detail disclosure, tightened engagement/FAQ/Notes and footer, and replaced individual navbar boxes with one search/Menu control group. Removed the logo backing and retained ink wordmark after the hero. Researched live Linear/Vercel/Framer/Stripe mobile headers and added section/state/component height checks; no dependencies or deployment.
+
+- 2026-10-19 - Refined mobile scale across shared navigation, overlays, engagement/FAQ/footer, Home service/Work/Process composition, service inquiry and Work/Notes details. Reused native Process disclosures, corrected mobile FAQ icon specificity, exposed service choices in two columns and moved the Home phone contact CTA into document flow. Added built-page route/viewport and touch/keyboard/fallback checks. Approved copy and existing desktop compositions retained; no dependency changes or deployment.
 
 - 2026-10-17 - Audited generic text entrance across seven heading owners and image/process fade hooks; removed character splitting and translation-based text entrance across EN/ID. Added finite process-line drawing and in-place project crossfades. Documented component research and an isolated bilingual benefits preview; live benefit rows await design selection. No dependency changes or deployment.
 
@@ -406,3 +414,7 @@ The copy guard permits the owner-approved exclamation mark only in the floating 
 - 2026-10-17 - Verified the integrated performance/design build: 15 Home, 26 motion, 11 runtime/visibility and 10 focused design scenarios, EN/ID feedback flows, 10 unit tests and 45-page link/copy guards. Recorded repeated Home results and the still-open >=95 Home score target; no deployment.
 
 - 2026-10-17 - Fixed Work catalogue service badges escaping to the page origin by positioning their thumbnail container. Added EN/ID desktop/mobile containment and filter regression checks; navbar and mobile badge design retained. No deployment.
+
+- 2026-10-17 - Diagnosed production/PR CI failures from unavailable runner configuration. Added descriptive run names, main-only manual dispatch, stage-based serialization, trusted-PR cloud writes and tested credential/cleanup guards. Extended the Alchemy setup stack with the Workers subdomain variable, Secrets Store permission and correct zone resource scope. Added docs/deployment.md; no commit, push, cloud deploy or resource deletion.
+
+- 2026-10-17 - Investigated expired Cloudflare OAuth and denied reauthorization without exposing credentials or changing profiles. Documented reconfiguration with a scoped API token, protected prompts, same-account selection and a separate stored-token admin profile for CI setup. No authentication, dependency upgrade or cloud deploy executed.

@@ -3,8 +3,8 @@
 //   bun alchemy profile create admin
 //   bun alchemy profile edit --profile admin --add Cloudflare
 //   bun alchemy deploy --config stacks/github.ts --profile admin
-// The remaining secrets (WORKERS_DEV_SUBDOMAIN, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, LEADS_WEBHOOK_URL,
-// LEADS_WEBHOOK_SECRET) are added by hand in the repository settings.
+// Also publishes WORKERS_DEV_SUBDOMAIN as a repository variable. Contact sink secrets are configured
+// separately in the repository settings; see docs/deployment.md.
 import * as Alchemy from "alchemy";
 import * as Cloudflare from "alchemy/Cloudflare";
 import * as GitHub from "alchemy/GitHub";
@@ -22,6 +22,7 @@ export default Alchemy.Stack(
   Effect.gen(function* () {
     const owner = yield* Config.string("GITHUB_OWNER");
     const repository = yield* Config.string("GITHUB_REPO");
+    const workersDev = yield* Config.string("WORKERS_DEV_SUBDOMAIN");
     const { accountId } = yield* yield* Cloudflare.CloudflareEnvironment;
 
     const apiToken = yield* Cloudflare.ApiToken.AccountApiToken("CIToken", {
@@ -33,21 +34,28 @@ export default Alchemy.Stack(
             "Workers Scripts Write",
             "Workers KV Storage Write",
             "Workers R2 Storage Write",
+            "Secrets Store Write",
             "Turnstile Sites Write",
             "Account Settings Write",
             "Workers Tail Read",
-            // Custom domain (renoir.run): DNS record, edge certificate, www redirect rule.
+          ],
+          resources: { [`com.cloudflare.api.account.${accountId}`]: "*" },
+        },
+        {
+          effect: "allow",
+          permissionGroups: [
             "Zone Read",
             "DNS Write",
             "Workers Routes Write",
             "Zone Settings Write",
           ],
-          resources: { [`com.cloudflare.api.account.${accountId}`]: "*" },
+          resources: { [`com.cloudflare.api.account.${accountId}`]: { "com.cloudflare.api.account.zone.*": "*" } },
         },
       ],
     });
 
     yield* GitHub.Secret("cf-api-token", { owner, repository, name: "CLOUDFLARE_API_TOKEN", value: apiToken.value });
     yield* GitHub.Secret("cf-account-id", { owner, repository, name: "CLOUDFLARE_ACCOUNT_ID", value: Redacted.make(accountId) });
+    yield* GitHub.Variable("workers-dev-subdomain", { owner, repository, name: "WORKERS_DEV_SUBDOMAIN", value: workersDev });
   }),
 );

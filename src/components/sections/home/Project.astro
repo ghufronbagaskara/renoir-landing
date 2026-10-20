@@ -33,8 +33,11 @@ const projects = (await getPortfolio()).filter((project) => project.data.homeRan
           <p class="home-project-meta">{c.work.services[project.data.primaryService]}{project.data.year && ` / ${project.data.year}`}</p>
           <h3>{copy.title}</h3>
           <p class="home-project-summary">{copy.overview}</p>
-          <ul class="home-project-services" aria-label={c.work.details.services}>{project.data.serviceIds.map((id) => <li>{c.work.services[id]}</li>)}</ul>
-          <div class="home-project-approach"><span>{w.approach}</span><p>{copy.approach}</p></div>
+          <details class="home-project-extra" open>
+            <summary>{w.approach}<span aria-hidden="true">+</span></summary>
+            <ul class="home-project-services" aria-label={c.work.details.services}>{project.data.serviceIds.map((id) => <li>{c.work.services[id]}</li>)}</ul>
+            <div class="home-project-approach"><span>{w.approach}</span><p>{copy.approach}</p></div>
+          </details>
           <a class="home-action home-action-primary" href={child("work", locale, project.id)}>{w.caseStudy}<span aria-hidden="true">↗</span></a>
         </div>
       </div>;

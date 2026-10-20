@@ -1,24 +1,29 @@
 name: Deploy
+run-name: >-
+  ${{ github.event_name == 'pull_request'
+    && format('{0} PR #{1}', github.event.action == 'closed' && 'Clean up preview' || 'Check and preview', github.event.number)
+    || 'Check and deploy production' }}
 
 on:
   push:
     branches: [main]
   pull_request:
     types: [opened, reopened, synchronize, closed]
+  workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: alchemy-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'prod' }}
   cancel-in-progress: false
 
 env:
   STAGE: >-
     ${{ github.event_name == 'pull_request'
       && format('pr-{0}', github.event.number)
-      || (github.ref == 'refs/heads/main' && 'prod' || github.ref_name) }}
+      || 'prod' }}
 
 jobs:
   deploy:
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,12 +38,18 @@ jobs:
         run: bun run check
       - name: Build and guard links/copy
         run: bun run build && bun run check:links && bun run check:copy
-      - name: Deploy
-        run: bun alchemy deploy --stage ${{ env.STAGE }} --yes
+      - name: Deploy with Alchemy
+        if: >-
+          github.event_name != 'pull_request'
+          || (github.event.pull_request.head.repo.full_name == github.repository
+            && github.event.pull_request.user.login != 'dependabot[bot]' && github.actor != 'dependabot[bot]')
+        run: |
+          bun scripts/check-deploy-env.ts deploy
+          bun alchemy deploy --stage "$STAGE" --yes
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          WORKERS_DEV_SUBDOMAIN: ${{ secrets.WORKERS_DEV_SUBDOMAIN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WORKERS_DEV_SUBDOMAIN: ${{ vars.WORKERS_DEV_SUBDOMAIN || secrets.WORKERS_DEV_SUBDOMAIN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
@@ -50,7 +61,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   cleanup:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: >-
+      github.event_name == 'pull_request' && github.event.action == 'closed'
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.event.pull_request.user.login != 'dependabot[bot]' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,18 +73,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - name: Safety check
-        run: |
-          if [ "${{ env.STAGE }}" = "prod" ]; then
-            echo "ERROR: refusing to destroy prod from PR cleanup"
-            exit 1
-          fi
       - name: Destroy preview
-        run: bun alchemy destroy --stage ${{ env.STAGE }} --yes
+        run: |
+          bun scripts/check-deploy-env.ts cleanup
+          bun alchemy destroy --stage "$STAGE" --yes
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          WORKERS_DEV_SUBDOMAIN: ${{ secrets.WORKERS_DEV_SUBDOMAIN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WORKERS_DEV_SUBDOMAIN: ${{ vars.WORKERS_DEV_SUBDOMAIN || secrets.WORKERS_DEV_SUBDOMAIN }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           GITHUB_REPO: ${{ github.event.repository.name }}
           PULL_REQUEST: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
