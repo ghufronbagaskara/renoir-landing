@@ -12,6 +12,7 @@ const { locale } = Astro.props;
 const c = t(locale);
 const n = c.notes;
 const notes = await getNotes(locale);
+const shortDate = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "id-ID", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 ---
 <BaseLayout
   locale={locale}
@@ -36,24 +37,26 @@ const notes = await getNotes(locale);
                     <Img src={note.data.listImage} alt={`${locale === "id" ? "Diagram" : "Illustration"}: ${note.data.title}`} loading={i === 0 ? "eager" : "lazy"} />
                   </div>
                   <div class="si-blog-standard-text">
-                    <span>{note.data.category}</span>
-                    <span>
-                      <time datetime={note.data.date.toISOString().slice(0, 10)}>{formatDate(note.data.date, locale)}</time>
-                    </span>
-                    <span>
-                      {n.by} {c.site.name}
-                    </span>
+                    <div class="notes-card-meta">
+                      <span class="notes-card-category">{note.data.category}</span>
+                      <div class="notes-card-byline">
+                        <time datetime={note.data.date.toISOString().slice(0, 10)} title={formatDate(note.data.date, locale)}>{shortDate.format(note.data.date)}</time>
+                        <span>{n.by} {c.site.name}</span>
+                      </div>
+                    </div>
                     <h2 class="h3">
                       <a class="underline-black" href={href}>{note.data.title}</a>
                     </h2>
                     <p class="note-excerpt desktop-card-description">{note.data.description}</p>
-                    <details class="mobile-card-details"><summary>{locale === "en" ? "Summary" : "Ringkasan"}</summary><p>{note.data.description}</p></details>
                   </div>
-                  <div class="si-blog-standard-btn">
-                    <a class="si-btn-one" href={href} aria-label={`${n.readMore}: ${note.data.title}`}>
-                      <span class="btn-text"> <span>{n.readMore}</span> </span>
-                      <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span>
-                    </a>
+                  <div class="notes-card-footer">
+                    <details class="mobile-card-details"><summary>{locale === "en" ? "Summary" : "Ringkasan"}</summary><p>{note.data.description}</p></details>
+                    <div class="si-blog-standard-btn">
+                      <a class="si-btn-one" href={href} aria-label={`${n.readMore}: ${note.data.title}`} title={`${n.readMore}: ${note.data.title}`}>
+                        <span class="btn-text"> <span>{n.readMore}</span> </span>
+                        <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span>
+                      </a>
+                    </div>
                   </div>
                 </article>
               );

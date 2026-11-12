@@ -1,6 +1,7 @@
 ---
 import { child, t, type Locale } from "~/i18n";
 import { getNotes, getServices, noteSlug, serviceCopy } from "~/lib/content";
+import Img from "~/components/ui/Img.astro";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -46,7 +47,10 @@ const services = await getServices();
       <section aria-labelledby="search-recent-title">
         <h3 id="search-recent-title">{s.recent}</h3>
         <div class="search-command-recent">
-          {notes.map((note) => <a href={child("notes", locale, noteSlug(note))}><span>{note.data.category}</span>{note.data.title}</a>)}
+          {notes.map((note) => <a href={child("notes", locale, noteSlug(note))}>
+            <Img src={note.data.thumb} alt="" loading="lazy" />
+            <div><span>{note.data.category}</span><strong>{note.data.title}</strong></div>
+          </a>)}
         </div>
       </section>
     </div>
