@@ -11,18 +11,18 @@ export const workFeatures: Record<string, WorkFeature[]> = {
   "order-sales": [
     {
       image: image("order-sales", "order-detail"),
-      en: { title: "One order, ten accountable steps", body: "A sales order moves from the warehouse through delivery and administration to finance. Its detail page keeps the active stage, assigned person, deadline, and transition history together, so the next handoff is visible to everyone with access.", caption: "Order detail and its stage history in the demo environment." },
-      id_: { title: "Satu pesanan, sepuluh tahap yang jelas", body: "Pesanan bergerak dari gudang, pengiriman, dan administrasi hingga keuangan. Halaman detail menyatukan tahap aktif, penanggung jawab, tenggat, serta riwayat perpindahan sehingga tim yang berwenang tahu pekerjaan berikutnya.", caption: "Detail pesanan dan riwayat tahap pada lingkungan demo." },
+      en: { title: "One order, five accountable stages", body: "The workflow follows an order through warehouse, driver, delivery administration, sales administration, and finance. The detail page keeps the active stage, assigned person, deadline, and handoff history together.", caption: "Order detail and its stage history in the demo environment." },
+      id_: { title: "Satu pesanan, lima tahap yang jelas", body: "Pesanan ditangani gudang, driver, admin pengiriman, admin sales, dan keuangan. Halaman detail menyatukan tahap aktif, penanggung jawab, tenggat, serta riwayat serah terima.", caption: "Detail pesanan dan riwayat tahap pada lingkungan demo." },
     },
     {
       image: image("order-sales", "receivables"),
-      en: { title: "Deadlines and payments stay in view", body: "The operational dashboard and reports surface overdue stages, due dates, outstanding balances, and partial payments. Finance can follow a payment through verification before the order advances to tax processing.", caption: "Operational report with deadlines and receivables from demo records." },
-      id_: { title: "Tenggat dan pembayaran tetap terlihat", body: "Dashboard dan laporan menandai tahap yang terlambat, tanggal jatuh tempo, piutang, serta pembayaran sebagian. Keuangan dapat memeriksa pembayaran sampai terverifikasi sebelum pesanan berlanjut ke tahap pajak.", caption: "Laporan tenggat dan piutang dari data contoh." },
+      en: { title: "See where orders slow down", body: "The strategic report compares orders created and completed over 12 months. The team can check delivery status, finance document readiness, and where active orders are overdue.", caption: "Strategic report with a 12-month order chart from demo records." },
+      id_: { title: "Lihat di mana pesanan tersendat", body: "Laporan strategis membandingkan pesanan masuk dan selesai selama 12 bulan. Tim bisa memeriksa status pengiriman, kesiapan dokumen keuangan, dan tahap yang terlambat.", caption: "Laporan strategis dengan grafik pesanan 12 bulan dari data demo." },
     },
     {
       image: image("order-sales", "sales-mobile"),
-      en: { title: "Field sales has its own working view", body: "The sales area covers visits, prospects, quotations, and follow-up tasks. Its mobile view gives the team a practical way to check what needs attention while working outside the office.", caption: "Field sales activity viewed at phone width." },
-      id_: { title: "Sales lapangan punya ruang kerjanya sendiri", body: "Modul sales memuat kunjungan, prospek, penawaran, dan tindak lanjut. Tampilan ponselnya membantu tim memeriksa pekerjaan yang perlu ditangani saat berada di luar kantor.", caption: "Aktivitas sales lapangan pada lebar layar ponsel." },
+      en: { title: "Sales performance is visible on a phone", body: "The management dashboard compares visits and deals across regions. The prospect funnel shows how many opportunities and how much potential value sit at each stage, from a first visit through negotiation.", caption: "Sales KPIs and the prospect funnel on a phone, using demo records." },
+      id_: { title: "Kinerja sales bisa dipantau dari ponsel", body: "Beranda Sales untuk manajemen membandingkan kunjungan dan deal antarwilayah. Corong prospek menunjukkan jumlah dan nilai peluang pada tiap tahap, dari kunjungan awal sampai negosiasi.", caption: "KPI sales dan corong prospek di ponsel, memakai data demo." },
     },
   ],
   "industrial-coatings": [

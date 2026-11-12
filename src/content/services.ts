@@ -56,8 +56,8 @@ const media = {
       src: "work/order-sales/order-detail.webp",
       kind: "proof",
       alt: {
-        en: "Order detail with ten stages and transition history",
-        id: "Detail pesanan dengan sepuluh tahap dan riwayat perpindahan",
+        en: "Order detail with five stages and transition history",
+        id: "Detail pesanan dengan lima tahap dan riwayat perpindahan",
       },
       caption: {
         en: "Order detail connects warehouse, delivery, administration, and finance.",

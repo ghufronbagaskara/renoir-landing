@@ -40,7 +40,7 @@ export const portfolio: WorkProject[] = [
       title: "Order & Field Sales Workflow", subtitle: "Orders change hands. Their status should stay visible.",
       overview: "Orders change hands. Their status should stay visible. This system brings stages, ownership, deadlines, payments, and field sales activity into view.",
       challenge: "A manufacturing order passes through warehouse, delivery, administration, and finance. The team needs to see where each order stands and who owns the next step.",
-      approach: "A ten-stage order trail, operational dashboard, overdue signals, and field sales views connect office and on-site work in one application.",
+      approach: "A five-stage order trail, delivery and finance records, and sales performance dashboards connect office and field work in one application.",
       role: "The Katalhys founder worked on the interface, application development, AI-assisted sales follow-up, and deployment.",
       ai: {
         title: "AI helps the team decide what to follow up",
@@ -53,7 +53,7 @@ export const portfolio: WorkProject[] = [
       title: "Alur Pesanan & Sales Lapangan", subtitle: "Pesanan berpindah tangan; informasinya tidak boleh ikut hilang.",
       overview: "Pesanan berpindah tangan; informasinya tidak boleh ikut hilang. Sistem ini menunjukkan tahap, penanggung jawab, tenggat, pembayaran, dan aktivitas sales lapangan.",
       challenge: "Pesanan manufaktur melewati gudang, pengiriman, administrasi, dan keuangan. Tim perlu tahu posisi setiap pesanan dan siapa yang menangani tahap berikutnya.",
-      approach: "Jejak sepuluh tahap, dashboard operasional, penanda keterlambatan, dan layar sales lapangan menghubungkan pekerjaan kantor dan lapangan.",
+      approach: "Jejak lima tahap, catatan pengiriman dan keuangan, serta dashboard kinerja sales menghubungkan pekerjaan kantor dan lapangan.",
       role: "Pendiri Katalhys mengerjakan antarmuka, pengembangan aplikasi, integrasi AI untuk tindak lanjut sales, dan deployment.",
       ai: {
         title: "AI membantu menentukan tindak lanjut",
