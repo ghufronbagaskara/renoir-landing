@@ -178,6 +178,8 @@ const id: Dictionary = {
       button: "Lihat semua layanan",
       detail: "Lihat layanan ini",
       hint: "Pilih layanan atau geser gambar",
+      play: "Putar roda layanan",
+      pause: "Jeda roda layanan",
       previous: "Layanan sebelumnya",
       next: "Layanan berikutnya",
       overview: "Tampilkan lingkaran gambar",

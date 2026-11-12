@@ -11,9 +11,27 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
   const positions = tabs.map((_, i) => cards.findIndex(card => card.dataset.serviceIndex === String(i)));
   const motion = matchMedia("(prefers-reduced-motion: reduce)");
   let current = 0, turn = 0, target = 0, rotation = 0, rotationTarget = 0;
-  let lastScroll: number | undefined;
+  const playback = root.querySelector<HTMLButtonElement>("[data-wheel-playback]")!;
+  const revolution = 90000;
+  let spin: Animation | undefined;
+  let paused = motion.matches, hovered = false, holding = false;
   let opened = false, visible = false, frame = 0, cardW = 0, cardH = 0;
   let previousMix = -1, previousPosition = -1;
+  const syncSpin = () => {
+    const focus = document.activeElement;
+    if (opened || paused || hovered || holding || !visible || document.hidden || !cardW || turn !== 0 ||
+      (focus !== playback && root.contains(focus))) {
+      if (spin?.playState === "running" || spin?.pending) spin.pause();
+      return;
+    }
+    spin ??= orbit.animate([{ rotate: "0deg" }, { rotate: "360deg" }], { duration: revolution, iterations: Infinity });
+    if (spin.playState === "paused") spin.play();
+  };
+  const syncPlayback = () => {
+    playback.setAttribute("aria-label", (paused ? playback.dataset.play : playback.dataset.pause)!);
+    playback.firstElementChild!.textContent = paused ? "▶" : "Ⅱ";
+    syncSpin();
+  };
   const draw = () => {
     frame = 0;
     const immediate = motion.matches || !visible || document.hidden;
@@ -41,6 +59,7 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
     previousMix = m;
     previousPosition = pos;
     if (visible && !document.hidden && (Math.abs(target - turn) >= .001 || Math.abs(rotationTarget - rotation) >= .01)) frame = requestAnimationFrame(draw);
+    syncSpin();
   };
   const schedule = () => { if (!frame && cardW) frame = requestAnimationFrame(draw); };
   const measure = ({ width, height }: DOMRectReadOnly) => {
@@ -54,6 +73,13 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
   root.classList.add("is-overview");
   content.inert = true;
   root.addEventListener("tabs:change", event => {
+    if (spin) {
+      const angle = Number(spin.currentTime ?? 0) % revolution / revolution * 360;
+      rotation += angle;
+      rotationTarget += angle;
+      spin.cancel();
+      spin = undefined;
+    }
     current = (event as CustomEvent<{ index: number }>).detail.index;
     opened = true;
     content.inert = false;
@@ -74,33 +100,32 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
     schedule();
   });
   root.querySelector<HTMLElement>("[data-wheel-controls]")!.hidden = false;
-  addEventListener("scroll", () => {
-    const position = scrollY;
-    const delta = lastScroll === undefined ? 0 : position - lastScroll;
-    lastScroll = position;
-    if (opened || motion.matches || !visible) return;
-    rotationTarget += delta * .12;
-    schedule();
-  }, { passive: true });
+  playback.addEventListener("click", () => { paused = !paused; syncPlayback(); });
+  stage.addEventListener("pointerenter", event => { hovered = event.pointerType === "mouse"; syncSpin(); });
+  stage.addEventListener("pointerleave", () => { hovered = false; syncSpin(); });
+  root.addEventListener("focusin", syncSpin);
+  root.addEventListener("focusout", () => queueMicrotask(syncSpin));
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     if (visible) schedule();
     else { cancelAnimationFrame(frame); frame = 0; }
+    syncSpin();
   }).observe(stage);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
     else if (visible) schedule();
+    syncSpin();
   });
-  motion.addEventListener("change", schedule);
-  new ResizeObserver(([entry]) => {
-    if (lastScroll === undefined) lastScroll = scrollY;
-    measure(entry.contentRect);
-  }).observe(stage);
+  motion.addEventListener("change", () => { paused = motion.matches; syncPlayback(); schedule(); });
+  new ResizeObserver(([entry]) => measure(entry.contentRect)).observe(stage);
+  syncPlayback();
   let drag: { x: number; y: number; rotation: number; captured: boolean } | null = null;
   let suppressClick = false;
   stage.addEventListener("dragstart", event => event.preventDefault());
   stage.addEventListener("pointerdown", event => {
     if (event.button !== 0) return;
+    holding = true;
+    syncSpin();
     suppressClick = false;
     drag = { x: event.clientX, y: event.clientY, rotation: rotationTarget, captured: false };
   });
@@ -108,7 +133,7 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
     if (!drag) return;
     const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
     // Vertical touch gestures remain available for native page scrolling.
-    if (event.pointerType !== "mouse" && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8 && !drag.captured) { drag = null; return; }
+    if (event.pointerType !== "mouse" && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8 && !drag.captured) { cancel(); return; }
     if (!drag.captured && Math.hypot(dx, dy) > 8) {
       drag.captured = true;
       stage.setPointerCapture(event.pointerId);
@@ -121,13 +146,19 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-works-wheel]"))
       suppressClick = true;
       if (opened && Math.abs(event.clientX - drag.x) > 40) select(event.clientX < drag.x ? 1 : -1);
     }
-    drag = null;
-    stage.classList.remove("is-dragging");
+    cancel();
   });
-  const cancel = () => { drag = null; stage.classList.remove("is-dragging"); };
+  const cancel = () => { drag = null; holding = false; stage.classList.remove("is-dragging"); syncSpin(); };
+  stage.addEventListener("pointerleave", () => { if (drag && !drag.captured) cancel(); });
   stage.addEventListener("pointercancel", cancel);
   stage.addEventListener("lostpointercapture", cancel);
   stage.addEventListener("click", event => {
-    if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; }
+    if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; return; }
+    if (opened || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !(event.target instanceof Element)) return;
+    const link = event.target.closest(".wheel-card a");
+    const index = link?.parentElement?.dataset.serviceIndex;
+    if (index === undefined) return;
+    event.preventDefault();
+    tabs[Number(index)].click();
   }, true);
 }

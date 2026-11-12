@@ -20,6 +20,6 @@ const projects = ["order-sales", "field-projects", "maxy-ai", "industrial-coatin
       <div><p class="home-section-label">{s.label}</p><h2 id="home-services-title">{s.title}</h2></div>
       <div class="home-section-intro"><p>{s.body}</p><a class="home-text-link" href={path("services", locale)}>{s.button}<span aria-hidden="true">↗</span></a></div>
     </div>
-    <WorksWheel services={services} projects={projects} label={s.wheelLabel} detail={s.detail} hint={s.hint} previous={s.previous} next={s.next} overview={s.overview} />
+    <WorksWheel services={services} projects={projects} label={s.wheelLabel} detail={s.detail} hint={s.hint} previous={s.previous} next={s.next} overview={s.overview} play={s.play} pause={s.pause} />
   </div>
 </section>

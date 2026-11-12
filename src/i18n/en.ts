@@ -176,6 +176,8 @@ const en = {
       button: "See all services",
       detail: "Explore this service",
       hint: "Select a service or drag the images",
+      play: "Play service wheel",
+      pause: "Pause service wheel",
       previous: "Previous service",
       next: "Next service",
       overview: "Show the image ring",

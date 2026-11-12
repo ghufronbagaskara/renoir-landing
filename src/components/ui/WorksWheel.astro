@@ -9,8 +9,10 @@ interface Props {
   previous: string;
   next: string;
   overview: string;
+  play: string;
+  pause: string;
 }
-const { services, projects, label, detail, hint, previous, next, overview } = Astro.props;
+const { services, projects, label, detail, hint, previous, next, overview, play, pause } = Astro.props;
 const cards = [
   { image: services[0].image, service: 0 },
   { image: projects[0] },
@@ -30,7 +32,7 @@ const cards = [
   <div class="wheel-stage" data-wheel-stage>
     <div class="wheel-orbit" data-wheel-orbit>
       {cards.map((card) => <div class="wheel-card" data-service-index={card.service} data-project={card.service === undefined ? "" : undefined} aria-hidden={card.service === undefined ? "true" : undefined}>
-        {card.service !== undefined ? <a href={services[card.service].href} aria-label={`${detail}: ${services[card.service].title}`} draggable="false"><Img src={card.image} alt="" draggable="false" /><span class="wheel-card-action">{detail} <span aria-hidden="true">↗</span></span></a> : <span><Img src={card.image} alt="" draggable="false" /></span>}
+        {card.service !== undefined ? <a href={services[card.service].href} aria-label={`${detail}: ${services[card.service].title}`} draggable="false"><Img src={card.image} alt="" draggable="false" /><span class="wheel-card-action"><span class="wheel-card-title">{services[card.service].title}</span><span class="wheel-card-link">{detail} ↗</span></span></a> : <span><Img src={card.image} alt="" draggable="false" /></span>}
       </div>)}
     </div>
     <div class="wheel-center" data-wheel-label aria-hidden="true">{label.map((line) => <span>{line}</span>)}</div>
@@ -45,6 +47,7 @@ const cards = [
   <div class="wheel-navigation" data-wheel-controls hidden>
     <p>{hint}</p>
     <div>
+      <button type="button" data-wheel-playback data-play={play} data-pause={pause} aria-label={pause}><span aria-hidden="true">Ⅱ</span></button>
       <button type="button" data-wheel-overview aria-label={overview}>↺</button>
       <button type="button" data-wheel-previous aria-label={previous}>←</button>
       <button type="button" data-wheel-next aria-label={next}>→</button>

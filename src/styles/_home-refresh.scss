@@ -49,7 +49,8 @@
 .wheel-service p { max-width: 31ch; font-size: 15px; line-height: 1.7; color: var(--renoir-muted); }
 .wheel-service .home-text-link { margin-top: 6px; }
 .works-wheel.is-enhanced .wheel-orbit { display: block; inset: 50% auto auto 50%; width: 0; height: 0; padding: 0; transform-style: preserve-3d; }
-.works-wheel.is-enhanced .wheel-card { position: absolute; backface-visibility: hidden; }
+.works-wheel.is-enhanced .wheel-card { position: absolute; backface-visibility: hidden; pointer-events: none; }
+.works-wheel.is-enhanced .wheel-card > a { pointer-events: auto; }
 .works-wheel.is-enhanced .wheel-center { display: grid; place-content: center; position: absolute; inset: 0; pointer-events: none; font-family: var(--si-ff-heading); text-align: center; font-size: clamp(26px, 3vw, 42px); line-height: 1.05; letter-spacing: -.04em; }
 .works-wheel.is-enhanced .wheel-content { display: block; position: absolute; top: 47%; left: 2%; width: 25%; opacity: var(--wheel-open, 0); transform: translateY(-50%); }
 .works-wheel.is-enhanced .wheel-index { position: absolute; z-index: 2; top: 18px; right: 1%; display: grid; justify-items: start; gap: 4px; max-width: 26%; }
@@ -193,6 +194,8 @@
 .wheel-stage.is-dragging, .wheel-stage.is-dragging * { cursor: grabbing; }
 .wheel-card-action { position: absolute; right: 8px; bottom: 8px; display: flex; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 5px; background: #fff; color: #17191c; font-size: 12px; font-weight: 600; opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s; }
 .wheel-card a:hover .wheel-card-action, .wheel-card a:focus-visible .wheel-card-action { opacity: 1; transform: none; }
+.wheel-card-title, .is-overview .wheel-card-link { display: none; }
+.is-overview .wheel-card-title { display: inline; }
 .wheel-card a:focus-visible { outline: 3px solid #64d6f2; outline-offset: 4px; }
 .home-project-controls { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--renoir-line); margin: 32px 0; }
 .home-project-controls .home-project-tabs { flex: 1; min-width: 0; margin: 0; border: 0; padding: 6px 2px 16px; }
