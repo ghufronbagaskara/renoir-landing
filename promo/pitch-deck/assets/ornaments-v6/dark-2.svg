@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><path d="M1280 410c-95 9-167 101-167 225h167z" fill="#1D2430"/><g stroke="#35445D" stroke-width="1.5" fill="none" opacity=".68"><path d="M1005 118l-24 24 24 24 M1167 118l24 24-24 24 M1100 99l-28 85"/><path d="M1030 611h185 M1070 594h145 M1110 577h105"/></g><g opacity=".65"><circle cx="30" cy="510" r="1.5" fill="#35445D"/><circle cx="38" cy="510" r="1.5" fill="#35445D"/><circle cx="46" cy="510" r="1.5" fill="#35445D"/><circle cx="54" cy="510" r="1.5" fill="#35445D"/><circle cx="30" cy="527" r="1.5" fill="#35445D"/><circle cx="38" cy="527" r="1.5" fill="#35445D"/><circle cx="46" cy="527" r="1.5" fill="#35445D"/><circle cx="54" cy="527" r="1.5" fill="#35445D"/><circle cx="30" cy="544" r="1.5" fill="#35445D"/><circle cx="38" cy="544" r="1.5" fill="#35445D"/><circle cx="46" cy="544" r="1.5" fill="#35445D"/><circle cx="54" cy="544" r="1.5" fill="#35445D"/><circle cx="30" cy="561" r="1.5" fill="#35445D"/><circle cx="38" cy="561" r="1.5" fill="#35445D"/><circle cx="46" cy="561" r="1.5" fill="#35445D"/><circle cx="54" cy="561" r="1.5" fill="#35445D"/><circle cx="30" cy="578" r="1.5" fill="#35445D"/><circle cx="38" cy="578" r="1.5" fill="#35445D"/><circle cx="46" cy="578" r="1.5" fill="#35445D"/><circle cx="54" cy="578" r="1.5" fill="#35445D"/><circle cx="30" cy="595" r="1.5" fill="#35445D"/><circle cx="38" cy="595" r="1.5" fill="#35445D"/><circle cx="46" cy="595" r="1.5" fill="#35445D"/><circle cx="54" cy="595" r="1.5" fill="#35445D"/></g><g transform="translate(1130 97) scale(3.1)" opacity=".48" stroke="#35445D" fill="none" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m10.852 14.772-.383.923" />
+  <path d="M13.148 14.772a3 3 0 1 0-2.296-5.544l-.383-.923" />
+  <path d="m13.148 9.228.383-.923" />
+  <path d="m13.53 15.696-.382-.924a3 3 0 1 1-2.296-5.544" />
+  <path d="m14.772 10.852.923-.383" />
+  <path d="m14.772 13.148.923.383" />
+  <path d="M4.5 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-.5" />
+  <path d="M4.5 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-.5" />
+  <path d="M6 18h.01" />
+  <path d="M6 6h.01" />
+  <path d="m9.228 10.852-.923-.383" />
+  <path d="m9.228 13.148-.923.383" />
+
+</g></svg>

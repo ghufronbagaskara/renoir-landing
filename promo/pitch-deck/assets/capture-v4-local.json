@@ -1,0 +1,52 @@
+[
+  {
+    "project": "order-sales",
+    "name": "dashboard",
+    "url": "http://127.0.0.1:8070/dashboard",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "order-sales",
+    "name": "order-detail",
+    "url": "http://127.0.0.1:8070/pesanan/01M3NN6XTKXRRMSRR9AW3TWY49",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "order-sales",
+    "name": "reports",
+    "url": "http://127.0.0.1:8070/laporan",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "order-sales",
+    "name": "mcp",
+    "url": "http://127.0.0.1:8070/admin/konektor-ai",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "order-sales",
+    "name": "mobile",
+    "url": "http://127.0.0.1:8070/sales",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 430,
+      "height": 932
+    }
+  }
+]

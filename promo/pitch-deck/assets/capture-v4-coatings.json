@@ -1,0 +1,52 @@
+[
+  {
+    "project": "industrial-coatings",
+    "name": "desktop",
+    "url": "https://fanoscoatings.com/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "industrial-coatings",
+    "name": "catalogue",
+    "url": "https://fanoscoatings.com/products-fanos-coatings/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "industrial-coatings",
+    "name": "product",
+    "url": "https://fanoscoatings.com/product/maxifloor-mfc-300-hf-polyurethane-concrete/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "industrial-coatings",
+    "name": "quote",
+    "url": "https://fanoscoatings.com/cart/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "industrial-coatings",
+    "name": "mobile",
+    "url": "https://fanoscoatings.com/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 430,
+      "height": 932
+    }
+  }
+]

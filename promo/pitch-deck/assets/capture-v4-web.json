@@ -1,0 +1,42 @@
+[
+  {
+    "project": "maxy-ai",
+    "name": "desktop",
+    "url": "https://www.maxy.asia/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "maxy-ai",
+    "name": "agentic",
+    "url": "https://www.maxy.asia/solutions/agentic-ai",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "maxy-ai",
+    "name": "web-app",
+    "url": "https://www.maxy.asia/solutions/web-app",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  {
+    "project": "maxy-ai",
+    "name": "mobile",
+    "url": "https://www.maxy.asia/",
+    "captured": "2026-10-25",
+    "viewport": {
+      "width": 430,
+      "height": 932
+    }
+  }
+]
