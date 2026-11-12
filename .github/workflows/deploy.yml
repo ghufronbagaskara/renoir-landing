@@ -54,6 +54,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
           LEADS_WEBHOOK_SECRET: ${{ secrets.LEADS_WEBHOOK_SECRET }}
+          ADMIN_SETUP_TOKEN: ${{ secrets.ADMIN_SETUP_TOKEN }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           GITHUB_REPO: ${{ github.event.repository.name }}
           PULL_REQUEST: ${{ github.event.number }}

@@ -1,0 +1,75 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import AdminLayout from "~/layouts/AdminLayout.astro";
+import { LeadStatuses, PAGE_SIZE, listLeads } from "~/server/db";
+import { fmtDate, requireAdmin, waLink } from "~/server/admin";
+import { statusLabel, typeLabel } from "~/server/admin-labels";
+
+const auth = await requireAdmin(Astro);
+if (auth instanceof Response) return auth;
+const params = Astro.url.searchParams;
+const filter = { q: params.get("q") ?? "", status: params.get("status") ?? "", source: params.get("source") ?? "", page: Number(params.get("page")) || 1 };
+const { leads, total, page, counts } = await listLeads(env.DB, filter);
+const all = Object.values(counts).reduce((a, b) => a + (b ?? 0), 0);
+const href = (change: Record<string, string | number>) => {
+  const next = new URLSearchParams({ ...filter, page: String(filter.page), ...Object.fromEntries(Object.entries(change).map(([k, v]) => [k, String(v)])) });
+  for (const [k, v] of [...next]) if (!v || (k === "page" && v === "1")) next.delete(k);
+  const query = next.toString();
+  return query ? `/admin/?${query}` : "/admin/";
+};
+const today = new Date().toISOString().slice(0, 10);
+---
+<AdminLayout title="Lead" user={auth.user}>
+  <h1>Lead masuk</h1>
+  {params.has("deleted") && <p class="notice" role="status">Lead dihapus.</p>}
+  <nav class="tabs" aria-label="Status">
+    <a href={href({ status: "", page: 1 })} aria-current={!filter.status ? "true" : undefined}>Semua ({all})</a>
+    {LeadStatuses.map((s) => <a href={href({ status: s, page: 1 })} aria-current={filter.status === s ? "true" : undefined}>{statusLabel[s]} ({counts[s] ?? 0})</a>)}
+  </nav>
+  <form class="card row" method="get" role="search">
+    {filter.status && <input type="hidden" name="status" value={filter.status} />}
+    <div><label for="q">Cari nama, kontak, perusahaan, pesan</label><input id="q" name="q" type="search" value={filter.q} /></div>
+    <div>
+      <label for="source">Sumber</label>
+      <select id="source" name="source">
+        <option value="">Semua sumber</option>
+        <option value="quiz" selected={filter.source === "quiz"}>Kuis</option>
+        <option value="contact" selected={filter.source === "contact"}>Halaman kontak</option>
+        <option value="service" selected={filter.source === "service"}>Halaman layanan</option>
+      </select>
+    </div>
+    <button class="btn" type="submit">Terapkan</button>
+  </form>
+  <p class="muted">{total} lead{total > PAGE_SIZE && ` · halaman ${page} dari ${Math.ceil(total / PAGE_SIZE)}`}</p>
+  {leads.length ? (
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Masuk</th><th>Nama</th><th>Kontak</th><th>Kebutuhan</th><th>Sumber</th><th>Status</th><th>Tindak lanjut</th></tr></thead>
+        <tbody>
+          {leads.map((l) => (
+            <tr>
+              <td>{fmtDate(l.created_at)}</td>
+              <td><a href={`/admin/leads/${l.id}/`}>{l.name}</a>{l.company && <div class="muted">{l.company}</div>}</td>
+              <td>
+                {l.email && <div><a href={`mailto:${l.email}`}>{l.email}</a></div>}
+                {l.whatsapp && <div><a href={waLink(l.whatsapp)} target="_blank" rel="noopener noreferrer">{l.whatsapp}</a></div>}
+                <div class="muted">via {l.channel === "whatsapp" ? "WhatsApp" : "email"}</div>
+              </td>
+              <td>{typeLabel[l.build_type] ?? l.build_type}</td>
+              <td>{l.source === "quiz" ? "Kuis" : l.source.startsWith("service:") ? `Layanan: ${l.source.slice(8)}` : "Kontak"} · {l.locale.toUpperCase()}</td>
+              <td><span class:list={["pill", l.status]}>{statusLabel[l.status]}</span></td>
+              <td>{l.follow_up_on ? <span class:list={{ pill: l.follow_up_on <= today }}>{l.follow_up_on}</span> : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : <p class="card">Belum ada lead yang cocok dengan filter ini.</p>}
+  {total > PAGE_SIZE && (
+    <div class="pager">
+      {page > 1 ? <a class="btn secondary" href={href({ page: page - 1 })}>Sebelumnya</a> : <span />}
+      {page * PAGE_SIZE < total && <a class="btn secondary" href={href({ page: page + 1 })}>Berikutnya</a>}
+    </div>
+  )}
+</AdminLayout>

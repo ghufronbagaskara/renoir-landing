@@ -1,0 +1,85 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import AdminLayout from "~/layouts/AdminLayout.astro";
+import { changePassword, createUser, listUsers, passwordProblem, setUserActive } from "~/server/auth";
+import { field, fmtDate, requireAdmin } from "~/server/admin";
+
+const auth = await requireAdmin(Astro);
+if (auth instanceof Response) return auth;
+let message = "";
+let error = "";
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const action = field(form, "action");
+  const password = String(form.get("password") ?? "");
+  if (action === "create") {
+    if (!field(form, "name") || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field(form, "email"))) error = "Isi nama dan email yang valid.";
+    else if (passwordProblem(password)) error = "Kata sandi minimal 12 karakter.";
+    else if (!(await createUser(env.DB, { email: field(form, "email"), name: field(form, "name"), password }))) error = "Email itu sudah terdaftar.";
+    else message = "Akun dibuat. Bagikan kata sandinya lewat kanal pribadi dan minta pemiliknya menggantinya.";
+  } else if (action === "toggle") {
+    const ok = await setUserActive(env.DB, auth.user, Number(field(form, "id")), field(form, "active") === "1");
+    if (ok) message = "Status akun diperbarui.";
+    else error = "Anda tidak dapat menonaktifkan akun sendiri.";
+  } else if (action === "password") {
+    if (passwordProblem(password)) error = "Kata sandi baru minimal 12 karakter.";
+    else if (password !== String(form.get("confirm") ?? "")) error = "Konfirmasi kata sandi tidak sama.";
+    else if (!(await changePassword(env.DB, auth.user, String(form.get("current") ?? ""), password, auth.token))) error = "Kata sandi saat ini salah.";
+    else message = "Kata sandi diganti. Sesi di perangkat lain sudah keluar.";
+  }
+  if (error) Astro.response.status = 400;
+}
+const users = await listUsers(env.DB);
+---
+<AdminLayout title="Akun" user={auth.user}>
+  <h1>Akun admin</h1>
+  {message && <p class="notice" role="status">{message}</p>}
+  {error && <p class="notice error" role="alert">{error}</p>}
+  <div class="table-wrap" style="margin-bottom:16px">
+    <table>
+      <thead><tr><th>Nama</th><th>Email</th><th>Dibuat</th><th>Status</th></tr></thead>
+      <tbody>
+        {users.map((u) => (
+          <tr>
+            <td>{u.name}{u.id === auth.user.id && <span class="muted"> (Anda)</span>}</td>
+            <td>{u.email}</td>
+            <td>{fmtDate(u.created_at)}</td>
+            <td>
+              {u.id === auth.user.id ? <span class="pill">Aktif</span> : (
+                <form method="post">
+                  <input type="hidden" name="action" value="toggle" /><input type="hidden" name="id" value={u.id} /><input type="hidden" name="active" value={u.active ? "0" : "1"} />
+                  <span class:list={["pill", { lost: !u.active }]}>{u.active ? "Aktif" : "Nonaktif"}</span>{" "}
+                  <button class="btn secondary" type="submit">{u.active ? "Nonaktifkan" : "Aktifkan"}</button>
+                </form>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: start">
+    <section class="card">
+      <h2>Tambah akun</h2>
+      <form method="post" class="grid">
+        <input type="hidden" name="action" value="create" />
+        <div><label for="new-name">Nama</label><input id="new-name" name="name" required maxlength="120" /></div>
+        <div><label for="new-email">Email</label><input id="new-email" name="email" type="email" required maxlength="254" /></div>
+        <div><label for="new-password">Kata sandi awal (min. 12 karakter)</label><input id="new-password" name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="200" /></div>
+        <button class="btn" type="submit">Tambah</button>
+      </form>
+    </section>
+    <section class="card">
+      <h2>Ganti kata sandi Anda</h2>
+      <form method="post" class="grid">
+        <input type="hidden" name="action" value="password" />
+        <div><label for="current">Kata sandi saat ini</label><input id="current" name="current" type="password" autocomplete="current-password" required maxlength="200" /></div>
+        <div><label for="password">Kata sandi baru</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="200" /></div>
+        <div><label for="confirm">Ulangi kata sandi baru</label><input id="confirm" name="confirm" type="password" autocomplete="new-password" required minlength="12" maxlength="200" /></div>
+        <button class="btn" type="submit">Ganti kata sandi</button>
+      </form>
+    </section>
+  </div>
+</AdminLayout>

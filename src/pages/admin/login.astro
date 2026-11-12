@@ -1,0 +1,41 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import AdminLayout from "~/layouts/AdminLayout.astro";
+import { SESSION_COOKIE, countUsers, login, sameOrigin, sessionUser } from "~/server/auth";
+import { field, privateResponse } from "~/server/admin";
+
+privateResponse(Astro);
+let error = "";
+if (await sessionUser(env.DB, Astro.cookies.get(SESSION_COOKIE)?.value)) return Astro.redirect("/admin/");
+if (Astro.request.method === "POST") {
+  if (!sameOrigin(Astro.request)) return new Response("Forbidden", { status: 403 });
+  const ip = Astro.request.headers.get("cf-connecting-ip") ?? "unknown";
+  if (!(await env.THROTTLE.limit({ key: `admin-login:${ip}` })).success) {
+    Astro.response.status = 429;
+    error = "Terlalu banyak percobaan. Coba lagi dalam satu menit.";
+  } else {
+    const form = await Astro.request.formData();
+    const session = await login(env.DB, field(form, "email"), String(form.get("password") ?? ""));
+    if (session) {
+      Astro.cookies.set(SESSION_COOKIE, session.token, { path: "/", httpOnly: true, secure: true, sameSite: "strict", expires: session.expires });
+      return Astro.redirect("/admin/", 303);
+    }
+    Astro.response.status = 401;
+    error = "Email atau kata sandi salah.";
+  }
+}
+const setup = (await countUsers(env.DB)) === 0;
+---
+<AdminLayout title="Masuk">
+  <div class="card">
+    <h1>Masuk ke admin</h1>
+    {error && <p class="notice error" role="alert">{error}</p>}
+    {setup && <p class="notice">Belum ada akun admin. Buat akun pertama di <a href="/admin/setup/">halaman setup</a>.</p>}
+    <form method="post" class="grid">
+      <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required maxlength="254" /></div>
+      <div><label for="password">Kata sandi</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" /></div>
+      <button class="btn" type="submit">Masuk</button>
+    </form>
+  </div>
+</AdminLayout>

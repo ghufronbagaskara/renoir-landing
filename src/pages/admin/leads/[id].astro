@@ -1,0 +1,94 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import AdminLayout from "~/layouts/AdminLayout.astro";
+import { LeadStatuses, deleteLead, getLead, leadEvents, updateLead, type LeadStatus } from "~/server/db";
+import { field, fmtDate, requireAdmin, waLink } from "~/server/admin";
+import { quizAnswers, statusLabel, typeLabel } from "~/server/admin-labels";
+import { t } from "~/i18n";
+
+const auth = await requireAdmin(Astro);
+if (auth instanceof Response) return auth;
+const id = Astro.params.id ?? "";
+let saved = Astro.url.searchParams.has("saved");
+let error = "";
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  if (field(form, "action") === "delete") {
+    if (field(form, "confirm") !== "HAPUS") error = "Ketik HAPUS untuk mengonfirmasi penghapusan.";
+    else {
+      await deleteLead(env.DB, id);
+      return Astro.redirect("/admin/?deleted=1", 303);
+    }
+  } else {
+    const status = field(form, "status") as LeadStatus;
+    const followUp = field(form, "follow_up_on");
+    if (!LeadStatuses.includes(status) || (followUp && !/^\d{4}-\d{2}-\d{2}$/.test(followUp))) error = "Status atau tanggal tidak valid.";
+    else if (!(await updateLead(env.DB, id, auth.user.id, { status, notes: field(form, "notes").slice(0, 5000), follow_up_on: followUp }))) return new Response("Not found", { status: 404 });
+    else return Astro.redirect(`/admin/leads/${id}/?saved=1`, 303);
+  }
+  Astro.response.status = 400;
+  saved = false;
+}
+
+const lead = await getLead(env.DB, id);
+if (!lead) return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
+const events = await leadEvents(env.DB, id);
+const quiz = quizAnswers(lead.quiz);
+const f = t("id").form;
+const optional = (v: string | null, labels: Record<string, string>) => (v ? labels[v] ?? v : "—");
+---
+<AdminLayout title={lead.name} user={auth.user}>
+  <p><a href="/admin/">← Semua lead</a></p>
+  <h1>{lead.name}</h1>
+  {saved && <p class="notice" role="status">Perubahan tersimpan.</p>}
+  {error && <p class="notice error" role="alert">{error}</p>}
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: start">
+    <section class="card">
+      <h2>Detail</h2>
+      <dl>
+        <dt>Masuk</dt><dd>{fmtDate(lead.created_at)}</dd>
+        <dt>Balas lewat</dt><dd>{lead.channel === "whatsapp" ? "WhatsApp" : "Email"}</dd>
+        {lead.email && <><dt>Email</dt><dd><a href={`mailto:${lead.email}`}>{lead.email}</a></dd></>}
+        {lead.whatsapp && <><dt>WhatsApp</dt><dd><a href={waLink(lead.whatsapp)} target="_blank" rel="noopener noreferrer">{lead.whatsapp}</a></dd></>}
+        {lead.company && <><dt>Perusahaan</dt><dd>{lead.company}</dd></>}
+        <dt>Kebutuhan</dt><dd>{typeLabel[lead.build_type] ?? lead.build_type}</dd>
+        <dt>Timeline</dt><dd>{optional(lead.timeline, f.timelines)}</dd>
+        <dt>Budget</dt><dd>{optional(lead.budget, f.budgets)}</dd>
+        <dt>Sumber</dt><dd>{lead.source} · {lead.locale.toUpperCase()}</dd>
+      </dl>
+      {lead.message && <><h2 style="margin-top:16px">Pesan</h2><pre>{lead.message}</pre></>}
+      {quiz && (
+        <>
+          <h2 style="margin-top:16px">Jawaban kuis</h2>
+          <p><strong>Rekomendasi:</strong> {quiz.recommendation}</p>
+          <dl>{quiz.rows.map(([q, a]) => <><dt>{q}</dt><dd>{a ?? "—"}</dd></>)}</dl>
+        </>
+      )}
+    </section>
+    <section class="card">
+      <h2>Tindak lanjut</h2>
+      <form method="post" class="grid">
+        <input type="hidden" name="action" value="update" />
+        <div><label for="status">Status</label>
+          <select id="status" name="status">{LeadStatuses.map((s) => <option value={s} selected={lead.status === s}>{statusLabel[s]}</option>)}</select>
+        </div>
+        <div><label for="follow_up_on">Tanggal tindak lanjut</label><input id="follow_up_on" name="follow_up_on" type="date" value={lead.follow_up_on ?? ""} /></div>
+        <div><label for="notes">Catatan internal</label><textarea id="notes" name="notes" maxlength="5000">{lead.notes ?? ""}</textarea></div>
+        <button class="btn" type="submit">Simpan</button>
+      </form>
+      <h2 style="margin-top:20px">Riwayat</h2>
+      {events.length ? <ul>{events.map((e) => <li>{fmtDate(e.at)} · {e.user ?? "—"} · {e.kind === "status" ? `status ${e.detail}` : e.kind === "notes" ? "catatan diperbarui" : `tindak lanjut ${e.detail}`}</li>)}</ul> : <p class="muted">Belum ada perubahan.</p>}
+    </section>
+  </div>
+  <details class="card">
+    <summary>Hapus lead ini (permintaan privasi)</summary>
+    <form method="post" class="row" style="margin-top:12px">
+      <input type="hidden" name="action" value="delete" />
+      <div><label for="confirm">Ketik HAPUS untuk mengonfirmasi. Tindakan ini tidak bisa dibatalkan.</label><input id="confirm" name="confirm" autocomplete="off" /></div>
+      <button class="btn danger" type="submit">Hapus permanen</button>
+    </form>
+    <p class="muted">Salinan di Google Sheet dan Telegram perlu dihapus terpisah.</p>
+  </details>
+</AdminLayout>

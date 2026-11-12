@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import { SESSION_COOKIE, logout, sameOrigin } from "~/server/auth";
+
+if (Astro.request.method !== "POST") return Astro.redirect("/admin/");
+if (!sameOrigin(Astro.request)) return new Response("Forbidden", { status: 403 });
+await logout(env.DB, Astro.cookies.get(SESSION_COOKIE)?.value);
+Astro.cookies.delete(SESSION_COOKIE, { path: "/", httpOnly: true, secure: true, sameSite: "strict" });
+return Astro.redirect("/admin/login/", 303);
+---

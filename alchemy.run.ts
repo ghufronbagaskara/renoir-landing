@@ -60,6 +60,8 @@ export default Alchemy.Stack(
         LEADS_WEBHOOK_URL: yield* optional("LEADS_WEBHOOK_URL"),
         LEADS_WEBHOOK_SECRET: yield* optional("LEADS_WEBHOOK_SECRET"),
         DB: db,
+        // Enables /admin/setup/ while no admin account exists. Empty = setup disabled.
+        ADMIN_SETUP_TOKEN: yield* optional("ADMIN_SETUP_TOKEN"),
       },
     });
 

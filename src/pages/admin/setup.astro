@@ -1,0 +1,44 @@
+---
+export const prerender = false;
+import { env } from "cloudflare:workers";
+import AdminLayout from "~/layouts/AdminLayout.astro";
+import { countUsers, createUser, passwordProblem, sameOrigin } from "~/server/auth";
+import { field, privateResponse } from "~/server/admin";
+
+// Creates the first admin account. Works only while no account exists and ADMIN_SETUP_TOKEN is set.
+privateResponse(Astro);
+const enabled = Boolean(env.ADMIN_SETUP_TOKEN) && (await countUsers(env.DB)) === 0;
+if (!enabled) return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
+let error = "";
+if (Astro.request.method === "POST") {
+  if (!sameOrigin(Astro.request)) return new Response("Forbidden", { status: 403 });
+  const ip = Astro.request.headers.get("cf-connecting-ip") ?? "unknown";
+  const form = await Astro.request.formData();
+  const password = String(form.get("password") ?? "");
+  if (!(await env.THROTTLE.limit({ key: `admin-setup:${ip}` })).success) error = "Terlalu banyak percobaan. Coba lagi dalam satu menit.";
+  else if (field(form, "token") !== env.ADMIN_SETUP_TOKEN) error = "Token setup tidak cocok.";
+  else if (passwordProblem(password)) error = "Kata sandi minimal 12 karakter.";
+  else if (password !== String(form.get("confirm") ?? "")) error = "Konfirmasi kata sandi tidak sama.";
+  else if (!field(form, "name") || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field(form, "email"))) error = "Isi nama dan email yang valid.";
+  else {
+    await createUser(env.DB, { email: field(form, "email"), name: field(form, "name"), password });
+    return Astro.redirect("/admin/login/", 303);
+  }
+  Astro.response.status = 400;
+}
+---
+<AdminLayout title="Setup">
+  <div class="card">
+    <h1>Buat akun admin pertama</h1>
+    <p class="muted">Setelah akun dibuat, halaman ini tertutup. Kosongkan ADMIN_SETUP_TOKEN lalu deploy ulang.</p>
+    {error && <p class="notice error" role="alert">{error}</p>}
+    <form method="post" class="grid">
+      <div><label for="token">Token setup</label><input id="token" name="token" type="password" autocomplete="off" required /></div>
+      <div><label for="name">Nama</label><input id="name" name="name" autocomplete="name" required maxlength="120" /></div>
+      <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required maxlength="254" /></div>
+      <div><label for="password">Kata sandi (min. 12 karakter)</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="200" /></div>
+      <div><label for="confirm">Ulangi kata sandi</label><input id="confirm" name="confirm" type="password" autocomplete="new-password" required minlength="12" maxlength="200" /></div>
+      <button class="btn" type="submit">Buat akun</button>
+    </form>
+  </div>
+</AdminLayout>

@@ -13,5 +13,7 @@ declare module "cloudflare:workers" {
     LEADS_WEBHOOK_SECRET: string;
     /** D1 database with leads and admin accounts (migrations/). */
     DB: import("~/server/db").Db;
+    /** Empty unless the owner set ADMIN_SETUP_TOKEN to create the first admin account. */
+    ADMIN_SETUP_TOKEN: string;
   };
 }

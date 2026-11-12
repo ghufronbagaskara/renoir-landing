@@ -5,7 +5,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const DIST = existsSync("dist/client") ? "dist/client" : "dist";
-const ON_DEMAND = new Set(["/api/contact"]);
+const ON_DEMAND = new Set(["/api/contact", "/admin/", "/admin/login/", "/admin/logout/", "/admin/setup/", "/admin/users/"]);
 
 async function walk(dir: string): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
