@@ -22,8 +22,8 @@ During phase 1 the template's look wins over the brief when they conflict.
 - **Alchemy v2** (`alchemy@2.0.0-beta.77`, Effect-based IaC) deploying to **Cloudflare Workers (free plan)**.
 - **Effect 4** — pinned to `4.0.0-rc.112` via `overrides` in `package.json`. Alchemy beta.77 breaks on rc.115
   (`Config.string` was renamed). Bump Effect only together with Alchemy.
-- Cloudflare: Worker + static assets, **Turnstile** (spam; real widget on `prod` only), **Rate Limiting binding**, Workers Logs. No database.
-- Leads go to **Telegram** (instant push) and a **Google Sheet + email** via an Apps Script web app (`scripts/leads-apps-script.gs`).
+- Cloudflare: Worker + static assets, **Turnstile** (spam; real widget on `prod` only), **Rate Limiting binding**, Workers Logs, **D1** (`LeadsDB`: leads + admin accounts, `migrations/`).
+- Leads are stored in **D1** (primary record, managed at `/admin/`) and also go to **Telegram** (instant push) and a **Google Sheet + email** via an Apps Script web app (`scripts/leads-apps-script.gs`).
 - **Pagefind** static search (index built after the Astro build).
 - **Sharp** and **Playwright** are dev dependencies for preparing and reviewing Work screenshots; neither runs on the deployed site.
 - **Swiper** (lazy) on the client. GSAP remains installed but is no longer imported for page entrance;
@@ -45,6 +45,8 @@ bun run build          # production build through Alchemy's Cloudflare Astro ada
 bun run serve          # serve dist/client locally on :4322 like Cloudflare's asset layer (no /api)
 bun run check:links    # after build: fail on any broken internal link or href="#"
 bun run check:copy     # after build: guard against banned/template copy and invalid metadata
+bun run check:seo      # after build: sitemap, pages, canonical, reciprocal hreflang, JSON-LD, llms.txt, robots
+node scripts/check-funnel.mjs # questionnaire EN/ID (keyboard/pointer/branch/resume/channel), no-JS form, cookie choice, menu panels, trust pages
 node scripts/check-home-refresh.mjs # after build + serve: Chrome EN/ID responsive/fallback checks
 node scripts/check-home-feedback.mjs # Chrome ring, autoplay/pause, hover, search and inner navbar checks
 node scripts/check-work-badges.mjs # Chrome EN/ID Work badge containment, filtering and responsive navigation
@@ -78,7 +80,8 @@ Rules:
 ## 4. Layout
 
 ```
-alchemy.run.ts              Stack "renoir-landing": Turnstile widget (prod), Website.Astro (+ PR preview comment)
+alchemy.run.ts              Stack "renoir-landing": Turnstile widget (prod), D1 LeadsDB, Website.Astro (+ PR preview comment)
+migrations/                 D1 schema: leads, lead_events, admin_users, admin_sessions (applied by Alchemy on deploy)
 stacks/github.ts            One-off stack: CI API token + GitHub secrets + Workers subdomain variable (admin profile)
 .github/workflows/deploy.yml  push main → prod; PR → pr-<n> preview; PR closed → destroy preview
 astro.config.mjs            site/trailingSlash/prefetch + integrations: purge-unused-css, pagefind-index
@@ -95,14 +98,17 @@ averix-modern-...-utc/      original template (git-ignored, licensed). Source of
 src/
   assets/img/**             final editorial WebP, real Work screenshots, and remaining icon SVGs
   assets/fonts/             GeneralSans woff2 + generated Font Awesome subsets
-  content/*.ts              bilingual services, eight founder portfolio projects, and ordered Work feature stories
+  content/*.ts              bilingual services, quiz copy (`quiz.ts`), how-we-work/legal copy (`trust.ts`), eight founder portfolio projects, and ordered Work feature stories
   content.config.ts         collection schemas (astro/zod; Astro requires Zod here)
   data/site.ts nav.ts        site configuration (WhatsApp unset), the ONLY nav definition
   layouts/BaseLayout.astro  head, header (home/inner), offcanvas, search overlay, breadcrumb, footer, global scripts
   components/layout/        Header*, NavMenu, Offcanvas, SearchOverlay, Footer, Breadcrumb, LangSwitch
   components/ui/            Img, Accordion, ContactForm, WorksWheel
   components/sections/      one component per template section (home/, about/, services/, pricing/, team/, blog/, shared/)
-  pages/                    routes (all prerendered except api/contact.ts)
+  pages/                    routes (all prerendered except api/contact.ts and admin/*)
+  server/db.ts auth.ts admin.ts  D1 lead store, admin password/session auth, admin page guard (+ db.test.ts)
+  layouts/AdminLayout.astro private admin shell (inline styles, no site CSS/JS)
+  lib/quiz.ts               questionnaire codes + deterministic recommendation, shared by page script and API
   server/contact.ts         contact form Effect program + Turnstile/Telegram/webhook helpers (+ contact.test.ts)
   scripts/*.ts              client modules (vanilla TS)
   styles/                   template SCSS + _site.scss (our additions) + _inner-mobile.scss (shared + inner mobile variants) + global.scss
@@ -119,6 +125,10 @@ src/
 | portfolio.html / portfolio-details.html | `/portfolio/…`, `/id/karya/…` | 8 bilingual, indexable founder project studies |
 | blog-standard.html / blog-details.html | `/notes/`, `/notes/[slug]/` and Indonesian `/id/catatan/…` | `notes` collection, 2-column index |
 | contact.html | `/contact/` | form + map |
+| — | `/start/`, `/id/mulai/` | Find your first step questionnaire (`views/QuizView.astro`) |
+| — | `/how-we-work/`, `/id/cara-kerja/` | scope, revisions, handover, 30-day bug fixing (`views/DocView.astro`) |
+| — | `/privacy/` `/terms/` `/cookies/` + `/id/privasi/` `/id/syarat/` `/id/cookie/` | legal drafts (`content/trust.ts`) |
+| — | `/admin/` (+ `login/`, `setup/`, `users/`, `leads/<id>/`) | on-demand, private, noindex |
 | — | `/404.html` | not indexed by search |
 | — | `/api/contact` | on-demand (Worker) |
 
@@ -146,7 +156,11 @@ Team, pricing, and other unused template pages are not public routes. English an
   (e.g. `h1, .h1{`, `h3, .h3{`, `h1, .sidebar-heading{`).
 - Anchors without a destination must not use `href="#"`: use `<a class="no-href">` (the class stops Bootstrap's
   `a:not([href]):not([class])` reset) or a real `<button>`. `bun run check:links` enforces this.
-- Navigation comes only from `src/data/nav.ts`. Add a route there only once the page exists.
+- Navigation comes only from `src/data/nav.ts`. Add a route there only once the page exists. Top level: Home, Services (panel: four services with taglines + All services), Work, Resources/Panduan (panel: quiz, how we work, process, notes), About. Desktop panels open on hover/focus; Resources is a button with `aria-expanded` (click, outside click and Escape close). Offcanvas groups use the existing `.si-menu-close` toggles.
+- Funnel/trust styles live in `_funnel.scss`. Do not group pseudo-classes with runtime classes inside `:is()` (e.g. `:is(:hover, .is-open)`): production PurgeCSS drops the whole rule. Use plain selector lists.
+- Cookie choice: `ConsentBanner.astro` + `scripts/consent.ts` store `katalhys.consent.v1` in localStorage and dispatch `consent:change`; `window.katalhysConsent.get()/open()`. Only necessary storage exists today. Any future analytics/marketing loader must wait for the matching category and update `/cookies/`.
+- Questionnaire: four questions (goal, current state, goal-specific branch, timing), result before contact, no prices. Answers stay in sessionStorage for the tab. The contact step submits to `/api/contact` with `source=quiz`; the server re-derives the recommendation from validated codes. Pointer choices auto-advance; keyboard users confirm with Next. Without JS all questions render as one form.
+- Legal identity, contact email, bug-fix days and lead retention live in `src/data/site.ts`. `legal.entity`/`nib`/`address` render in the footer, legal pages, JSON-LD and llms-full only once filled.
 - Images: put final files under `src/assets/img/<section>/`, reference with `<Img src="section/name.webp" />`.
   Legacy .jpg/.png names resolve to `.webp`. CSS backgrounds use `imageUrl()`
   from `~/lib/images`. Hero/LCP images: `loading="eager" fetchpriority="high"`. Never use `astro:assets`
@@ -246,18 +260,20 @@ Team, pricing, and other unused template pages are not public routes. English an
 ## 6. Contact form & API
 
 - UI: `components/ui/ContactForm.astro` (variants `contact`, `service`).
-  Hidden honeypot `company_website`, hidden `source` (`contact` | `service:<id>`). Build type includes `design`.
+  Hidden honeypot `company_website`, hidden `source` (`contact` | `service:<id>` | `quiz`). Build types: marketing, internal, design, care, both, unsure.
+- Quiz submissions add `channel` (`email` | `whatsapp`), `whatsapp`, `quiz_goal/current/detail/timing` and a client `submission_id` (UUID). Email is required only for the email channel; contact/service sources still require `build_type` and a 10+ character message.
 - Client (`scripts/contact-form.ts`): on first focus `GET /api/contact` → `{ sitekey }`, then loads Turnstile
   (explicit render, `interaction-only`). Submit via `fetch` (JSON). Without JS the form POSTs and gets a 303
   back to `/contact/?sent=1` or `?error=<key>`.
 - Endpoint `pages/api/contact.ts` (`prerender = false`) reads bindings via `import { env } from "cloudflare:workers"`
   and runs `handleContact` from `server/contact.ts`:
   decode with `effect/Schema` → honeypot (fake success) → rate limit (5/min per IP) → Turnstile verify →
-  deliver to every sink in parallel (Telegram, Apps Script webhook). Success = at least one sink delivered; none → 500
+  cross-field rules (channel, quiz branch, derived recommendation) → deliver to every sink in parallel (D1 `INSERT OR IGNORE` by submission id, Telegram, Apps Script webhook). Success = at least one sink delivered; none → 500
   (so a lead is never silently dropped). The visitor IP is used for rate limit/Turnstile only and never sent to a sink.
   Status mapping: 200 sent · 400 invalid · 403 captcha · 429 rate_limited · 500 error.
 - Sheet sink: Apps Script checks a shared secret sent in the body (it can't read headers), escapes formula-like cells,
-  appends a row (`status`/`replied_at`/`next_step` columns for follow-up) and emails `NOTIFY_EMAIL`.
+  appends a row (`status`/`replied_at`/`next_step` columns for follow-up, then `whatsapp`/`channel`/`recommendation`/`id`) and emails `NOTIFY_EMAIL`. Redeploy the Apps Script after changing it.
+- Admin (`/admin/`): Indonesian UI. Lead list with status tabs/counts, source filter, search, pagination; detail with quiz answers, status (`new → contacted → qualified → won/lost`), notes, follow-up date, change history and permanent delete (type HAPUS). Accounts page adds users, deactivates others (never yourself) and changes your password (other sessions end). Auth: PBKDF2-SHA256 (100k), 32-byte session token stored as SHA-256, `__Host-katalhys_admin` HttpOnly/Secure/SameSite=Strict cookie (7 days), Origin check on every POST, login/setup rate limit, `no-store` + `noindex`. First account: set `ADMIN_SETUP_TOKEN`, deploy, open `/admin/setup/` (works only while no account exists), then clear the token.
 
 ## 7. Infrastructure
 
@@ -267,10 +283,10 @@ Team, pricing, and other unused template pages are not public routes. English an
   `assets: { notFoundHandling: "404-page", htmlHandling: "auto-trailing-slash" }`. Prerendered pages are served
   by the asset layer without invoking the Worker (keeps the free-plan request quota for the API).
 - Bindings: `THROTTLE` (RateLimit ns 1001, 5/60s), `TURNSTILE_SITEKEY`, `TURNSTILE_SECRET`, `TELEGRAM_BOT_TOKEN`,
-  `TELEGRAM_CHAT_ID`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET`. Typed in `src/env.d.ts`. `observability` is on (Workers Logs).
+  `TELEGRAM_CHAT_ID`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET`, `DB` (D1 `LeadsDB`, migrations applied on deploy; each PR preview gets its own), `ADMIN_SETUP_TOKEN`. Typed in `src/env.d.ts`. `observability` is on (Workers Logs).
 - Turnstile's free plan caps widgets per account, so only `prod` creates one; other stages use Cloudflare's always-pass test keys.
 - Config via `effect/Config` (`.env` locally, GitHub secrets in CI; see `.env.example`):
-  `WORKERS_DEV_SUBDOMAIN` (required for prod; Turnstile allowed domain), the four lead-sink values above,
+  `WORKERS_DEV_SUBDOMAIN` (required for prod; Turnstile allowed domain), the four lead-sink values above, optional `ADMIN_SETUP_TOKEN`,
   `GITHUB_OWNER`/`GITHUB_REPO` (PR preview comments).
 - No custom domain yet: every stage lives on `*.workers.dev`. When a domain exists, add it to the Turnstile
   `domains`, set `astro.site`, and attach the domain to the Website (see Alchemy custom-domains guide).
@@ -329,6 +345,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   (including development). Fallback matches all query words, normalizes accents and prioritizes titles.
   There is no product collection; product/project examples belong to Work.
 - The owner reports an earlier manual CLI deployment; live Cloudflare resources and stage were not verified in this audit. GitHub runs #4/#5/#6 failed because CI credentials/config were unavailable, after code/build gates passed. The local default Cloudflare OAuth profile is present but expired; the owner reports failed refresh and denied browser authorization. Reconfigure that provider through Alchemy, using a scoped stored API token if OAuth remains unavailable. GitHub CLI and the Alchemy GitHub/admin setup profile are not authenticated. Remote setup and a successful CI deploy remain pending owner-approved setup; contact delivery still needs a live submission check for each form variant.
+- Lead funnel (2026-11-13): D1, admin and questionnaire submission are unit-tested against in-memory SQLite and the built pages pass `check-funnel.mjs`, but no Worker runtime ran locally: `/api/contact` writes to D1, `/admin/*` login and the CI token's new `D1 Write` permission still need a deployed check (rerun `stacks/github.ts` before the next CI deploy). Before launch: fill `site.legal`, approve legal text and `leadRetentionMonths`, set `site.whatsapp`/`email`, redeploy the Apps Script. Pre-existing (also on the v1 baseline): `check-home-refresh` times out waiting for hero video playback headless and `check-mobile-density` measures Home Problem at 896px > 844px on 320px.
 - Analytics not wired yet: plan is Cloudflare Web Analytics (CWV) + Umami Cloud (events, `data-domains` = prod host), Search Console + Bing Webmaster, Better Stack uptime on `/` and `GET /api/contact`.
 - Local Lighthouse mobile on 2026-09-29 measured Home performance 89, CLS 0, TBT 230 ms before the final hero
   priority hint; a second run varied substantially (69 / 0 / 1000 ms). Both identified ScrollTrigger as a long task.
@@ -340,6 +357,8 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-11-13 - Added the DewataTech-informed lead funnel: Find your first step EN/ID questionnaire (result before contact, no prices, email or WhatsApp reply), D1 lead store with idempotent submits, password-protected Indonesian admin for leads and accounts, how-we-work page with 30-day bug fixing, privacy/terms/cookie drafts, cookie choice banner, desktop Services/Resources menu panels and footer legal row. Organization JSON-LD gains an unpriced OfferCatalog; sitemap, llms.txt and llms-full cover the new pages; `check:seo` and `check-funnel.mjs` guard them. Plan and decisions: `docs/design/2026-11-13-lead-funnel-plan.md`. No deployment.
 
 - 2026-10-29 - Resumed the client deck as v7 from the owner's manually edited v6, preserving all 39 existing slide IDs/text and adding a demo sales-module appendix. Delivered 40-slide PPTX/PDF and portable companion files, retained one automatic whole-page effect per slide, verified package/font/layout/content continuity, rendered through PowerPoint and inspected desktop Slide Show. Contacts remain placeholders. No source-app, database, dependency or deployment changes.
 

@@ -112,6 +112,18 @@ Jalankan bagian ini setelah pemilik menyetujui setup cloud. Perintah deploy setu
 
    Nilai contact tidak dicetak atau disalin otomatis dari profil. Semua nilai contact juga kosong pada run yang diperiksa. Tanpa satu sink yang lengkap, website dapat ter-deploy tetapi form akan gagal mengirim lead. Secret kosong pada deploy dapat mengganti konfigurasi contact lama; isi sebelum memperbarui production. Pemeriksaan `check-deploy-env.ts` memvalidasi konfigurasi deploy, bukan pengiriman contact atau hak akses token di API Cloudflare.
 
+## Admin lead dan database D1
+
+Lead dari formulir dan kuis disimpan di database D1 `LeadsDB` yang dibuat Alchemy beserta migrasi di `migrations/`. Setiap stage, termasuk preview `pr-N`, punya database sendiri; preview dihapus bersama stage-nya.
+
+1. Token CI membutuhkan permission **D1 Write**. Jalankan ulang stack setup (`bun alchemy deploy --config stacks/github.ts --profile admin`) sebelum deploy CI berikutnya agar token diperbarui.
+2. Buat token setup acak yang panjang, simpan sebagai secret repository `ADMIN_SETUP_TOKEN` (atau di `.env` untuk deploy manual), lalu deploy.
+3. Buka `/admin/setup/`, masukkan token, nama, email, dan kata sandi minimal 12 karakter. Halaman ini hanya aktif selama belum ada akun admin.
+4. Hapus secret `ADMIN_SETUP_TOKEN` dan deploy ulang. Akun berikutnya ditambahkan dari menu **Akun** di admin.
+5. Setelah mengubah `scripts/leads-apps-script.gs`, buat versi deployment baru di Apps Script agar kolom WhatsApp/rekomendasi ikut tercatat.
+
+Telegram dan Sheet tetap menerima salinan lead. Menghapus lead di admin tidak menghapus salinan di Sheet atau Telegram.
+
 ## Memperbarui website
 
 Setelah setup selesai dan perubahan workflow ini telah masuk repository:
