@@ -30,3 +30,5 @@ before exporting. Review evidence and design reasons are in `REVIEW.md`.
 | 1 | `01-hello-renoir` | carousel, 7 slides | Introduction: who Renoir is, four services, who it is for, why Renoir, how to start |
 | 2 | `02-why-renoir` | carousel, 7 slides | Origin: building systems for real companies exposed three problems; Renoir answers all three |
 | 3 | `03-sketch-to-running` | carousel, 7 slides, panorama | One studio from sketch to running, told through the Industrial Coatings catalogue |
+
+Untuk kartu nama Katalhys, lihat [kartu-nama/README.md](kartu-nama/README.md). Kartu menggunakan ukuran fisik dan alur render sendiri.
