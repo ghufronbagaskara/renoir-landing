@@ -111,7 +111,19 @@ const id: Dictionary = {
       label: "Masalahnya",
       title: "Berapa lama mencari status satu pesanan?",
       intro: "Saat informasi tersebar di chat, spreadsheet, dan dokumen, mencari jawaban jadi pekerjaan tersendiri.",
-      sourcesLabel: "Informasi di tempat berbeda",
+      stages: [
+        { name: "Info tersebar", detail: "Cek chat, spreadsheet, dan dokumen", title: "Satu pesanan, tiga tempat untuk dicek", note: "Sebelum bertindak, tim harus mencari tahu mana kabar terbaru." },
+        { name: "Satu catatan", detail: "Lihat status, penanggung jawab, dan langkah berikutnya", title: "Semua tim melihat pesanan yang sama", note: "Tim sales dan pengiriman memakai catatan yang sama saat serah terima pesanan." },
+        { name: "Bantuan AI", detail: "Siapkan tindak lanjut untuk ditinjau tim", title: "AI menyiapkan, tim Anda memutuskan", note: "Tim Anda memeriksa draf sebelum mengirimnya." }
+      ],
+      aiSteps: ["Pencarian", "Ringkasan", "Draf"],
+      play: "Putar tahapan",
+      pause: "Jeda tahapan",
+      example: {
+        order: "Pesanan #1042", status: "Siap dikirim", owner: "Tim pengiriman", next: "Konfirmasi penjemputan",
+        unknown: "Status belum pasti", milestones: ["Pesanan masuk", "Siap dikirim", "Dijemput"],
+        review: "Menunggu tinjauan tim", draft: "Pesanan #1042 sudah dikemas. Mohon konfirmasi jam penjemputan agar kami bisa memberi kabar kepada pelanggan."
+      },
       sources: [
         {
           name: "Chat",
@@ -126,8 +138,6 @@ const id: Dictionary = {
           detail: "Laporan terakhir ada di mana?"
         }
       ],
-      stat: "Sistem internal + AI",
-      cardTitle: "Satu pesanan, langkah berikutnya jelas",
       fields: [
         {
           label: "Status",
@@ -142,13 +152,11 @@ const id: Dictionary = {
           value: "Yang perlu diperhatikan"
         }
       ],
-      aiLabel: "Bantuan AI di dalam alur kerja",
       aiActions: [
         "Temukan informasinya",
         "Rangkum laporannya",
         "Siapkan tindak lanjut"
       ],
-      decision: "Tim Anda meninjau dan memutuskan",
       illustration: "Ilustrasi alur kerja. Tugas AI dan akses data disepakati dalam scope.",
       proofLabel: "Contoh proyek nyata",
       proofTitle: "Alur Pesanan & Sales Lapangan",

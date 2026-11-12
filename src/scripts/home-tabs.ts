@@ -15,7 +15,7 @@ export function initHomeTabs(root: HTMLElement) {
   controls.hidden = false;
   controls.setAttribute("role", "tablist");
   const desktop = matchMedia("(min-width: 768px)");
-  const orientation = () => controls.setAttribute("aria-orientation", root.matches("[data-works-wheel]") && desktop.matches ? "vertical" : "horizontal");
+  const orientation = () => controls.setAttribute("aria-orientation", root.matches("[data-works-wheel], [data-problem-tabs]") && desktop.matches ? "vertical" : "horizontal");
   orientation();
   desktop.addEventListener("change", orientation);
   tabs.forEach((tab, index) => {

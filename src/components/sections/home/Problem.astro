@@ -6,41 +6,90 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const p = t(locale).home.problem;
 const service = child("services", locale, locale === "en" ? "internal-systems" : "sistem-internal");
+const record = [p.example.status, p.example.owner, p.example.next];
+const sourceIcons = [
+  "M3 4h18v12H11l-6 4v-4H3z M7 8h10 M7 12h6",
+  "M4 3h16v18H4z M4 9h16 M4 15h16 M11 9v12",
+  "M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h6",
+];
 ---
-<section id="the-problem" class="si-about-area home-problem" aria-labelledby="problem-title">
+
+<section id="the-problem" class="si-about-area home-problem" aria-labelledby="problem-title" data-problem-tabs>
   <div class="container container-1617">
     <div class="problem-heading">
-      <div><p class="home-section-label">{p.label}</p><h2 id="problem-title">{p.title}</h2></div>
+      <p class="home-section-label">{p.label}</p>
+      <h2 id="problem-title">{p.title}</h2>
       <p class="problem-intro">{p.intro}</p>
     </div>
     <figure class="problem-map" aria-describedby="problem-caption">
-      <div class="problem-sources">
-        <h3>{p.sourcesLabel}</h3>
-        <ul>
-          {p.sources.map((source, i) => <li>
-            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              {i === 0 ? <><path d="M5 5h22v16H15l-8 6v-6H5Z" /><path d="M10 11h12M10 16h8" /></> : i === 1 ? <><path d="M6 4h20v24H6ZM6 11h20M6 19h20M14 11v17M21 11v17" /></> : <><path d="M9 4h10l6 6v18H9ZM19 4v7h6M13 17h8M13 22h8" /><path d="M5 9v18" /></>}
-            </svg>
-            <div><span>{source.name}</span><p>{source.detail}</p></div>
-          </li>)}
-        </ul>
+      <div class="problem-tabs" data-tab-controls aria-labelledby="problem-title" hidden>
+        {p.stages.map(({ name, detail }, i) => (
+          <button class="problem-tab" type="button" data-tab id={`problem-tab-${i}`} aria-describedby={`problem-tab-detail-${i}`}>
+            <span class="problem-number" aria-hidden="true">0{i + 1}</span>
+            <strong>{name}</strong>
+            <span class="problem-tab-detail" id={`problem-tab-detail-${i}`}>{detail}</span>
+            <span class="problem-countdown" aria-hidden="true"><span></span></span>
+          </button>
+        ))}
       </div>
-      <svg class="problem-connector" viewBox="0 0 84 284" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M0 42h10q22 0 22 22v56q0 22 22 22h28M0 142h82M0 242h10q22 0 22-22v-56q0-22 22-22" />
-        <path d="m74 135 8 7-8 7" />
-      </svg>
-      <svg class="problem-connector-mobile" viewBox="0 0 32 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 3v40m-7-7 7 7 7-7" /></svg>
-      <div class="problem-workspace">
-        <p class="problem-workspace-label"><span aria-hidden="true"></span>{p.stat}</p>
-        <h3>{p.cardTitle}</h3>
-        <dl class="problem-fields">{p.fields.map(field => <div><dt>{field.label}</dt><dd>{field.value}</dd></div>)}</dl>
-        <div class="problem-assistance">
-          <p>{p.aiLabel}</p>
-          <ul>{p.aiActions.map(action => <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="m4 8 3 3 5-6" /></svg>{action}</li>)}</ul>
-        </div>
-        <p class="problem-decision">{p.decision}</p>
+      <div class="problem-stage">
+        {p.stages.map(({ title, note }, i) => (
+          <div class="problem-panel" data-tab-panel id={`problem-panel-${i}`}>
+            <div class="problem-track" aria-hidden="true">
+              {p.stages.map(({ name }, step) => (
+                <span class:list={["problem-step", { "problem-current": step === i }]}>{name}</span>
+              ))}
+            </div>
+            <h3>{title}</h3>
+            {i === 0 ? (
+              <div class="problem-sources problem-scene">
+              <ul class="problem-inbox">
+                {p.sources.map(({ name, detail }, source) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d={sourceIcons[source]} /></svg>
+                    <div><span>{name}</span><strong>{detail}</strong></div>
+                  </li>
+                ))}
+              </ul>
+              <div class="problem-source-order">
+                <span aria-hidden="true">?</span>
+                <strong>{p.example.order}</strong>
+                <small>{p.example.unknown}</small>
+              </div>
+              </div>
+            ) : i === 1 ? (
+              <div class="problem-record problem-scene">
+                <div class="problem-record-head">
+                  <strong>{p.example.order}</strong>
+                  <span class="problem-status">{p.example.status}</span>
+                </div>
+                <dl class="problem-fields">
+                  {p.fields.slice(1).map(({ label }, field) => <div><dt>{label}</dt><dd>{record[field + 1]}</dd></div>)}
+                </dl>
+                <ol class="problem-milestones">
+                  {p.example.milestones.map((milestone, step) => <li class:list={[{ "problem-milestone-current": step === 1 }]}>{milestone}</li>)}
+                </ol>
+              </div>
+            ) : (
+              <div class="problem-assist problem-scene">
+                <ol>
+                  {p.aiActions.map((action, step) => <li><span aria-hidden="true">0{step + 1}</span>{action}</li>)}
+                </ol>
+                <div class="problem-draft">
+                  <span class="problem-review">{p.example.review}</span>
+                  <strong>{p.aiSteps[2]}</strong>
+                  <p>{p.example.draft}</p>
+                </div>
+              </div>
+            )}
+            <p class="problem-note">{note}</p>
+          </div>
+        ))}
       </div>
-      <figcaption id="problem-caption">{p.illustration}</figcaption>
+      <figcaption class="problem-meta">
+        <span id="problem-caption">{p.illustration}</span>
+        <button class="problem-playback" type="button" data-problem-playback data-pause={p.pause} data-play={p.play} hidden>{p.pause}</button>
+      </figcaption>
     </figure>
     <div class="problem-bottom">
       <a class="problem-proof" href={child("work", locale, "order-sales")}>
@@ -52,36 +101,147 @@ const service = child("services", locale, locale === "en" ? "internal-systems" :
   </div>
 </section>
 
+<script>
+  import { initHomeTabs } from "~/scripts/home-tabs";
+
+  const problem = document.getElementById("the-problem");
+  const playback = problem?.querySelector<HTMLButtonElement>("[data-problem-playback]");
+  if (problem && playback) {
+    initHomeTabs(problem);
+    const tabs = [...problem.querySelectorAll<HTMLButtonElement>("[data-tab]")];
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    let playing = !motion.matches;
+    let visible = false;
+    let timer = 0;
+    let progress: Animation | undefined;
+    const stageDuration = 8000;
+
+    const sync = () => {
+      clearTimeout(timer);
+      progress?.cancel();
+      playback.textContent = playing ? playback.dataset.pause! : playback.dataset.play!;
+      const focus = document.activeElement;
+      if (!playing || !visible || document.hidden || (focus !== playback && problem.contains(focus))) return;
+      const current = tabs.findIndex(tab => tab.getAttribute("aria-selected") === "true");
+      if (!motion.matches) {
+        progress = tabs[current].querySelector(".problem-countdown > span")?.animate(
+          [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], stageDuration,
+        );
+      }
+      timer = window.setTimeout(() => {
+        tabs[(current + 1) % tabs.length].click();
+      }, stageDuration);
+    };
+    problem.addEventListener("tabs:change", () => {
+      if (document.activeElement?.matches(".problem-tab") && problem.contains(document.activeElement)) playing = false;
+      sync();
+    });
+    problem.addEventListener("click", (event) => {
+      if (event.isTrusted && event.target instanceof Element && event.target.closest(".problem-tab")) playing = false;
+    }, { capture: true });
+    playback.addEventListener("click", () => { playing = !playing; sync(); });
+    problem.addEventListener("focusin", sync);
+    problem.addEventListener("focusout", () => queueMicrotask(sync));
+    document.addEventListener("visibilitychange", sync);
+    motion.addEventListener("change", () => { playing = !motion.matches; sync(); });
+    new IntersectionObserver(([entry]) => {
+      visible = entry.intersectionRatio >= .5;
+      sync();
+    }, { threshold: .5 }).observe(problem.querySelector(".problem-map")!);
+    playback.hidden = false;
+    sync();
+  }
+</script>
+
 <style>
-  .home-problem { padding: clamp(64px, 7vw, 112px) 0; background: #fff; }
-  .problem-heading { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 40px; align-items: end; margin-bottom: 36px; }
-  .problem-heading .home-section-label { margin-bottom: 20px; }
-  .problem-heading h2 { max-width: 20ch; margin: 0; font-size: clamp(32px, 3.5vw, 56px); line-height: 1.08; letter-spacing: -.045em; }
-  .problem-intro { max-width: 43ch; margin: 0 0 3px; color: var(--renoir-muted); font-size: 16px; line-height: 1.65; }
-  .problem-map { display: grid; grid-template-columns: minmax(210px, .8fr) 84px minmax(0, 1.2fr); align-items: center; margin: 0; padding: clamp(24px, 3vw, 44px); border: 1px solid var(--renoir-line); border-radius: 20px; background: var(--renoir-panel); }
-  .problem-sources h3 { margin: 0 0 16px; font-size: 14px; font-weight: 500; line-height: 20px; color: var(--renoir-muted); }
-  .problem-sources ul, .problem-assistance ul { list-style: none; padding: 0; margin: 0; }
-  .problem-sources ul { display: grid; gap: 16px; }
-  .problem-sources li { display: flex; align-items: center; gap: 16px; height: 84px; padding: 14px 18px; border: 1px solid #cbd3df; border-radius: 10px; background: #fff; }
-  .problem-sources li > svg { flex: none; width: 32px; height: 32px; color: #62728d; }
-  .problem-sources li span { display: block; margin-bottom: 4px; color: var(--renoir-muted); font-size: 12px; }
-  .problem-sources li p { margin: 0; font-size: 15px; line-height: 1.35; color: var(--renoir-ink); }
-  .problem-connector { display: block; width: 84px; height: 284px; margin-top: 36px; color: var(--renoir-accent); }
-  .problem-connector-mobile { display: none; }
-  .problem-workspace { padding: clamp(24px, 2.8vw, 40px); border-radius: 12px; background: var(--renoir-ink); color: #fff; }
-  .problem-workspace-label { display: flex; align-items: center; gap: 9px; margin: 0 0 16px; color: #cbd5ec; font-size: 12px; }
-  .problem-workspace-label > span { width: 6px; height: 6px; border-radius: 50%; background: #64d6f2; }
-  .problem-workspace h3 { max-width: 21ch; margin: 0; font-size: clamp(27px, 2.5vw, 40px); line-height: 1.1; letter-spacing: -.035em; color: #fff; }
-  .problem-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 24px 0; padding: 20px 0; border-block: 1px solid #ffffff29; }
-  .problem-fields dt { margin-bottom: 7px; color: #b8c4d9; font-size: 11px; font-weight: 400; line-height: 1.4; }
-  .problem-fields dd { margin: 0; color: #fff; font-size: 14px; line-height: 1.45; }
-  .problem-assistance { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; }
-  .problem-assistance > p { max-width: 17ch; margin: 0; color: #cbd5ec; font-size: 13px; line-height: 1.5; }
-  .problem-assistance li { display: flex; align-items: baseline; gap: 8px; margin-bottom: 7px; font-size: 13px; line-height: 1.45; }
-  .problem-assistance li:last-child { margin-bottom: 0; }
-  .problem-assistance svg { flex: none; width: 14px; height: 14px; color: #64d6f2; }
-  .problem-decision { margin: 22px 0 0; font-size: 12px; line-height: 1.5; color: #b8c4d9; }
-  .problem-map figcaption { grid-column: 1 / -1; margin-top: 18px; color: var(--renoir-muted); font-size: 11px; line-height: 1.5; }
+  .home-problem { padding: clamp(64px, 7vw, 112px) 0; background: #fff; scroll-margin-top: 64px; }
+  .problem-heading { margin: 0 auto clamp(24px, 4vw, 56px); text-align: center; }
+  .problem-heading .home-section-label { justify-content: center; margin-bottom: 14px; }
+  .problem-heading h2 { max-width: 24ch; margin: 0 auto; font-size: clamp(32px, 4vw, 64px); line-height: 1.04; letter-spacing: -.05em; text-wrap: balance; }
+  .problem-intro { max-width: 58ch; margin: 16px auto 0; color: var(--renoir-muted); font-size: 16px; line-height: 1.6; }
+  .problem-map { display: grid; gap: 14px; margin: 0; }
+  .problem-tabs { display: grid; align-content: start; gap: 10px; }
+  .problem-tabs[hidden] { display: none; }
+  .problem-tab {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px 14px;
+    min-height: 44px; width: 100%; padding: clamp(14px, 1.5vw, 24px); text-align: left;
+    color: var(--renoir-ink); background: #fff; border: 1px solid var(--renoir-line); border-radius: 14px;
+    transition: background-color 180ms, color 180ms, border-color 180ms;
+  }
+  .problem-tab:hover { background: var(--renoir-panel); }
+  .problem-tab[aria-selected="true"] { color: #fff; background: var(--renoir-accent); border-color: var(--renoir-accent); }
+  .problem-number { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--renoir-line); border-radius: 50%; font-size: 12px; }
+  .problem-tab[aria-selected="true"] .problem-number { color: var(--renoir-accent); background: #fff; border-color: #fff; }
+  .problem-tab strong { font-size: clamp(17px, 1.65vw, 25px); line-height: 1.12; letter-spacing: -.025em; }
+  .problem-tab-detail { grid-column: 2; color: var(--renoir-muted); font-size: 14px; line-height: 1.5; }
+  .problem-tab[aria-selected="true"] .problem-tab-detail { color: #fff; }
+  .problem-countdown { display: none; position: absolute; inset: auto 0 0; height: 4px; background: #ffffff38; }
+  .problem-tab[aria-selected="true"] .problem-countdown { display: block; }
+  .problem-countdown > span { display: block; height: 100%; background: #8ce4f5; transform: scaleX(0); transform-origin: left; }
+  .problem-stage { display: grid; gap: 12px; min-width: 0; }
+  .problem-panel {
+    display: grid; align-content: start; gap: clamp(16px, 2vw, 28px);
+    padding: clamp(20px, 3vw, 44px);
+    background: radial-gradient(circle at 82% 76%, #d9e8ff, transparent 65%), var(--renoir-panel);
+    border: 1px solid var(--renoir-line); border-radius: 18px; box-shadow: 0 14px 24px -22px #17191c80;
+  }
+  .problem-panel[hidden] { display: none; }
+  .home-problem.is-enhanced .problem-stage { gap: 0; }
+  .home-problem.is-enhanced .problem-panel { grid-area: 1 / 1; }
+  .home-problem.is-enhanced .problem-panel[hidden] { display: grid !important; visibility: hidden; }
+  .problem-track { display: none; }
+  .home-problem.is-enhanced .problem-track { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .problem-step { border-bottom: 3px solid var(--renoir-line); padding-bottom: 10px; color: var(--renoir-muted); font-size: 13px; line-height: 1.3; }
+  .problem-current { color: var(--renoir-accent); border-color: var(--renoir-accent); font-weight: 700; }
+  .problem-panel h3 { margin: 0; font-size: clamp(22px, 2.4vw, 37px); line-height: 1.1; letter-spacing: -.04em; }
+  .problem-inbox, .problem-assist ol { display: grid; gap: 8px; list-style: none; padding: 0; margin: 0; }
+  .problem-sources { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: center; gap: 32px; }
+  .problem-source-order {
+    position: relative; display: grid; justify-items: start; gap: 6px;
+    padding: clamp(12px, 2vw, 24px); border-radius: 12px; background: var(--renoir-ink); color: #fff;
+  }
+  .problem-source-order::before { content: ""; position: absolute; top: 50%; right: 100%; width: 32px; border-top: 2px dashed #5c78ba; }
+  .problem-source-order > span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #ffedc2; color: #653c00; font-weight: 700; }
+  .problem-source-order small { color: #ffedc2; font-size: 12px; }
+  .problem-inbox li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 1px solid var(--renoir-line); border-radius: 10px; background: #fff; }
+  .problem-inbox svg { box-sizing: content-box; flex: none; width: 20px; height: 20px; padding: 7px; border-radius: 8px; background: var(--renoir-accent-soft); color: var(--renoir-accent); }
+  .problem-inbox li:nth-child(2) svg { background: #e0f4ec; color: #126449; }
+  .problem-inbox li:nth-child(3) svg { background: #f0e9fc; color: #6338a0; }
+  .problem-inbox li div { display: grid; gap: 2px; }
+  .problem-inbox li div span, .problem-fields dt { color: var(--renoir-muted); font-size: 12px; font-weight: 500; line-height: 1.3; }
+  .problem-inbox strong, .problem-fields dd { margin: 0; color: var(--renoir-ink); font-size: clamp(13px, 1.2vw, 17px); font-weight: 650; line-height: 1.35; }
+  .problem-record { overflow: hidden; border: 1px solid var(--renoir-line); border-radius: 12px; background: #fff; }
+  .problem-record-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 16px; background: var(--renoir-ink); color: #fff; }
+  .problem-record-head strong { font-size: clamp(16px, 1.8vw, 24px); }
+  .problem-status, .problem-review { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 3px 9px; border-radius: 999px; background: #dff7ee; color: #155940; font-size: 11px; font-weight: 700; line-height: 1.45; }
+  .problem-status::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .problem-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 16px; }
+  .problem-fields > div { display: grid; gap: 5px; }
+  .problem-milestones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; list-style: none; margin: 0; padding: 0 16px 16px; }
+  .problem-milestones li { border-top: 3px solid var(--renoir-line); padding-top: 6px; color: var(--renoir-muted); font-size: 12px; line-height: 1.3; }
+  .problem-milestones li:first-child { border-color: #77a4eb; }
+  .problem-milestones .problem-milestone-current { border-color: var(--renoir-accent); color: var(--renoir-accent); font-weight: 700; }
+  .problem-assist { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 10px; }
+  .problem-assist ol { align-content: start; }
+  .problem-assist li { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid var(--renoir-line); border-radius: 8px; background: #fff; color: var(--renoir-ink); font-size: 13px; line-height: 1.35; }
+  .problem-assist li span { color: var(--renoir-accent); font-size: 11px; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .problem-draft { display: grid; align-content: start; gap: 8px; padding: 14px; border-radius: 12px; background: var(--renoir-ink); color: #fff; }
+  .problem-draft p { margin: 0; color: #e2e9f6; font-size: 13px; line-height: 1.5; }
+  .problem-review { color: #653c00; background: #fff0ce; }
+  .problem-note, .problem-map figcaption { margin: 0; color: var(--renoir-muted); font-size: 13px; line-height: 1.5; }
+  .problem-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; }
+  .problem-playback { min-height: 44px; color: var(--renoir-accent); font-size: 13px; text-decoration: underline; }
+  .problem-playback[hidden] { display: none; }
+  .problem-tab:focus-visible, .problem-panel:focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: 3px; }
+  @media (min-width: 768px) {
+    .home-problem.is-enhanced .problem-map { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 16px clamp(20px, 2.5vw, 40px); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-problem.is-enhanced .problem-panel:not([hidden]) .problem-scene { animation: problem-reveal 240ms ease-out; }
+    @keyframes problem-reveal { from { opacity: .45; transform: translateY(4px); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .problem-tab { transition: none; } }
   .problem-bottom { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 24px; }
   .problem-proof { display: inline-flex; align-items: center; gap: 16px; min-width: 0; padding: 4px; border-radius: 8px; color: var(--renoir-ink); }
   .problem-proof img { flex: none; width: 120px; height: auto; border: 1px solid var(--renoir-line); border-radius: 6px; }
@@ -91,49 +251,29 @@ const service = child("services", locale, locale === "en" ? "internal-systems" :
   .problem-service-link { min-height: 44px; flex: none; align-items: center; }
   .problem-proof:focus-visible, .problem-service-link:focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: 4px; }
   .problem-proof:hover strong { color: var(--renoir-accent); }
-  @media (max-width: 991px) {
-    .problem-heading { grid-template-columns: 1fr; gap: 20px; }
-    .problem-intro { max-width: 60ch; }
-    .problem-map { grid-template-columns: minmax(190px, .85fr) 48px minmax(0, 1.15fr); padding: 24px; }
-    .problem-connector { width: 48px; }
-    .problem-workspace { padding: 24px; }
-    .problem-sources li { padding-inline: 12px; gap: 10px; }
-    .problem-assistance { grid-template-columns: 1fr; gap: 10px; }
-    .problem-assistance > p { max-width: none; }
-  }
   @media (max-width: 767px) {
     .home-problem { padding: 24px 0; }
-    .problem-heading { gap: 8px; margin-bottom: 12px; }
-    .problem-heading h2 { max-width: none; font-size: 22px; line-height: 1.2; }
+    .problem-heading { margin-bottom: 16px; }
     .problem-heading .home-section-label { margin-bottom: 8px; }
-    .problem-intro { font-size: 13px; line-height: 1.5; }
-    .problem-map { grid-template-columns: 1fr; padding: 12px; border-radius: 12px; }
-    .problem-sources h3 { font-size: 11px; line-height: 1.4; margin-bottom: 8px; }
-    .problem-sources ul { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
-    .problem-sources li { display: block; height: auto; min-height: 0; padding: 8px; border-radius: 6px; }
-    .problem-sources li > svg { display: block; width: 20px; height: 20px; margin-bottom: 6px; }
-    .problem-sources li span { font-size: 10px; line-height: 1.3; margin-bottom: 4px; }
-    .problem-sources li p { font-size: 11px; line-height: 1.4; }
-    .problem-connector { display: none; }
-    .problem-connector-mobile { display: block; width: 20px; height: 24px; margin: 0 auto; color: var(--renoir-accent); }
-    .problem-workspace { padding: 12px; border-radius: 8px; }
-    .problem-workspace-label { margin-bottom: 6px; font-size: 10px; line-height: 1.4; }
-    .problem-workspace h3 { max-width: none; font-size: 20px; line-height: 1.2; }
-    .problem-fields { gap: 10px; margin-block: 10px; padding-block: 10px; }
-    .problem-fields dt { font-size: 10px; margin-bottom: 4px; }
-    .problem-fields dd { font-size: 11px; line-height: 1.4; }
-    .problem-assistance { gap: 6px; }
-    .problem-assistance > p { font-size: 11px; line-height: 1.4; }
-    .problem-assistance ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 10px; }
-    .problem-assistance li { margin: 0; gap: 5px; font-size: 11px; line-height: 1.4; }
-    .problem-assistance svg { width: 12px; height: 12px; }
-    .problem-decision { margin-top: 8px; font-size: 10px; line-height: 1.4; }
-    .problem-map figcaption { margin-top: 8px; font-size: 10px; line-height: 1.4; }
-    .problem-bottom { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin-top: 10px; align-items: center; }
-    .problem-proof { gap: 8px; padding: 0; }
-    .problem-proof img { width: 52px; }
-    .problem-proof small { font-size: 9px; line-height: 1.4; margin-bottom: 2px; }
-    .problem-proof strong { font-size: 11px; line-height: 1.35; }
-    .problem-service-link { gap: 6px; max-width: 100px; font-size: 11px; line-height: 1.4; }
+    .problem-heading h2 { font-size: clamp(24px, 6vw, 32px); }
+    .problem-intro { margin-top: 8px; font-size: 14px; }
+    .problem-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    .problem-tab { display: flex; justify-content: center; padding: 8px 4px; border-radius: 8px; text-align: center; }
+    .problem-tab strong { font-size: 12px; }
+    .problem-number, .problem-tab-detail, .home-problem.is-enhanced .problem-track { display: none; }
+    .problem-panel { padding: 14px; gap: 12px; border-radius: 12px; }
+    .problem-sources { grid-template-columns: 1fr; gap: 8px; }
+    .problem-source-order { grid-template-columns: auto 1fr; align-items: center; column-gap: 8px; }
+    .problem-source-order > span { grid-row: span 2; }
+    .problem-source-order::before { display: none; }
+    .problem-assist { grid-template-columns: 1fr; }
+    .problem-assist ol { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+    .problem-assist li { display: block; padding: 6px; font-size: 11px; overflow-wrap: anywhere; }
+    .problem-assist li span { margin-inline-end: 4px; }
+    .problem-note, .problem-map figcaption { font-size: 12px; }
+    .problem-bottom { flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
+    .problem-proof { gap: 8px; padding: 0; min-height: 44px; }
+    .problem-proof img { width: 54px; }
+    .problem-proof small, .problem-proof strong, .problem-service-link { font-size: 12px; }
   }
 </style>

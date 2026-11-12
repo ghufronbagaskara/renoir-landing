@@ -42,9 +42,16 @@ try {
       assert.ok(geometry.height < 85);
       assert.ok(geometry.controlsAligned);
       const problem = page.locator("#the-problem");
-      assert.equal(await problem.locator(".problem-sources li").count(), 3);
-      assert.equal(await problem.locator(".problem-fields > div").count(), 3);
-      assert.equal(await problem.locator(".problem-assistance li").count(), 3);
+      const stages = problem.getByRole("tab");
+      assert.equal(await stages.count(), 3);
+      assert.equal(await problem.getByRole("tabpanel").getAttribute("id"), "problem-panel-0");
+      await stages.nth(1).click();
+      assert.equal(await problem.getByRole("tabpanel").getAttribute("id"), "problem-panel-1");
+      await stages.nth(1).press(width >= 768 ? "ArrowDown" : "ArrowRight");
+      assert.equal(await stages.nth(2).getAttribute("aria-selected"), "true");
+      assert.equal(await problem.getByRole("tabpanel").getAttribute("id"), "problem-panel-2");
+      assert.equal(await problem.getByRole("tabpanel").locator(".problem-assist li").count(), 3);
+      assert.ok(await problem.getByRole("tabpanel").locator(".problem-draft").isVisible());
       assert.ok((await problem.locator(".problem-service-link").getAttribute("href")).includes(locale === "en" ? "/services/internal-systems/" : "/id/layanan/sistem-internal/"));
       for (const card of await page.locator(".notes-track .si-blog-box").all()) {
         const links = await card.locator("a").evaluateAll(nodes => nodes.map(node => node.getAttribute("href")));
@@ -184,6 +191,8 @@ try {
   const staticContext = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 412, height: 915 } });
   const staticPage = await staticContext.newPage();
   await staticPage.goto(base + "/id/");
+  assert.equal(await staticPage.locator("#the-problem [data-tab-panel]:visible").count(), 3);
+  assert.equal(await staticPage.locator("#the-problem [data-tab-controls]").isVisible(), false);
   assert.equal(await staticPage.locator(".wheel-service:visible").count(), 4);
   assert.equal(await staticPage.locator(".home-project-panel:visible").count(), 5);
   assert.equal(await staticPage.locator("video").getAttribute("src"), null);

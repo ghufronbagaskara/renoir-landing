@@ -109,7 +109,19 @@ const en = {
       label: "The problem",
       title: "How long does it take to find one order's status?",
       intro: "When updates live in chats, spreadsheets, and documents, finding an answer becomes a task of its own.",
-      sourcesLabel: "Information in different places",
+      stages: [
+        { name: "Scattered updates", detail: "Check the chat, spreadsheet, and documents", title: "One order, three places to look", note: "Before you can act, you have to work out which update is current." },
+        { name: "One shared record", detail: "See status, owner, and next step together", title: "Everyone sees the same order", note: "Sales and delivery work from the same record when handing off an order." },
+        { name: "AI assistance", detail: "Prepare the follow-up for your team to review", title: "AI prepares, your team decides", note: "Your team checks the draft before sending it." }
+      ],
+      aiSteps: ["Search", "Summary", "Draft"],
+      play: "Play stages",
+      pause: "Pause stages",
+      example: {
+        order: "Order #1042", status: "Ready to dispatch", owner: "Delivery team", next: "Confirm the pickup",
+        unknown: "Status unconfirmed", milestones: ["Order received", "Ready to dispatch", "Picked up"],
+        review: "Awaiting team review", draft: "Order #1042 is packed. Please confirm the pickup time so we can update the customer."
+      },
       sources: [
         {
           name: "Chat",
@@ -124,8 +136,6 @@ const en = {
           detail: "Where is the current report?"
         }
       ],
-      stat: "Internal systems + AI",
-      cardTitle: "One order, a clear next step",
       fields: [
         {
           label: "Status",
@@ -140,13 +150,11 @@ const en = {
           value: "What needs attention"
         }
       ],
-      aiLabel: "AI assistance inside the workflow",
       aiActions: [
         "Find the information",
         "Summarise the report",
         "Prepare the follow-up"
       ],
-      decision: "Your team reviews and decides",
       illustration: "Workflow illustration. AI tasks and data access are agreed in scope.",
       proofLabel: "Real project example",
       proofTitle: "Order & Field Sales Workflow",
