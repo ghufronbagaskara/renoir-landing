@@ -25,6 +25,15 @@ const id: Dictionary = {
     openMenu: "Buka menu",
     closeMenu: "Tutup menu",
     home: "Beranda",
+    resources: "Panduan",
+    allServices: "Semua layanan",
+    howWeWork: "Cara kerja",
+    howWeWorkBody: "Scope, revisi, serah terima, dan perbaikan bug 30 hari",
+    start: "Temukan langkah awal",
+    startBody: "Empat pertanyaan, rekomendasi dalam dua menit",
+    notesBody: "Catatan praktis tentang alur kerja, situs, dan desain",
+    processBody: "Empat tahap dengan progres yang terlihat",
+    workBody: "Delapan proyek pendiri dengan layar asli",
   },
 
   search: {

@@ -6,10 +6,12 @@
 .fa-regular, .fa-sharp { font-family: "Font Awesome 6 Pro"; font-weight: 400; }
 .fa-solid { font-family: "Font Awesome 6 Pro"; font-weight: 900; }
 .fa-brands { font-family: "Font Awesome 6 Brands"; font-weight: 400; }
+.fa-angle-down::before { content: "\f107"; }
 .fa-angles-right::before { content: "\f101"; }
 .fa-arrow-left::before { content: "\f060"; }
 .fa-arrow-right::before { content: "\f061"; }
 .fa-arrow-up-right::before { content: "\e09f"; }
+.fa-check::before { content: "\f00c"; }
 .fa-code::before { content: "\f121"; }
 .fa-list-check::before { content: "\f0ae"; }
 .fa-magnifying-glass::before { content: "\f002"; }

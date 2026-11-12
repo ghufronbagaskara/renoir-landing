@@ -12,30 +12,34 @@ const home = path("home", locale);
 ---
 <ul>
   {
-    nav(locale).map((item) =>
+    nav(locale).map((item, i) =>
       item.children ? (
-        <li class:list={[{ active: !mobile && item.children.some((c) => isActive(c.href, current, home)) }]}>
-          <a class="no-href" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">{item.label}</a>
-          <ul class="si-submenu submenu">
+        <li class:list={["nav-has-panel", { active: !mobile && item.children.some((c) => isActive(c.href, current, home)) }]}>
+          {mobile ? (
+            item.href ? <a href={item.href} aria-current={current === item.href ? "page" : undefined}><><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></></a> : <a class="no-href" role="button" tabindex="0" aria-expanded="false">{item.label}</a>
+          ) : item.href ? (
+            <a href={item.href} aria-current={current === item.href ? "page" : undefined}>{item.label}<i class="fa-sharp fa-regular fa-angle-down nav-caret" aria-hidden="true" /></a>
+          ) : (
+            <button class="nav-parent" type="button" aria-expanded="false" aria-controls={`nav-panel-${i}`} data-nav-toggle>{item.label}<i class="fa-sharp fa-regular fa-angle-down nav-caret" aria-hidden="true" /></button>
+          )}
+          <ul class="si-submenu submenu nav-panel" id={mobile ? undefined : `nav-panel-${i}`}>
             {item.children.map((c) => (
               <li>
-                <a href={c.href} aria-current={isActive(c.href, current, home) ? "page" : undefined}>
-                  {mobile ? <><span class="offcanvas-link-label">{c.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : c.label}
+                <a href={c.href} aria-current={current === c.href ? "page" : undefined}>
+                  {mobile ? <><span class="offcanvas-link-label">{c.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : <><strong>{c.label}</strong>{c.body && <span>{c.body}</span>}</>}
                 </a>
               </li>
             ))}
           </ul>
           {mobile && (
-            <button class="si-menu-close" type="button" aria-label={item.label}>
+            <button class="si-menu-close" type="button" aria-label={item.label} aria-expanded="false">
               <i class="fa-solid fa-plus" />
             </button>
           )}
         </li>
       ) : (
         <li>
-          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>
-            {mobile ? <><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : item.label}
-          </a>
+          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>{mobile ? <><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : item.label}</a>
         </li>
       ),
     )

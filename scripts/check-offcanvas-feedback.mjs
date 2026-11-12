@@ -28,7 +28,8 @@ try {
         const language = el.querySelector(".offcanvas-lang").getBoundingClientRect();
         return {
           gap: Math.max(language.left - cta.right, language.top - cta.bottom),
-          targets: [...el.querySelectorAll("nav a, .offcanvas-actions a")].map((a) => a.getBoundingClientRect().height),
+          // Collapsed submenu links are display:none until their group is opened.
+          targets: [...el.querySelectorAll("nav a, .offcanvas-actions a")].filter((a) => a.getClientRects().length).map((a) => a.getBoundingClientRect().height),
           right: Math.max(cta.right, language.right),
           viewport: innerWidth,
         };

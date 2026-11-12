@@ -23,6 +23,15 @@ const en = {
     openMenu: "Open menu",
     closeMenu: "Close menu",
     home: "Home",
+    resources: "Resources",
+    allServices: "All services",
+    howWeWork: "How we work",
+    howWeWorkBody: "Scope, revisions, handover and 30-day bug fixing",
+    start: "Find your first step",
+    startBody: "Four questions, a recommendation in two minutes",
+    notesBody: "Practical notes on workflows, websites and design",
+    processBody: "Four stages with the work in view",
+    workBody: "Eight founder projects with real screens",
   },
 
   search: {
