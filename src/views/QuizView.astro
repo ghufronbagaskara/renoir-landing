@@ -6,7 +6,8 @@ import Img from "~/components/ui/Img.astro";
 import { quizCopy } from "~/content/quiz";
 import { branches, currents, goals, recommendations, timings, type Branch, type Recommendation } from "~/lib/quiz";
 import { getPortfolio, getServices, portfolioCopy, serviceCopy } from "~/lib/content";
-import { child, path, routeAlternates, t, type Locale } from "~/i18n";
+import { child, langTag, path, routeAlternates, t, type Locale } from "~/i18n";
+import { abs } from "~/lib/seo";
 
 interface Props {
   locale: Locale;
@@ -38,7 +39,7 @@ const steps: { name: string; title: string; hint: string; options: (readonly [st
   { name: "quiz_timing", ...q.questions.timing, options: options(q.questions.timing.options, timings) },
 ];
 ---
-<BaseLayout locale={locale} title={q.metaTitle} description={q.metaDescription} alternates={routeAlternates("start")} breadcrumb={{ title: q.breadcrumb }}>
+<BaseLayout locale={locale} title={q.metaTitle} description={q.metaDescription} alternates={routeAlternates("start")} breadcrumb={{ title: q.breadcrumb }} schema={[{ "@type": "WebApplication", "@id": `${abs(path("start", locale))}#app`, name: q.breadcrumb, description: q.metaDescription, url: abs(path("start", locale)), applicationCategory: "BusinessApplication", operatingSystem: "Any", inLanguage: langTag[locale], isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "IDR" } }]}>
   <div class="quiz-page" data-quiz data-progress={q.progress}>
     <div class="container container-1617">
       <section class="quiz-intro" data-quiz-intro>

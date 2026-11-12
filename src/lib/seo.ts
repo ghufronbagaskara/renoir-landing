@@ -1,7 +1,8 @@
 // JSON-LD graph builders. Every page emits one @graph: Organization + WebSite + WebPage (+ breadcrumb,
 // services, FAQ, article when relevant), linked by @id so search and answer engines see one entity.
 import { site } from "~/data/site";
-import { langTag, path, t, type Locale } from "~/i18n";
+import { services } from "~/content/services";
+import { child, langTag, path, t, type Locale } from "~/i18n";
 
 export type JsonLd = Record<string, unknown>;
 
@@ -21,6 +22,22 @@ export function organization(locale: Locale): JsonLd {
     areaServed: [{ "@type": "Country", name: "Indonesia" }, "Worldwide"],
     knowsLanguage: ["en", "id"],
     knowsAbout: ["UI/UX design", "Visual identity", "Marketing websites", "Custom internal business software", "Web infrastructure and deployment"],
+    // Registered identity appears only once filled in src/data/site.ts.
+    ...(site.legal.entity && { legalName: site.legal.entity }),
+    ...(site.legal.nib && { identifier: { "@type": "PropertyValue", propertyID: "NIB", value: site.legal.nib } }),
+    ...(site.legal.address && { address: { "@type": "PostalAddress", streetAddress: site.legal.address, addressCountry: site.country } }),
+    ...(site.email && { email: site.email }),
+    // Services without prices: pricing is quoted per written scope.
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: c.nav.services,
+      itemListElement: [...services]
+        .sort((a, b) => a.order - b.order)
+        .map((s) => {
+          const copy = locale === "en" ? s.en : s.id_;
+          return { "@type": "Offer", itemOffered: { "@type": "Service", name: copy.title, description: copy.tagline, url: abs(child("services", locale, copy.slug)) } };
+        }),
+    },
     sameAs: [],
   };
 }

@@ -37,7 +37,7 @@ jobs:
       - name: Type check
         run: bun run check
       - name: Build and guard links/copy
-        run: bun run build && bun run check:links && bun run check:copy
+        run: bun run build && bun run check:links && bun run check:copy && bun run check:seo
       - name: Deploy with Alchemy
         if: >-
           github.event_name != 'pull_request'

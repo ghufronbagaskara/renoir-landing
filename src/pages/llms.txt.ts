@@ -2,6 +2,8 @@ import type { APIRoute } from "astro";
 import { child, path, t } from "~/i18n";
 import { getNotes, getServices, noteSlug, serviceCopy } from "~/lib/content";
 import { abs } from "~/lib/seo";
+import { docs } from "~/content/trust";
+import { quizCopy } from "~/content/quiz";
 
 export const prerender = true;
 
@@ -30,7 +32,10 @@ ${services
 
 - [About Katalhys](${abs(path("about", "en"))}): ${en.about.metaDescription}
 - [Process](${abs(path("process", "en"))}): ${en.process.metaDescription}
+- [How we work and bug fixing](${abs(path("howWeWork", "en"))}): ${docs.en.howWeWork.metaDescription}
+- [Find your first step](${abs(path("start", "en"))}): ${quizCopy.en.metaDescription}
 - [Start a project](${abs(path("contact", "en"))}): ${en.contact.metaDescription}
+- [Privacy policy](${abs(path("privacy", "en"))}): ${docs.en.privacy.metaDescription}
 
 ## Notes
 
@@ -41,6 +46,8 @@ ${notes.map((n) => `- [${n.data.title}](${abs(child("notes", "en", noteSlug(n)))
 - [Beranda](${abs(path("home", "id"))}): ${id.home.metaDescription}
 - [Layanan](${abs(path("services", "id"))}): ${id.services.metaDescription}
 - [Proses](${abs(path("process", "id"))}): ${id.process.metaDescription}
+- [Cara kerja](${abs(path("howWeWork", "id"))}): ${docs.id.howWeWork.metaDescription}
+- [Temukan langkah awal](${abs(path("start", "id"))}): ${quizCopy.id.metaDescription}
 
 ## Optional
 
