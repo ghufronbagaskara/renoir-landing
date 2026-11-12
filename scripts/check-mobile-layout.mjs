@@ -89,13 +89,13 @@ try {
       assert.ok(await page.locator(`#service-tab-${i}`).evaluate((el) => { const r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth; }));
     }
     interactions.push(`${locale}: all four visible service choices select their panel`);
-    await page.locator(".process-mobile summary").nth(2).tap();
-    assert.equal(await page.locator(".process-mobile p").first().evaluate((el) => getComputedStyle(el).fontSize), "13px");
-    assert.equal(await page.locator(".process-mobile details[open]").count(), 1);
-    assert.notEqual(await page.locator(".process-mobile details").nth(2).getAttribute("open"), null);
-    await page.locator(".process-mobile summary").nth(1).focus();
+    await page.locator(".home-process-list summary").nth(2).tap();
+    assert.equal(await page.locator(".home-process-row > span").first().evaluate((el) => getComputedStyle(el).fontSize), "13px");
+    assert.equal(await page.locator(".home-process-list details[open]").count(), 1);
+    assert.ok(await page.locator(".home-process-list details").nth(2).locator(".home-process-output").isVisible());
+    await page.locator(".home-process-list summary").nth(1).focus();
     await page.keyboard.press("Enter");
-    assert.notEqual(await page.locator(".process-mobile details").nth(1).getAttribute("open"), null);
+    assert.ok(await page.locator(".home-process-list details").nth(1).locator(".home-process-output").isVisible());
     interactions.push(`${locale}: Process touch and keyboard open one complete stage`);
     await page.locator(".engagement-item summary").nth(2).tap();
     assert.notEqual(await page.locator(".engagement-item").nth(2).getAttribute("open"), null);
@@ -112,8 +112,8 @@ try {
 
     const noJs = await browser.newPage({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
     await load(noJs, home);
-    await noJs.locator(".process-mobile summary").nth(3).click();
-    assert.notEqual(await noJs.locator(".process-mobile details").nth(3).getAttribute("open"), null);
+    await noJs.locator(".home-process-list summary").nth(3).click();
+    assert.ok(await noJs.locator(".home-process-list details").nth(3).locator(".home-process-output").isVisible());
     assert.equal(await noJs.locator(".home-project-panel:visible").count(), 5);
     interactions.push(`${locale}: no-JS Process disclosure and all Work panels remain available`);
     await noJs.close();

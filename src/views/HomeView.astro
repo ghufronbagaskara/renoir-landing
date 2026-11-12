@@ -4,7 +4,7 @@ import Hero from "~/components/sections/home/Hero.astro";
 import Problem from "~/components/sections/home/Problem.astro";
 import Service from "~/components/sections/home/Service.astro";
 import Project from "~/components/sections/home/Project.astro";
-import Process from "~/components/sections/shared/Process.astro";
+import HomeProcess from "~/components/sections/home/HomeProcess.astro";
 import Engagements from "~/components/sections/shared/Engagements.astro";
 import Benefits from "~/components/sections/home/Benefits.astro";
 import Faq from "~/components/sections/shared/Faq.astro";
@@ -31,7 +31,7 @@ const h = t(locale).home;
   <Problem locale={locale} />
   <Service locale={locale} />
   <Project locale={locale} />
-  <Process label={h.process.label} title={h.process.title} steps={h.process.steps} compact />
+  <HomeProcess locale={locale} />
   <Engagements locale={locale} />
   <Benefits locale={locale} />
   <Faq id="home-faq" locale={locale} label={h.faq.label} title={h.faq.title} items={h.faq.items} />

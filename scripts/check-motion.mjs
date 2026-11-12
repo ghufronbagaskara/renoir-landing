@@ -24,14 +24,13 @@ try {
       assert.equal(state.animated,0,route+": no heading entrance");
       assert.ok(Math.abs(state.top-top)<1,route+": stable text position");
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-      if((route==="/"||route==="/id/")&&width>=768) {
+      if((route==="/process/"||route==="/id/proses/")&&width>=768) {
         const scene=page.locator(".process-storyboard");
         await scene.scrollIntoViewIfNeeded();
         await page.waitForFunction(()=>document.querySelector(".process-storyboard").classList.contains("is-visible"));
         assert.ok((await scene.locator(".process-art-stage path").first().evaluate(e=>getComputedStyle(e).animationName)).includes("process-ink"));
         await page.waitForTimeout(1200);
         assert.equal(await scene.locator(".process-art-stage path").first().evaluate(e=>e.getAnimations().every(a=>a.playState==="finished")),true);
-        await page.locator("#engagement-title").scrollIntoViewIfNeeded();
         await page.screenshot({path:`.work-capture/home-refresh/qa/${locale}-${width}-motion.png`});
       }
       count++;
@@ -45,8 +44,8 @@ try {
     const page=await browser.newPage({...options,viewport:{width:412,height:915}});
     await page.goto(base+"/id/");
     assert.equal(await page.locator(".process-storyboard").isVisible(),false);
-    await page.locator(".process-mobile summary").nth(1).click();
-    assert.notEqual(await page.locator(".process-mobile details").nth(1).getAttribute("open"),null);
+    await page.locator(".home-process-list summary").nth(1).click();
+    assert.equal(await page.locator(".home-process-list details").nth(1).locator(".home-process-output").isVisible(),true);
     assert.equal(await page.locator("#engagement-title").evaluate(e=>getComputedStyle(e).opacity),"1");
     await page.close();count++;
   }

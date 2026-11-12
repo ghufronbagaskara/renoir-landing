@@ -204,6 +204,13 @@ const en = {
     process: {
       label: "How it goes",
       title: "Four stages, with the work in view",
+      outputLabel: "What you get",
+      deliverables: [
+        { title: "Agree on what needs to work", items: ["Map the current workflow", "Agree what the first release covers", "Set acceptance criteria"], output: "Written scope and a fixed quote" },
+        { title: "Review the design before build", items: ["Lay out the pages or screens", "Review the main user flows", "Approve the visual direction"], output: "Approved design and prototype" },
+        { title: "Try the working product", items: ["Test the core flows on staging", "Review progress as features land", "Fix findings before launch"], output: "Working staging URL" },
+        { title: "Launch and take ownership", items: ["Configure hosting and monitoring", "Transfer source and access", "Document how to run the site or system"], output: "Live product and handover documentation" }
+      ],
       steps: [
         { title: "Scope", body: "We start with the business problem, not the technology. You get a written scope and a fixed price for it." },
         { title: "Design", body: "Structure first, surface second. You approve the design before any production code exists." },

@@ -79,3 +79,9 @@ Build final berhasil setelah satu pengulangan terpisah untuk error penutupan wor
 ### Performance verification - 17 October 2026
 
 The integrated Problem/Notes and runtime/media build was checked in Chrome. Home EN/ID each scored 92 in three cold mobile Lighthouse runs, with accessibility 100, CLS 0 and TBT below 100ms. Transfer dropped about 59% to 1.16 MB; the >=95 Home performance goal remains open. Seven inner routes scored 95-97 in single final runs. These results supersede the earlier Home lab scores above. Evidence, methods and remaining limits: [performance report](../../performance/2026-10-17.md). No deployment.
+
+### Home Process studio photograph (2026-11-12)
+
+Generated with built-in ImageGen and shipped as the lazy-loaded 800×800 `home-process-studio.webp` (47,132 bytes). It depicts a fictional studio scene.
+
+> Photorealistic editorial photograph for the Process section of an Indonesian independent digital design and software studio. Square composition, candid close-up at a modern Jakarta studio: two Indonesian collaborators in navy and ivory workwear, discussing paper interface sketches on a light desk, one pointing at the drawings, open laptop at right with softly blurred abstract interface. Faces and the gesture predominantly in upper-left and center-left; lower right is calm and will be covered by the website's white information card. Cool daylight, tactile paper, subtle cobalt and cyan stationery, tasteful editorial framing, realistic anatomy. No legible words, no logos, no watermark. This is illustrative stock-style photography.

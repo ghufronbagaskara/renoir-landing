@@ -206,6 +206,13 @@ const id: Dictionary = {
     process: {
       label: "Cara kami bekerja",
       title: "Empat tahap, progresnya bisa Anda lihat",
+      outputLabel: "Yang Anda terima",
+      deliverables: [
+        { title: "Sepakati apa yang perlu dikerjakan", items: ["Petakan alur kerja saat ini", "Sepakati cakupan rilis pertama", "Tentukan kriteria penerimaan"], output: "Scope tertulis dan penawaran harga tetap" },
+        { title: "Tinjau desain sebelum build", items: ["Susun halaman atau layar", "Tinjau alur utama pengguna", "Setujui arah visual"], output: "Desain dan prototipe yang disetujui" },
+        { title: "Coba produk yang sudah berjalan", items: ["Uji alur utama di staging", "Tinjau fitur seiring pengerjaan", "Perbaiki temuan sebelum rilis"], output: "URL staging yang bisa dicoba" },
+        { title: "Rilis dan ambil alih pengelolaan", items: ["Atur hosting dan monitoring", "Serahkan kode dan akses", "Dokumentasikan cara menjalankan situs atau sistem"], output: "Produk live dan dokumentasi serah terima" }
+      ],
       steps: [
         { title: "Scope", body: "Kami mulai dari masalah bisnis, bukan teknologinya. Anda menerima scope tertulis dan harga tetap untuk scope itu." },
         { title: "Desain", body: "Struktur dulu, tampilan kemudian. Anda menyetujui desain sebelum kode produksi ditulis." },

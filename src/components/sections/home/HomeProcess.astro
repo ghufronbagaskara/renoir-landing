@@ -1,0 +1,94 @@
+---
+import Img from "~/components/ui/Img.astro";
+import { t, type Locale } from "~/i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { label, title, steps, outputLabel, deliverables } = t(locale).home.process;
+---
+
+<section class="home-process" id="home-process" aria-labelledby="home-process-title">
+  <div class="container container-1617">
+    <header class="home-process-heading">
+      <p class="home-section-label">{label}</p>
+      <h2 id="home-process-title">{title}</h2>
+    </header>
+    <div class="home-process-layout">
+      <div class="home-process-list">
+        {steps.map((step, i) => (
+          <details name="home-process-stage" open={i === 0}>
+            <summary>
+              <span class="home-process-number" aria-hidden="true">0{i + 1}</span>
+              <span class="home-process-row"><strong>{step.title}</strong><span>{step.body}</span></span>
+              <span class="home-process-arrow" aria-hidden="true">→</span>
+            </summary>
+            <div class="home-process-detail">
+              <span class="home-process-kicker">0{i + 1} / {step.title}</span>
+              <h3>{deliverables[i].title}</h3>
+              <ul>
+                {deliverables[i].items.map((item) => <li>{item}</li>)}
+              </ul>
+              <div class="home-process-output">
+                <span class="home-process-kicker">{outputLabel}</span>
+                <strong>{deliverables[i].output}</strong>
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+      <div class="home-process-image" aria-hidden="true"><Img src="editorial/home-process-studio.webp" /></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-process { padding: clamp(64px, 6vw, 100px) 0; background: var(--renoir-panel); scroll-margin-top: 64px; }
+  .home-process-heading { margin: 0 auto clamp(24px, 4vw, 52px); text-align: center; }
+  .home-process-heading .home-section-label { justify-content: center; margin-bottom: 14px; }
+  .home-process-heading h2 { max-width: 24ch; margin: 0 auto; font-size: clamp(32px, 4vw, 60px); line-height: 1.05; letter-spacing: -.05em; text-wrap: balance; }
+  .home-process-layout { max-width: 1200px; margin: 0 auto; }
+  .home-process-list { border: 1px solid var(--renoir-line); border-radius: 16px; background: #fff; }
+  .home-process-list details + details { border-top: 1px solid var(--renoir-line); }
+  .home-process-list summary {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(12px, 1.7vw, 24px);
+    min-height: 60px; padding: clamp(12px, 2vw, 25px); border-inline-start: 3px solid transparent;
+    cursor: pointer; list-style: none;
+  }
+  .home-process-list summary::-webkit-details-marker { display: none; }
+  .home-process-list summary:hover, .home-process-list details[open] summary { background: var(--renoir-accent-soft); }
+  .home-process-list details[open] summary { border-inline-start-color: var(--renoir-accent); }
+  .home-process-list details:first-child summary { border-radius: 15px 15px 0 0; }
+  .home-process-list details:last-child:not([open]) summary { border-radius: 0 0 15px 15px; }
+  .home-process-list summary:focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: -3px; }
+  .home-process-number { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--renoir-accent); color: #fff; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .home-process-row { display: grid; gap: 4px; }
+  .home-process-row strong { color: var(--renoir-ink); font-size: clamp(16px, 1.4vw, 20px); line-height: 1.2; }
+  .home-process-row > span { color: var(--renoir-muted); font-size: 14px; line-height: 1.5; }
+  .home-process-arrow { color: var(--renoir-accent); font-size: 20px; }
+  .home-process-image { display: none; }
+  .home-process-detail { padding: 18px; background: #fff; border-radius: 0 0 15px 15px; }
+  .home-process-kicker { display: block; color: var(--renoir-accent); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .home-process-detail h3 { margin: 7px 0 12px; font-size: clamp(20px, 2vw, 28px); line-height: 1.15; letter-spacing: -.025em; }
+  .home-process-detail ul { display: grid; gap: 7px; list-style: none; padding: 0; margin: 0; }
+  .home-process-detail li { display: flex; gap: 9px; color: var(--renoir-muted); font-size: 14px; line-height: 1.4; }
+  .home-process-detail li::before { content: ""; flex: none; width: 8px; height: 5px; margin-top: 6px; border: solid var(--renoir-accent); border-width: 0 0 1.5px 1.5px; transform: rotate(-45deg); }
+  .home-process-output { display: grid; gap: 5px; padding-top: 12px; margin-top: 14px; border-top: 1px solid var(--renoir-line); color: var(--renoir-ink); font-size: 14px; }
+  @media (min-width: 992px) {
+    .home-process-layout { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); align-items: start; gap: 30px; padding-bottom: 20px; }
+    .home-process-list details:last-child summary { border-radius: 0 0 15px 15px; }
+    .home-process-image { display: block; overflow: hidden; border-radius: 18px; background: var(--renoir-ink); }
+    .home-process-image img { display: block; width: 100%; height: auto; aspect-ratio: 1.07; object-fit: cover; object-position: center 35%; }
+    .home-process-detail {
+      position: absolute; z-index: 1; inset: auto 0 0 auto; width: min(34%, 380px); padding: 22px;
+      border: 1px solid var(--renoir-line); border-radius: 16px; box-shadow: 0 18px 32px -20px #17191c66;
+    }
+  }
+  @media (max-width: 767px) {
+    .home-process { padding: 24px 0; }
+    .home-process-heading .home-section-label { margin-bottom: 8px; }
+    .home-process-heading h2 { font-size: clamp(24px, 6vw, 32px); }
+    .home-process-number { width: 30px; height: 30px; }
+    .home-process-row > span { font-size: 13px; }
+    .home-process-list details[open] .home-process-arrow { transform: rotate(90deg); }
+  }
+</style>
