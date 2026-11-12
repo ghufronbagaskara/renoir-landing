@@ -672,6 +672,7 @@ dialog .si-search-results p { padding: 0 12px; }
 .home-header .si-header-menu > nav > ul > li { margin: 0; }
 .home-header .si-header-menu > nav > ul > li > a { display: block; color: var(--renoir-ink); padding: 12px 0; font-size: 15px; }
 .home-header .home-nav-actions { display: flex; align-items: center; gap: 8px; }
+.home-header .home-nav-actions :is(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .home-header :is(.lang-switch, .si-header-search, .home-menu-button) { display: grid; place-content: center; flex: none; width: 44px; min-width: 44px; height: 44px; margin: 0; padding: 0; border: 1px solid var(--renoir-line); border-radius: 50%; color: var(--renoir-ink); background: transparent; font-size: 14px; }
 .home-header :is(.lang-switch, .si-header-search, .home-menu-button):hover { background: var(--renoir-panel); }
 .home-header .home-menu-button { gap: 6px; }
@@ -685,7 +686,11 @@ dialog .si-search-results p { padding: 0 12px; }
 #header-sticky-black.home-header:not(.header-sticky-black) { position: absolute; inset: 0 0 auto; padding: 16px 24px; border-bottom: 1px solid #ffffff26; }
 #header-sticky-black.home-header.renoir-solid-header:not(.header-sticky-black) { background: var(--renoir-ink); }
 .inner-header:not(.header-sticky-black) .home-nav-shell { background: transparent; border-color: transparent; box-shadow: none; }
-.inner-header:not(.header-sticky-black) :is(.renoir-wordmark, .si-header-menu > nav > ul > li > a, .lang-switch, .si-header-search, .home-menu-button) { color: #fff; }
+.inner-header:not(.header-sticky-black) .renoir-wordmark,
+.inner-header:not(.header-sticky-black) .si-header-menu > nav > ul > li > a,
+.inner-header:not(.header-sticky-black) .lang-switch,
+.inner-header:not(.header-sticky-black) .si-header-search,
+.inner-header:not(.header-sticky-black) .home-menu-button { color: #fff; }
 .inner-header:not(.header-sticky-black) :is(.lang-switch, .si-header-search, .home-menu-button) { border-color: #ffffff50; }
 .inner-header:not(.header-sticky-black) :is(.lang-switch, .si-header-search, .home-menu-button):hover { background: #ffffff14; }
 @media (max-width: 1199px) { .home-header .home-nav-links { display: none; } }
@@ -707,7 +712,8 @@ dialog .si-search-results p { padding: 0 12px; }
   .home-menu-lines { gap: 4px; }
   .home-menu-lines i { width: 15px; }
   .inner-header:not(.header-sticky-black) .home-nav-shell { background: #fff; border-color: #dce1e9; }
-  .inner-header:not(.header-sticky-black) :is(.si-header-search, .home-menu-button) { color: var(--renoir-ink); }
+  .inner-header:not(.header-sticky-black) .si-header-search,
+  .inner-header:not(.header-sticky-black) .home-menu-button { color: var(--renoir-ink); }
 }
 @media (max-width: 379px) { .home-header .home-nav-lang { display: none; } }
 
