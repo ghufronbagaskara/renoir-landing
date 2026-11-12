@@ -339,18 +339,23 @@ dialog.si-lightbox {
 .si-breadcumb-shape { top: 50%; left: clamp(-90px, 4vw, 80px); width: clamp(180px, 25vw, 390px); opacity: .12; transform: translateY(-50%); pointer-events: none; }
 .si-breadcumb-shape svg { display: block; width: 100%; height: auto; color: #fff; }
 
-.si-footer-text .h1 { max-width: 14ch; font-size: clamp(3rem, 5.1vw, 5.7rem); line-height: 1.08; letter-spacing: -.035em; }
+.si-footer-text .h1 { max-width: 22ch; margin: 0; font-size: clamp(1.75rem, 3vw, 3.25rem); line-height: 1.1; letter-spacing: -.035em; }
 .si-footer-text .h1 span { display: block; margin-left: 0; }
-.si-footer-p { margin-left: 0; }
+.si-footer-p { margin: 0; }
 .si-footer-p::before { display: none; }
-.si-footer-p p, .si-footer-logo p { max-width: 36ch; line-height: 1.55; }
+.si-footer-p p, .si-footer-logo p { max-width: 44ch; font-size: 14px; line-height: 1.5; margin-bottom: 0; }
 .si-footer-logo { min-width: 0; }
 .si-footer-logo .renoir-brand { display: inline-flex; }
+.si-footer-logo p { margin-top: 10px; }
 .si-footer-area .si-footer-list a { color: var(--renoir-panel); }
 .si-footer-area .si-footer-list a:hover, .si-footer-area .footer-color a { color: var(--renoir-signal); }
 .si-footer-logo p { overflow-wrap: break-word; }
-.si-footer-area .border-line { margin-top: 62px; padding-top: 55px; }
-.si-footer-area { overflow: hidden; background: var(--renoir-ink); }
+.si-footer-area .border-line { margin-top: 28px; padding-top: 24px; }
+.si-footer-area .si-footer-list h2 { font-size: 15px; line-height: 1.4; margin-bottom: 6px; }
+.si-footer-area .si-footer-list li { font-size: 14px; line-height: 1.45; margin-bottom: 6px; }
+.si-footer-area .copyright-line { margin-top: 22px; padding-block: 12px 18px; }
+.si-footer-area .si-copyright-title p { margin: 0; font-size: 12px; }
+.si-footer-area { padding-top: clamp(30px, 4vw, 56px); overflow: hidden; background: var(--renoir-ink); }
 .si-footer-area::before { content: none; }
 .si-footer-area > .container, .si-footer-area > .si-copyright-area { position: relative; z-index: 1; }
 .si-footer-area .footer-watermark { position: absolute; top: 4%; right: -5%; width: min(36vw, 500px); height: auto; color: #fff; opacity: .055; pointer-events: none; }

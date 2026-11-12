@@ -324,25 +324,26 @@
     .form-status:empty { margin: 0; }
   }
 
-    footer.si-footer-area { padding: 24px 0 12px !important; }
-    .si-footer-text .h1 { font-size: 22px; line-height: 1.2; max-width: none; margin: 0 0 8px; }
+    footer.si-footer-area { padding: 18px 0 8px; }
+    .si-footer-text .h1 { font-size: 20px; line-height: 1.2; max-width: none; margin: 0 0 6px; }
     .si-footer-text .h1 span { display: inline; }
     .si-footer-p { margin: 0; }
     .si-footer-p p, .si-footer-logo p { font-size: 12px; line-height: 1.45; max-width: none; margin: 0; }
-    .si-footer-area .border-line { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; padding-top: 12px; margin: 12px 0 0; }
+    .si-footer-area .border-line { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; padding-top: 8px; margin: 10px 0 0; }
     .si-footer-area .border-line > div { width: auto; padding: 0; }
     .si-footer-area .border-line > div:first-child, .si-footer-area .border-line > div:last-child { grid-column: 1 / -1; }
     .si-footer-logo { margin: 0; }
-    .si-footer-logo .renoir-wordmark { font-size: 20px; }
+    .si-footer-logo .renoir-wordmark { font-size: 18px; }
     .si-footer-logo .renoir-brand-mark { width: 22px; }
     .si-footer-logo .renoir-brand { min-height: 44px; }
     .si-footer-logo p { margin-top: 4px; }
     .si-footer-list { margin: 0; padding: 0; }
-    .si-footer-list h2 { font-size: 12px; line-height: 1.4; margin: 0; }
+    .si-footer-area .si-footer-list h2 { font-size: 12px; line-height: 1.4; margin: 0; }
     .si-footer-area .si-footer-list ul li { margin: 0; padding: 0; }
+    .si-footer-area .footer-left ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; }
     .si-footer-list li a { display: flex; align-items: center; min-height: 44px; padding: 0; font-size: 12px; line-height: 1.4; }
     .footer-list ul { display: flex; flex-wrap: wrap; gap: 0 16px; }
-    .si-copyright-area .copyright-line { padding: 6px 0 0; margin: 8px 0 0; }
-    .si-copyright-title p { font-size: 10px; line-height: 1.4; margin: 0; }
+    .si-footer-area .copyright-line { padding: 2px 0 0; margin: 4px 0 0; }
+    .si-footer-area .si-copyright-title p { font-size: 10px; line-height: 1.4; margin: 0; }
     .si-copyright-title p a { display: inline-flex; align-items: center; min-height: 44px; }
 }

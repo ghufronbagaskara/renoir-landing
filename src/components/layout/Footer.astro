@@ -12,7 +12,7 @@ const { locale, home = false } = Astro.props;
 const c = t(locale);
 const links = footerLinks(locale);
 ---
-<footer class:list={["si-footer-area si-background", { "pt-127": !home }]}>
+<footer class="si-footer-area si-background">
   <BrandMark class="footer-watermark" variant="white" />
   <div class="container container-1588">
     <div class="row">
