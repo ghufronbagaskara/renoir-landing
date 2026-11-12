@@ -631,7 +631,6 @@ dialog .si-search-results p { padding: 0 12px; }
   .si-blog-area .si-blog-left { grid-template-columns: 1fr; }
   .notes-grid { grid-template-columns: 1fr; gap: 42px; }
   .floating-contact { right: 12px; bottom: 12px; min-height: 48px; padding: 0 14px; }
-  body:has(.work-case) .floating-contact { display: none; }
   .floating-contact-long { display: none; }
   .floating-contact-short { display: inline; }
   .si-header-search-title { display: none; }

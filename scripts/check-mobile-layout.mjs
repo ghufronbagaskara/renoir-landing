@@ -41,7 +41,7 @@ try {
           assert.ok(await control.evaluate((el) => { const r = el.getBoundingClientRect(); return r.width >= 44 && r.height >= 44; }), `${route}: header tap target`);
         }
         const contact = page.locator(".floating-contact:visible");
-        if (await contact.count()) assert.ok(await contact.evaluate((el) => el.getBoundingClientRect().top >= document.querySelector("main").getBoundingClientRect().bottom - 1), `${route}: CTA follows content`);
+        if (await contact.count()) assert.ok(await contact.evaluate((el) => { const r = el.getBoundingClientRect(); return getComputedStyle(el).position === "fixed" && r.bottom <= innerHeight && r.top >= 0; }), `${route}: CTA follows viewport`);
         const fields = page.locator("[data-contact-form] :is(input:not([type=hidden]), select, textarea):visible");
         for (const field of await fields.all()) {
           assert.ok(await field.evaluate((el) => el.getBoundingClientRect().height >= 44 && parseFloat(getComputedStyle(el).fontSize) >= 16 && el.labels[0].getBoundingClientRect().height > 0), `${route}: field height, font and persistent label`);

@@ -10,7 +10,8 @@
   .container { --bs-gutter-x: 32px; }
   .si-section-title > span { margin-left: 0; padding-left: 30px; }
   .si-section-title > span::before { left: 0; }
-  .floating-contact { position: relative; right: auto; bottom: auto; display: flex; margin: 0 16px 24px auto; width: fit-content; min-height: 44px; box-shadow: none; font-size: 13px; }
+  .floating-contact { position: fixed; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); margin: 0; width: fit-content; min-height: 44px; font-size: 13px; }
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
   .floating-contact::before { content: none; }
   .si-offcanvas-wrapper { width: min(100%, 420px); height: 100dvh; padding: 24px 24px max(24px, env(safe-area-inset-bottom)); }
   .si-offcanvas-top { margin-bottom: 16px; }
