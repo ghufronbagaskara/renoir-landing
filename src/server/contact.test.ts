@@ -92,7 +92,7 @@ describe("contact handler", () => {
 });
 
 test("leadText puts triage details first", () => {
-  const text = leadText({ ...valid, budget: "25-50", timeline: "quarter", build_type: "internal", userAgent: null } as Submission);
+  const text = leadText({ ...valid, budget: "25-50", timeline: "quarter", build_type: "internal", channel: "email", id: "x", receivedAt: "2026-11-13T00:00:00Z", locale: "id", userAgent: null } as Submission);
   expect(text.split("\n")[0]).toBe("New enquiry: internal · budget 25-50 · quarter");
   expect(text).toContain("Email: ada@example.com");
 });

@@ -11,5 +11,7 @@ declare module "cloudflare:workers" {
     TELEGRAM_CHAT_ID: string;
     LEADS_WEBHOOK_URL: string;
     LEADS_WEBHOOK_SECRET: string;
+    /** D1 database with leads and admin accounts (migrations/). */
+    DB: import("~/server/db").Db;
   };
 }

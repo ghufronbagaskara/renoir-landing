@@ -3,28 +3,54 @@
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
+import { buildTypeOf, parseAnswers, recommend, type Answers, type Recommendation } from "~/lib/quiz";
 
 const Text = (min: number, max: number) => Schema.Trim.pipe(Schema.check(Schema.isMinLength(min), Schema.isMaxLength(max)));
 
 // Intake form (brief §12). Option values are locale-neutral keys; labels live in src/i18n.
-export const BuildTypes = ["marketing", "internal", "design", "both", "unsure"] as const;
+export const BuildTypes = ["marketing", "internal", "design", "care", "both", "unsure"] as const;
 export const Timelines = ["month", "quarter", "later", "exploring"] as const;
 export const Budgets = ["lt10", "10-25", "25-50", "gt50", "discuss"] as const;
+const Code = Schema.String.pipe(Schema.check(Schema.isMaxLength(40)));
 
 export const ContactInput = Schema.Struct({
   name: Text(1, 120),
   company: Schema.optionalKey(Text(1, 120)),
-  email: Schema.Trim.pipe(Schema.check(Schema.isMaxLength(254), Schema.isPattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))),
-  build_type: Schema.Literals(BuildTypes),
-  message: Text(10, 5000),
+  email: Schema.optionalKey(Schema.Trim.pipe(Schema.check(Schema.isMaxLength(254), Schema.isPattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)))),
+  whatsapp: Schema.optionalKey(Schema.Trim.pipe(Schema.check(Schema.isPattern(/^\+?[\d\s().-]{8,24}$/)))),
+  channel: Schema.optionalKey(Schema.Literals(["email", "whatsapp"])),
+  build_type: Schema.optionalKey(Schema.Literals(BuildTypes)),
+  message: Schema.optionalKey(Text(1, 5000)),
   timeline: Schema.optionalKey(Schema.Literals(Timelines)),
   budget: Schema.optionalKey(Schema.Literals(Budgets)),
   locale: Schema.Literals(["en", "id"]),
-  source: Schema.String.pipe(Schema.check(Schema.isPattern(/^(contact|service:[\w-]+)$/))),
+  source: Schema.String.pipe(Schema.check(Schema.isPattern(/^(contact|quiz|service:[\w-]+)$/))),
+  /** Client-generated id: a retried submit is stored once. */
+  submission_id: Schema.optionalKey(Schema.String.pipe(Schema.check(Schema.isPattern(/^[0-9a-f-]{36}$/)))),
+  quiz_goal: Schema.optionalKey(Code),
+  quiz_current: Schema.optionalKey(Code),
+  quiz_detail: Schema.optionalKey(Code),
+  quiz_timing: Schema.optionalKey(Code),
   company_website: Schema.optionalKey(Schema.String),
   "cf-turnstile-response": Schema.optionalKey(Schema.String),
 });
 export type ContactInput = typeof ContactInput.Type;
+
+/** Cross-field rules the struct can't express. Returns the lead fields or an error message. */
+function shape(input: ContactInput): Omit<Submission, "id" | "receivedAt" | "userAgent"> | string {
+  const { company_website: _, "cf-turnstile-response": __, submission_id: ___, quiz_goal, quiz_current, quiz_detail, quiz_timing, ...fields } = input;
+  const channel = fields.channel ?? (fields.email ? "email" : "whatsapp");
+  if (channel === "email" ? !fields.email : !fields.whatsapp) return `missing ${channel}`;
+  if (fields.source !== "quiz") {
+    if (!fields.build_type) return "missing build_type";
+    if ((fields.message?.length ?? 0) < 10) return "message too short";
+    return { ...fields, channel, build_type: fields.build_type };
+  }
+  const answers = parseAnswers({ goal: quiz_goal, current: quiz_current, detail: quiz_detail, timing: quiz_timing });
+  if (!answers) return "invalid quiz answers";
+  const recommendation = recommend(answers);
+  return { ...fields, channel, build_type: buildTypeOf(recommendation), quiz: { ...answers, recommendation } };
+}
 
 export class InvalidInput extends Data.TaggedError("InvalidInput")<{ message: string }> {}
 export class RateLimited extends Data.TaggedError("RateLimited")<{}> {}
@@ -32,7 +58,13 @@ export class TurnstileFailed extends Data.TaggedError("TurnstileFailed")<{}> {}
 export class DeliveryFailed extends Data.TaggedError("DeliveryFailed")<{ causes: unknown[] }> {}
 
 /** Lead payload handed to the sinks. The visitor's IP stays in the Worker (rate limit + Turnstile only). */
-export interface Submission extends Omit<ContactInput, "company_website" | "cf-turnstile-response"> {
+export interface Submission
+  extends Omit<ContactInput, "company_website" | "cf-turnstile-response" | "submission_id" | "quiz_goal" | "quiz_current" | "quiz_detail" | "quiz_timing" | "build_type" | "channel"> {
+  id: string;
+  receivedAt: string;
+  build_type: (typeof BuildTypes)[number];
+  channel: "email" | "whatsapp";
+  quiz?: Answers & { recommendation: Recommendation };
   userAgent: string | null;
 }
 
@@ -67,8 +99,14 @@ export const handleContact = (raw: unknown, meta: { ip: string | null; userAgent
     const human = yield* Effect.promise(() => deps.verifyTurnstile(input["cf-turnstile-response"] ?? "", meta.ip));
     if (!human) return yield* new TurnstileFailed();
 
-    const { company_website: _, "cf-turnstile-response": __, ...fields } = input;
-    const submission: Submission = { ...fields, userAgent: meta.userAgent };
+    const fields = shape(input);
+    if (typeof fields === "string") return yield* new InvalidInput({ message: fields });
+    const submission: Submission = {
+      ...fields,
+      id: input.submission_id ?? crypto.randomUUID(),
+      receivedAt: new Date().toISOString(),
+      userAgent: meta.userAgent,
+    };
     const results = yield* Effect.promise(() => Promise.allSettled(deps.sinks.map((sink) => sink(submission))));
     const delivered = results.filter((r) => r.status === "fulfilled" && r.value).length;
     // No sink took the lead: fail loudly so the visitor retries or uses another channel.
@@ -108,13 +146,16 @@ export function leadText(s: Submission) {
     "",
     `Name: ${s.name}`,
     s.company && `Company: ${s.company}`,
-    `Email: ${s.email}`,
+    s.email && `Email: ${s.email}`,
+    s.whatsapp && `WhatsApp: ${s.whatsapp}`,
+    `Reply by: ${s.channel}`,
     `Language: ${s.locale}`,
     `Source: ${s.source}`,
-    "",
+    s.quiz && `Quiz: ${s.quiz.goal} / ${s.quiz.current} / ${s.quiz.detail} / ${s.quiz.timing} → ${s.quiz.recommendation}`,
+    s.message && "",
     s.message,
   ]
-    .filter((l) => l !== undefined)
+    .filter((l) => typeof l === "string")
     .join("\n");
 }
 
@@ -137,7 +178,7 @@ export async function postLeadWebhook(url: string, secret: string, s: Submission
   const res = await fetch(url, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ secret, receivedAt: new Date().toISOString(), text: leadText(s), ...s }),
+    body: JSON.stringify({ secret, text: leadText(s), ...s, recommendation: s.quiz?.recommendation ?? "" }),
   });
   const body = (await res.json().catch(() => null)) as { ok?: boolean } | null;
   if (!res.ok || body?.ok !== true) throw new Error(`Lead webhook ${res.status}`);

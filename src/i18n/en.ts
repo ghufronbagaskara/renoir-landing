@@ -73,7 +73,7 @@ const en = {
     company: "Company",
     email: "Work email",
     buildType: "What are you looking to build?",
-    buildTypes: { marketing: "Marketing site", internal: "Internal system or app", design: "UI/UX or visual identity", both: "Design and build", unsure: "Not sure yet" },
+    buildTypes: { marketing: "Marketing site", internal: "Internal system or app", design: "UI/UX or visual identity", care: "Deployment & care", both: "Design and build", unsure: "Not sure yet" },
     problem: "What's the problem you're trying to solve?",
     timeline: "Timeline",
     timelines: { month: "Within a month", quarter: "1–3 months", later: "3+ months", exploring: "Just exploring" },

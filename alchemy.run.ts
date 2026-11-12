@@ -38,6 +38,9 @@ export default Alchemy.Stack(
     // Lead sinks (see src/server/contact.ts). Unset = skipped; the form fails if none is configured.
     const optional = (name: string) => Config.redacted(name).pipe(Config.withDefault(Redacted.make("")));
 
+    // Primary lead record and admin accounts (migrations/). Read by /admin/* in the same Worker.
+    const db = yield* Cloudflare.D1.Database("LeadsDB", { migrations: "./migrations" });
+
     const site = yield* Cloudflare.Website.Astro("Website", {
       // Pages are prerendered (`export const prerender = true`) and served straight from the asset
       // layer; the Worker only runs for /api/contact. Output must stay "server": "static" deploys
@@ -56,6 +59,7 @@ export default Alchemy.Stack(
         TELEGRAM_CHAT_ID: yield* Config.string("TELEGRAM_CHAT_ID").pipe(Config.withDefault("")),
         LEADS_WEBHOOK_URL: yield* optional("LEADS_WEBHOOK_URL"),
         LEADS_WEBHOOK_SECRET: yield* optional("LEADS_WEBHOOK_SECRET"),
+        DB: db,
       },
     });
 

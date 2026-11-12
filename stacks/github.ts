@@ -34,6 +34,7 @@ export default Alchemy.Stack(
             "Workers Scripts Write",
             "Workers KV Storage Write",
             "Workers R2 Storage Write",
+            "D1 Write",
             "Secrets Store Write",
             "Turnstile Sites Write",
             "Account Settings Write",

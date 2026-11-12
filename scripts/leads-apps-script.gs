@@ -6,7 +6,7 @@
 //   4. Set LEADS_WEBHOOK_URL (the /exec URL) and LEADS_WEBHOOK_SECRET (same secret) in .env / GitHub secrets.
 // Re-deploy (Manage deployments → Edit → New version) after changing this code; the URL stays the same.
 
-const COLUMNS = ["receivedAt", "build_type", "budget", "timeline", "name", "company", "email", "locale", "source", "message", "status", "replied_at", "next_step"];
+const COLUMNS = ["receivedAt", "build_type", "budget", "timeline", "name", "company", "email", "locale", "source", "message", "status", "replied_at", "next_step", "whatsapp", "channel", "recommendation", "id"];
 
 function doPost(e) {
   const props = PropertiesService.getScriptProperties();
@@ -24,7 +24,7 @@ function doPost(e) {
   sheet.appendRow(COLUMNS.map((c) => (c === "status" ? "new" : cell(lead[c]))));
 
   const to = props.getProperty("NOTIFY_EMAIL");
-  if (to) MailApp.sendEmail({ to, replyTo: lead.email, subject: "New enquiry from " + String(lead.name).replace(/[\r\n]/g, " "), body: lead.text });
+  if (to) MailApp.sendEmail({ to, replyTo: lead.email || undefined, subject: "New enquiry from " + String(lead.name).replace(/[\r\n]/g, " "), body: lead.text });
 
   return json({ ok: true });
 }

@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import * as Effect from "effect/Effect";
 import { handleContact, postLeadWebhook, sendTelegram, toResponse, verifyTurnstileToken } from "~/server/contact";
+import { saveLead } from "~/server/db";
 
 export const prerender = false;
 
@@ -25,6 +26,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         rateLimit: async (key) => (await env.THROTTLE.limit({ key })).success,
         verifyTurnstile: (token, remoteIp) => verifyTurnstileToken(env.TURNSTILE_SECRET, token, remoteIp),
         sinks: [
+          (s) => saveLead(env.DB, s),
           (s) => sendTelegram(env.TELEGRAM_BOT_TOKEN, env.TELEGRAM_CHAT_ID, s),
           (s) => postLeadWebhook(env.LEADS_WEBHOOK_URL, env.LEADS_WEBHOOK_SECRET, s),
         ],
@@ -35,5 +37,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (wantsJson(request)) return Response.json({ status: result.status }, { status: result.http });
   // No-JS fallback: back to the contact page in the visitor's language, with the outcome.
   const contact = raw.locale === "id" ? "/id/kontak/" : "/contact/";
+  if (raw.source === "quiz" && result.http === 200) return redirect(raw.locale === "id" ? "/id/mulai/?sent=1" : "/start/?sent=1", 303);
   return redirect(result.http === 200 ? `${contact}?sent=1` : `${contact}?error=${result.status}`, 303);
 };

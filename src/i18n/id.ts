@@ -75,7 +75,7 @@ const id: Dictionary = {
     company: "Perusahaan",
     email: "Email kantor",
     buildType: "Apa yang ingin Anda bangun?",
-    buildTypes: { marketing: "Situs marketing", internal: "Sistem atau aplikasi", design: "UI/UX atau identitas visual", both: "Desain dan pembangunan", unsure: "Belum yakin" },
+    buildTypes: { marketing: "Situs marketing", internal: "Sistem atau aplikasi", design: "UI/UX atau identitas visual", care: "Deployment & perawatan", both: "Desain dan pembangunan", unsure: "Belum yakin" },
     problem: "Masalah apa yang ingin Anda selesaikan?",
     timeline: "Timeline",
     timelines: { month: "Dalam sebulan", quarter: "1–3 bulan", later: "Lebih dari 3 bulan", exploring: "Masih menjajaki" },
