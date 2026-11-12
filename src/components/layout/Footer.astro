@@ -2,6 +2,7 @@
 // Footer = closing call to action on every page + links + contact.
 import { footerLinks } from "~/data/nav";
 import BrandMark from "~/components/ui/BrandMark.astro";
+import { site } from "~/data/site";
 import { path, t, type Locale } from "~/i18n";
 
 interface Props {
@@ -56,6 +57,7 @@ const links = footerLinks(locale);
           <ul>
             <li class="footer-color"><a href={path("contact", locale)}>{c.nav.cta}</a></li>
             <li><a href={path("contact", locale)}>{c.footer.location}</a></li>
+            {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
           </ul>
         </div>
       </div>
@@ -66,8 +68,15 @@ const links = footerLinks(locale);
       <div class="row align-items-center copyright-line">
         <div class="col-lg-6 p-0">
           <div class="si-copyright-title">
-            <p>© {new Date().getFullYear()} <a href={path("home", locale)}>{c.site.name}</a>. {c.footer.rights}</p>
+            <p>© {new Date().getFullYear()} <a href={path("home", locale)}>{site.legal.entity ?? c.site.name}</a>. {c.footer.rights}{site.legal.nib && <> {c.footer.nib} {site.legal.nib}.</>}</p>
+            {site.legal.address && <p>{site.legal.address}</p>}
           </div>
+        </div>
+        <div class="col-lg-6 p-0">
+          <nav class="footer-legal" aria-label={c.footer.legal}>
+            {links.legal.map((l) => <a href={l.href}>{l.label}</a>)}
+            <button type="button" data-consent-open>{c.footer.cookieSettings}</button>
+          </nav>
         </div>
       </div>
     </div>

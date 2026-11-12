@@ -8,6 +8,7 @@ import HeaderInner from "~/components/layout/HeaderInner.astro";
 import Offcanvas from "~/components/layout/Offcanvas.astro";
 import SearchOverlay from "~/components/layout/SearchOverlay.astro";
 import Footer from "~/components/layout/Footer.astro";
+import ConsentBanner from "~/components/layout/ConsentBanner.astro";
 import Breadcrumb, { type Crumb } from "~/components/layout/Breadcrumb.astro";
 import { langTag, ogLocale, path, t, type Alternates, type Locale } from "~/i18n";
 import { abs, graph, organization, webPage, website, type JsonLd, type PageMeta } from "~/lib/seo";
@@ -115,6 +116,7 @@ const c = t(locale);
     </a>
 
     <Footer locale={locale} home={home} />
+    <ConsentBanner locale={locale} />
 
     <script>
       import "~/scripts/site";

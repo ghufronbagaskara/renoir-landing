@@ -42,6 +42,7 @@ export function nav(locale: Locale): NavItem[] {
 
 export function footerLinks(locale: Locale) {
   const n = t(locale).nav;
+  const f = t(locale).footer;
   return {
     studio: [
       { label: n.services, href: path("services", locale) },
@@ -50,8 +51,15 @@ export function footerLinks(locale: Locale) {
       { label: n.aboutRenoir, href: path("about", locale) },
     ],
     more: [
+      { label: n.start, href: path("start", locale) },
+      { label: n.howWeWork, href: path("howWeWork", locale) },
       { label: n.notes, href: path("notes", locale) },
       { label: n.cta, href: path("contact", locale) },
+    ],
+    legal: [
+      { label: f.privacy, href: path("privacy", locale) },
+      { label: f.terms, href: path("terms", locale) },
+      { label: f.cookies, href: path("cookies", locale) },
     ],
   };
 }

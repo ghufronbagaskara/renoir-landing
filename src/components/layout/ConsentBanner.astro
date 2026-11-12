@@ -1,0 +1,37 @@
+---
+// Cookie choice. Only necessary storage is used today; optional categories exist so analytics/marketing
+// tags added later can wait for `window.katalhysConsent.get()` / the "consent:change" event.
+import { path, t, type Locale } from "~/i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const k = t(locale).consent;
+---
+<section class="consent-banner" aria-labelledby="consent-title" data-consent-banner hidden>
+  <div>
+    <p class="consent-title" id="consent-title">{k.title}</p>
+    <p>{k.body} <a href={path("cookies", locale)}>{k.policy}</a></p>
+  </div>
+  <div class="consent-actions">
+    <button type="button" class="consent-secondary" data-consent="reject">{k.reject}</button>
+    <button type="button" class="consent-secondary" data-consent-open>{k.settings}</button>
+    <button type="button" class="consent-primary" data-consent="accept">{k.accept}</button>
+  </div>
+</section>
+<dialog class="consent-dialog" aria-labelledby="consent-dialog-title" data-consent-dialog>
+  <form method="dialog">
+    <h2 id="consent-dialog-title">{k.title}</h2>
+    <p>{k.body}</p>
+    <label class="consent-option"><input type="checkbox" checked disabled /><span><strong>{k.essential}</strong>{k.essentialBody}</span></label>
+    <label class="consent-option"><input type="checkbox" name="analytics" /><span><strong>{k.analytics}</strong>{k.analyticsBody}</span></label>
+    <label class="consent-option"><input type="checkbox" name="marketing" /><span><strong>{k.marketing}</strong>{k.marketingBody}</span></label>
+    <div class="consent-actions">
+      <button type="button" class="consent-secondary" data-consent="reject">{k.reject}</button>
+      <button type="button" class="consent-secondary" data-consent="save">{k.save}</button>
+      <button type="button" class="consent-primary" data-consent="accept">{k.accept}</button>
+    </div>
+    <a class="consent-policy" href={path("cookies", locale)}>{k.policy}</a>
+  </form>
+</dialog>
+<script>
+  import "~/scripts/consent";
+</script>
