@@ -532,6 +532,11 @@ const id: Dictionary = {
       relatedTitle: "Pekerjaan lain di bidang serupa",
     },
   },
+  quiz: {
+    cta: "Temukan langkah awal",
+    short: "Temukan langkah awal",
+    sent: "Terima kasih. Ringkasan Anda sudah kami terima dan akan kami balas lewat kanal yang Anda pilih.",
+  },
   team: { breadcrumb: "Tim" },
 };
 

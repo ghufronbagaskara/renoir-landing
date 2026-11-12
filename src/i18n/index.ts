@@ -21,6 +21,7 @@ const paths = {
   notes: { en: "/notes/", id: "/id/catatan/" },
   contact: { en: "/contact/", id: "/id/kontak/" },
   work: { en: "/portfolio/", id: "/id/karya/" },
+  start: { en: "/start/", id: "/id/mulai/" },
 } as const;
 
 export type RouteKey = keyof typeof paths;

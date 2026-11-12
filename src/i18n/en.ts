@@ -530,6 +530,11 @@ const en = {
       relatedTitle: "More work in the same field",
     },
   },
+  quiz: {
+    cta: "Find your first step",
+    short: "Find your first step",
+    sent: "Thanks. We received your summary and will reply through the channel you chose.",
+  },
   team: { breadcrumb: "Team" },
 };
 

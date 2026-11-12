@@ -1,0 +1,151 @@
+---
+// "Find your first step": four questions → recommendation → optional brief by email or WhatsApp.
+// Without JS every question shows as one form that posts to /api/contact, which derives the same result.
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import Img from "~/components/ui/Img.astro";
+import { quizCopy } from "~/content/quiz";
+import { branches, currents, goals, recommendations, timings, type Branch, type Recommendation } from "~/lib/quiz";
+import { getPortfolio, getServices, portfolioCopy, serviceCopy } from "~/lib/content";
+import { child, path, routeAlternates, t, type Locale } from "~/i18n";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const q = quizCopy[locale];
+const c = t(locale);
+const f = c.form;
+const services = await getServices();
+const portfolio = await getPortfolio();
+const proofFor: Record<Recommendation, string> = { internal: "order-sales", marketing: "industrial-coatings", design: "maxy-ai", care: "operations-control", discovery: "field-projects" };
+const results = recommendations.map((key) => {
+  const r = q.results[key];
+  const service = r.service ? services.find((s) => s.id === r.service) : undefined;
+  const project = portfolio.find((p) => p.id === proofFor[key])!;
+  return {
+    key,
+    ...r,
+    serviceHref: service && child("services", locale, serviceCopy(service, locale).slug),
+    project: { title: portfolioCopy(project, locale).title, subtitle: portfolioCopy(project, locale).subtitle, href: child("work", locale, project.id), image: `work/${project.id}/pair-mobile.webp` },
+  };
+});
+const messages = JSON.stringify({ ...f.messages, sent: c.quiz.sent });
+const options = (o: Record<string, string>, keys: readonly string[]) => keys.map((k) => [k, o[k]] as const);
+const steps: { name: string; title: string; hint: string; options: (readonly [string, string])[]; branch?: Branch }[] = [
+  { name: "quiz_goal", ...q.questions.goal, options: options(q.questions.goal.options, goals) },
+  { name: "quiz_current", ...q.questions.current, options: options(q.questions.current.options, currents) },
+  ...(Object.keys(branches) as Branch[]).map((b) => ({ name: "quiz_detail", branch: b, ...q.questions.detail[b], options: options(q.questions.detail[b].options, branches[b]) })),
+  { name: "quiz_timing", ...q.questions.timing, options: options(q.questions.timing.options, timings) },
+];
+---
+<BaseLayout locale={locale} title={q.metaTitle} description={q.metaDescription} alternates={routeAlternates("start")} breadcrumb={{ title: q.breadcrumb }}>
+  <div class="quiz-page" data-quiz data-progress={q.progress}>
+    <div class="container container-1617">
+      <section class="quiz-intro" data-quiz-intro>
+        <p class="doc-label">{q.label}</p>
+        <h2>{q.title}</h2>
+        <p class="quiz-lead">{q.intro}</p>
+        <ul class="quiz-points">{q.points.map((p) => <li>{p}</li>)}</ul>
+        <div class="quiz-intro-actions">
+          <button class="si-btn-one" type="button" data-quiz-start hidden><span class="btn-text"><span>{q.start}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></button>
+          <a class="doc-link" href={path("contact", locale)}>{q.direct}<span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="quiz-nojs" data-quiz-nojs>{q.form.noJs}</p>
+      </section>
+
+      <form class="quiz-form" method="post" action="/api/contact" data-contact-form data-quiz-form data-messages={messages}>
+        <input type="hidden" name="source" value="quiz" />
+        <input type="hidden" name="locale" value={locale} />
+        <input type="hidden" name="submission_id" data-quiz-id />
+        <div class="visually-hidden" aria-hidden="true">
+          <label for="quiz-website">{f.honeypot}</label>
+          <input id="quiz-website" type="text" name="company_website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="quiz-progress" data-quiz-progress hidden>
+          <p aria-live="polite" data-quiz-progress-text></p>
+          <div class="quiz-bar" aria-hidden="true"><span data-quiz-bar></span></div>
+        </div>
+
+        {steps.map((s) => (
+          <fieldset class="quiz-step" data-quiz-step={s.name} data-branch={s.branch}>
+            <legend class="visually-hidden">{s.title}</legend>
+            <h3 tabindex="-1">{s.title}</h3>
+            <p class="quiz-hint">{s.hint}</p>
+            <div class="quiz-options">
+              {s.options.map(([value, label]) => (
+                <label class="quiz-option">
+                  <input type="radio" name={s.name} value={value} required={!s.branch} />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+            <div class="quiz-nav" hidden>
+              <button class="quiz-back" type="button" data-quiz-back>{q.back}</button>
+              <button class="quiz-next" type="button" data-quiz-next>{q.next}<i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </fieldset>
+        ))}
+
+        <section class="quiz-result" data-quiz-result hidden aria-labelledby="quiz-result-label">
+          <p class="doc-label" id="quiz-result-label">{q.result.label}</p>
+          {results.map((r) => (
+            <div class="quiz-result-panel" data-result={r.key} hidden>
+              <h3 tabindex="-1">{r.title}</h3>
+              <p class="quiz-lead">{r.summary}</p>
+              <div class="quiz-result-grid">
+                <div>
+                  <h4>{q.result.because}</h4>
+                  <ul class="quiz-because" data-quiz-because></ul>
+                  <h4>{q.result.firstStep}</h4>
+                  <p>{r.firstStep}</p>
+                  <h4>{q.result.prepare}</h4>
+                  <ul>{r.prepare.map((p) => <li>{p}</li>)}</ul>
+                  {r.serviceHref && <a class="doc-link" href={r.serviceHref}>{q.result.service}<span aria-hidden="true">↗</span></a>}
+                </div>
+                <a class="quiz-proof" href={r.project.href}>
+                  <Img src={r.project.image} alt="" />
+                  <span class="quiz-proof-label">{q.result.proof}</span>
+                  <strong>{r.project.title}</strong>
+                  <span>{r.project.subtitle}</span>
+                </a>
+              </div>
+            </div>
+          ))}
+          <div class="quiz-result-actions">
+            <button class="si-btn-one" type="button" data-quiz-send><span class="btn-text"><span>{q.result.send}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></button>
+            <button class="quiz-back" type="button" data-quiz-edit>{q.result.edit}</button>
+            <button class="quiz-back" type="button" data-quiz-restart>{q.result.restart}</button>
+          </div>
+        </section>
+
+        <fieldset class="quiz-contact" data-quiz-contact>
+          <legend><h3 tabindex="-1">{q.form.title}</h3></legend>
+          <p class="quiz-hint">{q.form.body}</p>
+          <div class="quiz-fields">
+            <div><label for="quiz-name">{f.name}</label><input id="quiz-name" name="name" autocomplete="name" required maxlength="120" /></div>
+            <div><label for="quiz-company">{f.company}</label><input id="quiz-company" name="company" autocomplete="organization" maxlength="120" /></div>
+          </div>
+          <fieldset class="quiz-channel">
+            <legend>{q.form.channel}</legend>
+            <label class="quiz-option"><input type="radio" name="channel" value="email" checked data-quiz-channel /><span>{q.form.channels.email}</span></label>
+            <label class="quiz-option"><input type="radio" name="channel" value="whatsapp" data-quiz-channel /><span>{q.form.channels.whatsapp}</span></label>
+          </fieldset>
+          <div class="quiz-fields">
+            <div data-channel-field="email"><label for="quiz-email">{f.email}</label><input id="quiz-email" name="email" type="email" autocomplete="email" maxlength="254" /></div>
+            <div data-channel-field="whatsapp"><label for="quiz-whatsapp">{q.form.whatsapp}</label><input id="quiz-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" pattern="\+?[\d\s().\-]{8,24}" aria-describedby="quiz-whatsapp-hint" /><p class="quiz-hint" id="quiz-whatsapp-hint">{q.form.whatsappHint}</p></div>
+          </div>
+          <div><label for="quiz-note">{q.form.note}</label><textarea id="quiz-note" name="message" maxlength="5000" placeholder={q.form.notePlaceholder}></textarea></div>
+          <p class="quiz-privacy">{q.form.privacy}</p>
+          <div class="cf-turnstile-slot" data-turnstile></div>
+          <button class="si-btn-one" type="submit"><span class="btn-text"><span>{q.form.submit}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></button>
+          <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
+<script>
+  import "~/scripts/contact-form";
+  import "~/scripts/quiz";
+</script>
