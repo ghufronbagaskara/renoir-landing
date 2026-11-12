@@ -94,8 +94,60 @@ dialog.si-lightbox {
 .lang-switch-light { border-color: rgba(255, 255, 255, .35); color: var(--si-common-white);
   &:hover { background: var(--si-common-white); border-color: var(--si-common-white); color: var(--si-common-black); }
 }
-.offcanvas-cta { margin-top: 24px; }
-.offcanvas-lang { margin-top: 20px; }
+.offcanvas-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; }
+.offcanvas-actions :is(.offcanvas-cta, .offcanvas-lang) { margin: 0; }
+.si-offcanvas-menu nav a[href] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--renoir-muted);
+  border-bottom: 1px solid var(--renoir-line);
+  transition: none;
+  .offcanvas-link-label { position: relative; }
+  .offcanvas-link-label::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -3px;
+    height: 2px;
+    background: var(--renoir-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 110ms cubic-bezier(.2, 0, .38, .9);
+  }
+  .offcanvas-link-arrow {
+    flex: none;
+    font-size: 14px;
+    color: var(--renoir-accent);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: transform 110ms cubic-bezier(.2, 0, .38, .9), opacity 110ms cubic-bezier(.2, 0, .38, .9);
+  }
+  &[aria-current="page"] { color: var(--renoir-ink); }
+  &:active, &:focus-visible, &.is-link-pressed {
+    color: var(--renoir-ink);
+    .offcanvas-link-label::after { transform: scaleX(1); }
+    .offcanvas-link-arrow { opacity: 1; transform: none; }
+  }
+}
+@media (hover: hover) {
+  .si-offcanvas-menu nav a[href]:hover {
+    color: var(--renoir-ink);
+    .offcanvas-link-label::after { transform: scaleX(1); }
+    .offcanvas-link-arrow { opacity: 1; transform: none; }
+  }
+}
+.si-offcanvas-area {
+  :is(a, button):focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: 4px; }
+  .offcanvas-cta { transition: background-color 110ms cubic-bezier(.2, 0, .38, .9); }
+  .offcanvas-cta:active, .offcanvas-cta.is-link-pressed { background: var(--renoir-ink); }
+  .offcanvas-lang:active, .offcanvas-lang.is-link-pressed { color: var(--renoir-ink); border-color: var(--renoir-ink); background: var(--renoir-accent-soft); }
+  .renoir-brand:active .renoir-wordmark, .renoir-brand.is-link-pressed .renoir-wordmark,
+  .si-offcanvas-contact a:active, .si-offcanvas-contact a.is-link-pressed { color: var(--renoir-ink); text-decoration: underline; text-underline-offset: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .si-offcanvas-area a, .si-offcanvas-area a *, .si-offcanvas-area a *::after { transition: none !important; }
+}
 .offcanvas-pronunciation { font-size: 16px; font-weight: 400; letter-spacing: 0; color: var(--si-common-text-body); }
 
 // Engagement cards (template pricing)

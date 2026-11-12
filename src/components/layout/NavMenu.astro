@@ -19,7 +19,9 @@ const home = path("home", locale);
           <ul class="si-submenu submenu">
             {item.children.map((c) => (
               <li>
-                <a href={c.href} aria-current={isActive(c.href, current, home) ? "page" : undefined}>{c.label}</a>
+                <a href={c.href} aria-current={isActive(c.href, current, home) ? "page" : undefined}>
+                  {mobile ? <><span class="offcanvas-link-label">{c.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : c.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -31,7 +33,9 @@ const home = path("home", locale);
         </li>
       ) : (
         <li>
-          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>{item.label}</a>
+          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>
+            {mobile ? <><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : item.label}
+          </a>
         </li>
       ),
     )

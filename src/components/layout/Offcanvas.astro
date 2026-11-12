@@ -38,8 +38,10 @@ const c = t(locale);
         <nav aria-label="Mobile">
           <NavMenu locale={locale} mobile />
         </nav>
-        <a class="si-btn-one offcanvas-cta" href={path("contact", locale)}> <span class="btn-text"> <span>{c.nav.cta}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right"></i></span></a>
-        <LangSwitch locale={locale} alternates={alternates} class="offcanvas-lang" />
+        <div class="offcanvas-actions">
+          <a class="si-btn-one offcanvas-cta" href={path("contact", locale)}> <span class="btn-text"> <span>{c.nav.cta}</span> </span> <span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></a>
+          <LangSwitch locale={locale} alternates={alternates} class="offcanvas-lang" />
+        </div>
       </div>
       <div class="si-offcanvas-contact">
         <p class="si-offcanvas-title sm">{c.offcanvas.contactTitle}</p>

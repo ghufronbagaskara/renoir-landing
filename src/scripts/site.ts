@@ -14,6 +14,17 @@ if (header) {
 const main = document.getElementById("main");
 const overlays = document.querySelectorAll<HTMLElement>(".body-overlay");
 let lastTrigger: HTMLElement | null = null;
+let linkFeedbackTimer: ReturnType<typeof setTimeout> | undefined;
+let pressedLink: HTMLAnchorElement | null = null;
+
+function clearLinkFeedback() {
+  clearTimeout(linkFeedbackTimer);
+  pressedLink?.classList.remove("is-link-pressed");
+  pressedLink = null;
+}
+
+window.addEventListener("pagehide", clearLinkFeedback);
+window.addEventListener("pageshow", clearLinkFeedback);
 
 function open(panel: HTMLElement | null, trigger: HTMLElement) {
   if (!panel) return;
@@ -32,6 +43,7 @@ function open(panel: HTMLElement | null, trigger: HTMLElement) {
 }
 
 function closeAll() {
+  clearLinkFeedback();
   document.querySelectorAll<HTMLElement>(".si-offcanvas-area.opened, .si-search-area.opened").forEach((p) => {
     p.classList.remove("opened");
     if (p instanceof HTMLDialogElement) {
@@ -56,6 +68,25 @@ document.addEventListener("click", (e) => {
   }
   if (t.closest(".si-offcanvas-close-btn, .si-search-close-btn, .body-overlay")) closeAll();
   if (t.matches("dialog.si-search-area")) closeAll();
+
+  const link = t.closest<HTMLAnchorElement>(".si-offcanvas-area.opened a[href]");
+  if (link) clearLinkFeedback();
+  if (link && !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+    const destination = new URL(link.href);
+    // Preserve native downloads, new tabs and same-page anchors.
+    if (!link.hasAttribute("download") && (!link.target || link.target === "_self") &&
+      destination.origin === location.origin && /^https?:$/.test(destination.protocol) &&
+      !(destination.pathname === location.pathname && destination.search === location.search && destination.hash) &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      e.preventDefault();
+      pressedLink = link;
+      link.classList.add("is-link-pressed");
+      linkFeedbackTimer = setTimeout(() => {
+        clearLinkFeedback();
+        location.assign(destination.href);
+      }, 110);
+    }
+  }
 
   // Offcanvas submenu toggles
   const toggle = t.closest<HTMLElement>(".si-offcanvas-menu .si-menu-close, .si-offcanvas-menu li:has(> .submenu) > a:not([href])");
