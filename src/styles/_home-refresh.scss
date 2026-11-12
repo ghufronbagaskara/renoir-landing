@@ -234,3 +234,38 @@
 }
 
 .home-services .wheel-index button span { opacity: 1; }
+
+@font-face {
+  font-family: "Caveat Brush";
+  src: url("../assets/fonts/caveat-brush-latin-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-0040, U+0041-005A, U+00C0-00DD, U+0152, U+0160, U+017D, U+2013-2014, U+2019;
+}
+
+body:not(.inner-page) main :is(.home-section-label, .home-benefits-label, .si-section-title > span) {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0 9px;
+  color: var(--renoir-ink);
+  font: 400 clamp(16px, 1.5vw, 23px)/1.15 "Caveat Brush", "General Sans", sans-serif;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+body:not(.inner-page) main :is(.home-section-label, .home-benefits-label, .si-section-title > span)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 19% 0 3%;
+  width: auto;
+  height: auto;
+  margin: 0;
+  opacity: 1;
+  background: #8ce4f5;
+  transform: rotate(-2deg);
+  animation: none;
+  clip-path: polygon(0 17%, 17% 5%, 36% 14%, 56% 3%, 75% 13%, 100% 6%, 97% 85%, 78% 96%, 55% 89%, 31% 99%, 5% 93%);
+}
