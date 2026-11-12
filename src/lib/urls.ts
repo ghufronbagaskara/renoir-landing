@@ -8,7 +8,7 @@ export interface SiteUrl {
 
 export async function allUrls(): Promise<SiteUrl[]> {
   const urls: SiteUrl[] = [];
-  const localized: RouteKey[] = ["home", "services", "process", "about", "notes", "work", "contact", "start"];
+  const localized: RouteKey[] = ["home", "services", "process", "about", "notes", "work", "contact", "start", "howWeWork", "privacy", "terms", "cookies"];
   for (const route of localized) urls.push({ alternates: routeAlternates(route) });
 
   for (const entry of await getServices()) {

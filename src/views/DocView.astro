@@ -1,0 +1,57 @@
+---
+// How-we-work and legal pages: one reading layout with an on-page index and optional promise cards.
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { docs, type DocKey } from "~/content/trust";
+import { path, routeAlternates, t, type Locale } from "~/i18n";
+import { faqNode } from "~/lib/seo";
+
+interface Props {
+  locale: Locale;
+  doc: DocKey;
+}
+const { locale, doc } = Astro.props;
+const d = docs[locale][doc];
+const c = t(locale);
+const updated = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(d.updated));
+const text = (s: (typeof d.sections)[number]) => [...(s.body ?? []), ...(s.list ?? [])].join(" ");
+const schema = doc === "howWeWork" ? [faqNode(path(doc, locale), d.sections.map((s) => ({ question: s.title, answer: text(s) })))] : [];
+---
+<BaseLayout locale={locale} title={d.metaTitle} description={d.metaDescription} alternates={routeAlternates(doc)} breadcrumb={{ title: d.breadcrumb }} schema={schema}>
+  <div class="doc-page">
+    <div class="container container-1617">
+      <header class="doc-head">
+        <p class="doc-label">{d.label}</p>
+        <h2>{d.title}</h2>
+        <p class="doc-intro">{d.intro}</p>
+        <p class="doc-updated">{c.docs.updated} <time datetime={d.updated}>{updated}</time></p>
+      </header>
+      {d.highlights && (
+        <ul class="doc-highlights">
+          {d.highlights.map((h) => <li><h3>{h.title}</h3><p>{h.body}</p></li>)}
+        </ul>
+      )}
+      <div class="doc-layout">
+        <nav class="doc-toc" aria-label={c.docs.contents}>
+          <p>{c.docs.contents}</p>
+          <ol>{d.sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}</ol>
+        </nav>
+        <article class="doc-body">
+          {d.sections.map((s) => (
+            <section id={s.id} aria-labelledby={`${s.id}-title`}>
+              <h3 id={`${s.id}-title`}>{s.title}</h3>
+              {s.body?.map((p) => <p>{p}</p>)}
+              {s.list && <ul>{s.list.map((li) => <li>{li}</li>)}</ul>}
+            </section>
+          ))}
+          <aside class="doc-cta">
+            <p>{doc === "howWeWork" ? c.docs.ctaWork : c.docs.ctaLegal}</p>
+            <div>
+              <a class="si-btn-one" href={path("start", locale)}><span class="btn-text"><span>{c.quiz.cta}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></a>
+              <a class="doc-link" href={path("contact", locale)}>{c.nav.cta}<span aria-hidden="true">↗</span></a>
+            </div>
+          </aside>
+        </article>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

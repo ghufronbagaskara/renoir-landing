@@ -530,6 +530,12 @@ const en = {
       relatedTitle: "More work in the same field",
     },
   },
+  docs: {
+    updated: "Last updated",
+    contents: "On this page",
+    ctaWork: "Want to see how this applies to your project? Answer four questions or tell us about it directly.",
+    ctaLegal: "Questions about your data? Send them through the contact page and mention the topic.",
+  },
   quiz: {
     cta: "Find your first step",
     short: "Find your first step",

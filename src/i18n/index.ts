@@ -22,6 +22,10 @@ const paths = {
   contact: { en: "/contact/", id: "/id/kontak/" },
   work: { en: "/portfolio/", id: "/id/karya/" },
   start: { en: "/start/", id: "/id/mulai/" },
+  howWeWork: { en: "/how-we-work/", id: "/id/cara-kerja/" },
+  privacy: { en: "/privacy/", id: "/id/privasi/" },
+  terms: { en: "/terms/", id: "/id/syarat/" },
+  cookies: { en: "/cookies/", id: "/id/cookie/" },
 } as const;
 
 export type RouteKey = keyof typeof paths;

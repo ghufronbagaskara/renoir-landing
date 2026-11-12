@@ -532,6 +532,12 @@ const id: Dictionary = {
       relatedTitle: "Pekerjaan lain di bidang serupa",
     },
   },
+  docs: {
+    updated: "Terakhir diperbarui",
+    contents: "Di halaman ini",
+    ctaWork: "Ingin melihat penerapannya pada proyek Anda? Jawab empat pertanyaan atau ceritakan langsung kepada kami.",
+    ctaLegal: "Ada pertanyaan tentang data Anda? Kirim lewat halaman kontak dan sebutkan topiknya.",
+  },
   quiz: {
     cta: "Temukan langkah awal",
     short: "Temukan langkah awal",

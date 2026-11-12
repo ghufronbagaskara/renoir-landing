@@ -136,7 +136,7 @@ const steps: { name: string; title: string; hint: string; options: (readonly [st
             <div data-channel-field="whatsapp"><label for="quiz-whatsapp">{q.form.whatsapp}</label><input id="quiz-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" pattern="\+?[\d\s().\-]{8,24}" aria-describedby="quiz-whatsapp-hint" /><p class="quiz-hint" id="quiz-whatsapp-hint">{q.form.whatsappHint}</p></div>
           </div>
           <div><label for="quiz-note">{q.form.note}</label><textarea id="quiz-note" name="message" maxlength="5000" placeholder={q.form.notePlaceholder}></textarea></div>
-          <p class="quiz-privacy">{q.form.privacy}</p>
+          <p class="quiz-privacy">{q.form.privacy} <a href={path("privacy", locale)}>{q.form.privacyLink}</a></p>
           <div class="cf-turnstile-slot" data-turnstile></div>
           <button class="si-btn-one" type="submit"><span class="btn-text"><span>{q.form.submit}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></button>
           <p class="form-status" role="status" aria-live="polite" data-form-status></p>
