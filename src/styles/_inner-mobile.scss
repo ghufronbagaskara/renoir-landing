@@ -249,10 +249,16 @@
     .work-case-head h1 { font-size: clamp(28px, 8vw, 36px); line-height: 1.15; margin-top: 12px; }
     .work-case-head > p { font-size: 15px; line-height: 1.6; }
     .work-case-hero { margin-bottom: 32px; }
+    .work-case-pair { grid-template-columns: minmax(0, 1fr) minmax(0, .3fr); align-items: center; gap: 10px; padding: 12px; }
+    .work-case-screen { padding: 4px; border-radius: 9px; }
+    .work-case-screen-mobile { width: 100%; border-radius: 12px; }
     .work-case-hero figcaption { font-size: 12px; line-height: 1.5; }
     .work-case-image-links a, .work-case-feature figcaption a { display: inline-flex; align-items: center; min-height: 44px; }
     .work-case-context { gap: 12px; margin-bottom: 32px; }
     .work-case-context h2, .work-case-feature h2, .work-case-role h2 { font-size: 24px; line-height: 1.25; margin-bottom: 12px; }
+    .work-case-ai { grid-template-columns: 1fr; gap: 12px; padding: 20px; margin-bottom: 32px; }
+    .work-case-ai h2 { font-size: 22px; }
+    .work-case-ai li { font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
     .work-case-features { gap: 36px; }
     .work-case-feature { gap: 20px; }
     .work-case-feature-number { margin-bottom: 10px; font-size: 12px; }

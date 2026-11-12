@@ -10,6 +10,7 @@ interface WorkCopy {
   challenge: string;
   approach: string;
   role: string;
+  ai?: { title: string; body: string; points: string[] };
   tags: string[];
 }
 
@@ -40,16 +41,26 @@ export const portfolio: WorkProject[] = [
       overview: "Orders change hands. Their status should stay visible. This system brings stages, ownership, deadlines, payments, and field sales activity into view.",
       challenge: "A manufacturing order passes through warehouse, delivery, administration, and finance. The team needs to see where each order stands and who owns the next step.",
       approach: "A ten-stage order trail, operational dashboard, overdue signals, and field sales views connect office and on-site work in one application.",
-      role: "The Katalhys founder worked on the interface, application development, and deployment.",
-      tags: ["Order tracking", "Field sales", "UI/UX"],
+      role: "The Katalhys founder worked on the interface, application development, AI-assisted sales follow-up, and deployment.",
+      ai: {
+        title: "AI helps the team decide what to follow up",
+        body: "Order tracking shows what happened. AI turns visit notes and operational records into suggestions the sales team and owner can review before acting.",
+        points: ["Suggests the next visit's actions from a prospect's history and recorded obstacles.", "Reviews sales activity and highlights specific points to improve.", "Adds an AI-written narrative to the owner's daily operational and sales digest."],
+      },
+      tags: ["Order tracking", "Field sales", "UI/UX", "AI integration"],
     },
     id_: {
       title: "Alur Pesanan & Sales Lapangan", subtitle: "Pesanan berpindah tangan; informasinya tidak boleh ikut hilang.",
       overview: "Pesanan berpindah tangan; informasinya tidak boleh ikut hilang. Sistem ini menunjukkan tahap, penanggung jawab, tenggat, pembayaran, dan aktivitas sales lapangan.",
       challenge: "Pesanan manufaktur melewati gudang, pengiriman, administrasi, dan keuangan. Tim perlu tahu posisi setiap pesanan dan siapa yang menangani tahap berikutnya.",
       approach: "Jejak sepuluh tahap, dashboard operasional, penanda keterlambatan, dan layar sales lapangan menghubungkan pekerjaan kantor dan lapangan.",
-      role: "Pendiri Katalhys mengerjakan antarmuka, pengembangan aplikasi, dan deployment.",
-      tags: ["Pelacakan pesanan", "Sales lapangan", "UI/UX"],
+      role: "Pendiri Katalhys mengerjakan antarmuka, pengembangan aplikasi, integrasi AI untuk tindak lanjut sales, dan deployment.",
+      ai: {
+        title: "AI membantu menentukan tindak lanjut",
+        body: "Pelacakan pesanan menunjukkan apa yang terjadi. AI mengolah catatan kunjungan dan aktivitas operasional menjadi saran yang dapat diperiksa sales serta pemilik sebelum bertindak.",
+        points: ["Menyarankan langkah kunjungan berikutnya dari riwayat prospek dan kendala yang dicatat.", "Meninjau aktivitas sales dan menunjukkan hal konkret yang perlu diperbaiki.", "Melengkapi rekap operasional dan sales harian pemilik dengan narasi dari AI."],
+      },
+      tags: ["Pelacakan pesanan", "Sales lapangan", "UI/UX", "Integrasi AI"],
     },
   },
   {
@@ -59,16 +70,26 @@ export const portfolio: WorkProject[] = [
       overview: "A large catalogue should still be easy to use. This site connects product search, project references, and buyer enquiries, with an editor for the team.",
       challenge: "Industrial buyers need to find the right coating and understand its use without sifting through an unstructured product list.",
       approach: "The public site pairs searchable products with applications and project references. An editor lets the team maintain the catalogue and content.",
-      role: "The Katalhys founder handled UI/UX, website development, and deployment.",
-      tags: ["Product catalogue", "Search", "Content editor"],
+      role: "The Katalhys founder handled UI/UX, website development, the catalogue assistant integration, and deployment.",
+      ai: {
+        title: "A product assistant connected to the catalogue",
+        body: "Buyers can describe their needs to FanosBot, which reads the published catalogue and helps prepare an enquiry. The visitor stays in control of the product selection and quotation details.",
+        points: ["Searches products and retrieves their published technical details.", "Suggests relevant coatings; adding one to the basket requires confirmation.", "Prefills an editable enquiry from the conversation, with pricing left to the sales team."],
+      },
+      tags: ["Product catalogue", "Search", "Content editor", "AI integration"],
     },
     id_: {
       title: "Katalog Coating Industri", subtitle: "Katalog panjang tetap harus mudah dijelajahi.",
       overview: "Katalog yang panjang tidak boleh membuat pembeli tersesat. Situs ini menghubungkan pencarian produk, referensi proyek, dan pertanyaan pembeli; timnya dapat memperbarui isi lewat admin.",
       challenge: "Pembeli industri perlu menemukan coating yang tepat dan memahami penggunaannya tanpa menyisir daftar produk yang tidak terstruktur.",
       approach: "Situs publik menghubungkan pencarian produk dengan aplikasi dan referensi proyek. Editor memungkinkan tim memperbarui katalog serta konten.",
-      role: "Pendiri Katalhys menangani UI/UX, pengembangan situs, dan deployment.",
-      tags: ["Katalog produk", "Pencarian", "Editor konten"],
+      role: "Pendiri Katalhys menangani UI/UX, pengembangan situs, integrasi asisten katalog, dan deployment.",
+      ai: {
+        title: "Asisten produk yang terhubung ke katalog",
+        body: "Pembeli dapat menjelaskan kebutuhannya kepada FanosBot. Asisten membaca katalog yang diterbitkan dan membantu menyiapkan pertanyaan, sementara pilihan produk serta keterangan penawaran tetap di tangan pengunjung.",
+        points: ["Mencari produk dan mengambil detail teknis yang sudah diterbitkan.", "Mengusulkan coating yang sesuai; memasukkannya ke keranjang tetap perlu persetujuan.", "Mengisi awal formulir dari percakapan agar bisa diperiksa dan diedit; harga ditangani tim sales."],
+      },
+      tags: ["Katalog produk", "Pencarian", "Editor konten", "Integrasi AI"],
     },
   },
   {
@@ -78,16 +99,26 @@ export const portfolio: WorkProject[] = [
       overview: "Field projects can lose context between survey and handover. This system keeps zone progress, daily reports, approvals, and costs in one record.",
       challenge: "Site progress, attendance, reports, approvals, and budgets are often reviewed by different people at different times.",
       approach: "The application brings zone progress, daily field reports, review queues, and cost tracking into the same project view.",
-      role: "The Katalhys founder worked on UI/UX, application development, and deployment.",
-      tags: ["Project progress", "Field reports", "UI/UX"],
+      role: "The Katalhys founder worked on UI/UX, application development, AI owner briefs and report triage, and deployment.",
+      ai: {
+        title: "Field reports become a brief the owner can act on",
+        body: "AI helps the owner see which decisions and follow-ups need attention. The application supplies the project facts; the owner and controller keep responsibility for decisions and approvals.",
+        points: ["Builds an owner brief with decision priorities, contacts and draft follow-up messages.", "Explains risk signals on daily reports so the controller can choose what to review first.", "Answers follow-up questions using the facts captured for that brief."],
+      },
+      tags: ["Project progress", "Field reports", "UI/UX", "AI integration"],
     },
     id_: {
       title: "Pemantauan Proyek Lapangan", subtitle: "Satu catatan proyek dari survei sampai serah terima.",
       overview: "Proyek lapangan mudah kehilangan konteks antara survei dan serah terima. Sistem ini menyatukan progres per zona, laporan harian, persetujuan, dan biaya.",
       challenge: "Progres lapangan, absensi, laporan, persetujuan, dan anggaran sering ditinjau orang berbeda pada waktu berbeda.",
       approach: "Aplikasi menyatukan progres per zona, laporan harian, antrean review, dan pemantauan biaya dalam satu tampilan proyek.",
-      role: "Pendiri Katalhys mengerjakan UI/UX, pengembangan aplikasi, dan deployment.",
-      tags: ["Progres proyek", "Laporan lapangan", "UI/UX"],
+      role: "Pendiri Katalhys mengerjakan UI/UX, pengembangan aplikasi, integrasi AI untuk brief pemilik dan triase laporan, serta deployment.",
+      ai: {
+        title: "Laporan lapangan menjadi bahan keputusan",
+        body: "AI membantu pemilik melihat keputusan dan tindak lanjut yang perlu diperhatikan. Aplikasi memasok fakta proyek; keputusan serta persetujuan tetap ditangani pemilik dan pengendali.",
+        points: ["Menyusun brief pemilik berisi prioritas keputusan, kontak, dan draf pesan tindak lanjut.", "Menjelaskan sinyal risiko pada laporan harian agar pengendali dapat memilih laporan yang perlu ditinjau lebih dulu.", "Menjawab pertanyaan lanjutan dari fakta yang tersimpan pada brief tersebut."],
+      },
+      tags: ["Progres proyek", "Laporan lapangan", "UI/UX", "Integrasi AI"],
     },
   },
   {
@@ -154,16 +185,26 @@ export const portfolio: WorkProject[] = [
       overview: "Activity data needs context. A Windows agent and web dashboard present summaries, timelines, and anomalies for human review.",
       challenge: "Raw activity logs are hard to interpret and can hide useful patterns behind long lists of events.",
       approach: "A Windows collector records limited activity metadata; the dashboard groups it into summaries, timelines, and anomalies for review.",
-      role: "The Katalhys founder worked on system architecture, dashboard UI/UX, development, and deployment.",
-      tags: ["Windows agent", "Dashboard", "Human review"],
+      role: "The Katalhys founder worked on system architecture, dashboard UI/UX, optional AI analysis, development, and deployment.",
+      ai: {
+        title: "Activity records get an explanation people can review",
+        body: "When AI analysis is enabled, the owner can inspect a selected computer and time range through a short explanation grounded in its activity records. Findings remain material for human review.",
+        points: ["Summarizes the selected period from hourly activity and application context.", "Links each finding to an hour in the underlying records.", "Marks ambiguous results for review instead of making a disciplinary decision."],
+      },
+      tags: ["Windows agent", "Dashboard", "Human review", "AI integration"],
     },
     id_: {
       title: "Tinjauan Aktivitas Kerja", subtitle: "Data aktivitas perlu konteks agar berguna.",
       overview: "Data aktivitas baru berguna saat bisa dibaca dalam konteks. Agen Windows dan dashboard menampilkan ringkasan, linimasa, serta anomali untuk ditinjau manusia.",
       challenge: "Log aktivitas mentah sulit ditafsirkan dan pola penting mudah tenggelam dalam daftar kejadian panjang.",
       approach: "Agen Windows mencatat metadata aktivitas terbatas; dashboard menyusunnya menjadi ringkasan, linimasa, dan anomali untuk ditinjau.",
-      role: "Pendiri Katalhys mengerjakan arsitektur sistem, UI/UX dashboard, pengembangan, dan deployment.",
-      tags: ["Agen Windows", "Dashboard", "Tinjauan manusia"],
+      role: "Pendiri Katalhys mengerjakan arsitektur sistem, UI/UX dashboard, analisis AI opsional, pengembangan, dan deployment.",
+      ai: {
+        title: "Catatan aktivitas mendapat penjelasan yang bisa ditinjau",
+        body: "Saat analisis AI diaktifkan, pemilik dapat memeriksa komputer dan rentang waktu tertentu melalui penjelasan singkat dari catatan aktivitasnya. Hasilnya menjadi bahan tinjauan manusia.",
+        points: ["Merangkum rentang yang dipilih dari aktivitas per jam dan konteks aplikasi.", "Menghubungkan setiap temuan dengan jam pada catatan sumber.", "Menandai hasil yang belum jelas untuk diperiksa, tanpa membuat keputusan disipliner."],
+      },
+      tags: ["Agen Windows", "Dashboard", "Tinjauan manusia", "Integrasi AI"],
     },
   },
   {

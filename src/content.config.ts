@@ -34,6 +34,7 @@ const workCopy = z.object({
   challenge: z.string(),
   approach: z.string(),
   role: z.string(),
+  ai: z.object({ title: z.string(), body: z.string(), points: z.array(z.string()).min(1).max(3) }).optional(),
   tags: z.array(z.string()).min(1),
 });
 

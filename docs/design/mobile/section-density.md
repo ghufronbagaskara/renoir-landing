@@ -1,5 +1,7 @@
 # Phone section density and floating navigation
 
+Update 22 October 2026: the owner's latest feedback supersedes the earlier in-flow phone CTA and stacked Work hero choices. The CTA now follows the viewport and Work keeps desktop/phone screenshots side by side. See [the Work feedback and source audit](2026-10-22-work-feedback.md) for current behavior and verification. Earlier measurements below remain a dated record of the previous pass.
+
 The owner's follow-up asks for a deliberately composed phone layout: shorter title-to-description gaps, smaller text, a slimmer footer and one coherent component per screen. The previous mobile pass still left the Problem, Work, benefits and other Home sections substantially taller than a phone. Antislop continues during implementation, as selected by the owner.
 
 ## Live navigation research

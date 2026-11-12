@@ -60,6 +60,11 @@ const cta = project.data.primaryService === "marketing" ? w.details.websiteCta :
       <div><p>{copy.challenge}</p><p>{copy.approach}</p></div>
     </section>
 
+    {copy.ai && <section class="work-case-ai" aria-labelledby="work-ai-title">
+      <div><span class="work-case-ai-label">{locale === "id" ? "Integrasi AI" : "AI integration"}</span><h2 id="work-ai-title">{copy.ai.title}</h2></div>
+      <div><p>{copy.ai.body}</p><ul>{copy.ai.points.map((point) => <li>{point}</li>)}</ul></div>
+    </section>}
+
     <section class="work-case-features" aria-label={w.details.screens}>
       {project.data.features.map((feature, index) => {
         const content = feature[locale === "en" ? "en" : "id_"];
@@ -83,15 +88,15 @@ const cta = project.data.primaryService === "marketing" ? w.details.websiteCta :
       <section class="work-case-role"><h2>{w.details.role}</h2><p>{copy.role}</p></section>
       <aside class="work-case-facts">
         <h2>{w.details.information}</h2>
-        <dl><div><dt>{w.details.services}</dt><dd><ul class="work-service-list">{project.data.serviceIds.map((id) => <li>{w.services[id]}</li>)}</ul></dd></div>{project.data.year && <div><dt>{w.details.year}</dt><dd>{project.data.year}</dd></div>}</dl>
+        <dl><div><dt>{w.details.services}</dt><dd><ul class="work-service-list">{project.data.serviceIds.map((id) => <li><a href={`${path("work", locale)}?service=${id}#all-work-title`}>{w.services[id]}</a></li>)}</ul></dd></div>{project.data.year && <div><dt>{w.details.year}</dt><dd>{project.data.year}</dd></div>}</dl>
         <div class="work-tags">{copy.tags.map((tag) => <span>{tag}</span>)}</div>
         <a class="work-case-cta" href={path("contact", locale)}>{cta}<i class="fa-sharp fa-regular fa-arrow-up-right" aria-hidden="true"></i></a>
       </aside>
     </div>
 
     <nav class="work-case-neighbours" aria-label={w.details.navigation}>
-      <a href={href(prev)} rel="prev"><span>{w.details.previous}</span><strong>{portfolioCopy(prev, locale).title}</strong></a>
-      <a href={href(next)} rel="next"><span>{w.details.next}</span><strong>{portfolioCopy(next, locale).title}</strong></a>
+      <a href={href(prev)} rel="prev"><div><span>{w.details.previous}</span><strong>{portfolioCopy(prev, locale).title}</strong></div><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></a>
+      <a href={href(next)} rel="next"><div><span>{w.details.next}</span><strong>{portfolioCopy(next, locale).title}</strong></div><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></a>
     </nav>
   </article>
 
