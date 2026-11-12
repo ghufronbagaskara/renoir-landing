@@ -50,6 +50,9 @@ node scripts/check-home-feedback.mjs # Chrome ring, autoplay/pause, hover, searc
 node scripts/check-work-badges.mjs # Chrome EN/ID Work badge containment, filtering and responsive navigation
 node scripts/check-mobile-layout.mjs # built-page EN/ID mobile/tablet/desktop layout and touch/keyboard/fallback checks
 node scripts/check-mobile-density.mjs # phone section/component height budgets, expanded states, logo and navigation
+node scripts/check-offcanvas-feedback.mjs # EN/ID menu spacing, press feedback, destinations, native exceptions and keyboard/touch
+node scripts/check-work-mobile-feedback.mjs # EN/ID header contrast, fixed CTA, eight Work pairs, AI sections and filtered service links
+node scripts/check-notes-search-mobile.mjs # compact Notes metadata, centered search, thumbnails, keyboard, fallback and error states
 bun test scripts/check-deploy-env.test.ts # CI credential/stage preflight, without cloud calls
 node scripts/check-motion.mjs # stable headings, finite diagrams and motion fallbacks across 24 route/viewport cases
 bun alchemy deploy     # deploy personal dev stage   ← ASK THE OWNER BEFORE EVERY DEPLOY
@@ -84,6 +87,9 @@ public/_headers             noindex on *.workers.dev, immutable /_astro/*, secur
 docs/renoir-run.md          brand brief (phase 2 input)
 docs/design/inner-pages/    research: 12 reference screenshots, inner-page audit, four service storyboards and isolated EN/ID prototype; `node docs/design/inner-pages/serve.mjs` on :4391. Internal Systems pilot integrated into ServiceView; remaining designs await implementation
 promo/gambar/<NN-post>/     Instagram posts: index.html canvas → `node promo/gambar/render.mjs <dir>` → numbered JPEGs in renders/ (see promo/gambar/README.md)
+promo/gambar/kartu-nama/    Katalhys business cards: personalized fronts, shared studio and services back, Canva import PPTX and print proof; contact source and regeneration in its README
+promo/pitch-deck/           Indonesian client deck, latest v7: 30 main + 10 optional slides, editable PPTX, SVG ornaments, one concurrent whole-page animation per slide, PDF, notes and linked local demo sales module; source/regeneration/QA in its README
+promo/sales-module/         demo sales playbook authoring, local preview and checks; standalone HTML + static PDF under public/resources/sales-playbook/; see its README for source limits and regeneration
 promo/video/<name>/         social videos: HyperFrames projects (HTML+GSAP → MP4; BRIEF.md, CREDITS.md) and studio-overview (adapted Claude Design source + render-60fps.mjs). Review: promo/video/README.md + review.html. Skills in .claude/skills/hyperframes*
 averix-modern-...-utc/      original template (git-ignored, licensed). Source of truth for phase-1 markup
 src/
@@ -129,10 +135,12 @@ Team, pricing, and other unused template pages are not public routes. English an
   Preserve owner-approved wording when enhancing visuals: do not rewrite existing copy unless asked.
 - Client privacy: use functional names for internal-system projects and keep the expert-profile client anonymous in public text, metadata and search. Marketing-site names may remain. The owner explicitly retains existing screenshot logos/text; do not redact those pixels automatically. `check:copy` guards private client names in public HTML and the search catalog.
 - Work catalogue thumbnails establish a relative positioning context for their absolute service badges; keep the mobile static badge override.
-- Mobile composition: `_inner-mobile.scss` owns 16px gutters, shared compact engagement/FAQ/footer rules and inner-page details. Phone sections use a 24px vertical register with smaller reading/heading scales and natural content height. Header controls retain 44px targets in one rounded search/Menu group; language switching remains in the offcanvas. The logo has no white background and the wordmark turns ink after leaving the hero. Home services expose four choices in two columns and a shorter detail stage; Home Process uses native stage disclosures below 768px while desktop keeps its storyboard. Home Work keeps approach/service detail in a native disclosure, closed initially with JS on phones and open on desktop/no-JS; tab changes close it on phones. The shared contact CTA follows main content on phones; it remains hidden on Internal Systems and narrow Work details. Service inquiry labels are visible, with 16px field text. Preserve the owner-requested two-column Work/Notes catalogues. Decisions, reference research, measured section budgets and limits: `docs/design/mobile/section-density.md`.
+- Mobile composition: `_inner-mobile.scss` owns 16px gutters, shared compact engagement/FAQ/footer rules and inner-page details. Phone sections use a 24px vertical register with smaller reading/heading scales and natural content height. Header controls retain 44px targets in one rounded search/Menu group; language switching remains in the offcanvas. The logo has no white background and the wordmark turns ink after leaving the hero. Home services expose four choices in two columns and a shorter detail stage; Home Process uses four native stage disclosures. Desktop pairs the compact list with a lazy editorial WebP and an overlaid detail card. Smaller screens show the selected deliverables inline. The dedicated Process page keeps its storyboard. Home Work keeps approach/service detail in a native disclosure, closed initially with JS on phones and open on desktop/no-JS; tab changes close it on phones. The shared contact CTA is fixed to the viewport on phones and desktop, with safe-area spacing and reserved phone page-bottom clearance. It remains hidden on Internal Systems and while the Work consultation link is visible. Service inquiry labels are visible, with 16px field text. Preserve the owner-requested two-column Work/Notes catalogues. Decisions, reference research, measured section budgets and limits: `docs/design/mobile/section-density.md`; latest Work/header/CTA feedback: `docs/design/mobile/2026-10-22-work-feedback.md`.
 
 - `.astro` first. Client code = small vanilla TS modules in `src/scripts`, imported from a component `<script>`
   (Astro bundles/dedupes them). No framework islands.
+- Offcanvas links keep native anchors. Ordinary same-origin page clicks show a 110ms ink/underline response before navigation; reduced motion, modified clicks, downloads, new tabs and same-page anchors stay immediate/native. Escape/close cancels pending navigation. Mobile action buttons share a wrapping 12px-gap row. Interaction research and QA: `docs/design/mobile/offcanvas-feedback.md`.
+- Notes keep the two-column phone grid with 14px titles and a compact category/date/author block. Dates use localized short months and retain the full date in the time element's title. Search uses a centered native dialog on phones, with balanced percentage-based width, a stable height capped at 580px, safe-area viewport limits and internally scrolling defaults/results. Phone service paths use two columns; Recent Notes use existing thumbnails beside smaller titles. Keep 44px controls, 16px input text and explicit focus. UI decisions/checks: `docs/design/mobile/2026-10-22-notes-search.md`. Six-site business comparison and proposed priorities: `docs/design/2026-10-22-competitor-research.md`; research does not authorize publishing new pricing or response-time promises.
 - **Keep the template's markup and class names** (`si-*`, Bootstrap grid) so the template SCSS keeps working.
   When semantics require a different element, extend the SCSS selector instead of restyling
   (e.g. `h1, .h1{`, `h3, .h3{`, `h1, .sidebar-heading{`).
@@ -154,10 +162,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   the stage controls; the in-page CTA targets the existing form. Other service artwork retains its presentation.
   Home uses four generated conceptual service illustrations (not product proof) and five existing project
   thumbnails under `assets/img/home-refresh/` in `ui/WorksWheel.astro`. Only the four services have text/links;
-  the five project images are decorative. The compact cobalt section starts as a ring: native scroll and
-  image drag rotate it; only service tabs and previous/next open service detail. Desktop uses the perspective view;
-  phones show one selected illustration above the full detail copy. Service images
-  expose real detail links on hover/focus. Dragging an open service changes its selection without navigating.
+  the five project images are decorative. The compact cobalt section starts as a slowly rotating ring driven by one animation on the orbit. Image drag adjusts it manually. Click a service image, tab, or previous/next to open its preview. Desktop uses the perspective view; phones show one selected illustration above the full detail copy. Hover or focus on an image reveals its service name. Dragging an open service changes its selection without navigating.
   The hero uses the owner-provided video, transcoded to local H.264 under `src/assets/video/`, emitted as hashed `/_astro/` URLs with immutable caching, with responsive
   WebP posters, a play/pause control and reduced-motion/save-data/no-JS/error fallbacks. A 506×900 portrait video preserves the desktop center crop on narrow portrait screens; wider viewports use the 1600×900 source. Automatic playback waits for document load, font readiness, poster decode and the next paint; explicit play stays immediate. Video pauses outside
   the viewport and in hidden tabs. A dark scrim improves contrast; the three hero facts were removed.
@@ -170,7 +175,7 @@ Team, pricing, and other unused template pages are not public routes. English an
   component-scoped, text stays static, and no JavaScript or external assets are needed. The old shared Rows
   component has been removed after its sole Home caller was replaced. Research and integration notes:
   `docs/design/motion-refresh/README.md`.
-  Home Problem is one static, localized source-to-workflow canvas in Problem.astro, with conceptual AI assistance, human decisions and a separate real-project proof link. Research: docs/design/problem-refresh/research.md. It adds no client JavaScript or generated images.
+  Home Problem uses three localized tabs in Problem.astro to show scattered order updates, a shared record and AI assistance. The panels show a source inbox, a sample order record and a draft awaiting review. Desktop pairs stacked controls with a preview. Phones put compact tabs above the preview. The shared keyboard tab helper switches panels on demand. Rotation runs in view at eight seconds per stage with a countdown bar, stops on manual selection, offers a pause control, and starts paused with reduced motion. All panels remain readable without JavaScript, and the real-project proof link remains separate.
   Home Notes uses tinted cards, intact white diagram panels and equivalent image/title/read-note links; the existing rail behavior remains.
   Notes use explanatory diagrams with EN/ID labels and four WebP sizes. Process scenes are SVG with HTML labels;
   shared page bands use CSS and Katalhys geometry. `images:editorial` runs through Node TypeScript stripping.
@@ -180,13 +185,12 @@ Team, pricing, and other unused template pages are not public routes. English an
   Work catalogue cards additionally select 720px `pair-mobile.webp` through srcset; regenerate these after replacing
   any pair with `node docs/design/mobile/prepare-work-thumbnails.mjs`. Home Work and related cards select 720/1800px covers; Work details retain full-resolution original links. The same script makes four 320px service/engagement previews; mobile uses those while desktop proof keeps its original.
   The detail view shows both full-resolution screens and ordered feature screens from `portfolio-features.ts`.
-  On narrow Work details, the global floating CTA is hidden so it cannot cover image captions; the in-page CTA remains.
+  Work detail hero screens remain side by side on phones, with desktop left and phone right; full-resolution links remain. Service chips link to the localized Work catalogue's `service` filter. Previous/next cards expose 44px directional arrow circles. Four source-audited studies include optional localized `ai` copy with three grounded use cases: order-sales, industrial-coatings, field-projects and activity-review. Other studies retain their verified scope; do not infer AI integration from a company/program name. Audit sources: `docs/design/mobile/2026-10-22-work-feedback.md`.
   Redactions are defined in `scripts/work-redactions.json`; check every asset for private data before publication.
-  The Order & Field Sales mobile hero is the real Sales Dashboard captured against a separate demo SQLite
-  database inside ignored `.work-capture/order-sales/`. Never migrate or seed the source application's database.
+  The Order & Field Sales hero pairs Beranda Operasional on desktop with regional and 12-month Sales charts on mobile. The supporting screens show an external delivery in the five-stage order workflow, the strategic report, and the Sales funnel. All were captured in Codex browser against a separate demo SQLite database inside ignored `.work-capture/order-sales/`. Never migrate or seed the source application's database.
 - Brand: `src/data/brand.ts` owns the flowing logo 09 geometry, its navy/cyan gradient, and the Cobalt + Ink website palette. `brandArtwork()` shares the SVG paths and paint across the component and asset generators. `BrandMark.astro`
   supports color, white, and current-color variants. Header/offcanvas on light surfaces use color; the initial dark inner header
-  and footer use white; the inner header returns to color after it floats. The shared EN/ID footer uses the ink background (`#17191C`). Keep the Katalhys wordmark beside the symbol. `bun run brand:assets` exports
+  and footer use white; the inner header returns to color after it floats. The shared EN/ID footer uses the ink background (`#17191C`), compact typography and spacing, and 44px mobile link targets. Keep the Katalhys wordmark beside the symbol. `bun run brand:assets` exports
   symbol-only SVGs under `public/brand/` and opaque white-background favicon/touch icons. Existing `renoir-*`
   CSS tokens/classes and infrastructure names remain for compatibility. Primary actions are cobalt with white text;
   inverse actions on cobalt use white with cobalt text. Color symbols retain navy `#173E72` to cyan `#64D6F2`;
@@ -198,7 +202,7 @@ Team, pricing, and other unused template pages are not public routes. English an
 - Runtime-added classes must appear as strings in the JS (PurgeCSS scans each page's HTML + all built JS) or be
   added to the safelist in `astro.config.mjs`. Symptom of a miss: a style works in `bun run dev` but not after
   `bun run build`.
-- Fonts: GeneralSans (headings) + Inter Variable (body, via `@fontsource-variable/inter`). GeneralSans
+- Fonts: GeneralSans (headings) + Inter Variable (body, via `@fontsource-variable/inter`). Home section labels use a local uppercase Caveat Brush WOFF2 subset from Fontsource, with its OFL license alongside the file. GeneralSans
   Semibold and the existing Inter Latin variable file are preloaded in `BaseLayout`; Inter uses the metric-matched `"Inter Fallback"` face
   (`utils/_typography.scss`) so the swap causes no layout shift. Keep both measures when changing fonts.
 - Performance budget (Lighthouse mobile, local `bun run serve`): Performance ≥ 95, CLS 0, TBT < 100 ms.
@@ -222,9 +226,7 @@ Team, pricing, and other unused template pages are not public routes. English an
 - Hero copy stays static over its controllable video. Work selection crossfades in place over 500ms; the shared grid reserves the tallest panel to prevent layout jumps.
 - Never enable `scroll-behavior: smooth`; native scroll and keyboard focus must retain predictable positions.
   There is no pinning, scroll capture, lag scroll, preloader or custom cursor.
-- Home service ring stays circular during native scroll and image drag. Service tabs and previous/next open
-  service details; hover/focus images link to real services. Rendering stops when settled/offscreen/hidden,
-  and selection becomes immediate under reduced motion.
+- Home service ring turns once every 90 seconds in view. Hover, focus, pointer hold, explicit pause, a selected preview, or a hidden tab stops rotation. Reduced motion starts paused and keeps selection immediate. Scrolling has no effect on the angle.
 - Home Work uses five native tabs in `homeRank` order, advancing every four seconds in view. Field Project Monitoring (field-projects) is fourth and operations-control is fifth. Hover over
   controls, focus within content, hidden tabs, offscreen state and explicit pause stop rotation. Reduced motion
   starts paused. Arrows/Home/End select tabs; no-JS keeps every panel readable. Work crossfades keep the outgoing panel inert/aria-hidden while it is painted beneath the next panel. Inactive panels reserve stage height using a scoped Bootstrap hidden-display override; visibility/inert keep them inaccessible. Only selected and next covers explicitly warm/decode when Work enters view or selection changes, and clipped active tabs scroll horizontally within their own control. Swiper remains lazy on other pages.
@@ -339,6 +341,18 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 
 ## Changelog
 
+- 2026-10-29 - Resumed the client deck as v7 from the owner's manually edited v6, preserving all 39 existing slide IDs/text and adding a demo sales-module appendix. Delivered 40-slide PPTX/PDF and portable companion files, retained one automatic whole-page effect per slide, verified package/font/layout/content continuity, rendered through PowerPoint and inspected desktop Slide Show. Contacts remain placeholders. No source-app, database, dependency or deployment changes.
+
+- 2026-10-29 - Added a Katalhys sales-module showcase at `/resources/sales-playbook/`: ten chapters, anonymous demo clients, a duration estimator, product filter, local checklist, scored quiz and complete PDF companion. Reused existing brand fonts, geometry and Lucide assets; disclosed source-date and cancellation-denominator limits. Original supplied HTML remains untouched. Source, preview and checks are documented under `promo/sales-module/`; no dependency changes or deployment.
+
+- 2026-10-25 - Audited every client-deck slide and revised v3 to 28 main slides plus 9 appendices. Removed the expert-profile study and reused assets from this deck only; varied service/case layouts and copy. Ran Proteksindo against an isolated demo database, added 16 synthetic projects with at least two cards per Kanban stage, and captured five screens. Added explicit Slide Show animation enablement, 37 Push transitions, 42 image effects and a PowerPoint-rendered motion sample. Source, audit, checks and UI-automation limits are documented under promo/pitch-deck; no source-app database writes, site dependencies, commit or deploy.
+
+- 2026-10-24 - Installed the owner-requested sales-enablement, frontend-slides and presentation-design skills in the user skill directory and applied their narrative/editorial principles to the native PPTX. Completed v2 with AI Powered Software House positioning, varied ink/cobalt layouts, original illustrations/screenshots, 38 transitions and 59 image effects. Restored all 38 slides to the live visual preview; editable PPTX/PDF and validation limits are documented in promo/pitch-deck/README.md. No site dependencies, commit, deployment or source-app data changes.
+
+- 2026-10-24 - Recorded the owner's pitch-deck positioning change to AI Powered Software House and rejection of the initial plain visual direction. Added a source-checked skills.sh comparison at `docs/research/pitch-deck-skills-2026-10-24.md`; external skills remain uninstalled. The revised local deck candidate is a draft pending visual selection and final animation/QA; earlier validation applies to v1 only.
+
+- 2026-10-24 - Added the Indonesian Katalhys client pitch-deck source under `promo/pitch-deck/`: 29 main slides plus 9 optional discussion slides, original Work screenshots, founder-role credits, speaker notes, native PowerPoint fade transitions and image animations. Authoring/export commands and limitations are in its README; generated output and private checks are ignored. No dependency changes, source-project startup, or deployment.
+
 - 2026-10-19 - Applied the owner's denser mobile direction after measuring each Home section and reusable inner component. Reflowed the Problem canvas into three compact sources, scaled benefits artwork and full copy, shortened expanded service stages, added native Work detail disclosure, tightened engagement/FAQ/Notes and footer, and replaced individual navbar boxes with one search/Menu control group. Removed the logo backing and retained ink wordmark after the hero. Researched live Linear/Vercel/Framer/Stripe mobile headers and added section/state/component height checks; no dependencies or deployment.
 
 - 2026-10-19 - Refined mobile scale across shared navigation, overlays, engagement/FAQ/footer, Home service/Work/Process composition, service inquiry and Work/Notes details. Reused native Process disclosures, corrected mobile FAQ icon specificity, exposed service choices in two columns and moved the Home phone contact CTA into document flow. Added built-page route/viewport and touch/keyboard/fallback checks. Approved copy and existing desktop compositions retained; no dependency changes or deployment.
@@ -418,3 +432,27 @@ The copy guard permits the owner-approved exclamation mark only in the floating 
 - 2026-10-17 - Diagnosed production/PR CI failures from unavailable runner configuration. Added descriptive run names, main-only manual dispatch, stage-based serialization, trusted-PR cloud writes and tested credential/cleanup guards. Extended the Alchemy setup stack with the Workers subdomain variable, Secrets Store permission and correct zone resource scope. Added docs/deployment.md; no commit, push, cloud deploy or resource deletion.
 
 - 2026-10-17 - Investigated expired Cloudflare OAuth and denied reauthorization without exposing credentials or changing profiles. Documented reconfiguration with a scoped API token, protected prompts, same-account selection and a separate stored-token admin profile for CI setup. No authentication, dependency upgrade or cloud deploy executed.
+
+- 2026-10-22 - Applied the owner's mobile offcanvas feedback: divided navigation rows, stationary ink text with a 110ms cobalt underline/arrow confirmation, explicit keyboard focus and a wrapping 12px-gap project/language row. Native navigation exceptions and reduced motion stay immediate; closing cancels pending navigation. Fixed production PurgeCSS removal of grouped pseudo-states and added 43 focused Chrome checks plus research/QA documentation. No dependencies or deployment.
+
+- 2026-10-22 - Resolved white mobile Menu/search text caused by mixed-selector specificity, restored viewport-fixed phone CTAs, kept Work hero screens horizontal, linked service chips to catalogue filters and added directional project cards. Audited all eight source projects read-only and added EN/ID AI benefits, role credit and search tags to four verified integrations. Added Work/mobile regression coverage and updated the earlier CTA check; no source-project writes, dependencies or deployment.
+
+- 2026-10-22 - Compacted Notes card headings and localized date/author metadata, centered and sized the phone search dialog, grouped service paths and added existing Recent Notes thumbnails. Retained native search, query results and fallback behavior; added focused responsive/state checks. Researched six comparable studios through live pages and primary sources, recording Katalhys gaps and proposed business priorities separately. No new assets, dependencies or deployment.
+
+- 2026-10-25 - Revised pitch deck v4 with Ghufron/Elroy origin story, current Fanos and MAXY screenshots, isolated seeded Proteksindo data, and the real Coatings admin lead tracker with synthetic leads. Added code-generated SVG/native curves, selected licensed Lucide icons, and native PowerPoint QA; no website behavior, source application database, production service or deployment changes.
+
+- 2026-10-25 - Refined pitch deck v5 copy and main speaker notes: Indonesian explanations with familiar English technical terms, concrete headlines, and guards against em/en dashes in editable text and notes. Kept v4 assets, native ornaments, project credit and PowerPoint motion. No website copy, dependencies or deployment changed.
+
+- 2026-10-28 - Added docs/research/pitch-deck-enhancement-2026-10-28.md: source-backed review of the v5 deck, Indonesian client context, slide-specific priorities, two proposed pages and a timed presentation route. Research only; existing deck outputs and website behavior remain unchanged.
+
+- 2026-11-10 - Documented the DewataTech funnel, public SEO, trust features, and proposed Katalhys quiz and lead workflow in docs/research/2026-11-10-dewatatech-audit-dan-roadmap-katalhys.md. Dispatched the separate client-site audit using the Antigravity prompt in the same directory.
+
+- 2026-11-12 - Rebuilt Home Problem as a bilingual interactive order workflow inspired by Ailene, replaced the Home Process storyboard with compact disclosures and an editorial preview, and applied Caveat Brush to Home section labels.
+
+- 2026-11-12 - Replaced the Home Process artwork with a generated studio photograph, restored the original hero label, expanded the three Home Problem scenes and added a visible eight-second countdown, and moved the Home service ring to slow automatic rotation with interaction pause.
+
+- 2026-11-12 - Added two-sided Katalhys business cards for Ghufron Bagaskara (CTO) and Elroy (CEO) under `promo/gambar/kartu-nama/`. Includes editable Canva import, rendered PNGs, and a print proof. WhatsApp and LinkedIn fields await confirmed details.
+
+- 2026-11-12 - Revised Katalhys business cards with the original color logo, personalized fronts and a shared Indonesian studio and services back. The v2 preview, Canva import and print proof live under `promo/gambar/kartu-nama/renders/v2/`; v1 exports remain available.
+
+- 2026-11-12 - Compacted the shared EN/ID footer and recaptured all Order & Field Sales images from local Fanos checkout 72307ba with isolated simulation data. Refreshed the hero, supporting screens, cards, service/Home previews and OG image, and aligned the case study with the five-stage workflow.
