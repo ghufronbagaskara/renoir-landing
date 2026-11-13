@@ -285,6 +285,8 @@
     .work-case-ai li { font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
     .work-case-features { gap: 36px; }
     .work-case-feature { gap: 20px; }
+    /* Phone screenshots keep the feature (copy + image) within one screen. */
+    .work-case-feature-portrait figure { width: min(100%, 210px); }
     .work-case-feature-number { margin-bottom: 10px; font-size: 12px; }
     .work-case-close { margin-top: 36px; padding-top: 24px; gap: 24px; }
     .work-case-facts { padding: 20px; }

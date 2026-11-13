@@ -90,5 +90,17 @@ const { label, title, steps, outputLabel, deliverables } = t(locale).home.proces
     .home-process-number { width: 30px; height: 30px; }
     .home-process-row > span { font-size: 13px; }
     .home-process-list details[open] .home-process-arrow { transform: rotate(90deg); }
+    /* One phone screen: closed stages show number and title; the open stage adds its summary and deliverables. */
+    .home-process-heading { margin-bottom: 14px; }
+    .home-process-list summary { min-height: 52px; padding: 10px 12px; gap: 10px; }
+    .home-process-row strong { font-size: 15px; }
+    .home-process-row > span { display: none; }
+    .home-process-list details[open] .home-process-row > span { display: block; }
+    .home-process-detail { padding: 4px 14px 14px; }
+    .home-process-detail > .home-process-kicker { display: none; }
+    .home-process-detail h3 { margin: 0 0 8px; font-size: 17px; }
+    .home-process-detail ul { gap: 5px; }
+    .home-process-detail li { font-size: 13px; }
+    .home-process-output { margin-top: 10px; padding-top: 8px; font-size: 13px; }
   }
 </style>
