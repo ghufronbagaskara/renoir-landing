@@ -16,7 +16,9 @@
     "brand:assets": "node --experimental-strip-types scripts/generate-brand-assets.ts",
     "icons:subset": "bun scripts/subset-icons.ts",
     "check:copy": "bun scripts/check-copy.ts",
-    "check:seo": "bun scripts/check-seo.ts"
+    "check:seo": "bun scripts/check-seo.ts",
+    "test:e2e": "bun scripts/e2e-worker.ts",
+    "test:browser": "bun scripts/test-browser.ts"
   },
   "dependencies": {
     "@effect/platform-bun": "4.0.0-rc.112",
