@@ -19,39 +19,43 @@ try {
     for (const viewport of [{ width: 1366, height: 860 }, { width: 375, height: 812 }]) {
       const p = await page(viewport);
       await p.goto(base + route);
-      // Keyboard path: arrows browse without advancing; Next confirms.
+      const visible = () => p.locator("[data-quiz-step]:not([hidden])");
+      const next = async () => { await visible().locator("[data-quiz-next]").click(); };
+      const choose = async (value) => { await visible().locator(`input[value="${value}"]`).click(); await p.waitForTimeout(400); };
+      // Keyboard path: Space selects without advancing; Next confirms.
       await p.locator("[data-quiz-start]").click();
-      const goal = p.locator('[data-quiz-step="quiz_goal"]');
-      await goal.locator("input").first().focus();
+      const industry = p.locator('[data-quiz-step="quiz_industry"]');
+      await industry.locator("input").first().focus();
       await p.keyboard.press("Space");
-      assert.ok(await goal.isVisible(), `${route}: keyboard choice does not auto-advance`);
-      assert.equal(await p.locator("[data-quiz-progress-text]").textContent(), locale === "en" ? "Question 1 of 4" : "Pertanyaan 1 dari 4");
-      await goal.locator("[data-quiz-next]").click();
-      // Pointer path auto-advances.
-      for (const value of ["manual", "several-teams", "quarter"]) {
-        await p.locator(`[data-quiz-step]:not([hidden]) input[value="${value}"]`).click();
-        await p.waitForTimeout(400);
-      }
+      assert.ok(await industry.isVisible(), `${route}: keyboard choice does not auto-advance`);
+      assert.equal(await p.locator("[data-quiz-progress-text]").textContent(), locale === "en" ? "Question 1 of 7" : "Pertanyaan 1 dari 7");
+      await next();
+      // Pointer path auto-advances through the remaining six questions.
+      for (const value of ["workflow", "manual", "several-teams", "small", "quarter", "25-50"]) await choose(value);
       const result = p.locator("[data-result]:not([hidden])");
       assert.equal(await result.getAttribute("data-result"), "internal");
       assert.equal((await result.locator("h3").textContent()).trim(), expected);
       assert.equal(await result.locator("[data-quiz-because] li").count(), 4);
+      assert.equal(await p.locator("[data-scope]:not([hidden])").getAttribute("data-scope"), "focused");
+      assert.equal(await p.locator("[data-example]:not([hidden])").getAttribute("data-example"), "distribution");
+      assert.equal(await p.locator("[data-proof]:not([hidden])").getAttribute("data-proof"), "order-sales");
+      assert.equal(await p.locator("[data-proof]:visible").count(), 1, "one proof card");
       assert.equal(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${route}: no horizontal overflow`);
 
       // Draft survives a reload in the same tab.
       await p.reload();
       assert.equal(await p.locator("[data-result]:not([hidden])").getAttribute("data-result"), "internal", "draft resumes");
 
-      // Editing the goal switches the branch question.
+      // Editing the goal switches the branch question; answered steps keep their values.
       await p.locator("[data-quiz-edit]").click();
-      await p.locator('[data-quiz-step="quiz_goal"] input[value="leads"]').click();
-      await p.waitForTimeout(400);
-      await p.locator("[data-quiz-step]:not([hidden]) [data-quiz-next]").click();
-      assert.equal(await p.locator("[data-quiz-step]:not([hidden])").getAttribute("data-branch"), "channel");
-      await p.locator('[data-quiz-step]:not([hidden]) input[value="search"]').click();
-      await p.waitForTimeout(400);
-      await p.locator("[data-quiz-step]:not([hidden]) [data-quiz-next]").click();
+      await next();
+      await choose("leads");
+      await next();
+      assert.equal(await visible().getAttribute("data-branch"), "channel");
+      await choose("search");
+      for (let i = 0; i < 3; i++) await next();
       assert.equal(await p.locator("[data-result]:not([hidden])").getAttribute("data-result"), "marketing");
+      assert.equal(await p.locator("[data-proof]:not([hidden])").getAttribute("data-proof"), "industrial-coatings");
 
       // Contact step: only the chosen channel is required and submitted.
       await p.locator("[data-quiz-send]").click();
@@ -59,6 +63,7 @@ try {
       const fields = await p.locator("[data-quiz-form]").evaluate((f) => [...new FormData(f).keys()]);
       assert.ok(fields.includes("whatsapp") && !fields.includes("email"), "WhatsApp channel submits only the number");
       assert.deepEqual(fields.filter((k) => k === "quiz_detail").length, 1, "one branch answer is submitted");
+      for (const key of ["quiz_industry", "quiz_goal", "quiz_current", "quiz_size", "quiz_timing", "budget"]) assert.ok(fields.includes(key), `${key} submitted`);
       assert.equal(await p.locator("#quiz-whatsapp").evaluate((i) => i.required), true);
       await p.close();
       count++;
@@ -69,7 +74,7 @@ try {
   const noJs = await page({ width: 390, height: 844 }, { javaScriptEnabled: false });
   await noJs.goto(base + "/id/mulai/");
   assert.equal(await noJs.locator("[data-quiz-form]").getAttribute("action"), "/api/contact");
-  assert.ok((await noJs.locator("[data-quiz-step]:visible").count()) >= 4, "no-JS shows the questions");
+  assert.ok((await noJs.locator("[data-quiz-step]:visible").count()) >= 7, "no-JS shows the questions");
   assert.ok(await noJs.locator("#quiz-name").isVisible());
   assert.equal(await noJs.locator("[data-consent-banner]").isVisible(), false, "no banner without JS");
   await noJs.close();
@@ -91,18 +96,28 @@ try {
   assert.deepEqual(await c.evaluate(() => [window.lastConsent.analytics, window.lastConsent.marketing]), [true, false]);
   count++;
 
-  // Desktop menu panels: hover for Services, click/Escape for Resources.
-  await c.locator(".home-nav-links .nav-has-panel > a").first().hover();
+  // Desktop menu panels open on hover; every parent is a real link; header pill and Home paths reach key pages.
+  const services = c.locator(".home-nav-links .nav-has-panel").first();
+  await services.locator("> a").hover();
   await c.waitForTimeout(250);
-  assert.ok(await c.locator(".home-nav-links .nav-panel").first().isVisible(), "Services panel opens on hover");
-  assert.equal(await c.locator(".home-nav-links .nav-panel").first().locator("a").count(), 5);
+  assert.ok(await services.locator(".nav-panel").isVisible(), "Services panel opens on hover");
+  assert.equal(await services.locator(".nav-panel-list a").count(), 4);
+  assert.equal(await services.locator(".nav-panel-feature").getAttribute("href"), "/start/");
+  assert.equal(await services.locator(".nav-panel-list em").count(), 1, "AI badge on internal systems");
+  const resources = c.locator(".home-nav-links .nav-has-panel").nth(1);
+  await resources.locator("> a").hover();
+  await c.waitForTimeout(250);
+  assert.ok(await resources.locator(".nav-panel").isVisible(), "Resources panel opens on hover");
+  assert.equal(await resources.locator(".nav-panel-list a").count(), 4);
+  assert.equal(await c.locator(".home-nav-links > nav > ul > li").count(), 4, "Home stays in the offcanvas only");
+  assert.ok(await c.locator(".home-nav-quiz").isVisible(), "quiz pill visible on desktop");
   await c.mouse.move(10, 600);
-  const toggle = c.locator("[data-nav-toggle]");
-  await toggle.click();
-  assert.equal(await toggle.getAttribute("aria-expanded"), "true");
-  assert.ok(await c.locator("#" + (await toggle.getAttribute("aria-controls"))).isVisible());
-  await c.keyboard.press("Escape");
-  assert.equal(await toggle.getAttribute("aria-expanded"), "false");
+  const paths = c.locator(".home-paths");
+  assert.equal(await paths.locator(".home-paths-services a").count(), 4);
+  assert.equal(await paths.locator(".home-paths-pages a").count(), 6);
+  assert.equal(await c.locator(".home-cinema-quiz").getAttribute("href"), "/start/");
+  await services.locator("> a").click();
+  await c.waitForURL("**/services/");
   await c.close();
   count++;
 
