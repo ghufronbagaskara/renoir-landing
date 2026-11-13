@@ -46,6 +46,8 @@ bun run serve          # serve dist/client locally on :4322 like Cloudflare's as
 bun run check:links    # after build: fail on any broken internal link or href="#"
 bun run check:copy     # after build: guard against banned/template copy and invalid metadata
 bun run check:seo      # after build: sitemap, pages, canonical, reciprocal hreflang, JSON-LD, llms.txt, robots
+bun run test:browser  # after build: every Chrome check below against scripts/serve.ts, then test:e2e (CI: .github/workflows/e2e.yml)
+bun run test:e2e      # after build: built Worker in local workerd + fresh D1 + rate limit + assets: contact API, admin, browser flows (no cloud)
 node scripts/check-funnel.mjs # questionnaire EN/ID (keyboard/pointer/branch/resume/channel), no-JS form, cookie choice, menu panels, trust pages
 node scripts/check-home-refresh.mjs # after build + serve: Chrome EN/ID responsive/fallback checks
 node scripts/check-home-feedback.mjs # Chrome ring, autoplay/pause, hover, search and inner navbar checks
@@ -84,6 +86,7 @@ alchemy.run.ts              Stack "renoir-landing": Turnstile widget (prod), D1 
 migrations/                 D1 schema: leads, lead_events, admin_users, admin_sessions (applied by Alchemy on deploy)
 stacks/github.ts            One-off stack: CI API token + GitHub secrets + Workers subdomain variable (admin profile)
 .github/workflows/deploy.yml  push main → prod; PR → pr-<n> preview; PR closed → destroy preview
+.github/workflows/e2e.yml     PRs and pushes to main/v*: tests, types, build guards, `test:browser` (Chrome checks + Worker E2E)
 astro.config.mjs            site/trailingSlash/prefetch + integrations: purge-unused-css, pagefind-index
 scripts/                    build, serve, check-links, mirror/optimize images, subset icons, leads-apps-script.gs (Sheet sink, installed by hand)
 public/_headers             noindex on *.workers.dev, immutable /_astro/*, security headers
@@ -263,8 +266,10 @@ Team, pricing, and other unused template pages are not public routes. English an
 - UI: `components/ui/ContactForm.astro` (variants `contact`, `service`).
   Hidden honeypot `company_website`, hidden `source` (`contact` | `service:<id>` | `quiz`). Build types: marketing, internal, design, care, both, unsure.
 - Quiz submissions add `channel` (`email` | `whatsapp`), `whatsapp`, `quiz_industry/goal/current/detail/size/timing`, the regular `budget` field and a client `submission_id` (UUID). Stored quiz JSON includes the derived recommendation and scope. Email is required only for the email channel; contact/service sources still require `build_type` and a 10+ character message.
-- Client (`scripts/contact-form.ts`): on first focus `GET /api/contact` → `{ sitekey }`, then loads Turnstile
-  (explicit render, `interaction-only`). Submit via `fetch` (JSON). Without JS the form POSTs and gets a 303
+- Use the canonical `/api/contact/` (trailing slash) in forms and fetches; `/api/contact` answers 308 because of `trailingSlash: "always"`.
+  Astro's origin check rejects cross-site form POSTs (403), so API tests must send `Origin`.
+- Client (`scripts/contact-form.ts`): on first focus `GET /api/contact/` → `{ sitekey }`, then loads Turnstile
+  (explicit render, `interaction-only`). Submit waits up to 10s for the widget token, so a fast visitor does not get a captcha error. Submit via `fetch` (JSON). Without JS the form POSTs and gets a 303
   back to `/contact/?sent=1` or `?error=<key>`.
 - Endpoint `pages/api/contact.ts` (`prerender = false`) reads bindings via `import { env } from "cloudflare:workers"`
   and runs `handleContact` from `server/contact.ts`:
@@ -281,7 +286,10 @@ Team, pricing, and other unused template pages are not public routes. English an
 - Stack `renoir-landing` (`alchemy.run.ts`), state stored in Cloudflare (`Cloudflare.state()`).
 - `Cloudflare.Website.Astro("Website")` with `astro.output = "server"` (**not** `"static"`: static = assets-only
   deploy with no Worker, which drops `/api/contact`), `sessionKVBindingName: false`,
-  `assets: { notFoundHandling: "404-page", htmlHandling: "auto-trailing-slash" }`. Prerendered pages are served
+  `assets: { notFoundHandling: "404-page", htmlHandling: "auto-trailing-slash", runWorkerFirst: ["/api/*", "/admin", "/admin/*"] }`.
+  Worker-first routing is required: browser navigations (and no-JS form posts) that match no asset are otherwise
+  answered with the 404 page by the asset layer before the Worker runs (`assets_navigation_prefers_asset_serving`).
+  Keep the same list in `scripts/e2e-worker.ts`. Prerendered pages are served
   by the asset layer without invoking the Worker (keeps the free-plan request quota for the API).
 - Bindings: `THROTTLE` (RateLimit ns 1001, 5/60s), `TURNSTILE_SITEKEY`, `TURNSTILE_SECRET`, `TELEGRAM_BOT_TOKEN`,
   `TELEGRAM_CHAT_ID`, `LEADS_WEBHOOK_URL`, `LEADS_WEBHOOK_SECRET`, `DB` (D1 `LeadsDB`, migrations applied on deploy; each PR preview gets its own), `ADMIN_SETUP_TOKEN`. Typed in `src/env.d.ts`. `observability` is on (Workers Logs).
@@ -346,7 +354,7 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   (including development). Fallback matches all query words, normalizes accents and prioritizes titles.
   There is no product collection; product/project examples belong to Work.
 - The owner reports an earlier manual CLI deployment; live Cloudflare resources and stage were not verified in this audit. GitHub runs #4/#5/#6 failed because CI credentials/config were unavailable, after code/build gates passed. The local default Cloudflare OAuth profile is present but expired; the owner reports failed refresh and denied browser authorization. Reconfigure that provider through Alchemy, using a scoped stored API token if OAuth remains unavailable. GitHub CLI and the Alchemy GitHub/admin setup profile are not authenticated. Remote setup and a successful CI deploy remain pending owner-approved setup; contact delivery still needs a live submission check for each form variant.
-- Lead funnel (2026-11-13): D1, admin and questionnaire submission are unit-tested against in-memory SQLite and the built pages pass `check-funnel.mjs`, but no Worker runtime ran locally: `/api/contact` writes to D1, `/admin/*` login and the CI token's new `D1 Write` permission still need a deployed check (rerun `stacks/github.ts` before the next CI deploy). Before launch: fill `site.legal`, approve legal text and `leadRetentionMonths`, set `site.whatsapp`/`email`, redeploy the Apps Script. Pre-existing (also on the v1 baseline): `check-home-refresh` times out waiting for hero video playback headless and `check-mobile-density` measures Home Problem at 896px > 844px on 320px.
+- Lead funnel: `test:e2e` runs the built Worker in local workerd with a fresh D1 (contact API, idempotency, rate limit, admin setup/login/list/detail/update/delete/accounts/logout, phone and desktop browser submissions through Turnstile test keys). Still unverified on Cloudflare itself: a deployed stage, the CI token's new `D1 Write` permission (rerun `stacks/github.ts` before the next CI deploy) and live Telegram/Sheet delivery. Before launch: fill `site.legal`, approve legal text and `leadRetentionMonths`, set `site.whatsapp`/`email`, redeploy the Apps Script.
 - Analytics not wired yet: plan is Cloudflare Web Analytics (CWV) + Umami Cloud (events, `data-domains` = prod host), Search Console + Bing Webmaster, Better Stack uptime on `/` and `GET /api/contact`.
 - Local Lighthouse mobile on 2026-09-29 measured Home performance 89, CLS 0, TBT 230 ms before the final hero
   priority hint; a second run varied substantially (69 / 0 / 1000 ms). Both identified ScrollTrigger as a long task.
@@ -358,6 +366,8 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
   Shipped editorial assets total 0.79 MB (previously 1.73 MB); `_astro` assets total 8.22 MB (previously 9.26 MB).
 
 ## Changelog
+
+- 2026-11-14 - Added `test:e2e` (built Worker in local workerd + D1, 14 API/admin/browser scenarios) and `test:browser` (all Chrome suites + E2E), run by the new E2E GitHub workflow. Fixed issues it found: `/api` and `/admin` were unreachable by browser navigation on Cloudflare's asset layer (now `runWorkerFirst`), forms posted to the 308-redirecting `/api/contact` (now `/api/contact/`), and fast submits could fail Turnstile (submit now waits for the token). Compacted Home Paths, Problem, Process and Work and the Order & Field Sales phone feature to one phone screen; fixed the hero-video check scrolling away from the hero. All suites pass. No deployment.
 
 - 2026-11-14 - Rebuilt the desktop menu after reviewing DewataTech's live navigation: guiding question, icon service cards with benefit lines and an AI badge, featured quiz card, footer links, header quiz pill, all parents as links. Added Home “Start here” with the four services and key-page buttons, plus a hero quiz link. Deepened the questionnaire to seven questions with first-step size, sector example, first-call agenda and industry-matched proof; server validation, admin labels, tests and `check-funnel.mjs` follow. No deployment.
 

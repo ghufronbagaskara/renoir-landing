@@ -124,6 +124,10 @@ Lead dari formulir dan kuis disimpan di database D1 `LeadsDB` yang dibuat Alchem
 
 Telegram dan Sheet tetap menerima salinan lead. Menghapus lead di admin tidak menghapus salinan di Sheet atau Telegram.
 
+## Validasi otomatis di GitHub
+
+Workflow **E2E** (`.github/workflows/e2e.yml`) berjalan pada setiap PR dan push ke `main` atau branch `v*`. Urutannya: unit test, type check, build, cek link/copy/SEO, semua cek Chrome desktop dan ponsel, lalu E2E Worker (workerd lokal + D1 baru, tanpa kredensial Cloudflare). Hasilnya tampil sebagai check di PR; screenshot diunggah sebagai artifact `e2e-screenshots`. Perintah lokal yang sama: `bun run build` lalu `bun run test:browser`.
+
 ## Memperbarui website
 
 Setelah setup selesai dan perubahan workflow ini telah masuk repository:
