@@ -24,6 +24,7 @@ const c = t(locale);
       <button class="si-offcanvas-open-btn home-menu-button" type="button" aria-label={c.nav.openMenu} aria-controls="offcanvas" aria-expanded="false">
         <span class="home-menu-lines" aria-hidden="true"><i></i><i></i></span><span class="home-menu-label">Menu</span>
       </button>
+      <a class="home-nav-quiz" href={path("start", locale)}><i class="fa-sharp fa-regular fa-compass" aria-hidden="true"></i>{c.nav.startShort}</a>
       <a class="si-btn-one home-nav-cta" href={path("contact", locale)}><span class="btn-text"><span>{c.nav.cta}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></a>
     </div>
   </div>

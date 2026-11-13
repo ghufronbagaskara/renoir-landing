@@ -98,13 +98,6 @@ document.addEventListener("click", (e) => {
     li.querySelector(":scope > .si-menu-close")?.setAttribute("aria-expanded", String(expanded));
   }
 
-  // Desktop dropdown panels without their own page (e.g. Resources): click toggles, outside click closes.
-  const navToggle = t.closest<HTMLButtonElement>("[data-nav-toggle]");
-  for (const open of document.querySelectorAll<HTMLButtonElement>("[data-nav-toggle][aria-expanded=true]")) {
-    if (open !== navToggle && !open.parentElement!.contains(t)) setNavPanel(open, false);
-  }
-  if (navToggle) setNavPanel(navToggle, navToggle.getAttribute("aria-expanded") !== "true");
-
   // Image lightbox (offcanvas gallery)
   const popup = t.closest<HTMLAnchorElement>("a.popup-image");
   if (popup) {
@@ -113,17 +106,8 @@ document.addEventListener("click", (e) => {
   }
 });
 
-function setNavPanel(button: HTMLButtonElement, open: boolean) {
-  button.setAttribute("aria-expanded", String(open));
-  button.parentElement!.classList.toggle("is-open", open);
-}
-
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && lastTrigger) closeAll();
-  if (e.key === "Escape") {
-    const open = document.querySelector<HTMLButtonElement>("[data-nav-toggle][aria-expanded=true]");
-    if (open) { setNavPanel(open, false); open.focus(); }
-  }
   // Keyboard open for desktop dropdown parents (role=button anchors)
   const t = e.target as HTMLElement;
   if ((e.key === "Enter" || e.key === " ") && t.matches("a[role='button']")) {

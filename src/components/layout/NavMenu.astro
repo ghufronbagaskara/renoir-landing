@@ -9,37 +9,57 @@ interface Props {
 const { locale, mobile = false } = Astro.props;
 const current = Astro.url.pathname;
 const home = path("home", locale);
+const items = nav(locale).filter((item) => mobile || !item.mobileOnly);
 ---
 <ul>
   {
-    nav(locale).map((item, i) =>
-      item.children ? (
-        <li class:list={["nav-has-panel", { active: !mobile && item.children.some((c) => isActive(c.href, current, home)) }]}>
-          {mobile ? (
-            item.href ? <a href={item.href} aria-current={current === item.href ? "page" : undefined}><><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></></a> : <a class="no-href" role="button" tabindex="0" aria-expanded="false">{item.label}</a>
-          ) : item.href ? (
-            <a href={item.href} aria-current={current === item.href ? "page" : undefined}>{item.label}<i class="fa-sharp fa-regular fa-angle-down nav-caret" aria-hidden="true" /></a>
-          ) : (
-            <button class="nav-parent" type="button" aria-expanded="false" aria-controls={`nav-panel-${i}`} data-nav-toggle>{item.label}<i class="fa-sharp fa-regular fa-angle-down nav-caret" aria-hidden="true" /></button>
+    items.map((item, i) =>
+      mobile ? (
+        <li class:list={{ "nav-has-panel": item.children }}>
+          <a href={item.href} aria-current={(item.children ? current === item.href : isActive(item.href, current, home)) ? "page" : undefined}><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></a>
+          {item.children && (
+            <>
+              <ul class="si-submenu submenu">
+                {item.children.map((c) => (
+                  <li><a href={c.href} aria-current={current === c.href ? "page" : undefined}><span class="offcanvas-link-label">{c.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></a></li>
+                ))}
+              </ul>
+              <button class="si-menu-close" type="button" aria-label={item.label} aria-expanded="false"><i class="fa-solid fa-plus" /></button>
+            </>
           )}
-          <ul class="si-submenu submenu nav-panel" id={mobile ? undefined : `nav-panel-${i}`}>
-            {item.children.map((c) => (
-              <li>
-                <a href={c.href} aria-current={current === c.href ? "page" : undefined}>
-                  {mobile ? <><span class="offcanvas-link-label">{c.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : <><strong>{c.label}</strong>{c.body && <span>{c.body}</span>}</>}
-                </a>
-              </li>
-            ))}
-          </ul>
-          {mobile && (
-            <button class="si-menu-close" type="button" aria-label={item.label} aria-expanded="false">
-              <i class="fa-solid fa-plus" />
-            </button>
-          )}
+        </li>
+      ) : item.children && item.panel ? (
+        <li class:list={["nav-has-panel", { active: isActive(item.href, current, home) || item.children.some((c) => isActive(c.href, current, home)) }]}>
+          <a href={item.href} aria-current={current === item.href ? "page" : undefined} aria-describedby={`nav-panel-${i}-kicker`}>{item.label}<i class="fa-sharp fa-regular fa-angle-down nav-caret" aria-hidden="true" /></a>
+          <div class="nav-panel" id={`nav-panel-${i}`}>
+            <p class="nav-panel-kicker" id={`nav-panel-${i}-kicker`}>{item.panel.kicker}</p>
+            <div class="nav-panel-body">
+              <ul class="nav-panel-list">
+                {item.children.map((c) => (
+                  <li>
+                    <a href={c.href} aria-current={current === c.href ? "page" : undefined}>
+                      <span class="nav-panel-icon" aria-hidden="true"><i class={`fa-sharp fa-regular ${c.icon}`} /></span>
+                      <span class="nav-panel-text"><strong>{c.label}{c.badge && <em>{c.badge}</em>}</strong>{c.body && <span>{c.body}</span>}</span>
+                      <i class="fa-sharp fa-regular fa-angle-right nav-panel-chevron" aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a class="nav-panel-feature" href={item.panel.featured.href}>
+                <span class="nav-panel-feature-icon" aria-hidden="true"><i class={`fa-sharp fa-regular ${item.panel.featured.icon}`} /></span>
+                <strong>{item.panel.featured.title}</strong>
+                <span>{item.panel.featured.body}</span>
+                <span class="nav-panel-feature-cta">{item.panel.featured.cta}<i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></span>
+              </a>
+            </div>
+            <div class="nav-panel-foot">
+              {item.panel.links.map((l) => <a href={l.href}><i class={`fa-sharp fa-regular ${l.icon}`} aria-hidden="true" />{l.label}</a>)}
+            </div>
+          </div>
         </li>
       ) : (
         <li>
-          <a href={item.href} aria-current={isActive(item.href!, current, home) ? "page" : undefined}>{mobile ? <><span class="offcanvas-link-label">{item.label}</span><i class="offcanvas-link-arrow fa-sharp fa-regular fa-arrow-right" aria-hidden="true" /></> : item.label}</a>
+          <a href={item.href} aria-current={isActive(item.href, current, home) ? "page" : undefined}>{item.label}</a>
         </li>
       ),
     )
