@@ -65,6 +65,12 @@
 @media (min-width: 1200px) and (max-width: 1365px) { .home-header .home-nav-quiz i { display: none; } }
 @media (prefers-reduced-motion: reduce) { .home-header .home-nav-links .nav-panel, .nav-caret, .nav-panel-chevron { transition: none; } }
 
+// Hero shortcut to the questionnaire.
+.home-cinema-quiz { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; color: #fff; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.home-cinema-quiz:hover, .home-cinema-quiz:focus-visible { color: var(--renoir-signal); }
+.home-cinema-quiz:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (max-width: 767px) { .home-cinema-quiz { margin-top: 12px; font-size: 13px; } }
+
 // ---- Shared page label and text link ---------------------------------------------------------------
 .doc-label { margin: 0 0 10px; color: var(--renoir-accent); font-size: 13px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
 .doc-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--renoir-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }

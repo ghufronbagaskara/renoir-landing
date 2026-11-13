@@ -127,10 +127,17 @@ const id: Dictionary = {
   },
 
   home: {
+    paths: {
+      label: "Mulai dari sini",
+      title: "Empat layanan, satu tim",
+      intro: "Pilih masalah yang paling mirip dengan kondisi Anda, atau jawab beberapa pertanyaan dan kami tunjukkan langkah awalnya.",
+      more: "Halaman penting lainnya",
+    },
     metaTitle: "Katalhys | Desain, website, aplikasi, dan sistem bisnis",
     metaDescription:
       "Katalhys merancang identitas dan website, membangun sistem internal terintegrasi AI untuk tim Anda, lalu menjaga produk yang kami bangun tetap berjalan.",
     hero: {
+      quizLink: "Belum yakin? Temukan langkah awal dalam 2 menit",
       title: ["Tampil meyakinkan", "Bekerja lebih rapi"],
       label: "Studio digital independen",
       body: "Kami merancang identitas dan website yang meyakinkan, serta sistem internal terintegrasi AI yang membantu tim menjalankan pekerjaan sehari-hari.",

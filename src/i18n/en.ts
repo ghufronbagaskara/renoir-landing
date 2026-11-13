@@ -125,10 +125,17 @@ const en = {
   },
 
   home: {
+    paths: {
+      label: "Start here",
+      title: "Four services, one team",
+      intro: "Choose the problem closest to yours, or answer a few questions and we will point you to a first step.",
+      more: "Other useful pages",
+    },
     metaTitle: "Katalhys | Design, websites, apps and business systems",
     metaDescription:
       "Katalhys designs identities and websites, builds AI-integrated internal systems around your team, and keeps the products it builds running.",
     hero: {
+      quizLink: "Not sure yet? Find your first step in 2 minutes",
       title: ["Make a stronger impression", "Run a better operation"],
       label: "Independent digital studio",
       body: "We design identities and websites that earn trust, and build AI-integrated internal systems that help your team run everyday operations.",

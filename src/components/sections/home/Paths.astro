@@ -1,0 +1,86 @@
+---
+// "Start here": every service and the key pages one click from the hero. Uses the same service data as the menu.
+import { serviceLinks } from "~/data/nav";
+import { path, t, type Locale } from "~/i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = t(locale);
+const p = c.home.paths;
+const n = c.nav;
+const pages = [
+  { label: n.start, href: path("start", locale), icon: "fa-compass", primary: true },
+  { label: n.work, href: path("work", locale), icon: "fa-window" },
+  { label: n.howWeWorkShort, href: path("howWeWork", locale), icon: "fa-shield-check" },
+  { label: n.process, href: path("process", locale), icon: "fa-list-check" },
+  { label: n.notes, href: path("notes", locale), icon: "fa-book-open" },
+  { label: n.cta, href: path("contact", locale), icon: "fa-arrow-right" },
+];
+---
+<section class="home-paths" aria-labelledby="home-paths-title">
+  <div class="container container-1588">
+    <div class="home-paths-head">
+      <p class="home-section-label">{p.label}</p>
+      <h2 id="home-paths-title">{p.title}</h2>
+      <p>{p.intro}</p>
+    </div>
+    <ul class="home-paths-services">
+      {serviceLinks(locale).map((s) => (
+        <li>
+          <a href={s.href}>
+            <span class="home-paths-icon" aria-hidden="true"><i class={`fa-sharp fa-regular ${s.icon}`}></i></span>
+            <strong>{s.label}{s.badge && <em>{s.badge}</em>}</strong>
+            <span>{s.body}</span>
+            <span class="home-paths-go" aria-hidden="true"><i class="fa-sharp fa-regular fa-arrow-right"></i></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <nav class="home-paths-pages" aria-label={p.more}>
+      {pages.map((l) => <a class:list={{ "is-primary": l.primary }} href={l.href}><i class={`fa-sharp fa-regular ${l.icon}`} aria-hidden="true"></i>{l.label}</a>)}
+    </nav>
+  </div>
+</section>
+
+<style>
+  .home-paths { padding: clamp(48px, 6vw, 88px) 0; background: var(--renoir-paper); }
+  .home-paths-head { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 8px clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(24px, 3vw, 40px); }
+  .home-paths-head .home-section-label { grid-column: 1 / -1; margin: 0; }
+  .home-paths-head h2 { margin: 0; font-size: clamp(1.9rem, 3.6vw, 3.2rem); line-height: 1.08; }
+  .home-paths-head > p:last-child { margin: 0; max-width: 56ch; color: var(--renoir-muted); font-size: 17px; line-height: 1.6; }
+  .home-paths-services { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+  .home-paths-services a { position: relative; display: grid; align-content: start; gap: 10px; height: 100%; padding: 22px 22px 56px; border: 1px solid var(--renoir-line); border-radius: 18px; background: var(--renoir-paper); color: var(--renoir-ink); transition: border-color .15s, background-color .15s, transform .15s; }
+  .home-paths-services a:hover, .home-paths-services a:focus-visible { border-color: var(--renoir-accent); background: var(--renoir-accent-soft); transform: translateY(-2px); }
+  .home-paths-services a:focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: 2px; }
+  .home-paths-icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: var(--renoir-accent-soft); color: var(--renoir-accent); font-size: 19px; }
+  .home-paths-services a:hover .home-paths-icon, .home-paths-services a:focus-visible .home-paths-icon { background: var(--renoir-accent); color: #fff; }
+  .home-paths-services strong { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 19px; line-height: 1.3; }
+  .home-paths-services em { padding: 2px 8px; border-radius: 99px; background: var(--renoir-ink); color: #fff; font-size: 11px; font-style: normal; font-weight: 650; letter-spacing: .03em; }
+  .home-paths-services span:not(.home-paths-icon):not(.home-paths-go) { color: var(--renoir-muted); font-size: 15px; line-height: 1.55; }
+  .home-paths-go { position: absolute; left: 22px; bottom: 18px; color: var(--renoir-accent); font-size: 16px; transition: transform .15s; }
+  .home-paths-services a:hover .home-paths-go { transform: translateX(4px); }
+  .home-paths-pages { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .home-paths-pages a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--renoir-line); border-radius: 99px; color: var(--renoir-ink); font-size: 15px; font-weight: 600; transition: background-color .15s, border-color .15s; }
+  .home-paths-pages a i { color: var(--renoir-accent); }
+  .home-paths-pages a:hover, .home-paths-pages a:focus-visible { border-color: var(--renoir-ink); background: var(--renoir-panel); }
+  .home-paths-pages a:focus-visible { outline: 2px solid var(--renoir-accent); outline-offset: 2px; }
+  .home-paths-pages a.is-primary { border-color: var(--renoir-accent); background: var(--renoir-accent); color: #fff; }
+  .home-paths-pages a.is-primary i { color: #fff; }
+  .home-paths-pages a.is-primary:hover, .home-paths-pages a.is-primary:focus-visible { background: var(--renoir-accent-deep); border-color: var(--renoir-accent-deep); }
+  @media (max-width: 1199px) { .home-paths-services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) {
+    .home-paths { padding: 24px 0; }
+    .home-paths-head { grid-template-columns: 1fr; margin-bottom: 16px; }
+    .home-paths-head h2 { font-size: 22px; }
+    .home-paths-head > p:last-child { font-size: 14px; }
+    .home-paths-services { gap: 8px; }
+    .home-paths-services a { gap: 6px; padding: 12px 12px 36px; border-radius: 12px; }
+    .home-paths-icon { width: 34px; height: 34px; border-radius: 9px; font-size: 15px; }
+    .home-paths-services strong { font-size: 14px; }
+    .home-paths-services em { font-size: 10px; padding: 1px 6px; }
+    .home-paths-services span:not(.home-paths-icon):not(.home-paths-go) { font-size: 12px; line-height: 1.45; }
+    .home-paths-go { left: 12px; bottom: 10px; font-size: 14px; }
+    .home-paths-pages { gap: 8px; margin-top: 12px; }
+    .home-paths-pages a { padding: 0 12px; font-size: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .home-paths-services a, .home-paths-go { transition: none; } .home-paths-services a:hover { transform: none; } }
+</style>

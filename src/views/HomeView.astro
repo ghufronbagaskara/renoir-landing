@@ -2,6 +2,7 @@
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Hero from "~/components/sections/home/Hero.astro";
 import Problem from "~/components/sections/home/Problem.astro";
+import Paths from "~/components/sections/home/Paths.astro";
 import Service from "~/components/sections/home/Service.astro";
 import Project from "~/components/sections/home/Project.astro";
 import HomeProcess from "~/components/sections/home/HomeProcess.astro";
@@ -28,6 +29,7 @@ const h = t(locale).home;
   schema={[faqNode(path("home", locale), h.faq.items)]}
 >
   <Hero locale={locale} />
+  <Paths locale={locale} />
   <Problem locale={locale} />
   <Service locale={locale} />
   <Project locale={locale} />

@@ -25,6 +25,7 @@ const h = c.home.hero;
       <a class="home-action home-action-primary" href={path("contact", locale)}>{c.nav.cta}<span aria-hidden="true">↗</span></a>
       <a class="home-action home-action-glass" href="#selected-work">{h.work}<span aria-hidden="true">↓</span></a>
     </div>
+    <a class="home-cinema-quiz" href={path("start", locale)}><i class="fa-sharp fa-regular fa-compass" aria-hidden="true"></i>{h.quizLink}<span aria-hidden="true">→</span></a>
   </div>
   <button class="home-video-toggle" data-video-toggle type="button" data-pause={h.pause} data-play={h.play} aria-label={h.play} hidden><span aria-hidden="true">▶</span></button>
 </section>
