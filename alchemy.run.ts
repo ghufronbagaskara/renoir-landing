@@ -48,7 +48,9 @@ export default Alchemy.Stack(
       // Canonical/OG/sitemap URLs follow astro.site (src/data/site.ts). Switch to renoir.run once the domain exists.
       ...(workersDev && { name: "renoir" }),
       astro: { output: "server", trailingSlash: "always", ...(workersDev && { site: `https://renoir.${workersDev}` }) },
-      assets: { notFoundHandling: "404-page", htmlHandling: "auto-trailing-slash" },
+      // Browser navigations that match no asset are served the 404 page by the asset layer
+      // (assets_navigation_prefers_asset_serving), so on-demand routes must reach the Worker first.
+      assets: { notFoundHandling: "404-page", htmlHandling: "auto-trailing-slash", runWorkerFirst: ["/api/*", "/admin", "/admin/*"] },
       sessionKVBindingName: false,
       observability: { enabled: true },
       env: {
