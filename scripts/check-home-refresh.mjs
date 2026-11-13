@@ -77,6 +77,8 @@ try {
           return icon.top >= box.top + 9 && icon.top <= box.bottom - 9 && getComputedStyle(button).textAlign === "left";
         })), true, "Phone FAQ toggle icons stay inside their question buttons");
       }
+      // The hero video pauses while offscreen by design; return to the hero before expecting playback.
+      await page.evaluate(() => scrollTo(0, 0));
       await page.waitForFunction(() => !document.querySelector("video").paused);
       await page.waitForFunction(() => document.querySelector("video").readyState >= 1);
       const media = await page.locator("video").evaluate(e => ({ src: e.currentSrc, width: e.videoWidth, height: e.videoHeight }));
