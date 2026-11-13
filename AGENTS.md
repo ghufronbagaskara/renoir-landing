@@ -46,7 +46,7 @@ bun run serve          # serve dist/client locally on :4322 like Cloudflare's as
 bun run check:links    # after build: fail on any broken internal link or href="#"
 bun run check:copy     # after build: guard against banned/template copy and invalid metadata
 bun run check:seo      # after build: sitemap, pages, canonical, reciprocal hreflang, JSON-LD, llms.txt, robots
-bun run test:browser  # after build: every Chrome check below against scripts/serve.ts, then test:e2e (CI: .github/workflows/e2e.yml)
+bun run test:browser  # after build: every Chrome check below against scripts/serve.ts, then test:e2e (local only, not in CI)
 bun run test:e2e      # after build: built Worker in local workerd + fresh D1 + rate limit + assets: contact API, admin, browser flows (no cloud)
 node scripts/check-funnel.mjs # questionnaire EN/ID (keyboard/pointer/branch/resume/channel), no-JS form, cookie choice, menu panels, trust pages
 node scripts/check-home-refresh.mjs # after build + serve: Chrome EN/ID responsive/fallback checks
@@ -86,7 +86,6 @@ alchemy.run.ts              Stack "renoir-landing": Turnstile widget (prod), D1 
 migrations/                 D1 schema: leads, lead_events, admin_users, admin_sessions (applied by Alchemy on deploy)
 stacks/github.ts            One-off stack: CI API token + GitHub secrets + Workers subdomain variable (admin profile)
 .github/workflows/deploy.yml  push main → prod; PR → pr-<n> preview; PR closed → destroy preview
-.github/workflows/e2e.yml     PRs and pushes to main/v*: tests, types, build guards, `test:browser` (Chrome checks + Worker E2E)
 astro.config.mjs            site/trailingSlash/prefetch + integrations: purge-unused-css, pagefind-index
 scripts/                    build, serve, check-links, mirror/optimize images, subset icons, leads-apps-script.gs (Sheet sink, installed by hand)
 public/_headers             noindex on *.workers.dev, immutable /_astro/*, security headers
@@ -367,7 +366,9 @@ Removed as conflicting/duplicate: `astro-expert`, `add-integration` (could add a
 
 ## Changelog
 
-- 2026-11-14 - Added `test:e2e` (built Worker in local workerd + D1, 14 API/admin/browser scenarios) and `test:browser` (all Chrome suites + E2E), run by the new E2E GitHub workflow. Fixed issues it found: `/api` and `/admin` were unreachable by browser navigation on Cloudflare's asset layer (now `runWorkerFirst`), forms posted to the 308-redirecting `/api/contact` (now `/api/contact/`), and fast submits could fail Turnstile (submit now waits for the token). Compacted Home Paths, Problem, Process and Work and the Order & Field Sales phone feature to one phone screen; fixed the hero-video check scrolling away from the hero. All suites pass. No deployment.
+- 2026-11-14 - Removed the E2E GitHub workflow at the owner's request; `bun run test:browser` stays a local pre-push check. CI keeps unit tests, types and build/link/copy/SEO guards.
+
+- 2026-11-14 - Added `test:e2e` (built Worker in local workerd + D1, 14 API/admin/browser scenarios) and `test:browser` (all Chrome suites + E2E), run locally before pushing. Fixed issues it found: `/api` and `/admin` were unreachable by browser navigation on Cloudflare's asset layer (now `runWorkerFirst`), forms posted to the 308-redirecting `/api/contact` (now `/api/contact/`), and fast submits could fail Turnstile (submit now waits for the token). Compacted Home Paths, Problem, Process and Work and the Order & Field Sales phone feature to one phone screen; fixed the hero-video check scrolling away from the hero. All suites pass. No deployment.
 
 - 2026-11-14 - Rebuilt the desktop menu after reviewing DewataTech's live navigation: guiding question, icon service cards with benefit lines and an AI badge, featured quiz card, footer links, header quiz pill, all parents as links. Added Home “Start here” with the four services and key-page buttons, plus a hero quiz link. Deepened the questionnaire to seven questions with first-step size, sector example, first-call agenda and industry-matched proof; server validation, admin labels, tests and `check-funnel.mjs` follow. No deployment.
 
