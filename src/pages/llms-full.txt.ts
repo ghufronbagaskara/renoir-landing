@@ -59,7 +59,7 @@ Full terms: ${abs(path("howWeWork", "en"))}
 
 ## Not sure where to start?
 
-The free questionnaire at ${abs(path("start", "en"))} asks four questions and recommends a first step without asking for contact details. Possible recommendations:
+The free questionnaire at ${abs(path("start", "en"))} asks seven questions (business type, goal, current setup, a goal-specific question, team size, timing and first-stage budget) and recommends a sized first step without asking for contact details. Possible recommendations:
 
 ${recommendations.map((r) => `- **${quizCopy.en.results[r].title}**: ${quizCopy.en.results[r].summary}`).join("\n")}
 

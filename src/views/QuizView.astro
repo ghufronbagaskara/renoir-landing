@@ -1,10 +1,11 @@
 ---
-// "Find your first step": four questions → recommendation → optional brief by email or WhatsApp.
+// "Find your first step": seven questions → recommendation, first-step size, sector example and proof →
+// optional brief by email or WhatsApp.
 // Without JS every question shows as one form that posts to /api/contact, which derives the same result.
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import Img from "~/components/ui/Img.astro";
 import { quizCopy } from "~/content/quiz";
-import { branches, currents, goals, recommendations, timings, type Branch, type Recommendation } from "~/lib/quiz";
+import { branches, budgets, currents, goals, industries, industries as industryKeys, proofProjects, recommendations, scopes, sizes, timings, type Branch } from "~/lib/quiz";
 import { getPortfolio, getServices, portfolioCopy, serviceCopy } from "~/lib/content";
 import { child, langTag, path, routeAlternates, t, type Locale } from "~/i18n";
 import { abs } from "~/lib/seo";
@@ -18,25 +19,28 @@ const c = t(locale);
 const f = c.form;
 const services = await getServices();
 const portfolio = await getPortfolio();
-const proofFor: Record<Recommendation, string> = { internal: "order-sales", marketing: "industrial-coatings", design: "maxy-ai", care: "operations-control", discovery: "field-projects" };
 const results = recommendations.map((key) => {
   const r = q.results[key];
   const service = r.service ? services.find((s) => s.id === r.service) : undefined;
-  const project = portfolio.find((p) => p.id === proofFor[key])!;
-  return {
-    key,
-    ...r,
-    serviceHref: service && child("services", locale, serviceCopy(service, locale).slug),
-    project: { title: portfolioCopy(project, locale).title, subtitle: portfolioCopy(project, locale).subtitle, href: child("work", locale, project.id), image: `work/${project.id}/pair-mobile.webp` },
-  };
+  return { key, ...r, serviceHref: service && child("services", locale, serviceCopy(service, locale).slug) };
+});
+// One card per possible proof project; the script shows the one proofOf() picks.
+const proofs = proofProjects.map((id) => {
+  const project = portfolio.find((p) => p.id === id)!;
+  const copy = portfolioCopy(project, locale);
+  return { id, title: copy.title, subtitle: copy.subtitle, href: child("work", locale, id), image: `work/${id}/pair-mobile.webp` };
 });
 const messages = JSON.stringify({ ...f.messages, sent: c.quiz.sent });
 const options = (o: Record<string, string>, keys: readonly string[]) => keys.map((k) => [k, o[k]] as const);
+// Field names match the API; the budget answer uses the regular `budget` field.
 const steps: { name: string; title: string; hint: string; options: (readonly [string, string])[]; branch?: Branch }[] = [
+  { name: "quiz_industry", ...q.questions.industry, options: options(q.questions.industry.options, industries) },
   { name: "quiz_goal", ...q.questions.goal, options: options(q.questions.goal.options, goals) },
   { name: "quiz_current", ...q.questions.current, options: options(q.questions.current.options, currents) },
   ...(Object.keys(branches) as Branch[]).map((b) => ({ name: "quiz_detail", branch: b, ...q.questions.detail[b], options: options(q.questions.detail[b].options, branches[b]) })),
+  { name: "quiz_size", ...q.questions.size, options: options(q.questions.size.options, sizes) },
   { name: "quiz_timing", ...q.questions.timing, options: options(q.questions.timing.options, timings) },
+  { name: "budget", ...q.questions.budget, options: options(q.questions.budget.options, budgets) },
 ];
 ---
 <BaseLayout locale={locale} title={q.metaTitle} description={q.metaDescription} alternates={routeAlternates("start")} breadcrumb={{ title: q.breadcrumb }} schema={[{ "@type": "WebApplication", "@id": `${abs(path("start", locale))}#app`, name: q.breadcrumb, description: q.metaDescription, url: abs(path("start", locale)), applicationCategory: "BusinessApplication", operatingSystem: "Any", inLanguage: langTag[locale], isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "IDR" } }]}>
@@ -104,15 +108,31 @@ const steps: { name: string; title: string; hint: string; options: (readonly [st
                   <ul>{r.prepare.map((p) => <li>{p}</li>)}</ul>
                   {r.serviceHref && <a class="doc-link" href={r.serviceHref}>{q.result.service}<span aria-hidden="true">↗</span></a>}
                 </div>
-                <a class="quiz-proof" href={r.project.href}>
-                  <Img src={r.project.image} alt="" />
-                  <span class="quiz-proof-label">{q.result.proof}</span>
-                  <strong>{r.project.title}</strong>
-                  <span>{r.project.subtitle}</span>
-                </a>
               </div>
             </div>
           ))}
+          <div class="quiz-result-extra">
+            <div class="quiz-result-card">
+              <h4>{q.result.scope}</h4>
+              {scopes.map((k) => <div data-scope={k} hidden><strong>{q.scopes[k].title}</strong><p>{q.scopes[k].body}</p></div>)}
+            </div>
+            <div class="quiz-result-card">
+              <h4>{q.result.example}</h4>
+              {industryKeys.map((k) => <p data-example={k} hidden>{q.examples[k]}</p>)}
+            </div>
+            <div class="quiz-result-card">
+              <h4>{q.result.agenda}</h4>
+              <ol>{q.agenda.map((a) => <li>{a}</li>)}</ol>
+            </div>
+            {proofs.map((p) => (
+              <a class="quiz-proof" href={p.href} data-proof={p.id} hidden>
+                <Img src={p.image} alt="" />
+                <span class="quiz-proof-label">{q.result.proof}</span>
+                <strong>{p.title}</strong>
+                <span>{p.subtitle}</span>
+              </a>
+            ))}
+          </div>
           <div class="quiz-result-actions">
             <button class="si-btn-one" type="button" data-quiz-send><span class="btn-text"><span>{q.result.send}</span></span><span class="btn-icon"><i class="fa-sharp fa-regular fa-arrow-right" aria-hidden="true"></i></span></button>
             <button class="quiz-back" type="button" data-quiz-edit>{q.result.edit}</button>

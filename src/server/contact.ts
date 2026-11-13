@@ -3,7 +3,7 @@
 import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
-import { buildTypeOf, parseAnswers, recommend, type Answers, type Recommendation } from "~/lib/quiz";
+import { buildTypeOf, parseAnswers, recommend, scopeOf, type Answers, type Recommendation, type Scope } from "~/lib/quiz";
 
 const Text = (min: number, max: number) => Schema.Trim.pipe(Schema.check(Schema.isMinLength(min), Schema.isMaxLength(max)));
 
@@ -27,9 +27,11 @@ export const ContactInput = Schema.Struct({
   source: Schema.String.pipe(Schema.check(Schema.isPattern(/^(contact|quiz|service:[\w-]+)$/))),
   /** Client-generated id: a retried submit is stored once. */
   submission_id: Schema.optionalKey(Schema.String.pipe(Schema.check(Schema.isPattern(/^[0-9a-f-]{36}$/)))),
+  quiz_industry: Schema.optionalKey(Code),
   quiz_goal: Schema.optionalKey(Code),
   quiz_current: Schema.optionalKey(Code),
   quiz_detail: Schema.optionalKey(Code),
+  quiz_size: Schema.optionalKey(Code),
   quiz_timing: Schema.optionalKey(Code),
   company_website: Schema.optionalKey(Schema.String),
   "cf-turnstile-response": Schema.optionalKey(Schema.String),
@@ -38,7 +40,7 @@ export type ContactInput = typeof ContactInput.Type;
 
 /** Cross-field rules the struct can't express. Returns the lead fields or an error message. */
 function shape(input: ContactInput): Omit<Submission, "id" | "receivedAt" | "userAgent"> | string {
-  const { company_website: _, "cf-turnstile-response": __, submission_id: ___, quiz_goal, quiz_current, quiz_detail, quiz_timing, ...fields } = input;
+  const { company_website: _, "cf-turnstile-response": __, submission_id: ___, quiz_industry, quiz_goal, quiz_current, quiz_detail, quiz_size, quiz_timing, ...fields } = input;
   const channel = fields.channel ?? (fields.email ? "email" : "whatsapp");
   if (channel === "email" ? !fields.email : !fields.whatsapp) return `missing ${channel}`;
   if (fields.source !== "quiz") {
@@ -46,10 +48,11 @@ function shape(input: ContactInput): Omit<Submission, "id" | "receivedAt" | "use
     if ((fields.message?.length ?? 0) < 10) return "message too short";
     return { ...fields, channel, build_type: fields.build_type };
   }
-  const answers = parseAnswers({ goal: quiz_goal, current: quiz_current, detail: quiz_detail, timing: quiz_timing });
+  // The budget answer travels in the regular budget field, so the Sheet and admin show it too.
+  const answers = parseAnswers({ industry: quiz_industry, goal: quiz_goal, current: quiz_current, detail: quiz_detail, size: quiz_size, timing: quiz_timing, budget: fields.budget });
   if (!answers) return "invalid quiz answers";
   const recommendation = recommend(answers);
-  return { ...fields, channel, build_type: buildTypeOf(recommendation), quiz: { ...answers, recommendation } };
+  return { ...fields, channel, build_type: buildTypeOf(recommendation), quiz: { ...answers, recommendation, scope: scopeOf(answers, recommendation) } };
 }
 
 export class InvalidInput extends Data.TaggedError("InvalidInput")<{ message: string }> {}
@@ -59,12 +62,12 @@ export class DeliveryFailed extends Data.TaggedError("DeliveryFailed")<{ causes:
 
 /** Lead payload handed to the sinks. The visitor's IP stays in the Worker (rate limit + Turnstile only). */
 export interface Submission
-  extends Omit<ContactInput, "company_website" | "cf-turnstile-response" | "submission_id" | "quiz_goal" | "quiz_current" | "quiz_detail" | "quiz_timing" | "build_type" | "channel"> {
+  extends Omit<ContactInput, "company_website" | "cf-turnstile-response" | "submission_id" | "quiz_industry" | "quiz_goal" | "quiz_current" | "quiz_detail" | "quiz_size" | "quiz_timing" | "build_type" | "channel"> {
   id: string;
   receivedAt: string;
   build_type: (typeof BuildTypes)[number];
   channel: "email" | "whatsapp";
-  quiz?: Answers & { recommendation: Recommendation };
+  quiz?: Answers & { recommendation: Recommendation; scope: Scope };
   userAgent: string | null;
 }
 
@@ -151,7 +154,7 @@ export function leadText(s: Submission) {
     `Reply by: ${s.channel}`,
     `Language: ${s.locale}`,
     `Source: ${s.source}`,
-    s.quiz && `Quiz: ${s.quiz.goal} / ${s.quiz.current} / ${s.quiz.detail} / ${s.quiz.timing} → ${s.quiz.recommendation}`,
+    s.quiz && `Quiz: ${s.quiz.industry} / ${s.quiz.goal} / ${s.quiz.current} / ${s.quiz.detail} / ${s.quiz.size} / ${s.quiz.timing} → ${s.quiz.recommendation} (${s.quiz.scope})`,
     s.message && "",
     s.message,
   ]

@@ -62,7 +62,7 @@ const optional = (v: string | null, labels: Record<string, string>) => (v ? labe
       {quiz && (
         <>
           <h2 style="margin-top:16px">Jawaban kuis</h2>
-          <p><strong>Rekomendasi:</strong> {quiz.recommendation}</p>
+          <p><strong>Rekomendasi:</strong> {quiz.recommendation}{quiz.scope && <> · {quiz.scope}</>}</p>
           <dl>{quiz.rows.map(([q, a]) => <><dt>{q}</dt><dd>{a ?? "—"}</dd></>)}</dl>
         </>
       )}

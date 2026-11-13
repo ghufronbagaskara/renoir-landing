@@ -11,10 +11,13 @@ const quiz = {
   locale: "id",
   source: "quiz",
   submission_id: "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+  quiz_industry: "distribution",
   quiz_goal: "workflow",
   quiz_current: "manual",
   quiz_detail: "several-teams",
+  quiz_size: "small",
   quiz_timing: "quarter",
+  budget: "25-50",
 };
 const meta = { ip: "203.0.113.7", userAgent: "test" };
 
@@ -31,6 +34,8 @@ describe("leads", () => {
     expect(total).toBe(1);
     expect(leads[0].build_type).toBe("internal");
     expect(JSON.parse(leads[0].quiz!).recommendation).toBe("internal");
+    expect(JSON.parse(leads[0].quiz!).scope).toBe("focused");
+    expect(leads[0].budget).toBe("25-50");
     expect(leads[0].email).toBeNull();
   });
 
@@ -38,6 +43,8 @@ describe("leads", () => {
     const db = memoryDb();
     expect(await submit(db, { ...quiz, quiz_detail: "slow" })).toEqual({ http: 400, status: "invalid" });
     expect(await submit(db, { ...quiz, whatsapp: "" })).toEqual({ http: 400, status: "invalid" });
+    expect(await submit(db, { ...quiz, budget: "" })).toEqual({ http: 400, status: "invalid" });
+    expect(await submit(db, { ...quiz, quiz_industry: "mining" })).toEqual({ http: 400, status: "invalid" });
   });
 
   test("unsure goal resolves through the priority question", async () => {

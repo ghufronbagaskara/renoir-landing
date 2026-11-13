@@ -28,7 +28,7 @@ const en = {
     howWeWork: "How we work",
     howWeWorkBody: "Scope, revisions, handover and 30-day bug fixing",
     start: "Find your first step",
-    startBody: "Four questions, a recommendation in two minutes",
+    startBody: "Seven questions, a sized first step in two minutes",
     notesBody: "Practical notes on workflows, websites and design",
     processBody: "Four stages with the work in view",
     workBody: "Eight founder projects with real screens",
@@ -548,7 +548,7 @@ const en = {
   docs: {
     updated: "Last updated",
     contents: "On this page",
-    ctaWork: "Want to see how this applies to your project? Answer four questions or tell us about it directly.",
+    ctaWork: "Want to see how this applies to your project? Answer seven questions or tell us about it directly.",
     ctaLegal: "Questions about your data? Send them through the contact page and mention the topic.",
   },
   quiz: {

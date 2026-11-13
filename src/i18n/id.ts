@@ -30,7 +30,7 @@ const id: Dictionary = {
     howWeWork: "Cara kerja",
     howWeWorkBody: "Scope, revisi, serah terima, dan perbaikan bug 30 hari",
     start: "Temukan langkah awal",
-    startBody: "Empat pertanyaan, rekomendasi dalam dua menit",
+    startBody: "Tujuh pertanyaan, langkah awal dalam dua menit",
     notesBody: "Catatan praktis tentang alur kerja, situs, dan desain",
     processBody: "Empat tahap dengan progres yang terlihat",
     workBody: "Delapan proyek pendiri dengan layar asli",
@@ -550,7 +550,7 @@ const id: Dictionary = {
   docs: {
     updated: "Terakhir diperbarui",
     contents: "Di halaman ini",
-    ctaWork: "Ingin melihat penerapannya pada proyek Anda? Jawab empat pertanyaan atau ceritakan langsung kepada kami.",
+    ctaWork: "Ingin melihat penerapannya pada proyek Anda? Jawab tujuh pertanyaan atau ceritakan langsung kepada kami.",
     ctaLegal: "Ada pertanyaan tentang data Anda? Kirim lewat halaman kontak dan sebutkan topiknya.",
   },
   quiz: {

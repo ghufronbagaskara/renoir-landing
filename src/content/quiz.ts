@@ -1,5 +1,5 @@
 // Copy for the "Find your first step" questionnaire (EN/ID). Codes come from src/lib/quiz.ts.
-import type { Branch, Recommendation } from "~/lib/quiz";
+import type { Branch, Industry, Recommendation, Scope } from "~/lib/quiz";
 import type { Locale } from "~/i18n";
 
 type Options = Record<string, string>;
@@ -25,10 +25,13 @@ export interface QuizCopy {
   back: string;
   next: string;
   questions: {
+    industry: { title: string; hint: string; options: Options };
     goal: { title: string; hint: string; options: Options };
     current: { title: string; hint: string; options: Options };
     detail: Record<Branch, { title: string; hint: string; options: Options }>;
+    size: { title: string; hint: string; options: Options };
     timing: { title: string; hint: string; options: Options };
+    budget: { title: string; hint: string; options: Options };
   };
   result: {
     label: string;
@@ -40,8 +43,15 @@ export interface QuizCopy {
     edit: string;
     restart: string;
     send: string;
+    scope: string;
+    example: string;
+    agenda: string;
   };
   results: Record<Recommendation, QuizResult>;
+  scopes: Record<Scope, { title: string; body: string }>;
+  /** What the problem typically looks like in the visitor's sector. */
+  examples: Record<Industry, string>;
+  agenda: string[];
   form: {
     title: string;
     body: string;
@@ -59,19 +69,32 @@ export interface QuizCopy {
 }
 
 const en: QuizCopy = {
-  metaTitle: "Find your first step: a 4-question project check | Katalhys",
-  metaDescription: "Answer four questions about your workflow, website or product and get a recommended first step, what to prepare and a related project. No sign-up needed.",
+  metaTitle: "Find your first step: a 7-question project check | Katalhys",
+  metaDescription: "Seven questions about your business, workflow, website or product. Get a recommended first step, its size, what to prepare and a related project. No sign-up.",
   breadcrumb: "Find your first step",
-  label: "Four questions, about two minutes",
+  label: "Seven questions, about two minutes",
   title: "Not sure where to start?",
   intro: "Tell us what is getting in the way. You will see a recommended first step before you decide whether to send us anything.",
-  points: ["No sign-up or contact details to see the result", "A first step you can act on, even without us", "Send the summary only if you want a reply"],
+  points: ["No sign-up or contact details to see the result", "A first step sized to your team, timing and budget", "Send the summary only if you want a reply"],
   start: "Start the questions",
   direct: "Already know what you need? Contact us directly",
   progress: "Question {n} of {total}",
   back: "Back",
   next: "Next",
   questions: {
+    industry: {
+      title: "What kind of business is this for?",
+      hint: "We use it to show an example from a similar situation, not to filter you out.",
+      options: {
+        distribution: "Distribution, manufacturing or wholesale",
+        services: "Professional services or consulting",
+        projects: "Contractor or field projects",
+        retail: "Retail, food and beverage or hospitality",
+        education: "Education, training or a community",
+        digital: "A startup or digital product",
+        other: "Something else",
+      },
+    },
     goal: {
       title: "What would you most like to fix?",
       hint: "Pick the one that costs you the most time or opportunities today.",
@@ -90,7 +113,8 @@ const en: QuizCopy = {
       hint: "This tells us whether we start from what you have or from scratch.",
       options: {
         manual: "Mostly by hand: chat, paper or spreadsheets",
-        existing: "We already have a website, app or system",
+        offtheshelf: "Off-the-shelf software that does not quite fit",
+        existing: "Our own website, app or system that needs work",
         none: "Nothing yet, we are starting from scratch",
       },
     },
@@ -121,10 +145,20 @@ const en: QuizCopy = {
         options: { enquiries: "More enquiries from the right clients", admin: "Less time spent on admin", product: "A product people find easy to use", unknown: "I would like help working it out" },
       },
     },
+    size: {
+      title: "How many people will use it or feel the change?",
+      hint: "Team size decides whether one focused release is enough or the work should be phased.",
+      options: { solo: "1–5 people", small: "6–20 people", mid: "21–100 people", large: "More than 100 people" },
+    },
     timing: {
       title: "When does this need to move?",
-      hint: "We use this to suggest the size of the first step.",
+      hint: "A near deadline favours a smaller first release that can go live sooner.",
       options: { now: "This month", quarter: "In 1–3 months", exploring: "Still exploring" },
+    },
+    budget: {
+      title: "What budget do you have in mind for the first stage?",
+      hint: "Only used to size the recommendation. We do not show prices; the quote follows a written scope.",
+      options: { lt10: "Under IDR 10 million", "10-25": "IDR 10–25 million", "25-50": "IDR 25–50 million", gt50: "Over IDR 50 million", discuss: "Not sure yet" },
     },
   },
   result: {
@@ -137,6 +171,9 @@ const en: QuizCopy = {
     edit: "Change my answers",
     restart: "Start again",
     send: "Send this summary to Katalhys",
+    scope: "Size of the first step",
+    example: "How this often looks in your sector",
+    agenda: "What we go through in the first call",
   },
   results: {
     internal: {
@@ -188,22 +225,50 @@ const en: QuizCopy = {
     submit: "Send summary",
     noJs: "Answer each question, then add your contact details below.",
   },
+  scopes: {
+    mapping: { title: "Start with a short mapping", body: "Before building, map one real case end to end and agree what the first release must prove. It keeps the first spend small and the next decision clear." },
+    focused: { title: "One focused first release", body: "One core flow, built and launched for the people who need it most. Further features come after it is used." },
+    phased: { title: "A phased rollout", body: "With more people or a larger budget, start with one team or flow, then roll out in stages so training and data migration stay manageable." },
+  },
+  examples: {
+    distribution: "Orders, stock and deliveries tracked in separate chats and spreadsheets, so nobody can say where an order is without asking.",
+    services: "Enquiries arrive by WhatsApp, email and referrals, and proposals and follow-ups live in personal inboxes.",
+    projects: "Daily site reports, photos and costs reach the office late, so problems surface after the budget is spent.",
+    retail: "Promotions, bookings or orders change daily while the website and staff work from different information.",
+    education: "Registrations, payments and class information are spread across forms, chats and spreadsheets.",
+    digital: "The product grows feature by feature while the main user journey becomes harder to follow.",
+    other: "The same information is copied between people and tools, and the latest version is hard to find.",
+  },
+  agenda: ["Walk through your example together", "Agree what the first release must do and how we will check it", "Decide the next step, including when we are not the right team"],
 };
 
 const id: QuizCopy = {
-  metaTitle: "Temukan langkah awal: cek proyek dalam 4 pertanyaan | Katalhys",
-  metaDescription: "Jawab empat pertanyaan tentang alur kerja, situs, atau produk Anda dan dapatkan rekomendasi langkah awal, yang perlu disiapkan, serta contoh proyek. Tanpa daftar akun.",
+  metaTitle: "Temukan langkah awal: cek proyek dalam 7 pertanyaan | Katalhys",
+  metaDescription: "Tujuh pertanyaan tentang bisnis, alur kerja, situs, atau produk Anda. Dapatkan langkah awal, ukurannya, yang perlu disiapkan, dan contoh proyek. Tanpa daftar akun.",
   breadcrumb: "Temukan langkah awal",
-  label: "Empat pertanyaan, sekitar dua menit",
+  label: "Tujuh pertanyaan, sekitar dua menit",
   title: "Bingung mulai dari mana?",
   intro: "Ceritakan apa yang menghambat. Anda melihat rekomendasi langkah awal sebelum memutuskan mengirim apa pun kepada kami.",
-  points: ["Tanpa daftar akun atau kontak untuk melihat hasil", "Langkah awal yang bisa dijalankan, bahkan tanpa kami", "Kirim ringkasan hanya jika Anda ingin dibalas"],
+  points: ["Tanpa daftar akun atau kontak untuk melihat hasil", "Langkah awal yang disesuaikan dengan tim, waktu, dan anggaran", "Kirim ringkasan hanya jika Anda ingin dibalas"],
   start: "Mulai pertanyaan",
   direct: "Sudah tahu kebutuhannya? Hubungi kami langsung",
   progress: "Pertanyaan {n} dari {total}",
   back: "Kembali",
   next: "Lanjut",
   questions: {
+    industry: {
+      title: "Untuk jenis bisnis apa?",
+      hint: "Kami memakainya untuk menunjukkan contoh dari situasi serupa, bukan untuk menyaring Anda.",
+      options: {
+        distribution: "Distribusi, manufaktur, atau grosir",
+        services: "Jasa profesional atau konsultan",
+        projects: "Kontraktor atau proyek lapangan",
+        retail: "Retail, F&B, atau hospitality",
+        education: "Pendidikan, pelatihan, atau komunitas",
+        digital: "Startup atau produk digital",
+        other: "Lainnya",
+      },
+    },
     goal: {
       title: "Apa yang paling ingin Anda benahi?",
       hint: "Pilih yang paling banyak menyita waktu atau peluang Anda saat ini.",
@@ -222,7 +287,8 @@ const id: QuizCopy = {
       hint: "Ini menentukan apakah kita mulai dari yang sudah ada atau dari awal.",
       options: {
         manual: "Sebagian besar manual: chat, kertas, atau spreadsheet",
-        existing: "Sudah ada situs, aplikasi, atau sistem",
+        offtheshelf: "Software siap pakai yang kurang cocok",
+        existing: "Situs, aplikasi, atau sistem sendiri yang perlu dibenahi",
         none: "Belum ada, kami mulai dari awal",
       },
     },
@@ -253,10 +319,20 @@ const id: QuizCopy = {
         options: { enquiries: "Lebih banyak pertanyaan dari klien yang tepat", admin: "Waktu administrasi berkurang", product: "Produk yang mudah dipakai", unknown: "Saya ingin dibantu memetakannya" },
       },
     },
+    size: {
+      title: "Berapa orang yang akan memakai atau merasakan perubahannya?",
+      hint: "Ukuran tim menentukan apakah cukup satu rilis fokus atau perlu bertahap.",
+      options: { solo: "1–5 orang", small: "6–20 orang", mid: "21–100 orang", large: "Lebih dari 100 orang" },
+    },
     timing: {
       title: "Kapan ini perlu berjalan?",
-      hint: "Kami memakainya untuk menyarankan ukuran langkah awal.",
+      hint: "Tenggat yang dekat lebih cocok dengan rilis pertama yang kecil agar bisa segera dipakai.",
       options: { now: "Bulan ini", quarter: "Dalam 1–3 bulan", exploring: "Masih menjajaki" },
+    },
+    budget: {
+      title: "Berapa anggaran yang Anda bayangkan untuk tahap pertama?",
+      hint: "Hanya untuk menyesuaikan saran. Kami tidak menampilkan harga; penawaran mengikuti scope tertulis.",
+      options: { lt10: "Di bawah Rp10 juta", "10-25": "Rp10–25 juta", "25-50": "Rp25–50 juta", gt50: "Di atas Rp50 juta", discuss: "Belum tahu" },
     },
   },
   result: {
@@ -269,6 +345,9 @@ const id: QuizCopy = {
     edit: "Ubah jawaban",
     restart: "Mulai ulang",
     send: "Kirim ringkasan ini ke Katalhys",
+    scope: "Ukuran langkah awal",
+    example: "Biasanya terlihat seperti ini di bidang Anda",
+    agenda: "Yang kita bahas di percakapan pertama",
   },
   results: {
     internal: {
@@ -320,6 +399,21 @@ const id: QuizCopy = {
     submit: "Kirim ringkasan",
     noJs: "Jawab setiap pertanyaan, lalu isi kontak Anda di bawah.",
   },
+  scopes: {
+    mapping: { title: "Mulai dengan pemetaan singkat", body: "Sebelum membangun, petakan satu kasus nyata dari awal sampai akhir dan sepakati apa yang harus dibuktikan rilis pertama. Biaya awal tetap kecil dan keputusan berikutnya jelas." },
+    focused: { title: "Satu rilis pertama yang fokus", body: "Satu alur inti dibangun dan dirilis untuk orang yang paling membutuhkannya. Fitur lanjutan menyusul setelah alur itu dipakai." },
+    phased: { title: "Peluncuran bertahap", body: "Dengan lebih banyak orang atau anggaran yang lebih besar, mulai dari satu tim atau alur, lalu diperluas bertahap agar pelatihan dan migrasi data tetap terkendali." },
+  },
+  examples: {
+    distribution: "Pesanan, stok, dan pengiriman dicatat di chat dan spreadsheet terpisah, sehingga posisi pesanan baru diketahui setelah bertanya.",
+    services: "Pertanyaan masuk lewat WhatsApp, email, dan rekomendasi, sementara penawaran dan tindak lanjut tersimpan di inbox pribadi.",
+    projects: "Laporan harian, foto, dan biaya lapangan terlambat sampai ke kantor, sehingga masalah baru terlihat setelah anggaran terpakai.",
+    retail: "Promo, reservasi, atau pesanan berubah setiap hari, sementara situs dan staf memakai informasi yang berbeda.",
+    education: "Pendaftaran, pembayaran, dan informasi kelas tersebar di formulir, chat, dan spreadsheet.",
+    digital: "Produk bertambah fitur demi fitur, sementara alur utama pengguna makin sulit diikuti.",
+    other: "Informasi yang sama disalin antarorang dan alat, dan versi terbarunya sulit ditemukan.",
+  },
+  agenda: ["Menelusuri contoh Anda bersama", "Menyepakati apa yang harus dilakukan rilis pertama dan cara mengeceknya", "Menentukan langkah berikutnya, termasuk jika kami bukan tim yang tepat"],
 };
 
 export const quizCopy: Record<Locale, QuizCopy> = { en, id };

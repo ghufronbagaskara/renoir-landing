@@ -1,8 +1,12 @@
 // One question at a time for [data-quiz], then the recommendation, then the optional contact step.
 // Answers live in sessionStorage for this tab only; nothing is sent until the visitor submits the form.
-import { branchOf, recommend, type Answers, type Goal } from "~/lib/quiz";
+import { branchOf, proofOf, questionOrder, recommend, scopeOf, type Answers, type Goal } from "~/lib/quiz";
 
-const KEY = "katalhys.quiz.v1";
+const KEY = "katalhys.quiz.v2";
+// Answer → form field name; the budget answer uses the API's regular budget field.
+const field = (key: (typeof questionOrder)[number]) => (key === "budget" ? "budget" : `quiz_${key}`);
+/** Answers repeated under "Why this fits". */
+const REASONS = ["quiz_goal", "quiz_current", "quiz_detail", "quiz_size"];
 
 for (const root of document.querySelectorAll<HTMLElement>("[data-quiz]")) {
   const form = root.querySelector<HTMLFormElement>("[data-quiz-form]")!;
@@ -23,7 +27,7 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-quiz]")) {
   for (const nav of form.querySelectorAll<HTMLElement>(".quiz-nav")) nav.hidden = false;
 
   const value = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked:not(:disabled)`)?.value;
-  const answers = () => ({ goal: value("quiz_goal"), current: value("quiz_current"), detail: value("quiz_detail"), timing: value("quiz_timing") });
+  const answers = () => Object.fromEntries(questionOrder.map((k) => [k, value(field(k))])) as Partial<Answers>;
 
   // The detail question depends on the goal; other branches are disabled so they are neither required nor sent.
   const steps = () => {
@@ -66,11 +70,17 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-quiz]")) {
   function showResult() {
     const a = answers() as Answers;
     const key = recommend(a);
-    for (const panel of result.querySelectorAll<HTMLElement>("[data-result]")) panel.hidden = panel.dataset.result !== key;
+    const pick = (attr: string, wanted: string) => {
+      for (const el of result.querySelectorAll<HTMLElement>(`[${attr}]`)) el.hidden = el.getAttribute(attr) !== wanted;
+    };
+    pick("data-result", key);
+    pick("data-scope", scopeOf(a, key));
+    pick("data-example", a.industry);
+    pick("data-proof", proofOf(a, key));
     const panel = result.querySelector<HTMLElement>(`[data-result="${key}"]`)!;
     // "Why this fits" repeats the visitor's own answers.
     panel.querySelector("[data-quiz-because]")!.replaceChildren(
-      ...steps().map((s) => {
+      ...steps().filter((s) => REASONS.includes(s.dataset.quizStep!)).map((s) => {
         const li = document.createElement("li");
         li.textContent = s.querySelector<HTMLInputElement>("input:checked")?.closest("label")?.textContent?.trim() ?? "";
         return li;
@@ -145,12 +155,13 @@ for (const root of document.querySelectorAll<HTMLElement>("[data-quiz]")) {
     try {
       const saved = JSON.parse(sessionStorage.getItem(KEY) ?? "null") as (Partial<Answers> & { index: number }) | null;
       if (saved && saved.index >= 0) {
-        for (const [name, v] of Object.entries({ quiz_goal: saved.goal, quiz_current: saved.current, quiz_timing: saved.timing })) {
-          const input = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${v}"]`);
+        for (const k of questionOrder) {
+          if (k === "detail") continue;
+          const input = form.querySelector<HTMLInputElement>(`[data-quiz-step] input[name="${field(k)}"][value="${CSS.escape(String(saved[k]))}"]`);
           if (input) input.checked = true;
         }
         steps();
-        const detail = form.querySelector<HTMLInputElement>(`input[name="quiz_detail"][value="${saved.detail}"]:not(:disabled)`);
+        const detail = form.querySelector<HTMLInputElement>(`input[name="quiz_detail"][value="${CSS.escape(String(saved.detail))}"]:not(:disabled)`);
         if (detail) detail.checked = true;
         show(saved.index);
       }
