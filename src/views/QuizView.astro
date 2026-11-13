@@ -58,7 +58,7 @@ const steps: { name: string; title: string; hint: string; options: (readonly [st
         <p class="quiz-nojs" data-quiz-nojs>{q.form.noJs}</p>
       </section>
 
-      <form class="quiz-form" method="post" action="/api/contact" data-contact-form data-quiz-form data-messages={messages}>
+      <form class="quiz-form" method="post" action="/api/contact/" data-contact-form data-quiz-form data-messages={messages}>
         <input type="hidden" name="source" value="quiz" />
         <input type="hidden" name="locale" value={locale} />
         <input type="hidden" name="submission_id" data-quiz-id />

@@ -20,7 +20,7 @@ const timelineOptions = Object.entries(f.timelines);
 const budgetOptions = Object.entries(f.budgets);
 const messages = JSON.stringify(f.messages);
 ---
-<form class="si-contact-form" method="post" action="/api/contact" data-contact-form data-messages={messages}>
+<form class="si-contact-form" method="post" action="/api/contact/" data-contact-form data-messages={messages}>
   <input type="hidden" name="source" value={source} />
   <input type="hidden" name="locale" value={locale} />
   <div class="visually-hidden" aria-hidden="true">

@@ -7,7 +7,7 @@ let turnstileReady: Promise<Turnstile | null> | undefined;
 
 function loadTurnstile(): Promise<Turnstile | null> {
   turnstileReady ??= (async () => {
-    const res = await fetch("/api/contact", { headers: { accept: "application/json" } }).catch(() => null);
+    const res = await fetch("/api/contact/", { headers: { accept: "application/json" } }).catch(() => null);
     const { sitekey } = (res?.ok ? await res.json() : { sitekey: null }) as { sitekey: string | null };
     if (!sitekey) return null;
     await new Promise<void>((resolve, reject) => {

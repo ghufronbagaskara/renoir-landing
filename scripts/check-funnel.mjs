@@ -73,7 +73,7 @@ try {
   // Without JS every question is in one form that posts to /api/contact.
   const noJs = await page({ width: 390, height: 844 }, { javaScriptEnabled: false });
   await noJs.goto(base + "/id/mulai/");
-  assert.equal(await noJs.locator("[data-quiz-form]").getAttribute("action"), "/api/contact");
+  assert.equal(await noJs.locator("[data-quiz-form]").getAttribute("action"), "/api/contact/");
   assert.ok((await noJs.locator("[data-quiz-step]:visible").count()) >= 7, "no-JS shows the questions");
   assert.ok(await noJs.locator("#quiz-name").isVisible());
   assert.equal(await noJs.locator("[data-consent-banner]").isVisible(), false, "no banner without JS");
